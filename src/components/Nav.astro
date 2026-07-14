@@ -20,10 +20,10 @@ const path = norm(Astro.url.pathname);
           <a href={l.href} aria-current={path === norm(l.href) ? 'page' : undefined}>{l.label}</a>
         </li>
       ))}
-      <li class="nav-cta-mobile"><a class="btn btn--navy btn--sm" href="/tablo/">Δωρεάν μέτρηση</a></li>
+      <li class="nav-cta-mobile"><a class="btn btn--orange btn--sm" href="/tablo/">Δωρεάν μέτρηση</a></li>
     </ul>
 
-    <a class="btn btn--navy btn--sm nav-cta" href="/tablo/">Δωρεάν μέτρηση</a>
+    <a class="btn btn--orange btn--sm nav-cta" href="/tablo/">Δωρεάν μέτρηση</a>
 
     <button class="burger" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Μενού">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
@@ -49,9 +49,9 @@ const path = norm(Astro.url.pathname);
 <style>
   .nav-wrap {
     position: sticky; top: 0; z-index: 100;
-    background: rgba(250, 249, 246, .84);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(13, 10, 20, .78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--line);
   }
   .nav { display: flex; align-items: center; gap: 28px; height: 68px; }
@@ -62,16 +62,17 @@ const path = norm(Astro.url.pathname);
   .logo span { color: var(--orange); }
   .nav-links { display: flex; align-items: center; gap: 26px; list-style: none; padding: 0; }
   .nav-links a:not(.btn) {
-    text-decoration: none; font-weight: 600; font-size: .95rem; color: var(--ink);
+    text-decoration: none; font-weight: 600; font-size: .95rem; color: var(--muted);
     padding: 6px 2px; border-radius: 6px;
     transition: color .15s ease;
   }
-  .nav-links a:not(.btn):hover { color: var(--orange-text); }
+  .nav-links a:not(.btn):hover { color: var(--navy); }
   .nav-links a[aria-current='page'] {
-    color: var(--orange-text);
+    color: var(--navy);
     text-decoration: underline;
     text-underline-offset: 6px;
     text-decoration-thickness: 2px;
+    text-decoration-color: var(--orange);
   }
   .nav-cta-mobile { display: none; }
   .burger { display: none; background: none; border: 0; cursor: pointer; color: var(--navy); padding: 8px; border-radius: 10px; }
@@ -85,7 +86,7 @@ const path = norm(Astro.url.pathname);
       display: none;
       position: absolute; top: 68px; left: 0; right: 0;
       flex-direction: column; align-items: stretch; gap: 4px;
-      background: var(--bg); border-bottom: 1px solid var(--line);
+      background: var(--bg-soft); border-bottom: 1px solid var(--line);
       padding: 12px clamp(20px, 4vw, 36px) 20px;
       box-shadow: var(--shadow);
     }

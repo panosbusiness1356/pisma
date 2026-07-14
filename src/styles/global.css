@@ -1,31 +1,40 @@
 /* ============================================================
-   PISMA — Design System
-   Παλέτα, τυπογραφία, utilities. Κανένα hardcoded χρώμα στα
-   components — πάντα οι μεταβλητές.
+   PISMA — Design System (dark)
+   Σκούρο μωβ-μαύρο φόντο, πορτοκαλί gradient accents.
+   Κανένα hardcoded χρώμα στα components — πάντα οι μεταβλητές.
    ============================================================ */
 
 :root {
-  --bg: #FAF9F6;
-  --card: #FFFFFF;
-  --navy: #2C3E50;
-  --ink: #26313C;
-  --muted: #5C6B7A;
-  --orange: #E67E22;       /* accent: εικονίδια, λεπτομέρειες, logo dot */
-  --orange-cta: #BA5D0C;   /* φόντο κουμπιών — AA με λευκό κείμενο (4.5:1) */
-  --orange-soft: #FDF1E4;
-  --line: #ECE8E1;
-  --ok: #1E8A55;
-  --ok-soft: #E7F4ED;
-  --ok-text: #166A42;      /* κείμενο σε --ok-soft/λευκό — AA 4.5:1 */
-  --red: #D24B34;
-  --red-deep: #C13A20;     /* φόντο κορδέλας — AA με λευκό κείμενο (5.39:1) */
-  --red-soft: #FBEAE6;
-  --red-text: #B53A25;     /* κείμενο σε --red-soft/λευκό — AA 4.5:1 */
-  --orange-text: #9C4D08;  /* πορτοκαλί ΚΕΙΜΕΝΟ σε --orange-soft/--bg/λευκό — AA 4.5:1 (5.7:1 σε --bg)· το --orange-cta μένει μόνο για φόντο κουμπιών */
-  --r: 18px;
+  --bg: #0D0A14;
+  --bg-soft: #14101E;
+  --card: #171221;
+  --card-2: #1E1830;
+  --navy: #F5F2FB;        /* χρώμα επικεφαλίδων / «σκούρο» κείμενο του παλιού theme */
+  --ink: #E6E1F0;
+  --muted: #A79DBB;
+  --orange: #FF7A50;      /* accent: εικονίδια, λεπτομέρειες, logo dot */
+  --orange-cta: #EE4F27;  /* φόντο κουμπιών */
+  --orange-hi: #FF6A3D;
+  --orange-soft: rgba(255, 122, 80, .13);
+  --orange-text: #FFA284; /* πορτοκαλί ΚΕΙΜΕΝΟ πάνω σε σκούρο — AA */
+  --purple: #8B5CF6;
+  --purple-soft: rgba(139, 92, 246, .14);
+  --line: rgba(255, 255, 255, .09);
+  --line-strong: rgba(255, 255, 255, .16);
+  --ok: #3ECF8E;
+  --ok-soft: rgba(62, 207, 142, .13);
+  --ok-text: #7DE8B8;
+  --red: #FF5C41;
+  --red-deep: #C13A20;
+  --red-soft: rgba(255, 92, 65, .13);
+  --red-text: #FF9B8A;
+  --grad: linear-gradient(92deg, #FF6A3D 0%, #EE4F27 55%, #D63E1B 100%);
+  --grad-text: linear-gradient(92deg, #FF9159 0%, #FF5C2E 100%);
+  --r: 16px;
 
-  --shadow: 0 2px 6px rgba(44, 62, 80, .06), 0 12px 32px rgba(44, 62, 80, .08);
-  --shadow-hover: 0 4px 10px rgba(44, 62, 80, .09), 0 20px 44px rgba(44, 62, 80, .13);
+  --shadow: 0 2px 8px rgba(0, 0, 0, .35), 0 14px 40px rgba(0, 0, 0, .35);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, .4), 0 22px 52px rgba(0, 0, 0, .5);
+  --glow-orange: 0 0 44px rgba(238, 79, 39, .35);
 
   --font-display: 'Unbounded', 'Commissioner', sans-serif;
   --font-body: 'Commissioner', system-ui, sans-serif;
@@ -37,7 +46,10 @@
 * { margin: 0; }
 html { scroll-behavior: smooth; }
 body {
-  background: var(--bg);
+  background:
+    radial-gradient(58% 34% at 82% -4%, rgba(139, 92, 246, .16), transparent 62%),
+    radial-gradient(46% 30% at 8% 0%, rgba(238, 79, 39, .10), transparent 60%),
+    var(--bg);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 1.0625rem;
@@ -52,20 +64,26 @@ a { color: inherit; }
 /* ---------- Τυπογραφία ---------- */
 h1, h2, h3, h4 { color: var(--navy); text-wrap: balance; }
 h1, h2 {
-  font-family: var(--font-display);
-  font-weight: 800;
-  line-height: 1.16;
-  letter-spacing: -.01em;
+  font-family: var(--font-body);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -.022em;
 }
-h1 { font-size: clamp(1.9rem, 4.6vw, 3.15rem); }
-h2 { font-size: clamp(1.45rem, 3vw, 2.05rem); font-weight: 600; }
+h1 { font-size: clamp(2.1rem, 5vw, 3.6rem); }
+h2 { font-size: clamp(1.6rem, 3.4vw, 2.5rem); }
 h3 { font-size: 1.1rem; font-weight: 700; line-height: 1.35; }
 p { max-width: 62ch; }
-.accent { color: var(--orange-cta); }
+.accent { color: var(--orange-text); }
+.grad-text {
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 .num { font-family: var(--font-mono); font-weight: 500; letter-spacing: -.02em; }
 .muted { color: var(--muted); }
 
-::selection { background: var(--orange-soft); color: var(--navy); }
+::selection { background: rgba(238, 79, 39, .45); color: #fff; }
 
 /* ---------- Layout ---------- */
 .container { max-width: 1120px; margin-inline: auto; padding-inline: clamp(20px, 4vw, 36px); }
@@ -74,7 +92,7 @@ p { max-width: 62ch; }
 .section--tight { padding-block: clamp(36px, 6vw, 64px); }
 
 /* Κεφαλή ενότητας: kicker + h2 + προαιρετικό sub */
-.sec-head { max-width: 640px; margin-bottom: clamp(28px, 5vw, 48px); }
+.sec-head { max-width: 680px; margin-bottom: clamp(28px, 5vw, 48px); }
 .sec-head--center { margin-inline: auto; text-align: center; }
 .sec-head--center p { margin-inline: auto; }
 .sec-head .kicker { margin-bottom: 14px; }
@@ -87,8 +105,9 @@ p { max-width: 62ch; }
 /* ---------- Kicker / chips / tags ---------- */
 .kicker {
   display: inline-flex; align-items: center; gap: 8px;
-  background: var(--orange-soft); color: var(--navy);
-  font-size: .78rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  background: var(--orange-soft); color: var(--orange-text);
+  border: 1px solid rgba(255, 122, 80, .25);
+  font-size: .76rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
   padding: 7px 14px; border-radius: 999px;
 }
 .chip {
@@ -107,37 +126,47 @@ p { max-width: 62ch; }
 /* ---------- Κουμπιά ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  border: 0; border-radius: 999px; cursor: pointer;
+  border: 0; border-radius: 10px; cursor: pointer;
   padding: 15px 28px; font-weight: 700; font-size: 1rem;
   text-decoration: none; white-space: nowrap;
-  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, filter .18s ease;
 }
-.btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
-.btn:active { transform: translateY(-1px); }
-.btn--orange { background: var(--orange-cta); color: #fff; }
-.btn--navy { background: var(--navy); color: #fff; }
-.btn--ghost { background: transparent; color: var(--navy); box-shadow: inset 0 0 0 1.5px var(--line); }
-.btn--ghost:hover { box-shadow: inset 0 0 0 1.5px var(--navy), var(--shadow); }
+.btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+.btn:active { transform: translateY(0); }
+.btn--orange { background: var(--grad); color: #fff; box-shadow: 0 6px 24px rgba(238, 79, 39, .35); }
+.btn--orange:hover { filter: brightness(1.08); box-shadow: 0 10px 32px rgba(238, 79, 39, .45); }
+.btn--navy {
+  background: var(--card-2); color: var(--navy);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+.btn--navy:hover { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3), var(--shadow); }
+.btn--ghost { background: transparent; color: var(--navy); box-shadow: inset 0 0 0 1.5px var(--line-strong); }
+.btn--ghost:hover { box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .35), var(--shadow); }
 .btn--sm { padding: 10px 20px; font-size: .92rem; }
 .btn-note { display: block; margin-top: 12px; font-size: .85rem; color: var(--muted); }
 
 /* ---------- Κάρτες ---------- */
 .card {
-  background: var(--card);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .03), rgba(255, 255, 255, 0) 60%), var(--card);
   border: 1px solid var(--line);
   border-radius: var(--r);
   box-shadow: var(--shadow);
   padding: clamp(22px, 3vw, 30px);
 }
-.card--link { text-decoration: none; transition: transform .18s ease, box-shadow .18s ease; }
-.card--link:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-.card--navy { background: var(--navy); border-color: var(--navy); color: #fff; }
+.card--link { text-decoration: none; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.card--link:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--line-strong); }
+.card--navy {
+  background:
+    radial-gradient(90% 100% at 50% 0%, rgba(139, 92, 246, .16), transparent 70%),
+    var(--card-2);
+  border-color: var(--line-strong); color: #fff;
+}
 .card--navy h2, .card--navy h3 { color: #fff; }
 .card--navy .muted { color: rgba(255, 255, 255, .72); }
 .card h3 { margin-bottom: 8px; }
 .card p { font-size: .97rem; color: var(--muted); }
 .card--navy p { color: rgba(255, 255, 255, .82); }
-.card--ok { background: var(--ok-soft); border-color: var(--ok); }
+.card--ok { background: var(--ok-soft); border-color: rgba(62, 207, 142, .4); }
 .card--ok p { color: var(--ink); }
 .card--ok .icon-chip { background: var(--card); color: var(--ok); margin-bottom: 0; }
 
@@ -149,10 +178,10 @@ p { max-width: 62ch; }
   margin-bottom: 16px;
 }
 .icon-chip svg { width: 24px; height: 24px; }
-.icon-chip--navy { background: rgba(44, 62, 80, .07); color: var(--navy); }
+.icon-chip--navy { background: var(--purple-soft); color: #C4B5FD; }
 
 /* Βέλος-link μέσα σε clickable κάρτα */
-.card-arrow { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--orange-cta); font-size: .95rem; margin-top: 14px; text-decoration: none; }
+.card-arrow { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--orange-text); font-size: .95rem; margin-top: 14px; text-decoration: none; }
 a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- Αριθμημένα βήματα ---------- */
@@ -167,7 +196,7 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
 .step-num {
   display: inline-flex; align-items: center; justify-content: center;
   width: 40px; height: 40px; border-radius: 12px;
-  background: var(--navy); color: #fff; font-weight: 700;
+  background: var(--grad); color: #fff; font-weight: 700;
   margin-bottom: 14px;
 }
 .step h3 { margin-bottom: 6px; }
@@ -185,7 +214,7 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
 :focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; border-radius: 6px; }
 .skip-link {
   position: absolute; left: -999px; top: 8px; z-index: 200;
-  background: var(--navy); color: #fff; padding: 10px 18px; border-radius: 999px;
+  background: var(--card-2); color: #fff; padding: 10px 18px; border-radius: 999px;
 }
 .skip-link:focus { left: 8px; }
 .visually-hidden {
@@ -203,7 +232,7 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
 .field { display: grid; gap: 6px; margin-bottom: 18px; }
 .field label { font-weight: 600; font-size: .95rem; color: var(--navy); }
 .field input, .field select, .field textarea {
-  border: 1.5px solid var(--line); border-radius: 12px; background: var(--card);
+  border: 1.5px solid var(--line-strong); border-radius: 12px; background: var(--bg-soft);
   padding: 13px 16px; width: 100%;
   transition: border-color .15s ease;
 }

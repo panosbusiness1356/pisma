@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import CtaBand from '../components/CtaBand.astro';
-import { SITE, EINVOICE, ELEGXOS } from '../config';
+import { SITE, EINVOICE, ELEGXOS, eur } from '../config';
 
 const schema = {
   '@context': 'https://schema.org',
@@ -23,12 +22,104 @@ const schema = {
     'Ορατότητα σε Google και AI, και αυτοματισμοί γραφείου για ελληνικές μικρομεσαίες επιχειρήσεις.',
 };
 
-const steps = [
-  { t: 'Μέτρηση', d: `${ELEGXOS.price} Έλεγχος ${ELEGXOS.minutes} λεπτών — φεύγεις με σκορ και ευρώ.` },
-  { t: 'Πρόταση', d: `Σε ${ELEGXOS.reportHours} ώρες, γραπτή, με σταθερή τιμή.` },
-  { t: 'Στήσιμο', d: 'Σε 2–4 εβδομάδες, χωρίς να αλλάξεις πρόγραμμα.' },
-  { t: 'Λειτουργία', d: 'Κάθε μήνα, Απόδειξη Αξίας σε ώρες και ευρώ.' },
-];
+/** Tabs: τι στήνει η PISMA, ένα σενάριο ροής ανά tab. */
+const tabs = [
+  {
+    key: 'Ορατότητα',
+    desc: 'Site, Google και ChatGPT: όταν κάποιος ψάχνει ό,τι κάνεις, να βγαίνεις εσύ.',
+    trigger: 'Πελάτης ψάχνει στο Google ή ρωτά το ChatGPT',
+    engine: 'Παρουσία στημένη από την PISMA',
+    out1: 'Βρίσκει εσένα — όχι τον ανταγωνιστή',
+    out2: 'Κλείνει ραντεβού από το site',
+  },
+  {
+    key: 'Τιμολόγηση',
+    desc: 'Τα παραστατικά κόβονται και φεύγουν μόνα τους — έτοιμα και για myDATA.',
+    trigger: 'Ολοκληρώνεται μια δουλειά',
+    engine: 'Αυτόματη έκδοση τιμολογίου',
+    out1: 'Στέλνεται στον πελάτη',
+    out2: 'Καταχωρείται στο myDATA',
+  },
+  {
+    key: 'Εισπράξεις',
+    desc: 'Υπενθυμίσεις πληρωμής σε 3 βήματα — ευγενικές στην αρχή, σταθερές μετά.',
+    trigger: 'Τιμολόγιο μένει απλήρωτο 30 μέρες',
+    engine: 'Υπενθύμιση σε 3 βήματα',
+    out1: 'Ο πελάτης πληρώνει',
+    out2: 'Εσύ ειδοποιείσαι — χωρίς τηλέφωνα',
+  },
+  {
+    key: 'Προσφορές',
+    desc: 'Από το αίτημα στην έτοιμη προσφορά σε λεπτά, όχι σε μέρες.',
+    trigger: 'Νέο αίτημα από πελάτη',
+    engine: 'Πρότυπο προσφοράς PISMA',
+    out1: 'PDF προσφορά στον πελάτη',
+    out2: 'Follow-up σε 3 μέρες, μόνο του',
+  },
+  {
+    key: 'Εσύ',
+    desc: 'Μία αναφορά τον μήνα: ώρες που γλίτωσες, ευρώ που κέρδισες.',
+    trigger: 'Τέλος του μήνα',
+    engine: 'Απόδειξη Αξίας PISMA',
+    out1: 'Ώρες που γλίτωσες',
+    out2: 'Ευρώ που κέρδισες',
+  },
+] as const;
+
+/** Πλέγμα «δένει με τα εργαλεία σου» — γενικά εικονίδια, όχι λογότυπα. */
+const integrations = [
+  { label: 'Email', svg: '<path d="M4 6h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z"/><path d="m3.5 7 8.5 6 8.5-6"/>' },
+  { label: 'Υπολογιστικά φύλλα', svg: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 4v16"/>' },
+  { label: 'Ημερολόγιο', svg: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/>' },
+  { label: 'Τηλέφωνο', svg: '<path d="M6 3h4l1.5 5-2.5 2a13 13 0 0 0 5 5l2-2.5 5 1.5v4a2 2 0 0 1-2 2A17 17 0 0 1 4 5a2 2 0 0 1 2-2Z"/>' },
+  { label: 'Μηνύματα', svg: '<path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5Z"/><path d="M9 11h6M9 14h4"/>' },
+  { label: 'E-shop', svg: '<circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M3 4h3l2.5 11H18l2.5-8H7"/>' },
+  { label: 'Τιμολόγια', svg: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>' },
+  { label: 'Τράπεζα', svg: '<path d="M3 9.5 12 4l9 5.5"/><path d="M5 10v7M9.5 10v7M14.5 10v7M19 10v7M3 20h18"/>' },
+  { label: 'Χάρτες', svg: '<path d="M12 21s-6.5-5.4-6.5-10a6.5 6.5 0 0 1 13 0c0 4.6-6.5 10-6.5 10Z"/><circle cx="12" cy="11" r="2.4"/>' },
+  { label: 'Κριτικές', svg: '<path d="m12 3 2.7 5.7 6.3.8-4.6 4.3 1.2 6.2L12 17l-5.6 3 1.2-6.2L3 9.5l6.3-.8Z"/>' },
+  { label: 'Κοινωνικά δίκτυα', svg: '<rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17" cy="7" r="1"/>' },
+  { label: 'Κάρτες / POS', svg: '<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10.5h18M7 15.5h4"/>' },
+  { label: 'Αποστολές / courier', svg: '<path d="M3 7h11v10H3zM14 10h4l3 3v4h-7"/><circle cx="7" cy="18.5" r="1.6"/><circle cx="17" cy="18.5" r="1.6"/>' },
+  { label: 'Αρχεία', svg: '<path d="M4 7a2 2 0 0 1 2-2h4l2 2.5h6A2 2 0 0 1 20 9.5V17a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/>' },
+  { label: 'Ειδοποιήσεις', svg: '<path d="M18 15v-4.5a6 6 0 1 0-12 0V15l-1.8 2.6h15.6Z"/><path d="M10.3 20.4a2 2 0 0 0 3.4 0"/>' },
+  { label: 'Αναφορές', svg: '<path d="M4 20V4"/><path d="M4 20h16"/><path d="M8 16v-5M12 16V8M16 16v-8"/>' },
+  { label: 'Cloud', svg: '<path d="M7 18a4.5 4.5 0 1 1 .8-8.9A5.5 5.5 0 0 1 18.5 10 4 4 0 0 1 18 18Z"/>' },
+  { label: 'AI', svg: '<rect x="5" y="7" width="14" height="12" rx="3"/><circle cx="9.5" cy="12.5" r="1.2"/><circle cx="14.5" cy="12.5" r="1.2"/><path d="M12 7V3.5M12 3.5h3"/>' },
+] as const;
+
+const fastChecks = [
+  { t: 'Μέτρηση πριν από κάθε αλλαγή', d: 'Πρώτα το σκορ και τα ευρώ στο χαρτί — μετά η δουλειά.' },
+  { t: 'Γραπτή πρόταση, σταθερή τιμή', d: `Σε ${ELEGXOS.reportHours} ώρες μετά τον Έλεγχο. Χωρίς εκπλήξεις.` },
+  { t: 'Στήσιμο χωρίς διακοπές', d: 'Σε 2–4 εβδομάδες, χωρίς να αλλάξεις πρόγραμμα ή εργαλεία.' },
+  { t: 'Απόδειξη Αξίας κάθε μήνα', d: 'Ώρες και ευρώ, μετρημένα — όχι εντυπώσεις.' },
+  { t: 'Όλα αναστρέψιμα', d: 'Ό,τι στήνεται, τεκμηριώνεται. Σταματάς όποτε θες.' },
+  { t: 'Ένας άνθρωπος, όχι τμήμα', d: 'Μιλάς με αυτόν που στήνει το σύστημα — τον Πάνο.' },
+] as const;
+
+const trustRows = [
+  { t: 'Ασφάλεια και δεδομένα', d: 'Δικοί σου λογαριασμοί, δικά σου δεδομένα. Έχεις πρόσβαση σε όλα, ανά πάσα στιγμή.' },
+  { t: 'Διαφάνεια', d: 'Κάθε αυτοματισμός είναι τεκμηριωμένος. Ξέρεις ακριβώς τι τρέχει και πότε.' },
+  { t: 'Συντήρηση', d: 'Παρακολούθηση κάθε μήνα, με γραπτή αναφορά. Αν κάτι σπάσει, το μαθαίνεις από εμάς — όχι από πελάτη.' },
+  { t: 'Ιδιοκτησία', d: 'Ό,τι στήνεται είναι δικό σου. Φεύγεις όποτε θες, με όλα στα χέρια σου.' },
+] as const;
+
+const demoCases = [
+  {
+    title: 'Εμπορική εταιρεία — περίπου 400 παραστατικά τον μήνα',
+    metric: 'Καταχώρηση εισερχομένων',
+    before: '22 ώρες/μήνα',
+    after: '3 ώρες/μήνα',
+    setup: 'Αυτόματη ανάγνωση παραστατικών από το email και καταχώρηση στο σύστημα — ο άνθρωπος μόνο εγκρίνει.',
+  },
+  {
+    title: 'Τεχνική εταιρεία — έργα με πίστωση',
+    metric: 'Μέση είσπραξη',
+    before: '47 μέρες',
+    after: '31 μέρες',
+    setup: 'Αυτόματες υπενθυμίσεις είσπραξης σε 3 βήματα — ευγενικές στην αρχή, σταθερές μετά.',
+  },
+] as const;
 ---
 
 <Base
@@ -37,186 +128,564 @@ const steps = [
   schema={schema}
 >
   <!-- 1. Hero -->
-  <section class="section hero">
-    <div class="container">
-      <p class="kicker">Για ελληνικές επιχειρήσεις</p>
-      <h1>Να σε βρίσκουν πελάτες.<br />Να δουλεύει <span class="accent">μόνο του</span>.</h1>
-      <p class="sub">Μετράμε τι χάνεις — σε πελάτες και σε ώρες — και το διορθώνουμε. Με νούμερα, όχι λόγια.</p>
-      <a class="btn btn--orange" href="/tablo/">Μέτρησε την επιχείρησή σου — 2 λεπτά</a>
-      <span class="btn-note">Δωρεάν · χωρίς email · το σκορ βγαίνει μπροστά σου</span>
-    </div>
-  </section>
-
-  <!-- 2. Οι 2 Πυλώνες -->
-  <section class="section section--tight" aria-labelledby="pillars-title">
-    <div class="container">
-      <h2 id="pillars-title" class="visually-hidden">Τι κάνουμε</h2>
-      <div class="grid-2">
-        <a class="card card--link pillar reveal" href="/se-vriskoun/">
-          <span class="icon-chip">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21" />
-            </svg>
-          </span>
-          <h3>Σε Βρίσκουν</h3>
-          <p>Site, Google και ChatGPT: όταν κάποιος ψάχνει ό,τι κάνεις, να βγαίνεις εσύ.</p>
-          <span class="card-arrow">Δες πώς →</span>
-        </a>
-        <a class="card card--link pillar reveal" href="/doulevei-mono-tou/">
-          <span class="icon-chip">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="3.2" /><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1" />
-            </svg>
-          </span>
-          <h3>Δουλεύει Μόνο Του</h3>
-          <p>Τιμολόγια, εισπράξεις, προσφορές: η ρουτίνα τρέχει μόνη της, εσύ βλέπεις την αναφορά.</p>
-          <span class="card-arrow">Δες πώς →</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- 3. Πώς δουλεύουμε -->
-  <section class="section" aria-labelledby="how-title">
-    <div class="container">
-      <div class="sec-head">
-        <p class="kicker">Πώς δουλεύουμε</p>
-        <h2 id="how-title">Τέσσερα βήματα. Νούμερα σε κάθε ένα.</h2>
-      </div>
-      <ol class="steps">
-        {steps.map((s, i) => (
-          <li class="step reveal">
-            <span class="step-num num">{i + 1}</span>
-            <h3>{s.t}</h3>
-            <p>{s.d}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!-- 4. Social proof strip -->
-  <section class="section--tight" aria-label="Στοιχεία αγοράς">
-    <div class="container stats">
-      <p class="chip"><strong class="num">74%</strong> των ΜμΕ δεν βρίσκει προσωπικό — ΒΕΑ/KPMG</p>
-      <p class="chip"><strong class="num">40%</strong> του χρόνου του ιδιοκτήτη πάει σε admin</p>
-      <p class="chip"><strong class="num">{EINVOICE.deadlineShort}</strong> η προθεσμία ηλεκτρονικής τιμολόγησης</p>
-    </div>
-  </section>
-
-  <!-- 5. Teaser Ταμπλό -->
-  <section class="section" aria-labelledby="tablo-title">
-    <div class="container">
-      <div class="card card--navy teaser reveal">
-        <div class="teaser-text">
-          <p class="kicker">Το Ταμπλό</p>
-          <h2 id="tablo-title">Δύο σκορ. Δύο λεπτά. Μηδέν στοιχεία.</h2>
-          <p>Απάντησε 6 ερωτήσεις και δες πόσο σε βρίσκουν — και πόσα πληρώνεις σε χειροκίνητη δουλειά.</p>
-          <a class="btn btn--orange" href="/tablo/">Δες το σκορ σου</a>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <h1 id="hero-title">
+          Να σε βρίσκουν πελάτες.<br />
+          Να δουλεύει <span class="hero-hl">μόνο του</span>.
+        </h1>
+        <p class="sub">
+          Μετράμε τι χάνεις — σε πελάτες και σε ώρες — και το διορθώνουμε.
+          Με νούμερα, όχι λόγια. Για ελληνικές μικρομεσαίες επιχειρήσεις.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn btn--orange" href="/tablo/">Μέτρησε την επιχείρησή σου</a>
+          <a class="btn btn--ghost" href="/elegxos/">Κλείσε τον Έλεγχο</a>
         </div>
-        <div class="teaser-rings" aria-hidden="true">
-          <div class="ring-box">
-            <svg viewBox="0 0 120 120">
-              <circle class="ring-bg" cx="60" cy="60" r="52" />
-              <circle class="ring-val ring-val--low" cx="60" cy="60" r="52" />
-            </svg>
-            <span class="ring-num num">34</span>
-            <span class="ring-label">Ορατότητα</span>
-          </div>
-          <div class="ring-box">
-            <svg viewBox="0 0 120 120">
-              <circle class="ring-bg" cx="60" cy="60" r="52" />
-              <circle class="ring-val ring-val--mid" cx="60" cy="60" r="52" />
-            </svg>
-            <span class="ring-num num">57</span>
-            <span class="ring-label">Αυτοματισμός</span>
-          </div>
-        </div>
+        <p class="btn-note">2 λεπτά · δωρεάν · χωρίς email — το σκορ βγαίνει μπροστά σου</p>
       </div>
-    </div>
-  </section>
 
-  <!-- 6. Ποιος είναι πίσω από την PISMA -->
-  <section class="section section--tight" aria-labelledby="who-title">
-    <div class="container who">
-      <div class="who-photo" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="8.5" r="3.8" /><path d="M4.5 20c1.4-3.4 4.1-5 7.5-5s6.1 1.6 7.5 5" />
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 240 300" class="bolt">
+          <defs>
+            <linearGradient id="boltGrad" x1="0" y1="0" x2=".9" y2="1">
+              <stop offset="0" stop-color="#FFD9A8" />
+              <stop offset=".38" stop-color="#FF8A3D" />
+              <stop offset=".72" stop-color="#EE4F27" />
+              <stop offset="1" stop-color="#B92D74" />
+            </linearGradient>
+            <linearGradient id="boltEdge" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#FFF3DF" stop-opacity=".9" />
+              <stop offset="1" stop-color="#FF8A3D" stop-opacity="0" />
+            </linearGradient>
+            <filter id="boltBlur" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="26" />
+            </filter>
+          </defs>
+          <path d="M142 10 L46 170 h62 L96 290 L196 122 h-64 Z" fill="url(#boltGrad)" filter="url(#boltBlur)" opacity=".8" />
+          <path d="M142 10 L46 170 h62 L96 290 L196 122 h-64 Z" fill="url(#boltGrad)" />
+          <path d="M142 10 L46 170 h30 Z" fill="url(#boltEdge)" opacity=".5" />
         </svg>
       </div>
-      <div>
-        <h2 id="who-title">Ποιος είναι πίσω από την PISMA</h2>
-        <p>Δεν θα μιλήσεις με τμήμα πωλήσεων — θα μιλήσεις με αυτόν που στήνει το σύστημα. Ένας άνθρωπος, με πείσμα, μέχρι να δουλεύει μόνο του.</p>
-        <p class="who-sig">{SITE.founder} · Γλυφάδα</p>
+    </div>
+
+    <div class="container hero-tools">
+      <p>Δουλεύουμε με ό,τι ήδη έχεις:</p>
+      <ul aria-label="Ενδεικτικά εργαλεία">
+        <li>Google</li><li>ChatGPT</li><li>myDATA</li><li>Email</li><li>Viber</li><li>E-shop</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. Tabs + διάγραμμα ροής -->
+  <section class="section section--tight" aria-labelledby="flows-title">
+    <div class="container">
+      <div class="flows card--navy" id="flows">
+        <div class="flows-tabs" role="tablist" aria-label="Τι στήνουμε">
+          <h2 id="flows-title" class="visually-hidden">Τι στήνουμε</h2>
+          {tabs.map((t, i) => (
+            <button
+              class={`flow-tab${i === 0 ? ' is-active' : ''}`}
+              role="tab"
+              aria-selected={i === 0 ? 'true' : 'false'}
+              data-idx={i}
+              type="button"
+            >
+              <span class="flow-tab-t">{t.key}</span>
+              <span class="flow-tab-d">{t.desc}</span>
+            </button>
+          ))}
+        </div>
+
+        <div class="flow-diagram" aria-live="polite">
+          <div class="fnode fnode--trigger">
+            <span class="fnode-label">Έναυσμα</span>
+            <span class="fnode-text" data-slot="trigger">{tabs[0].trigger}</span>
+          </div>
+          <div class="fline" aria-hidden="true"></div>
+          <div class="fnode fnode--engine">
+            <span class="fnode-label">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z" /></svg>
+              PISMA
+            </span>
+            <span class="fnode-text" data-slot="engine">{tabs[0].engine}</span>
+          </div>
+          <div class="fline fline--split" aria-hidden="true"></div>
+          <div class="fouts">
+            <div class="fnode fnode--out">
+              <span class="fnode-check" aria-hidden="true">✓</span>
+              <span class="fnode-text" data-slot="out1">{tabs[0].out1}</span>
+            </div>
+            <div class="fnode fnode--out">
+              <span class="fnode-check" aria-hidden="true">✓</span>
+              <span class="fnode-text" data-slot="out2">{tabs[0].out2}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 7. Τελικό CTA -->
-  <CtaBand
-    title="Ξεκίνα από τη μέτρηση. Τα υπόλοιπα θα φανούν στο χαρτί."
-    ctaText="Μέτρησε την επιχείρησή σου"
-    ctaHref="/tablo/"
-    note="2 λεπτά · δωρεάν · χωρίς στοιχεία"
-  />
+  <!-- 3. Social proof strip -->
+  <section class="section--tight" aria-label="Στοιχεία αγοράς">
+    <div class="container stats">
+      <p class="chip reveal"><strong class="num">74%</strong> των ΜμΕ δεν βρίσκει προσωπικό — ΒΕΑ/KPMG</p>
+      <p class="chip reveal"><strong class="num">40%</strong> του χρόνου του ιδιοκτήτη πάει σε admin</p>
+      <p class="chip reveal"><strong class="num">{EINVOICE.deadlineShort}</strong> η προθεσμία ηλεκτρονικής τιμολόγησης</p>
+    </div>
+  </section>
+
+  <!-- 4. Integrations -->
+  <section class="section" aria-labelledby="integr-title">
+    <div class="container">
+      <div class="sec-head sec-head--center">
+        <h2 id="integr-title">Δένει με τα εργαλεία<br />που <span class="grad-text">ήδη έχεις</span></h2>
+        <p>Email, λογιστικά, ημερολόγιο, e-shop, courier — δεν αλλάζεις τίποτα. Τα ενώνουμε να δουλεύουν μαζί.</p>
+      </div>
+      <ul class="integr-grid reveal" aria-label="Κατηγορίες εργαλείων">
+        {integrations.map((it) => (
+          <li class="integr-tile" title={it.label}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={it.svg} />
+            <span class="visually-hidden">{it.label}</span>
+          </li>
+        ))}
+      </ul>
+      <div class="integr-cta">
+        <a class="btn btn--navy" href="/doulevei-mono-tou/">Δες πώς ενώνονται όλα →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Features: σύστημα που βλέπεις και ελέγχεις -->
+  <section class="section" aria-labelledby="feat-title">
+    <div class="container">
+      <div class="sec-head sec-head--center">
+        <h2 id="feat-title">Σύστημα που βλέπεις<br />και ελέγχεις</h2>
+        <p>Όχι «κάτι τρέχει από πίσω». Βλέπεις κάθε βήμα — και το τελευταίο «ναι» είναι πάντα δικό σου.</p>
+      </div>
+
+      <div class="grid-2">
+        <article class="card reveal">
+          <h3>Χωρίς μαύρα κουτιά</h3>
+          <p>Κάθε αυτοματισμός είναι μια ροή που διαβάζεται: τι μπαίνει, τι γίνεται, τι βγαίνει.</p>
+          <ul class="mini-flow" aria-label="Παράδειγμα ροής">
+            <li><span class="ok">✓</span> Έρχεται παραστατικό στο email</li>
+            <li><span class="ok">✓</span> Διαβάζεται και ελέγχεται</li>
+            <li><span class="ok">✓</span> Καταχωρείται στο σύστημα</li>
+            <li class="mini-flow-you"><span class="you">Εσύ</span> Εγκρίνεις με ένα κλικ</li>
+          </ul>
+        </article>
+
+        <article class="card reveal">
+          <h3>Ο άνθρωπος αποφασίζει</h3>
+          <p>Όπου χρειάζεται κρίση — ποσά, εξαιρέσεις, νέοι πελάτες — η ροή σταματά και σε ρωτάει.</p>
+          <div class="approve" aria-hidden="true">
+            <p class="approve-q">Να σταλεί υπενθύμιση 2ου βήματος στον πελάτη Χ;</p>
+            <div class="approve-btns">
+              <span class="approve-yes">Ναι, στείλε</span>
+              <span class="approve-no">Όχι, θα τον πάρω εγώ</span>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <article class="card card--navy feat-wide reveal">
+        <div>
+          <h3>Μένει δικό σου</h3>
+          <p>Δεν σε κλειδώνουμε πουθενά. Το σύστημα στήνεται στα δικά σου εργαλεία και μένει σε σένα.</p>
+        </div>
+        <ul class="feat-checks">
+          <li><span class="ok">✓</span> Στο δικό σου email και τα δικά σου προγράμματα</li>
+          <li><span class="ok">✓</span> Δικοί σου λογαριασμοί, δικά σου δεδομένα</li>
+          <li><span class="ok">✓</span> Σταματάς όποτε θες — χωρίς δεσμεύσεις</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- 6. Πορτοκαλί panel: Ηλεκτρονική τιμολόγηση 2026 -->
+  <section class="section section--tight" aria-labelledby="einv-title">
+    <div class="container">
+      <div class="einv reveal">
+        <div class="einv-copy">
+          <h2 id="einv-title">Ηλεκτρονική τιμολόγηση 2026.<br />Έτοιμος πριν την προθεσμία.</h2>
+          <p>Από {EINVOICE.deadlineHuman} γίνεται υποχρεωτική για όλες τις επιχειρήσεις. Όσο πιο νωρίς ξεκινήσεις, τόσο πιο ήρεμα γίνεται.</p>
+          <ul class="einv-checks">
+            <li><span aria-hidden="true">✓</span> Προθεσμία: {EINVOICE.deadlineHuman} — για όλους</li>
+            <li><span aria-hidden="true">✓</span> Πρόστιμα έως {eur(EINVOICE.maxFine)} ανά παράβαση</li>
+            <li><span aria-hidden="true">✓</span> Η μετάβαση θέλει {EINVOICE.migrationWeeks} — μην το αφήσεις για το τέλος</li>
+          </ul>
+          <a class="btn btn--light" href="/timologisi-2026/">Δες τι αλλάζει για σένα</a>
+        </div>
+        <div class="einv-panel" aria-hidden="true">
+          <div class="einv-node">Τιμολόγιο</div>
+          <div class="einv-arrow">→</div>
+          <div class="einv-node einv-node--ok">myDATA ✓</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Προχώρα γρήγορα. Μη χαλάσεις τίποτα. -->
+  <section class="section" aria-labelledby="fast-title">
+    <div class="container">
+      <div class="fast-grid">
+        <div>
+          <div class="sec-head">
+            <h2 id="fast-title">Προχώρα γρήγορα.<br />Μη χαλάσεις τίποτα.</h2>
+            <p>Τέσσερα βήματα — Μέτρηση, Πρόταση, Στήσιμο, Λειτουργία — και νούμερα σε κάθε ένα.</p>
+          </div>
+          <ul class="fast-checks">
+            {fastChecks.map((c) => (
+              <li class="reveal">
+                <span class="ok" aria-hidden="true">✓</span>
+                <div><strong>{c.t}</strong><p>{c.d}</p></div>
+              </li>
+            ))}
+          </ul>
+          <a class="btn btn--ghost fast-btn" href="/elegxos/">Δες πώς δουλεύουμε</a>
+        </div>
+        <div class="fast-art" aria-hidden="true">
+          <div class="fast-ring">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h6l-1 8 9-12h-6z" /></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Αποδείξεις / case studies -->
+  <section class="section" aria-labelledby="cases-title">
+    <div class="container">
+      <div class="sec-head sec-head--center">
+        <p class="kicker">Αποδείξεις</p>
+        <h2 id="cases-title">Πριν και μετά, δίπλα-δίπλα</h2>
+        <p>Ενδεικτικά σενάρια εφαρμογής με ρεαλιστικά μεγέθη — γι' αυτό και το γράφουμε πάνω τους. Ό,τι δεν μετριέται, δεν το πουλάμε.</p>
+      </div>
+      <div class="grid-2">
+        {demoCases.map((c) => (
+          <article class="card card--navy case reveal">
+            <span class="tag tag--demo">Ενδεικτικό σενάριο εφαρμογής</span>
+            <h3>{c.title}</h3>
+            <p class="case-metric">{c.metric}</p>
+            <p class="case-nums">
+              <span class="strike num">{c.before}</span>
+              <span class="case-arrow" aria-hidden="true">→</span>
+              <span class="visually-hidden">έγινε</span>
+              <span class="after-num">{c.after}</span>
+            </p>
+            <p class="case-setup">{c.setup}</p>
+          </article>
+        ))}
+      </div>
+      <div class="cases-cta">
+        <a class="btn btn--navy" href="/apodeixeis/">Δες όλες τις αποδείξεις →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Αξιόπιστο. Μετρήσιμο. Δικό σου. -->
+  <section class="section" aria-labelledby="trust-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Χωρίς ρίσκο</p>
+        <h2 id="trust-title">Αξιόπιστο. Μετρήσιμο. Δικό σου.</h2>
+      </div>
+      <div class="trust-grid">
+        <dl class="trust-rows">
+          {trustRows.map((r) => (
+            <div class="trust-row reveal">
+              <dt>{r.t}</dt>
+              <dd>{r.d}</dd>
+            </div>
+          ))}
+        </dl>
+        <aside class="card card--navy trust-quote reveal">
+          <p class="trust-quote-text">«Υποδοχή αιτημάτων, προσφορές, follow-ups και τιμολόγηση της PISMA τρέχουν με ό,τι ακριβώς πουλάμε. Δεν πουλάμε κάτι που δεν χρησιμοποιούμε.»</p>
+          <p class="trust-quote-sig">{SITE.founder} — PISMA · Γλυφάδα</p>
+          <a class="card-arrow" href="/elegxos/">Ζήτα να τα δεις live στο ραντεβού →</a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Δύο κάρτες: ποιος είναι πίσω + δέσμευση -->
+  <section class="section--tight" aria-label="Ποιος είναι πίσω από την PISMA">
+    <div class="container grid-2">
+      <article class="card reveal">
+        <p class="quote-text">Δεν θα μιλήσεις με τμήμα πωλήσεων — θα μιλήσεις με αυτόν που στήνει το σύστημα. Ένας άνθρωπος, με πείσμα, μέχρι να δουλεύει μόνο του.</p>
+        <p class="quote-sig"><span class="quote-avatar" aria-hidden="true">Π</span> {SITE.founder} · ιδρυτής PISMA</p>
+      </article>
+      <article class="card reveal">
+        <p class="quote-text">Κάθε μαρτυρία που θα δεις εδώ θα είναι επώνυμη — με όνομα, επιχείρηση και περιοχή. Ποτέ «ικανοποιημένος πελάτης, Αθήνα».</p>
+        <p class="quote-sig"><span class="quote-avatar" aria-hidden="true">✓</span> Η δέσμευσή μας</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 11. Τελικό CTA -->
+  <section class="section final-cta" aria-labelledby="final-title">
+    <div class="container">
+      <h2 id="final-title">Αρκετά απλό για να το βλέπεις.<br /><span class="grad-text">Αρκετά δυνατό για να δουλεύει μόνο του.</span></h2>
+      <p>Ξεκίνα από τη μέτρηση — τα υπόλοιπα θα φανούν στο χαρτί.</p>
+      <a class="btn btn--orange" href="/tablo/">Μέτρησε την επιχείρησή σου</a>
+      <p class="btn-note">2 λεπτά · δωρεάν · χωρίς στοιχεία</p>
+    </div>
+  </section>
 </Base>
 
+<script define:vars={{ tabs }}>
+  const root = document.getElementById('flows');
+  const btns = [...root.querySelectorAll('.flow-tab')];
+  const slots = {
+    trigger: root.querySelector('[data-slot="trigger"]'),
+    engine: root.querySelector('[data-slot="engine"]'),
+    out1: root.querySelector('[data-slot="out1"]'),
+    out2: root.querySelector('[data-slot="out2"]'),
+  };
+  btns.forEach((b) => {
+    b.addEventListener('click', () => {
+      const t = tabs[Number(b.dataset.idx)];
+      btns.forEach((x) => {
+        x.classList.toggle('is-active', x === b);
+        x.setAttribute('aria-selected', String(x === b));
+      });
+      for (const k of ['trigger', 'engine', 'out1', 'out2']) slots[k].textContent = t[k];
+    });
+  });
+</script>
+
 <style>
-  /* Hero */
-  .hero { text-align: center; padding-top: clamp(64px, 10vw, 130px); }
-  .hero h1 { max-width: 17ch; margin-inline: auto; }
-  .hero .kicker { margin-bottom: 22px; }
-  .hero .sub { margin: 22px auto 34px; font-size: 1.18rem; color: var(--muted); max-width: 48ch; }
+  /* ---------- Hero ---------- */
+  .hero { padding-top: clamp(48px, 8vw, 110px); position: relative; }
+  .hero-grid {
+    display: grid; align-items: center; gap: clamp(28px, 5vw, 60px);
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  }
+  .hero h1 { max-width: 18ch; }
+  .hero-hl { position: relative; white-space: nowrap; }
+  .hero-hl::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: .04em; height: .16em;
+    background: var(--grad); border-radius: 999px; opacity: .9;
+  }
+  .hero .sub { margin: 22px 0 30px; font-size: 1.16rem; color: var(--muted); max-width: 46ch; }
+  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+  .hero-art { display: flex; justify-content: center; }
+  .bolt { width: clamp(150px, 22vw, 250px); filter: drop-shadow(0 0 46px rgba(238, 79, 39, .4)); }
+  .hero-tools {
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+    margin-top: clamp(40px, 7vw, 72px);
+    padding-top: 24px; border-top: 1px solid var(--line);
+  }
+  .hero-tools p { font-size: .85rem; color: var(--muted); }
+  .hero-tools ul { display: flex; gap: clamp(16px, 3vw, 34px); flex-wrap: wrap; list-style: none; padding: 0; }
+  .hero-tools li { font-weight: 700; font-size: 1rem; color: var(--navy); opacity: .45; }
 
-  /* Πυλώνες */
-  .pillar { display: block; }
-  .pillar h3 { font-size: 1.35rem; }
-  .pillar p { max-width: 40ch; }
+  @media (max-width: 780px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-art { order: -1; }
+    .bolt { width: 120px; }
+  }
 
-  /* Stats */
+  /* ---------- Tabs + διάγραμμα ---------- */
+  .flows {
+    display: grid; gap: clamp(22px, 4vw, 44px);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+    border: 1px solid var(--line-strong); border-radius: var(--r);
+    padding: clamp(20px, 3.5vw, 40px);
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 34px 34px;
+    background-color: var(--card);
+    box-shadow: var(--shadow);
+  }
+  .flows-tabs { display: grid; gap: 6px; align-content: start; }
+  .flow-tab {
+    text-align: left; background: none; border: 0; border-left: 3px solid transparent;
+    padding: 12px 16px; cursor: pointer; border-radius: 0 10px 10px 0;
+    transition: background-color .15s ease, border-color .15s ease;
+  }
+  .flow-tab:hover { background: rgba(255, 255, 255, .04); }
+  .flow-tab.is-active { border-left-color: var(--orange); background: rgba(255, 255, 255, .05); }
+  .flow-tab-t { display: block; font-weight: 700; color: var(--navy); }
+  .flow-tab-d { display: none; margin-top: 4px; font-size: .88rem; color: var(--muted); }
+  .flow-tab.is-active .flow-tab-d { display: block; }
+
+  .flow-diagram { display: flex; align-items: center; gap: 0; min-width: 0; }
+  .fnode {
+    background: var(--card-2); border: 1px solid var(--line-strong); border-radius: 12px;
+    padding: 12px 14px; font-size: .85rem; line-height: 1.4; min-width: 0;
+    box-shadow: var(--shadow);
+  }
+  .fnode-label {
+    display: flex; align-items: center; gap: 5px;
+    font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 4px;
+  }
+  .fnode-label svg { width: 13px; height: 13px; color: var(--orange); }
+  .fnode--engine { border-color: rgba(255, 122, 80, .5); box-shadow: 0 0 26px rgba(238, 79, 39, .22); }
+  .fnode--engine .fnode-label { color: var(--orange-text); }
+  .fnode-text { color: var(--navy); font-weight: 600; display: block; }
+  .fline { flex: none; width: clamp(14px, 2.5vw, 30px); height: 2px; background: var(--line-strong); position: relative; }
+  .fline::after {
+    content: ''; position: absolute; right: -1px; top: -3px;
+    border: 4px solid transparent; border-left-color: var(--line-strong);
+  }
+  .fouts { display: grid; gap: 10px; min-width: 0; }
+  .fnode--out { display: flex; align-items: center; gap: 9px; }
+  .fnode-check {
+    flex: none; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--ok-soft); color: var(--ok-text);
+    display: inline-flex; align-items: center; justify-content: center; font-size: .7rem; font-weight: 700;
+  }
+  .fnode--out .fnode-text { font-weight: 500; font-size: .84rem; }
+
+  @media (max-width: 880px) {
+    .flows { grid-template-columns: 1fr; }
+    .flow-diagram { flex-direction: column; align-items: stretch; gap: 8px; }
+    .fline { width: 2px; height: 18px; margin-left: 22px; }
+    .fline::after { right: auto; left: -3px; top: auto; bottom: -1px; border: 4px solid transparent; border-top-color: var(--line-strong); }
+  }
+
+  /* ---------- Stats ---------- */
   .stats { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-  .stats .chip strong { color: var(--orange-cta); }
+  .stats .chip strong { color: var(--orange-text); }
 
-  /* Teaser Ταμπλό */
-  .teaser {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: clamp(28px, 5vw, 56px); flex-wrap: wrap;
-    padding: clamp(30px, 5vw, 56px);
+  /* ---------- Integrations ---------- */
+  .integr-grid {
+    list-style: none; padding: 0; margin-inline: auto; max-width: 760px;
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
   }
-  .teaser-text { max-width: 46ch; }
-  .teaser-text .kicker { margin-bottom: 16px; }
-  .teaser-text p { margin: 14px 0 26px; }
-  .teaser-rings { display: flex; gap: clamp(18px, 3vw, 36px); margin-inline: auto; }
-  .ring-box { position: relative; width: clamp(110px, 14vw, 150px); text-align: center; }
-  .ring-box svg { transform: rotate(-90deg); }
-  .ring-bg, .ring-val { fill: none; stroke-width: 10; }
-  .ring-bg { stroke: rgba(255, 255, 255, .14); }
-  .ring-val { stroke-linecap: round; stroke-dasharray: 326.7; }
-  .ring-val--low { stroke: var(--red); stroke-dashoffset: calc(326.7 * (1 - .34)); }
-  .ring-val--mid { stroke: var(--orange); stroke-dashoffset: calc(326.7 * (1 - .57)); }
-  .ring-num {
-    position: absolute; top: 34%; left: 0; right: 0;
-    font-size: 1.7rem; font-weight: 700; color: #fff;
-    transform: translateY(-12%);
-  }
-  .ring-label { display: block; margin-top: 10px; font-size: .85rem; color: rgba(255, 255, 255, .72); }
-
-  /* Ποιος είναι πίσω */
-  .who {
-    display: flex; align-items: center; gap: clamp(24px, 4vw, 44px);
-    background: var(--card); border: 1px solid var(--line); border-radius: var(--r);
-    box-shadow: var(--shadow); padding: clamp(26px, 4vw, 44px);
-    flex-wrap: wrap;
-  }
-  .who-photo {
-    flex: none; width: 108px; height: 108px; border-radius: 50%;
-    background: var(--orange-soft); color: var(--orange);
+  .integr-tile {
+    aspect-ratio: 1; border-radius: 16px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .01)), var(--card);
+    border: 1px solid var(--line);
     display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+    transition: color .15s ease, border-color .15s ease, transform .15s ease;
   }
-  .who-photo svg { width: 52px; height: 52px; }
-  .who h2 { font-size: 1.35rem; margin-bottom: 10px; }
-  .who p { color: var(--muted); max-width: 52ch; }
-  .who-sig { margin-top: 12px; font-weight: 700; color: var(--navy); }
+  .integr-tile:hover { color: var(--orange); border-color: rgba(255, 122, 80, .4); transform: translateY(-3px); }
+  .integr-tile svg { width: 26px; height: 26px; }
+  .integr-cta { text-align: center; margin-top: clamp(26px, 4vw, 40px); }
+
+  /* ---------- Features ---------- */
+  .mini-flow { list-style: none; padding: 14px 16px; margin-top: 18px; display: grid; gap: 9px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 12px; font-size: .92rem; }
+  .mini-flow .ok, .feat-checks .ok, .fast-checks .ok { color: var(--ok-text); font-weight: 700; margin-right: 8px; }
+  .mini-flow-you { border-top: 1px dashed var(--line-strong); padding-top: 9px; }
+  .mini-flow .you {
+    display: inline-block; background: var(--orange-soft); color: var(--orange-text);
+    font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+    padding: 2px 8px; border-radius: 6px; margin-right: 8px;
+  }
+  .approve { margin-top: 18px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+  .approve-q { font-size: .92rem; color: var(--navy); font-weight: 600; }
+  .approve-btns { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .approve-yes, .approve-no { font-size: .82rem; font-weight: 700; padding: 7px 14px; border-radius: 8px; }
+  .approve-yes { background: var(--grad); color: #fff; }
+  .approve-no { border: 1px solid var(--line-strong); color: var(--muted); }
+  .feat-wide {
+    margin-top: 22px; display: flex; align-items: center; justify-content: space-between;
+    gap: clamp(20px, 4vw, 48px); flex-wrap: wrap;
+  }
+  .feat-wide > div { max-width: 44ch; }
+  .feat-checks { list-style: none; padding: 0; display: grid; gap: 10px; font-size: .95rem; }
+
+  /* ---------- Πορτοκαλί panel ---------- */
+  .einv {
+    border-radius: calc(var(--r) + 6px); overflow: hidden;
+    background:
+      radial-gradient(120% 160% at 90% 110%, rgba(255, 210, 150, .35), transparent 55%),
+      linear-gradient(115deg, #D63E1B 0%, #EE4F27 45%, #FF8A3D 100%);
+    padding: clamp(28px, 5vw, 56px);
+    display: grid; gap: clamp(26px, 5vw, 56px);
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    align-items: center;
+    box-shadow: var(--shadow), var(--glow-orange);
+  }
+  .einv h2, .einv p, .einv li { color: #fff; }
+  .einv p { opacity: .92; margin-top: 12px; }
+  .einv-checks { list-style: none; padding: 0; margin: 20px 0 26px; display: grid; gap: 10px; font-weight: 600; font-size: .97rem; }
+  .einv-checks span { margin-right: 8px; font-weight: 800; }
+  .btn--light { background: #fff; color: #C13A20; }
+  .btn--light:hover { background: #FFF3E9; }
+  .einv-panel {
+    background: rgba(13, 10, 20, .85); border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: var(--r); padding: clamp(22px, 3vw, 34px);
+    display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;
+    backdrop-filter: blur(4px);
+  }
+  .einv-node {
+    background: var(--card-2); border: 1px solid var(--line-strong); border-radius: 12px;
+    padding: 12px 18px; font-weight: 700; font-size: .92rem; color: var(--navy);
+  }
+  .einv-node--ok { border-color: rgba(62, 207, 142, .5); color: var(--ok-text); }
+  .einv-arrow { color: rgba(255, 255, 255, .8); font-weight: 700; }
+  @media (max-width: 780px) { .einv { grid-template-columns: 1fr; } }
+
+  /* ---------- Fast ---------- */
+  .fast-grid {
+    display: grid; gap: clamp(28px, 5vw, 64px);
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    align-items: center;
+  }
+  .fast-checks { list-style: none; padding: 0; display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); }
+  .fast-checks li { display: flex; gap: 4px; align-items: flex-start; }
+  .fast-checks strong { color: var(--navy); }
+  .fast-checks p { font-size: .9rem; color: var(--muted); margin-top: 2px; }
+  .fast-btn { margin-top: 28px; }
+  .fast-art { display: flex; justify-content: center; }
+  .fast-ring {
+    width: clamp(180px, 22vw, 260px); aspect-ratio: 1; border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background:
+      radial-gradient(60% 60% at 50% 50%, rgba(238, 79, 39, .30), transparent 70%),
+      var(--card);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 80px rgba(238, 79, 39, .25), inset 0 0 40px rgba(139, 92, 246, .12);
+  }
+  .fast-ring svg { width: 64px; height: 64px; color: var(--orange); filter: drop-shadow(0 0 18px rgba(238, 79, 39, .6)); }
+  @media (max-width: 780px) { .fast-grid { grid-template-columns: 1fr; } .fast-art { order: -1; } }
+
+  /* ---------- Cases ---------- */
+  .case .tag { align-self: flex-start; }
+  .case h3 { margin-top: 14px; max-width: 30ch; }
+  .case-metric { margin-top: 12px; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .case-nums { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .case-arrow { color: var(--orange); font-weight: 700; font-size: 1.2rem; }
+  .after-num { font-size: clamp(1.9rem, 4vw, 2.5rem); line-height: 1; }
+  .case-setup { border-top: 1px dashed var(--line-strong); padding-top: 14px; font-size: .93rem; }
+  .cases-cta { text-align: center; margin-top: clamp(26px, 4vw, 40px); }
+
+  /* ---------- Trust ---------- */
+  .trust-grid { display: grid; gap: clamp(24px, 4vw, 48px); grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: start; }
+  .trust-rows { margin: 0; }
+  .trust-row { border-top: 1px solid var(--line); padding: 18px 0; display: grid; gap: 6px; }
+  .trust-row:last-child { border-bottom: 1px solid var(--line); }
+  .trust-row dt { font-weight: 700; color: var(--navy); }
+  .trust-row dd { margin: 0; color: var(--muted); font-size: .96rem; }
+  .trust-quote-text { font-size: 1.02rem; color: #fff; line-height: 1.6; }
+  .trust-quote-sig { margin-top: 16px; font-weight: 700; color: var(--orange-text); font-size: .92rem; }
+  @media (max-width: 780px) { .trust-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- Δύο κάρτες quotes ---------- */
+  .quote-text { color: var(--ink); font-size: 1rem; }
+  .quote-sig { display: flex; align-items: center; gap: 10px; margin-top: 18px; font-weight: 700; color: var(--navy); font-size: .92rem; }
+  .quote-avatar {
+    width: 34px; height: 34px; border-radius: 50%; flex: none;
+    background: var(--grad); color: #fff; font-weight: 800;
+    display: inline-flex; align-items: center; justify-content: center; font-size: .9rem;
+  }
+
+  /* ---------- Τελικό CTA ---------- */
+  .final-cta { text-align: center; position: relative; }
+  .final-cta::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(50% 60% at 50% 100%, rgba(238, 79, 39, .14), transparent 70%);
+  }
+  .final-cta h2 { font-size: clamp(1.9rem, 4.6vw, 3.2rem); max-width: 24ch; margin-inline: auto; }
+  .final-cta p { margin: 18px auto 28px; color: var(--muted); }
+  .final-cta .btn-note { margin-inline: auto; }
 </style>
-// cache fix
-// cache fix

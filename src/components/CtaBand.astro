@@ -1,6 +1,6 @@
 ---
 /**
- * Navy CTA banner — ένα κύριο CTA ανά οθόνη.
+ * Σκούρο CTA banner με glow — ένα κύριο CTA ανά οθόνη.
  * Προαιρετικό note κάτω από το κουμπί.
  */
 interface Props {
@@ -30,11 +30,17 @@ const { title, sub, ctaText, ctaHref, note } = Astro.props;
 
 <style>
   .band {
-    background: var(--navy); border-radius: var(--r); box-shadow: var(--shadow);
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(80% 130% at 85% -20%, rgba(238, 79, 39, .22), transparent 60%),
+      radial-gradient(60% 120% at 10% 120%, rgba(139, 92, 246, .18), transparent 65%),
+      var(--card-2);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r); box-shadow: var(--shadow);
     padding: clamp(30px, 5vw, 52px);
     display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap;
   }
-  .band h2 { color: #fff; max-width: 22ch; }
+  .band h2 { color: #fff; max-width: 24ch; }
   .band p { color: rgba(255, 255, 255, .78); margin-top: 10px; }
   .band-cta { text-align: center; }
   .band-cta .btn-note { color: rgba(255, 255, 255, .65); }
