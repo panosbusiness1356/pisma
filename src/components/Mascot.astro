@@ -1,13 +1,16 @@
 ---
 /**
- * Οκτώ — το χταποδάκι-mascot της PISMA.
- * Στην αρχική «κάθεται» πάνω στο mockup του Ταμπλό (στοιχείο με data-mascot-dock)·
- * μόλις ο χρήστης κάνει scroll, ξεκολλάει με spring animation και τον ακολουθεί
- * στην κάτω-δεξιά γωνία σε όλο το site. Σε σελίδες χωρίς dock ξεκινά ελεύθερο.
+ * Οκτώ — το χταποδάκι-ξεναγός της PISMA.
+ * Κολυμπάει από section σε section καθώς ο χρήστης σκρολάρει, αλλάζει πλευρές
+ * (δεξιά/αριστερά) και δείχνει συννεφάκι με το σημαντικό μήνυμα κάθε ενότητας.
+ * Τα σημεία-στάσεις ορίζονται με data-mascot-stop / data-mascot-say /
+ * data-mascot-side / data-mascot-pose πάνω στα sections της σελίδας.
+ * Σε σελίδες χωρίς στάσεις μένει στην κάτω-δεξιά γωνία με έναν χαιρετισμό.
  */
 ---
 
 <div id="pisma-mascot" aria-hidden="true">
+  <div class="m-bubble"><span class="m-bubble-text"></span></div>
   <div class="m-motion">
     <div class="m-bob">
       <svg viewBox="0 0 220 176" fill="none">
@@ -56,107 +59,183 @@
 <script>
   const el = document.getElementById('pisma-mascot')!;
   const motion = el.querySelector<HTMLElement>('.m-motion')!;
-  const dock = document.querySelector<HTMLElement>('[data-mascot-dock]');
+  const bubbleText = el.querySelector<HTMLElement>('.m-bubble-text')!;
+  const stops = [...document.querySelectorAll<HTMLElement>('[data-mascot-stop]')];
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isMobile = () => window.matchMedia('(max-width: 680px)').matches;
 
-  const floatSize = () => (isMobile() ? 70 : 96);
-  const dockSize = () => 148;
+  const W = () => (isMobile() ? 72 : 100);
+  const H = () => W() * 0.8;
 
-  // Στο κινητό δεν υπάρχει χώρος για το «κάθισμα» — ξεκινά ελεύθερο.
-  let floating = !dock || isMobile();
-  let animating = false;
-
-  const cornerPos = () => {
-    const s = floatSize();
-    return { x: window.innerWidth - s - 20, y: window.innerHeight - s * 0.86 - 20 };
-  };
-  const dockPos = () => {
-    const r = dock!.getBoundingClientRect();
-    const s = dockSize();
-    return { x: r.right - s - r.width * 0.05, y: r.top - s * 0.58 };
-  };
-  const apply = (p: { x: number; y: number }) => {
-    el.style.transform = `translate(${p.x}px, ${p.y}px)`;
-  };
-  const setSize = () => {
-    el.style.width = (floating ? floatSize() : dockSize()) + 'px';
-  };
-
-  const switchState = (toFloat: boolean) => {
-    floating = toFloat;
-    animating = true;
-    el.classList.add('is-anim');
-    setSize();
-    apply(toFloat ? cornerPos() : dockPos());
-    const done = () => {
-      el.classList.remove('is-anim');
-      animating = false;
-    };
-    el.addEventListener('transitionend', done, { once: true });
-    setTimeout(done, 1000);
-  };
-
-  setSize();
-  apply(floating ? cornerPos() : dockPos());
-  requestAnimationFrame(() => el.classList.add('is-ready'));
-
-  // Κύριος βρόχος: παρακολούθηση dock, όρια ξεκολλήματος, κλίση με το scroll.
-  let lastY = window.scrollY;
+  let px = window.innerWidth - W() - 20;
+  let py = window.innerHeight - H() - 24;
   let rot = 0;
-  const loop = () => {
-    const y = window.scrollY;
-    const vel = y - lastY;
-    lastY = y;
+  let lastY = window.scrollY;
+  let activeIdx = -2;
+  let lastSide = 'right';
+  let arrivedAt = 0;
+  let bubbleOn = false;
+  let greeted = false;
 
-    if (dock && !isMobile()) {
-      if (!floating && y > 160 && !animating) switchState(true);
-      else if (floating && y < 40 && !animating) switchState(false);
-      if (!floating && !animating) apply(dockPos());
-    }
+  el.style.width = W() + 'px';
 
-    if (!reduce) {
-      const target = Math.max(-9, Math.min(9, vel * 0.5));
-      rot += (target - rot) * 0.09;
-      motion.style.transform = `rotate(${rot.toFixed(2)}deg)`;
-    }
-    requestAnimationFrame(loop);
+  /* Στις φαρδιές οθόνες κάθεται στο «λούκι» δίπλα στο περιεχόμενο· αλλιώς
+     δεν χωράει δίπλα στο κείμενο, οπότε μένει χαμηλά στη γωνία της πλευράς του. */
+  const gutter = () => (window.innerWidth - 1160) / 2 - W() - 8;
+  const hasGutter = () => gutter() >= 14;
+  const sideX = (side: string) => {
+    const m = hasGutter() ? gutter() : 14;
+    return side === 'left' ? m : window.innerWidth - W() - m;
   };
-  requestAnimationFrame(loop);
+
+  const targetPos = () => {
+    if (!stops.length) {
+      return { x: window.innerWidth - W() - 20, y: window.innerHeight - H() - 24, idx: -1, side: 'right' };
+    }
+    const mid = window.innerHeight * 0.5;
+    let idx = 0;
+    let best = Infinity;
+    stops.forEach((s, i) => {
+      const r = s.getBoundingClientRect();
+      const inView = r.top <= mid && r.bottom >= mid;
+      const d = inView ? 0 : Math.min(Math.abs(r.top - mid), Math.abs(r.bottom - mid));
+      if (d < best) { best = d; idx = i; }
+    });
+    const s = stops[idx];
+    const r = s.getBoundingClientRect();
+    const side = s.dataset.mascotSide || (idx % 2 ? 'left' : 'right');
+    if (s.dataset.mascotPose === 'sit') {
+      return { x: r.right - W() - r.width * 0.05, y: r.top - H() * 0.62, idx, side };
+    }
+    const y = hasGutter()
+      ? Math.min(Math.max(r.top + r.height * 0.3, 250), window.innerHeight - H() - 60)
+      : window.innerHeight - H() - 28;
+    return { x: sideX(side), y, idx, side };
+  };
+
+  const showBubble = (msg: string | undefined, side: string) => {
+    if (!msg) return;
+    bubbleText.textContent = msg;
+    el.classList.toggle('bubble-left', side === 'left');
+    el.classList.add('has-bubble');
+    bubbleOn = true;
+  };
+  const hideBubble = () => {
+    el.classList.remove('has-bubble');
+    bubbleOn = false;
+  };
+
+  const GREETING = 'Γεια! Είμαι ο Οκτώ. Θες μια γρήγορη μέτρηση; Πάτα «Δωρεάν μέτρηση» πάνω δεξιά!';
+
+  if (reduce) {
+    el.style.transform = `translate(${px}px, ${py}px)`;
+    el.classList.add('is-ready');
+  } else {
+    const loop = () => {
+      const t = targetPos();
+      lastSide = t.side;
+      if (t.idx !== activeIdx) {
+        activeIdx = t.idx;
+        arrivedAt = 0;
+        if (bubbleOn) hideBubble();
+      }
+
+      const dx = t.x - px;
+      const dy = t.y - py;
+      px += dx * 0.075;
+      py += dy * 0.075;
+      const dist = Math.hypot(dx, dy);
+
+      const y = window.scrollY;
+      const vel = y - lastY;
+      lastY = y;
+      const lean = Math.max(-14, Math.min(14, dx * 0.045 + vel * 0.35));
+      rot += (lean - rot) * 0.08;
+
+      el.style.transform = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px)`;
+      motion.style.transform = `rotate(${rot.toFixed(2)}deg)`;
+
+      if (dist < 40) {
+        if (!arrivedAt) arrivedAt = performance.now();
+        else if (!bubbleOn && performance.now() - arrivedAt > 350) {
+          if (activeIdx >= 0) {
+            showBubble(stops[activeIdx].dataset.mascotSay, t.side);
+          } else if (!greeted) {
+            greeted = true;
+            showBubble(GREETING, 'right');
+            setTimeout(hideBubble, 8000);
+          }
+        }
+      } else if (dist > 130 && bubbleOn) {
+        hideBubble();
+      }
+
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+    requestAnimationFrame(() => el.classList.add('is-ready'));
+  }
 
   window.addEventListener('resize', () => {
-    if (isMobile() && !floating) { floating = true; }
-    if (!animating) { setSize(); apply(floating ? cornerPos() : dockPos()); }
+    el.style.width = W() + 'px';
   });
 
-  // Κλικ: χοροπηδηματάκι + ήχος (αν είναι ανοιχτοί οι ήχοι).
+  /* Κλικ: χοροπηδηματάκι + ήχος + ξαναδείχνει το μήνυμα της στάσης. */
   el.addEventListener('pointerdown', () => {
     el.classList.remove('is-boing');
     void el.offsetWidth;
     el.classList.add('is-boing');
     const api = (window as unknown as { pismaSound?: { enabled: boolean; play: (n: string) => void } }).pismaSound;
     if (api?.enabled) api.play('click');
+    if (!bubbleOn) {
+      if (activeIdx >= 0) showBubble(stops[activeIdx].dataset.mascotSay, lastSide);
+      else showBubble(GREETING, 'right');
+    }
   });
 </script>
 
 <style>
   #pisma-mascot {
     position: fixed; left: 0; top: 0; z-index: 90;
-    width: 96px; opacity: 0; cursor: pointer;
+    width: 100px; opacity: 0; cursor: pointer;
     will-change: transform;
     filter: drop-shadow(0 12px 26px rgba(0, 0, 0, .4));
     transition: opacity .6s ease;
   }
   #pisma-mascot.is-ready { opacity: 1; }
-  #pisma-mascot.is-anim {
-    transition:
-      transform .85s cubic-bezier(.34, 1.56, .64, 1),
-      width .85s cubic-bezier(.34, 1.56, .64, 1),
-      opacity .6s ease;
-  }
   #pisma-mascot svg { overflow: visible; width: 100%; height: auto; }
 
-  .m-motion { transform-origin: 50% 78%; }
+  /* Συννεφάκι ξενάγησης */
+  .m-bubble {
+    position: absolute; bottom: calc(100% + 14px); right: -8px;
+    width: max-content; max-width: 250px;
+    background: #221A33;
+    border: 1px solid rgba(255, 122, 80, .5);
+    border-radius: 14px;
+    padding: 10px 14px;
+    font-size: .85rem; line-height: 1.5; color: #F5F2FB;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, .45);
+    opacity: 0; transform: translateY(8px) scale(.82);
+    transform-origin: bottom right;
+    transition: opacity .35s ease, transform .45s cubic-bezier(.34, 1.56, .64, 1);
+    pointer-events: none;
+  }
+  .m-bubble::after {
+    content: ''; position: absolute; bottom: -6px; right: 34px;
+    width: 11px; height: 11px;
+    background: #221A33;
+    border-right: 1px solid rgba(255, 122, 80, .5);
+    border-bottom: 1px solid rgba(255, 122, 80, .5);
+    transform: rotate(45deg);
+  }
+  #pisma-mascot.bubble-left .m-bubble { right: auto; left: -8px; transform-origin: bottom left; }
+  #pisma-mascot.bubble-left .m-bubble::after { right: auto; left: 34px; }
+  #pisma-mascot.has-bubble .m-bubble { opacity: 1; transform: translateY(0) scale(1); }
+  @media (max-width: 680px) {
+    .m-bubble { max-width: 180px; font-size: .8rem; }
+  }
+
+  .m-motion { transform-origin: 50% 60%; }
   .m-bob { animation: m-bob 4.6s ease-in-out infinite alternate; }
   @keyframes m-bob {
     from { transform: translateY(0); }
@@ -192,7 +271,6 @@
 
   @media (prefers-reduced-motion: reduce) {
     .m-bob, .m-tent, .m-eyes { animation: none; }
-    #pisma-mascot.is-anim { transition: opacity .6s ease; }
   }
   @media print { #pisma-mascot { display: none; } }
 </style>
