@@ -1,0 +1,198 @@
+---
+/**
+ * Οκτώ — το χταποδάκι-mascot της PISMA.
+ * Στην αρχική «κάθεται» πάνω στο mockup του Ταμπλό (στοιχείο με data-mascot-dock)·
+ * μόλις ο χρήστης κάνει scroll, ξεκολλάει με spring animation και τον ακολουθεί
+ * στην κάτω-δεξιά γωνία σε όλο το site. Σε σελίδες χωρίς dock ξεκινά ελεύθερο.
+ */
+---
+
+<div id="pisma-mascot" aria-hidden="true">
+  <div class="m-motion">
+    <div class="m-bob">
+      <svg viewBox="0 0 220 176" fill="none">
+        <g class="m-tent" style="--dur:6.2s;--del:-1.3s;--amp:3.6deg">
+          <path d="M65 115 C52 146 34 146 24 134" stroke="#FF7A45" stroke-width="11" stroke-linecap="round" />
+          <rect x="8" y="118" width="18" height="24" rx="3" fill="#F5F2FB" />
+          <path d="M12 125 h10 M12 131 h10 M12 137 h6" stroke="#A79DBB" stroke-width="2" stroke-linecap="round" />
+        </g>
+        <g class="m-tent" style="--dur:5.1s;--del:-2.6s;--amp:4.4deg">
+          <path d="M88 123 C84 152 66 162 54 156" stroke="#FF7A45" stroke-width="11" stroke-linecap="round" />
+        </g>
+        <g class="m-tent" style="--dur:5.7s;--del:-.7s;--amp:3.2deg">
+          <path d="M110 127 C112 152 98 164 88 162" stroke="#FF7A45" stroke-width="11" stroke-linecap="round" />
+          <g transform="translate(62,151)">
+            <rect width="24" height="17" rx="2.5" fill="#FFFFFF" />
+            <path d="M2.5 4 L12 10.5 L21.5 4" stroke="#EA4335" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            <rect x="1.2" y="2.5" width="3" height="12.5" rx="1.2" fill="#EA4335" />
+            <rect x="19.8" y="2.5" width="3" height="12.5" rx="1.2" fill="#EA4335" />
+          </g>
+        </g>
+        <g class="m-tent" style="--dur:4.8s;--del:-3.4s;--amp:4.6deg">
+          <path d="M132 123 C136 152 154 162 166 156" stroke="#FF7A45" stroke-width="11" stroke-linecap="round" />
+        </g>
+        <g class="m-tent" style="--dur:6.6s;--del:-1.9s;--amp:3.8deg">
+          <path d="M155 115 C168 144 186 144 198 134" stroke="#FF7A45" stroke-width="11" stroke-linecap="round" />
+          <circle cx="202" cy="132" r="10" fill="#FFC24B" stroke="#C1841D" stroke-width="1.5" />
+          <text x="202" y="136.5" text-anchor="middle" font-size="11" font-weight="700" fill="#7A5410" font-family="Commissioner, sans-serif">€</text>
+        </g>
+        <ellipse cx="110" cy="80" rx="52" ry="46" fill="#FF7A45" />
+        <circle cx="80" cy="92" r="5" fill="#FFD9A8" opacity=".7" />
+        <circle cx="140" cy="92" r="5" fill="#FFD9A8" opacity=".7" />
+        <g class="m-eyes">
+          <circle cx="93" cy="78" r="9" fill="#FFFFFF" />
+          <circle cx="127" cy="78" r="9" fill="#FFFFFF" />
+          <circle cx="95" cy="80" r="4.5" fill="#14101E" />
+          <circle cx="125" cy="80" r="4.5" fill="#14101E" />
+          <circle cx="97" cy="77" r="1.6" fill="#FFFFFF" />
+          <circle cx="127" cy="77" r="1.6" fill="#FFFFFF" />
+        </g>
+        <path d="M99 98 Q110 105 121 98" stroke="#7A2408" stroke-width="3" stroke-linecap="round" />
+      </svg>
+    </div>
+  </div>
+</div>
+
+<script>
+  const el = document.getElementById('pisma-mascot')!;
+  const motion = el.querySelector<HTMLElement>('.m-motion')!;
+  const dock = document.querySelector<HTMLElement>('[data-mascot-dock]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isMobile = () => window.matchMedia('(max-width: 680px)').matches;
+
+  const floatSize = () => (isMobile() ? 70 : 96);
+  const dockSize = () => 148;
+
+  // Στο κινητό δεν υπάρχει χώρος για το «κάθισμα» — ξεκινά ελεύθερο.
+  let floating = !dock || isMobile();
+  let animating = false;
+
+  const cornerPos = () => {
+    const s = floatSize();
+    return { x: window.innerWidth - s - 20, y: window.innerHeight - s * 0.86 - 20 };
+  };
+  const dockPos = () => {
+    const r = dock!.getBoundingClientRect();
+    const s = dockSize();
+    return { x: r.right - s - r.width * 0.05, y: r.top - s * 0.58 };
+  };
+  const apply = (p: { x: number; y: number }) => {
+    el.style.transform = `translate(${p.x}px, ${p.y}px)`;
+  };
+  const setSize = () => {
+    el.style.width = (floating ? floatSize() : dockSize()) + 'px';
+  };
+
+  const switchState = (toFloat: boolean) => {
+    floating = toFloat;
+    animating = true;
+    el.classList.add('is-anim');
+    setSize();
+    apply(toFloat ? cornerPos() : dockPos());
+    const done = () => {
+      el.classList.remove('is-anim');
+      animating = false;
+    };
+    el.addEventListener('transitionend', done, { once: true });
+    setTimeout(done, 1000);
+  };
+
+  setSize();
+  apply(floating ? cornerPos() : dockPos());
+  requestAnimationFrame(() => el.classList.add('is-ready'));
+
+  // Κύριος βρόχος: παρακολούθηση dock, όρια ξεκολλήματος, κλίση με το scroll.
+  let lastY = window.scrollY;
+  let rot = 0;
+  const loop = () => {
+    const y = window.scrollY;
+    const vel = y - lastY;
+    lastY = y;
+
+    if (dock && !isMobile()) {
+      if (!floating && y > 160 && !animating) switchState(true);
+      else if (floating && y < 40 && !animating) switchState(false);
+      if (!floating && !animating) apply(dockPos());
+    }
+
+    if (!reduce) {
+      const target = Math.max(-9, Math.min(9, vel * 0.5));
+      rot += (target - rot) * 0.09;
+      motion.style.transform = `rotate(${rot.toFixed(2)}deg)`;
+    }
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+
+  window.addEventListener('resize', () => {
+    if (isMobile() && !floating) { floating = true; }
+    if (!animating) { setSize(); apply(floating ? cornerPos() : dockPos()); }
+  });
+
+  // Κλικ: χοροπηδηματάκι + ήχος (αν είναι ανοιχτοί οι ήχοι).
+  el.addEventListener('pointerdown', () => {
+    el.classList.remove('is-boing');
+    void el.offsetWidth;
+    el.classList.add('is-boing');
+    const api = (window as unknown as { pismaSound?: { enabled: boolean; play: (n: string) => void } }).pismaSound;
+    if (api?.enabled) api.play('click');
+  });
+</script>
+
+<style>
+  #pisma-mascot {
+    position: fixed; left: 0; top: 0; z-index: 90;
+    width: 96px; opacity: 0; cursor: pointer;
+    will-change: transform;
+    filter: drop-shadow(0 12px 26px rgba(0, 0, 0, .4));
+    transition: opacity .6s ease;
+  }
+  #pisma-mascot.is-ready { opacity: 1; }
+  #pisma-mascot.is-anim {
+    transition:
+      transform .85s cubic-bezier(.34, 1.56, .64, 1),
+      width .85s cubic-bezier(.34, 1.56, .64, 1),
+      opacity .6s ease;
+  }
+  #pisma-mascot svg { overflow: visible; width: 100%; height: auto; }
+
+  .m-motion { transform-origin: 50% 78%; }
+  .m-bob { animation: m-bob 4.6s ease-in-out infinite alternate; }
+  @keyframes m-bob {
+    from { transform: translateY(0); }
+    to { transform: translateY(5px); }
+  }
+
+  .m-tent {
+    transform-box: fill-box;
+    transform-origin: 50% 6%;
+    animation: m-sway var(--dur, 5s) ease-in-out var(--del, 0s) infinite alternate;
+  }
+  @keyframes m-sway {
+    from { transform: rotate(var(--amp, 4deg)); }
+    to { transform: rotate(calc(-1 * var(--amp, 4deg))); }
+  }
+
+  .m-eyes {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: m-blink 5.4s infinite;
+  }
+  @keyframes m-blink {
+    0%, 93.5%, 100% { transform: scaleY(1); }
+    96.5% { transform: scaleY(.08); }
+  }
+
+  #pisma-mascot.is-boing svg { animation: m-boing .55s cubic-bezier(.34, 1.56, .64, 1); }
+  @keyframes m-boing {
+    30% { transform: scale(1.14, .88) translateY(3px); }
+    60% { transform: scale(.94, 1.08) translateY(-4px); }
+    100% { transform: scale(1) translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .m-bob, .m-tent, .m-eyes { animation: none; }
+    #pisma-mascot.is-anim { transition: opacity .6s ease; }
+  }
+  @media print { #pisma-mascot { display: none; } }
+</style>
