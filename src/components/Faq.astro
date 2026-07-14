@@ -1,0 +1,61 @@
+---
+/**
+ * FAQ accordion με native <details> (πλήρως προσβάσιμο).
+ * items: [{ q, a }] — το a είναι απλό κείμενο (1–2 προτάσεις).
+ * withSchema: true → εκπέμπει FAQPage JSON-LD.
+ */
+interface Props {
+  items: { q: string; a: string }[];
+  withSchema?: boolean;
+}
+const { items, withSchema = false } = Astro.props;
+
+const schema = withSchema
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: items.map((i) => ({
+        '@type': 'Question',
+        name: i.q,
+        acceptedAnswer: { '@type': 'Answer', text: i.a },
+      })),
+    }
+  : null;
+---
+
+<div class="faq">
+  {items.map((i) => (
+    <details class="faq-item" name="faq">
+      <summary>
+        <span>{i.q}</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </summary>
+      <p>{i.a}</p>
+    </details>
+  ))}
+</div>
+
+{schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+
+<style>
+  .faq { display: grid; gap: 12px; max-width: 760px; }
+  .faq-item {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r); box-shadow: var(--shadow);
+    padding: 0 22px;
+    transition: box-shadow .18s ease;
+  }
+  .faq-item:hover { box-shadow: var(--shadow-hover); }
+  summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    cursor: pointer; list-style: none;
+    font-weight: 700; color: var(--navy);
+    padding: 18px 0;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary svg { width: 20px; height: 20px; flex: none; color: var(--orange); transition: transform .25s ease; }
+  .faq-item[open] summary svg { transform: rotate(180deg); }
+  .faq-item p { padding: 0 0 20px; color: var(--muted); font-size: .97rem; }
+</style>

@@ -1,0 +1,455 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { SITE, ELEGXOS, QUIZ } from '../config';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Το Ταμπλό — Μέτρησε την επιχείρησή σου',
+  url: `${SITE.url}/tablo/`,
+  inLanguage: 'el',
+  description:
+    'Διαδραστικό τεστ 6 ερωτήσεων: σκορ ορατότητας, σκορ αυτοματισμού και εκτίμηση κόστους χειροκίνητης δουλειάς σε ευρώ τον μήνα.',
+  isPartOf: { '@type': 'WebSite', name: SITE.name, url: SITE.url },
+};
+
+/** Οι 6 ερωτήσεις — τα values μπαίνουν σε data-val και διαβάζονται με parseFloat. */
+const questions = [
+  {
+    key: 'vol',
+    q: 'Πόσα παραστατικά βγάζεις τον μήνα;',
+    opts: [
+      { label: 'Έως 50', v: '0.5' },
+      { label: '50–200', v: '1' },
+      { label: '200–1.000', v: '2' },
+      { label: '1.000+', v: '3.5' },
+    ],
+  },
+  {
+    key: 'entry',
+    q: 'Τα εισερχόμενα τιμολόγια πώς καταχωρούνται;',
+    opts: [
+      { label: 'Με το χέρι', v: '0' },
+      { label: 'Μισά-μισά', v: '1' },
+      { label: 'Αυτόματα', v: '2' },
+    ],
+  },
+  {
+    key: 'coll',
+    q: 'Ποιος κυνηγάει τις οφειλές;',
+    opts: [
+      { label: 'Όποτε θυμηθούμε 😅', v: '0' },
+      { label: 'Κάποιος, όταν προλαβαίνει', v: '1' },
+      { label: 'Σύστημα', v: '2' },
+    ],
+  },
+  {
+    key: 'quote',
+    q: 'Πόσο γρήγορα βγαίνει προσφορά σε νέο αίτημα;',
+    opts: [
+      { label: '3+ μέρες', v: '0' },
+      { label: '1–2 μέρες', v: '1' },
+      { label: 'Αυθημερόν', v: '2' },
+    ],
+  },
+  {
+    key: 'site',
+    q: 'Το site σου;',
+    opts: [
+      { label: 'Δεν έχω / παρατημένο', v: '0' },
+      { label: 'Απλό', v: '1' },
+      { label: 'Σύγχρονο με SEO', v: '2' },
+    ],
+  },
+  {
+    key: 'ai',
+    q: 'Σε προτείνει το ChatGPT;',
+    opts: [
+      { label: 'Δεν ξέρω', v: '0' },
+      { label: 'Όχι', v: '0.5' },
+      { label: 'Ναι 🎉', v: '2' },
+    ],
+  },
+];
+---
+
+<Base
+  title="Το Ταμπλό — Μέτρησε ορατότητα και αυτοματισμό | PISMA"
+  description="6 ερωτήσεις, 2 λεπτά, χωρίς email: δες πόσο εύκολα σε βρίσκουν οι πελάτες και πόσες ώρες γραφείου χάνεις τον μήνα — με σκορ και εκτίμηση σε ευρώ."
+  schema={schema}
+>
+  <PageHero
+    kicker="Το Ταμπλό"
+    sub="6 ερωτήσεις, 2 λεπτά. Χωρίς email, χωρίς στοιχεία — το σκορ βγαίνει μπροστά σου."
+  >
+    Δες το <span class="accent">σκορ</span> σου
+  </PageHero>
+
+  <section class="section--tight quiz-section" aria-label="Το τεστ του Ταμπλό">
+    <div class="container">
+      <div class="card quiz reveal" id="tablo-quiz">
+        <!-- Πάνω μπάρα: πίσω + πρόοδος -->
+        <div class="quiz-top">
+          <button class="quiz-back" type="button" id="quiz-back" hidden>← Προηγούμενη</button>
+          <div class="dots" id="quiz-dots" aria-hidden="true">
+            {questions.map(() => <span class="dot"></span>)}
+          </div>
+          <span class="quiz-count num" id="quiz-count">Ερώτηση 1 από 6</span>
+        </div>
+
+        <!-- Βήματα: όλα στο HTML, εναλλαγή με hidden -->
+        <div class="quiz-steps" aria-live="polite">
+          {questions.map((q, i) => (
+            <section class="quiz-step" data-key={q.key} hidden={i !== 0}>
+              <h2 class="quiz-q" tabindex="-1">{q.q}</h2>
+              <div class="quiz-opts">
+                {q.opts.map((o) => (
+                  <button type="button" class="opt" data-val={o.v} aria-pressed="false">
+                    {o.label}
+                  </button>
+                ))}
+              </div>
+            </section>
+          ))}
+
+          <!-- Οθόνη αποτελεσμάτων -->
+          <section class="quiz-step quiz-result" id="quiz-result" hidden>
+            <h2 class="quiz-q" tabindex="-1">Το σκορ σου</h2>
+
+            <div class="rings">
+              <div class="ring">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+                  <circle class="ring-val" id="ring-vis" cx="60" cy="60" r="52"></circle>
+                </svg>
+                <span class="ring-num num" id="num-vis" aria-hidden="true">0</span>
+                <span class="ring-label">Ορατότητα</span>
+              </div>
+              <div class="ring">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+                  <circle class="ring-val" id="ring-auto" cx="60" cy="60" r="52"></circle>
+                </svg>
+                <span class="ring-num num" id="num-auto" aria-hidden="true">0</span>
+                <span class="ring-label">Αυτοματισμός</span>
+              </div>
+            </div>
+
+            <div class="card card--navy cost-card">
+              <p class="cost-big num" aria-hidden="true">~<span id="cost-num">0</span> €/μήνα</p>
+              <p class="cost-note">
+                Περίπου <strong class="num" id="hours-num">0</strong> ώρες γραφείου τον μήνα σε
+                δουλειά που μπορεί να τρέχει μόνη της. Και πελάτες που δεν σε βρίσκουν — αυτούς
+                τους μετράμε στον πλήρη Έλεγχο.
+              </p>
+            </div>
+
+            <p class="visually-hidden" id="result-sr"></p>
+
+            <div class="result-cta">
+              <a class="btn btn--orange" href="/elegxos/">
+                Θέλω την πλήρη μέτρηση — δωρεάν {ELEGXOS.minutes}'
+              </a>
+            </div>
+            <div class="result-actions">
+              <button type="button" class="btn btn--ghost btn--sm" id="quiz-copy" aria-live="polite">
+                Αντίγραψε τα αποτελέσματα
+              </button>
+              <button type="button" class="btn btn--ghost btn--sm" id="quiz-restart">
+                ↺ Ξαναπάρε το τεστ
+              </button>
+            </div>
+            <!-- TODO: μελλοντικό email opt-in («στείλε μου το σκορ») — μπαίνει εδώ, με ρητή συγκατάθεση. -->
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script define:vars={{ HOUR_RATE: QUIZ.hourRate }}>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CIRC = 2 * Math.PI * 52;
+
+  const quiz = document.getElementById('tablo-quiz');
+  const steps = Array.from(quiz.querySelectorAll('.quiz-step'));
+  const qSteps = steps.filter((s) => s.dataset.key);
+  const RESULT = qSteps.length; // index της οθόνης αποτελεσμάτων
+
+  const backBtn = document.getElementById('quiz-back');
+  const dotsWrap = document.getElementById('quiz-dots');
+  const dots = Array.from(dotsWrap.children);
+  const countEl = document.getElementById('quiz-count');
+
+  const ringVis = document.getElementById('ring-vis');
+  const ringAuto = document.getElementById('ring-auto');
+  const numVis = document.getElementById('num-vis');
+  const numAuto = document.getElementById('num-auto');
+  const costNum = document.getElementById('cost-num');
+  const hoursNum = document.getElementById('hours-num');
+  const resultSr = document.getElementById('result-sr');
+  const copyBtn = document.getElementById('quiz-copy');
+  const copyLabel = copyBtn.textContent.trim();
+  const restartBtn = document.getElementById('quiz-restart');
+
+  let cur = 0;
+  const answers = {};
+  let last = null; // τελευταία υπολογισμένα αποτελέσματα (για το copy)
+
+  function show(i, moveFocus = true) {
+    cur = i;
+    steps.forEach((s, idx) => { s.hidden = idx !== i; });
+    if (moveFocus) steps[i].querySelector('.quiz-q')?.focus({ preventScroll: true });
+    backBtn.hidden = i === 0;
+    const isResult = i === RESULT;
+    dotsWrap.hidden = isResult;
+    countEl.hidden = isResult;
+    if (isResult) {
+      showResults();
+      return;
+    }
+    dots.forEach((d, di) => {
+      d.classList.toggle('dot--now', di === i);
+      d.classList.toggle('dot--done', di < i);
+    });
+    countEl.textContent = 'Ερώτηση ' + (i + 1) + ' από ' + RESULT;
+  }
+
+  qSteps.forEach((s, i) => {
+    s.querySelectorAll('.opt').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        answers[s.dataset.key] = parseFloat(btn.dataset.val);
+        s.querySelectorAll('.opt').forEach((b) =>
+          b.setAttribute('aria-pressed', String(b === btn))
+        );
+        window.setTimeout(() => show(i + 1), reduce ? 0 : 180);
+      });
+    });
+  });
+
+  backBtn.addEventListener('click', () => { if (cur > 0) show(cur - 1); });
+
+  function band(v) {
+    return v < 40 ? 'c-red' : v < 70 ? 'c-orange' : 'c-ok';
+  }
+
+  function countUp(el, target, fmt) {
+    if (reduce) { el.textContent = fmt(target); return; }
+    const t0 = performance.now();
+    const dur = 1000;
+    // Δίχτυ ασφαλείας: αν το rAF δεν τρέξει (throttled webviews), η τελική τιμή γράφεται ούτως ή άλλως.
+    const failSafe = window.setTimeout(() => { el.textContent = fmt(target); }, dur + 200);
+    function tick(t) {
+      const p = Math.min((t - t0) / dur, 1);
+      const e = 1 - Math.pow(1 - p, 3); // ease-out
+      el.textContent = fmt(target * e);
+      if (p < 1) requestAnimationFrame(tick);
+      else window.clearTimeout(failSafe);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function setRing(circle, numEl, v) {
+    circle.classList.remove('c-red', 'c-orange', 'c-ok');
+    circle.classList.add(band(v));
+    const off = CIRC * (1 - v / 100);
+    if (reduce) {
+      circle.style.strokeDashoffset = off;
+      numEl.textContent = String(v);
+      return;
+    }
+    circle.style.strokeDashoffset = CIRC;
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => { circle.style.strokeDashoffset = off; })
+    );
+    countUp(numEl, v, (x) => String(Math.round(x)));
+  }
+
+  function showResults() {
+    const automation = Math.round(((answers.entry + answers.coll + answers.quote) / 6) * 100);
+    const visibility = Math.round(((answers.site + answers.ai) / 4) * 100);
+    const h =
+      (2 - answers.entry) * 7 * answers.vol +
+      (2 - answers.coll) * 4 +
+      (2 - answers.quote) * 3;
+    const cost = Math.round((h * HOUR_RATE) / 10) * 10;
+    last = { visibility, automation, cost, hours: Math.round(h) };
+
+    setRing(ringVis, numVis, visibility);
+    setRing(ringAuto, numAuto, automation);
+    hoursNum.textContent = String(last.hours);
+    countUp(costNum, cost, (x) => Math.round(x).toLocaleString('el-GR'));
+    resultSr.textContent =
+      'Ορατότητα ' + visibility + ' στα 100, Αυτοματισμός ' + automation +
+      ' στα 100, εκτίμηση περίπου ' + cost.toLocaleString('el-GR') +
+      ' ευρώ τον μήνα, ' + last.hours + ' ώρες γραφείου.';
+  }
+
+  copyBtn.addEventListener('click', async () => {
+    if (!last) return;
+    const text =
+      'Το Ταμπλό PISMA — Ορατότητα: ' + last.visibility + '/100 · Αυτοματισμός: ' +
+      last.automation + '/100 · Εκτίμηση κόστους: ~' +
+      last.cost.toLocaleString('el-GR') + ' €/μήνα';
+    try {
+      await navigator.clipboard.writeText(text);
+      copyBtn.textContent = 'Αντιγράφηκε ✓';
+      window.setTimeout(() => { copyBtn.textContent = copyLabel; }, 2000);
+    } catch {
+      copyBtn.textContent = 'Δεν επιτράπηκε η αντιγραφή';
+      window.setTimeout(() => { copyBtn.textContent = copyLabel; }, 2000);
+    }
+  });
+
+  restartBtn.addEventListener('click', () => {
+    Object.keys(answers).forEach((k) => delete answers[k]);
+    last = null;
+    quiz.querySelectorAll('.opt').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+    [ringVis, ringAuto].forEach((c) => {
+      c.classList.remove('c-red', 'c-orange', 'c-ok');
+      c.style.strokeDashoffset = CIRC;
+    });
+    numVis.textContent = '0';
+    numAuto.textContent = '0';
+    costNum.textContent = '0';
+    hoursNum.textContent = '0';
+    resultSr.textContent = '';
+    show(0);
+  });
+
+  show(0, false);
+</script>
+
+<style>
+  .quiz-section { padding-bottom: clamp(64px, 10vw, 120px); }
+
+  /* Μόνο για screen readers */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .quiz {
+    max-width: 720px;
+    margin-inline: auto;
+    padding: clamp(24px, 4vw, 44px);
+  }
+
+  /* Πάνω μπάρα */
+  .quiz-top {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    min-height: 42px;
+    margin-bottom: clamp(20px, 4vw, 32px);
+  }
+  .quiz-back {
+    justify-self: start;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--navy);
+    padding: 8px 14px;
+    border-radius: 999px;
+    transition: background-color .15s ease;
+  }
+  .quiz-back:hover { background: var(--orange-soft); }
+
+  .dots { display: flex; gap: 10px; justify-self: center; }
+  .dot {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: var(--line);
+    transition: background-color .25s ease, transform .25s ease;
+  }
+  .dot--done { background: var(--navy); }
+  .dot--now { background: var(--orange); transform: scale(1.3); }
+
+  .quiz-count { justify-self: end; font-size: .82rem; color: var(--muted); }
+
+  /* Ερωτήσεις */
+  .quiz-q {
+    font-size: clamp(1.25rem, 2.8vw, 1.6rem);
+    text-align: center;
+    margin-bottom: clamp(20px, 3.5vw, 30px);
+  }
+  .quiz-opts { display: grid; gap: 12px; }
+  .opt {
+    text-align: left;
+    background: var(--bg);
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 20px;
+    font-weight: 600;
+    font-size: 1.02rem;
+    cursor: pointer;
+    transition: border-color .15s ease, background-color .15s ease, transform .15s ease;
+  }
+  .opt:hover { border-color: var(--orange); transform: translateY(-2px); }
+  .opt[aria-pressed='true'] {
+    border-color: var(--orange);
+    background: var(--orange-soft);
+    color: var(--navy);
+  }
+
+  /* Αποτελέσματα — δαχτυλίδια */
+  .rings {
+    display: flex;
+    justify-content: center;
+    gap: clamp(24px, 6vw, 56px);
+    flex-wrap: wrap;
+    margin-bottom: clamp(24px, 4vw, 36px);
+  }
+  .ring { position: relative; width: clamp(120px, 18vw, 156px); text-align: center; }
+  .ring svg { transform: rotate(-90deg); }
+  .ring-bg, .ring-val { fill: none; stroke-width: 10; }
+  .ring-bg { stroke: var(--line); }
+  .ring-val {
+    stroke: var(--muted);
+    stroke-linecap: round;
+    stroke-dasharray: 326.726;
+    stroke-dashoffset: 326.726;
+    transition: stroke-dashoffset 1s ease;
+  }
+  .ring-val.c-red { stroke: var(--red); }
+  .ring-val.c-orange { stroke: var(--orange); }
+  .ring-val.c-ok { stroke: var(--ok); }
+  .ring-num {
+    position: absolute;
+    top: 33%; left: 0; right: 0;
+    font-size: 1.85rem; font-weight: 700; color: var(--navy);
+  }
+  .ring-label { display: block; margin-top: 10px; font-size: .88rem; color: var(--muted); }
+
+  /* Navy κάρτα κόστους */
+  .cost-card { text-align: center; padding: clamp(24px, 4vw, 36px); }
+  .cost-big {
+    font-size: clamp(1.9rem, 5vw, 2.6rem);
+    font-weight: 700;
+    color: var(--orange);
+    line-height: 1.15;
+    margin-bottom: 12px;
+    max-width: none;
+  }
+  .cost-note { margin-inline: auto; max-width: 46ch; font-size: .97rem; }
+  .cost-note strong { color: #fff; }
+
+  /* CTA αποτελεσμάτων */
+  .result-cta { text-align: center; margin-top: clamp(24px, 4vw, 32px); }
+  .result-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+  }
+</style>

@@ -1,0 +1,97 @@
+---
+const links = [
+  { href: '/se-vriskoun/', label: 'Σε Βρίσκουν' },
+  { href: '/doulevei-mono-tou/', label: 'Δουλεύει Μόνο Του' },
+  { href: '/times/', label: 'Τιμές' },
+  { href: '/apodeixeis/', label: 'Αποδείξεις' },
+];
+// Κανονικοποίηση χωρίς trailing slash και στις δύο πλευρές της σύγκρισης.
+const norm = (p: string) => p.replace(/\/$/, '') || '/';
+const path = norm(Astro.url.pathname);
+---
+
+<header class="nav-wrap">
+  <nav class="container nav" aria-label="Κύριο μενού">
+    <a class="logo" href="/">PISMA<span>.</span></a>
+
+    <ul class="nav-links" id="nav-links">
+      {links.map((l) => (
+        <li>
+          <a href={l.href} aria-current={path === norm(l.href) ? 'page' : undefined}>{l.label}</a>
+        </li>
+      ))}
+      <li class="nav-cta-mobile"><a class="btn btn--navy btn--sm" href="/tablo/">Δωρεάν μέτρηση</a></li>
+    </ul>
+
+    <a class="btn btn--navy btn--sm nav-cta" href="/tablo/">Δωρεάν μέτρηση</a>
+
+    <button class="burger" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Μενού">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+        <path class="i-open" d="M4 7h16M4 12h16M4 17h16" />
+        <path class="i-close" d="M6 6l12 12M18 6L6 18" style="display:none" />
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<script>
+  const burger = document.querySelector<HTMLButtonElement>('.burger')!;
+  const nav = document.getElementById('nav-links')!;
+  burger.addEventListener('click', () => {
+    const open = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!open));
+    nav.classList.toggle('is-open', !open);
+    (burger.querySelector('.i-open') as SVGElement).style.display = open ? '' : 'none';
+    (burger.querySelector('.i-close') as SVGElement).style.display = open ? 'none' : '';
+  });
+</script>
+
+<style>
+  .nav-wrap {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250, 249, 246, .84);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav { display: flex; align-items: center; gap: 28px; height: 68px; }
+  .logo {
+    font-family: var(--font-display); font-weight: 800; font-size: 1.25rem;
+    color: var(--navy); text-decoration: none; letter-spacing: .01em; margin-right: auto;
+  }
+  .logo span { color: var(--orange); }
+  .nav-links { display: flex; align-items: center; gap: 26px; list-style: none; padding: 0; }
+  .nav-links a:not(.btn) {
+    text-decoration: none; font-weight: 600; font-size: .95rem; color: var(--ink);
+    padding: 6px 2px; border-radius: 6px;
+    transition: color .15s ease;
+  }
+  .nav-links a:not(.btn):hover { color: var(--orange-text); }
+  .nav-links a[aria-current='page'] {
+    color: var(--orange-text);
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-thickness: 2px;
+  }
+  .nav-cta-mobile { display: none; }
+  .burger { display: none; background: none; border: 0; cursor: pointer; color: var(--navy); padding: 8px; border-radius: 10px; }
+  .burger svg { width: 26px; height: 26px; }
+
+  @media (max-width: 880px) {
+    .nav { gap: 14px; }
+    .nav-cta { display: none; }
+    .burger { display: inline-flex; }
+    .nav-links {
+      display: none;
+      position: absolute; top: 68px; left: 0; right: 0;
+      flex-direction: column; align-items: stretch; gap: 4px;
+      background: var(--bg); border-bottom: 1px solid var(--line);
+      padding: 12px clamp(20px, 4vw, 36px) 20px;
+      box-shadow: var(--shadow);
+    }
+    .nav-links.is-open { display: flex; }
+    .nav-links a:not(.btn) { display: block; padding: 12px 4px; font-size: 1.05rem; }
+    .nav-cta-mobile { display: block; margin-top: 10px; }
+    .nav-cta-mobile .btn { width: 100%; }
+  }
+</style>

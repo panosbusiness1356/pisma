@@ -1,0 +1,164 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { SITE } from '../config';
+
+const telHref = 'tel:' + SITE.phone.replace(/\s+/g, '');
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: 'Επικοινωνία — PISMA',
+  url: `${SITE.url}/epikoinonia/`,
+  mainEntity: {
+    '@type': 'LocalBusiness',
+    name: SITE.name,
+    email: SITE.email,
+    telephone: SITE.phone,
+    url: SITE.url,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Γλυφάδα',
+      addressRegion: 'Αττική',
+      addressCountry: 'GR',
+    },
+  },
+};
+---
+
+<Base
+  title="Επικοινωνία — Πες μας τι σε πνίγει | PISMA Γλυφάδα"
+  description="Στείλε μήνυμα ή πάρε τηλέφωνο — απαντάμε άνθρωπος προς άνθρωπο, συνήθως αυθημερόν. Ραντεβού από κοντά στα νότια προάστια της Αθήνας ή online."
+  schema={schema}
+>
+  <PageHero kicker="Επικοινωνία" sub="Απαντάμε άνθρωπος προς άνθρωπο — συνήθως αυθημερόν.">
+    Πες μας τι σε <span class="accent">πνίγει</span>.
+  </PageHero>
+
+  <section class="section section--tight" aria-labelledby="contact-title">
+    <div class="container">
+      <h2 id="contact-title" class="visually-hidden">Στοιχεία επικοινωνίας και φόρμα</h2>
+      <div class="grid-2 contact-grid">
+        <!-- Στοιχεία -->
+        <div class="card reveal">
+          <h3>Πού θα μας βρεις</h3>
+          <ul class="c-list">
+            <li class="c-item">
+              <span class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="2.5" /><path d="m4 7.5 8 5.5 8-5.5" />
+                </svg>
+              </span>
+              <div>
+                <span class="c-label">Email</span>
+                <a class="c-value" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+              </div>
+            </li>
+            <li class="c-item">
+              <span class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M6.5 3h3L11 7.5 9 9a12.5 12.5 0 0 0 6 6l1.5-2 4.5 1.5v3a2.5 2.5 0 0 1-2.5 2.5A15.5 15.5 0 0 1 4 5.5 2.5 2.5 0 0 1 6.5 3Z" />
+                </svg>
+              </span>
+              <div>
+                <span class="c-label">Τηλέφωνο</span>
+                <a class="c-value num" href={telHref}>{SITE.phone}</a>
+              </div>
+            </li>
+            <li class="c-item">
+              <span class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11Z" /><circle cx="12" cy="10" r="2.6" />
+                </svg>
+              </span>
+              <div>
+                <span class="c-label">Περιοχή</span>
+                <span class="c-value">{SITE.area} · ραντεβού από κοντά στα νότια προάστια ή online</span>
+              </div>
+            </li>
+            <li class="c-item">
+              <span class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" />
+                </svg>
+              </span>
+              <div>
+                <span class="c-label">Ωράριο</span>
+                <span class="c-value">Δευτέρα–Παρασκευή</span>
+              </div>
+            </li>
+          </ul>
+          <p class="alt-link">
+            Προτιμάς ραντεβού με μέτρηση;
+            <a class="card-arrow" href="/elegxos/">Ο Έλεγχος PISMA →</a>
+          </p>
+        </div>
+
+        <!-- Φόρμα -->
+        <form class="card reveal" id="contact-form" data-email={SITE.email}>
+          <h3>Γράψε μας</h3>
+          <div class="field">
+            <label for="cf-name">Όνομα</label>
+            <input type="text" id="cf-name" name="name" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="cf-email">Email</label>
+            <input type="email" id="cf-email" name="email" autocomplete="email" required />
+          </div>
+          <div class="field">
+            <label for="cf-message">Μήνυμα</label>
+            <textarea id="cf-message" name="message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn--orange">Στείλε το</button>
+          <span class="btn-note">Ανοίγει το πρόγραμμα email σου με έτοιμο το μήνυμα.</span>
+          <p class="feedback" data-feedback role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const subject = 'Μήνυμα από το pisma.gr';
+      const body =
+        'Όνομα: ' + data.get('name') + '\n' +
+        'Email: ' + data.get('email') + '\n\n' +
+        data.get('message');
+      window.location.href =
+        'mailto:' + form.dataset.email +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(body);
+      const fb = form.querySelector('[data-feedback]') as HTMLElement;
+      fb.innerHTML =
+        'Άνοιξε το πρόγραμμα email σου. Αν δεν άνοιξε τίποτα, στείλε μας απευθείας στο ' +
+        '<a href="mailto:' + form.dataset.email + '">' + form.dataset.email + '</a>.';
+    });
+  </script>
+</Base>
+
+<style>
+  .contact-grid { align-items: start; }
+  .contact-grid h3 { font-size: 1.25rem; margin-bottom: 18px; }
+
+  /* Λίστα στοιχείων */
+  .c-list { list-style: none; padding: 0; display: grid; gap: 18px; }
+  .c-item { display: flex; align-items: center; gap: 14px; }
+  .c-item .icon-chip { margin-bottom: 0; flex: none; }
+  .c-label { display: block; font-size: .8rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+  .c-value { color: var(--navy); font-weight: 600; text-decoration: none; }
+  a.c-value:hover { color: var(--orange-cta); }
+
+  .alt-link { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: .95rem; }
+  .alt-link .card-arrow { margin-top: 0; margin-left: 6px; }
+
+  /* Φόρμα */
+  .feedback {
+    margin-top: 16px; padding: 14px 18px; border-radius: 12px;
+    background: var(--ok-soft); color: var(--ok-text); font-size: .95rem;
+  }
+  .feedback a { color: var(--ok-text); font-weight: 700; }
+  .feedback:empty { padding: 0; margin: 0; background: none; }
+</style>

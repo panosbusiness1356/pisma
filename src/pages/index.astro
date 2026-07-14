@@ -1,0 +1,222 @@
+---
+import Base from '../layouts/Base.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, EINVOICE, ELEGXOS } from '../config';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: SITE.name,
+  slogan: SITE.tagline,
+  email: SITE.email,
+  telephone: SITE.phone,
+  url: SITE.url,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Γλυφάδα',
+    addressRegion: 'Αττική',
+    addressCountry: 'GR',
+  },
+  areaServed: 'Νότια προάστια Αθήνας',
+  founder: { '@type': 'Person', name: 'Πάνος' },
+  description:
+    'Ορατότητα σε Google και AI, και αυτοματισμοί γραφείου για ελληνικές μικρομεσαίες επιχειρήσεις.',
+};
+
+const steps = [
+  { t: 'Μέτρηση', d: `${ELEGXOS.price} Έλεγχος ${ELEGXOS.minutes} λεπτών — φεύγεις με σκορ και ευρώ.` },
+  { t: 'Πρόταση', d: `Σε ${ELEGXOS.reportHours} ώρες, γραπτή, με σταθερή τιμή.` },
+  { t: 'Στήσιμο', d: 'Σε 2–4 εβδομάδες, χωρίς να αλλάξεις πρόγραμμα.' },
+  { t: 'Λειτουργία', d: 'Κάθε μήνα, Απόδειξη Αξίας σε ώρες και ευρώ.' },
+];
+---
+
+<Base
+  title="PISMA — Να σε βρίσκουν πελάτες. Να δουλεύει μόνο του. | Γλυφάδα"
+  description="Μετράμε τι χάνει η επιχείρησή σου σε πελάτες και ώρες — και το διορθώνουμε. SEO, ορατότητα σε AI και αυτοματισμοί γραφείου για ελληνικές ΜμΕ."
+  schema={schema}
+>
+  <!-- 1. Hero -->
+  <section class="section hero">
+    <div class="container">
+      <p class="kicker">Για ελληνικές επιχειρήσεις</p>
+      <h1>Να σε βρίσκουν πελάτες.<br />Να δουλεύει <span class="accent">μόνο του</span>.</h1>
+      <p class="sub">Μετράμε τι χάνεις — σε πελάτες και σε ώρες — και το διορθώνουμε. Με νούμερα, όχι λόγια.</p>
+      <a class="btn btn--orange" href="/tablo/">Μέτρησε την επιχείρησή σου — 2 λεπτά</a>
+      <span class="btn-note">Δωρεάν · χωρίς email · το σκορ βγαίνει μπροστά σου</span>
+    </div>
+  </section>
+
+  <!-- 2. Οι 2 Πυλώνες -->
+  <section class="section section--tight" aria-labelledby="pillars-title">
+    <div class="container">
+      <h2 id="pillars-title" class="visually-hidden">Τι κάνουμε</h2>
+      <div class="grid-2">
+        <a class="card card--link pillar reveal" href="/se-vriskoun/">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21" />
+            </svg>
+          </span>
+          <h3>Σε Βρίσκουν</h3>
+          <p>Site, Google και ChatGPT: όταν κάποιος ψάχνει ό,τι κάνεις, να βγαίνεις εσύ.</p>
+          <span class="card-arrow">Δες πώς →</span>
+        </a>
+        <a class="card card--link pillar reveal" href="/doulevei-mono-tou/">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3.2" /><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1" />
+            </svg>
+          </span>
+          <h3>Δουλεύει Μόνο Του</h3>
+          <p>Τιμολόγια, εισπράξεις, προσφορές: η ρουτίνα τρέχει μόνη της, εσύ βλέπεις την αναφορά.</p>
+          <span class="card-arrow">Δες πώς →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Πώς δουλεύουμε -->
+  <section class="section" aria-labelledby="how-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Πώς δουλεύουμε</p>
+        <h2 id="how-title">Τέσσερα βήματα. Νούμερα σε κάθε ένα.</h2>
+      </div>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="step reveal">
+            <span class="step-num num">{i + 1}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4. Social proof strip -->
+  <section class="section--tight" aria-label="Στοιχεία αγοράς">
+    <div class="container stats">
+      <p class="chip"><strong class="num">74%</strong> των ΜμΕ δεν βρίσκει προσωπικό — ΒΕΑ/KPMG</p>
+      <p class="chip"><strong class="num">40%</strong> του χρόνου του ιδιοκτήτη πάει σε admin</p>
+      <p class="chip"><strong class="num">{EINVOICE.deadlineShort}</strong> η προθεσμία ηλεκτρονικής τιμολόγησης</p>
+    </div>
+  </section>
+
+  <!-- 5. Teaser Ταμπλό -->
+  <section class="section" aria-labelledby="tablo-title">
+    <div class="container">
+      <div class="card card--navy teaser reveal">
+        <div class="teaser-text">
+          <p class="kicker">Το Ταμπλό</p>
+          <h2 id="tablo-title">Δύο σκορ. Δύο λεπτά. Μηδέν στοιχεία.</h2>
+          <p>Απάντησε 6 ερωτήσεις και δες πόσο σε βρίσκουν — και πόσα πληρώνεις σε χειροκίνητη δουλειά.</p>
+          <a class="btn btn--orange" href="/tablo/">Δες το σκορ σου</a>
+        </div>
+        <div class="teaser-rings" aria-hidden="true">
+          <div class="ring-box">
+            <svg viewBox="0 0 120 120">
+              <circle class="ring-bg" cx="60" cy="60" r="52" />
+              <circle class="ring-val ring-val--low" cx="60" cy="60" r="52" />
+            </svg>
+            <span class="ring-num num">34</span>
+            <span class="ring-label">Ορατότητα</span>
+          </div>
+          <div class="ring-box">
+            <svg viewBox="0 0 120 120">
+              <circle class="ring-bg" cx="60" cy="60" r="52" />
+              <circle class="ring-val ring-val--mid" cx="60" cy="60" r="52" />
+            </svg>
+            <span class="ring-num num">57</span>
+            <span class="ring-label">Αυτοματισμός</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Ποιος είναι πίσω από την PISMA -->
+  <section class="section section--tight" aria-labelledby="who-title">
+    <div class="container who">
+      <div class="who-photo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8.5" r="3.8" /><path d="M4.5 20c1.4-3.4 4.1-5 7.5-5s6.1 1.6 7.5 5" />
+        </svg>
+      </div>
+      <div>
+        <h2 id="who-title">Ποιος είναι πίσω από την PISMA</h2>
+        <p>Δεν θα μιλήσεις με τμήμα πωλήσεων — θα μιλήσεις με αυτόν που στήνει το σύστημα. Ένας άνθρωπος, με πείσμα, μέχρι να δουλεύει μόνο του.</p>
+        <p class="who-sig">{SITE.founder} · Γλυφάδα</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Τελικό CTA -->
+  <CtaBand
+    title="Ξεκίνα από τη μέτρηση. Τα υπόλοιπα θα φανούν στο χαρτί."
+    ctaText="Μέτρησε την επιχείρησή σου"
+    ctaHref="/tablo/"
+    note="2 λεπτά · δωρεάν · χωρίς στοιχεία"
+  />
+</Base>
+
+<style>
+  /* Hero */
+  .hero { text-align: center; padding-top: clamp(64px, 10vw, 130px); }
+  .hero h1 { max-width: 17ch; margin-inline: auto; }
+  .hero .kicker { margin-bottom: 22px; }
+  .hero .sub { margin: 22px auto 34px; font-size: 1.18rem; color: var(--muted); max-width: 48ch; }
+
+  /* Πυλώνες */
+  .pillar { display: block; }
+  .pillar h3 { font-size: 1.35rem; }
+  .pillar p { max-width: 40ch; }
+
+  /* Stats */
+  .stats { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .stats .chip strong { color: var(--orange-cta); }
+
+  /* Teaser Ταμπλό */
+  .teaser {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: clamp(28px, 5vw, 56px); flex-wrap: wrap;
+    padding: clamp(30px, 5vw, 56px);
+  }
+  .teaser-text { max-width: 46ch; }
+  .teaser-text .kicker { margin-bottom: 16px; }
+  .teaser-text p { margin: 14px 0 26px; }
+  .teaser-rings { display: flex; gap: clamp(18px, 3vw, 36px); margin-inline: auto; }
+  .ring-box { position: relative; width: clamp(110px, 14vw, 150px); text-align: center; }
+  .ring-box svg { transform: rotate(-90deg); }
+  .ring-bg, .ring-val { fill: none; stroke-width: 10; }
+  .ring-bg { stroke: rgba(255, 255, 255, .14); }
+  .ring-val { stroke-linecap: round; stroke-dasharray: 326.7; }
+  .ring-val--low { stroke: var(--red); stroke-dashoffset: calc(326.7 * (1 - .34)); }
+  .ring-val--mid { stroke: var(--orange); stroke-dashoffset: calc(326.7 * (1 - .57)); }
+  .ring-num {
+    position: absolute; top: 34%; left: 0; right: 0;
+    font-size: 1.7rem; font-weight: 700; color: #fff;
+    transform: translateY(-12%);
+  }
+  .ring-label { display: block; margin-top: 10px; font-size: .85rem; color: rgba(255, 255, 255, .72); }
+
+  /* Ποιος είναι πίσω */
+  .who {
+    display: flex; align-items: center; gap: clamp(24px, 4vw, 44px);
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r);
+    box-shadow: var(--shadow); padding: clamp(26px, 4vw, 44px);
+    flex-wrap: wrap;
+  }
+  .who-photo {
+    flex: none; width: 108px; height: 108px; border-radius: 50%;
+    background: var(--orange-soft); color: var(--orange);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .who-photo svg { width: 52px; height: 52px; }
+  .who h2 { font-size: 1.35rem; margin-bottom: 10px; }
+  .who p { color: var(--muted); max-width: 52ch; }
+  .who-sig { margin-top: 12px; font-weight: 700; color: var(--navy); }
+</style>
+// cache fix
+// cache fix

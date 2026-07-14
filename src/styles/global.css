@@ -1,0 +1,211 @@
+/* ============================================================
+   PISMA — Design System
+   Παλέτα, τυπογραφία, utilities. Κανένα hardcoded χρώμα στα
+   components — πάντα οι μεταβλητές.
+   ============================================================ */
+
+:root {
+  --bg: #FAF9F6;
+  --card: #FFFFFF;
+  --navy: #2C3E50;
+  --ink: #26313C;
+  --muted: #5C6B7A;
+  --orange: #E67E22;       /* accent: εικονίδια, λεπτομέρειες, logo dot */
+  --orange-cta: #BA5D0C;   /* φόντο κουμπιών — AA με λευκό κείμενο (4.5:1) */
+  --orange-soft: #FDF1E4;
+  --line: #ECE8E1;
+  --ok: #1E8A55;
+  --ok-soft: #E7F4ED;
+  --ok-text: #166A42;      /* κείμενο σε --ok-soft/λευκό — AA 4.5:1 */
+  --red: #D24B34;
+  --red-deep: #C13A20;     /* φόντο κορδέλας — AA με λευκό κείμενο (5.39:1) */
+  --red-soft: #FBEAE6;
+  --red-text: #B53A25;     /* κείμενο σε --red-soft/λευκό — AA 4.5:1 */
+  --orange-text: #9C4D08;  /* πορτοκαλί ΚΕΙΜΕΝΟ σε --orange-soft/--bg/λευκό — AA 4.5:1 (5.7:1 σε --bg)· το --orange-cta μένει μόνο για φόντο κουμπιών */
+  --r: 18px;
+
+  --shadow: 0 2px 6px rgba(44, 62, 80, .06), 0 12px 32px rgba(44, 62, 80, .08);
+  --shadow-hover: 0 4px 10px rgba(44, 62, 80, .09), 0 20px 44px rgba(44, 62, 80, .13);
+
+  --font-display: 'Unbounded', 'Commissioner', sans-serif;
+  --font-body: 'Commissioner', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* ---------- Reset-lite ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+img, svg { display: block; max-width: 100%; }
+input, button, textarea, select { font: inherit; color: inherit; }
+a { color: inherit; }
+
+/* ---------- Τυπογραφία ---------- */
+h1, h2, h3, h4 { color: var(--navy); text-wrap: balance; }
+h1, h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.16;
+  letter-spacing: -.01em;
+}
+h1 { font-size: clamp(1.9rem, 4.6vw, 3.15rem); }
+h2 { font-size: clamp(1.45rem, 3vw, 2.05rem); font-weight: 600; }
+h3 { font-size: 1.1rem; font-weight: 700; line-height: 1.35; }
+p { max-width: 62ch; }
+.accent { color: var(--orange-cta); }
+.num { font-family: var(--font-mono); font-weight: 500; letter-spacing: -.02em; }
+.muted { color: var(--muted); }
+
+::selection { background: var(--orange-soft); color: var(--navy); }
+
+/* ---------- Layout ---------- */
+.container { max-width: 1120px; margin-inline: auto; padding-inline: clamp(20px, 4vw, 36px); }
+.container--narrow { max-width: 860px; }
+.section { padding-block: clamp(56px, 9vw, 104px); }
+.section--tight { padding-block: clamp(36px, 6vw, 64px); }
+
+/* Κεφαλή ενότητας: kicker + h2 + προαιρετικό sub */
+.sec-head { max-width: 640px; margin-bottom: clamp(28px, 5vw, 48px); }
+.sec-head--center { margin-inline: auto; text-align: center; }
+.sec-head--center p { margin-inline: auto; }
+.sec-head .kicker { margin-bottom: 14px; }
+.sec-head p { margin-top: 12px; color: var(--muted); }
+
+.grid-2 { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr)); }
+.grid-3 { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); }
+.grid-4 { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); }
+
+/* ---------- Kicker / chips / tags ---------- */
+.kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--orange-soft); color: var(--navy);
+  font-size: .78rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  padding: 7px 14px; border-radius: 999px;
+}
+.chip {
+  display: inline-flex; align-items: baseline; gap: 8px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+  padding: 10px 18px; font-size: .92rem; font-weight: 600;
+}
+.tag {
+  display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; padding: 4px 10px; border-radius: 7px;
+}
+.tag--live { background: var(--ok-soft); color: var(--ok-text); }
+.tag--demo { background: var(--orange-soft); color: var(--orange-text); }
+.tag--red { background: var(--red-soft); color: var(--red-text); }
+
+/* ---------- Κουμπιά ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  border: 0; border-radius: 999px; cursor: pointer;
+  padding: 15px 28px; font-weight: 700; font-size: 1rem;
+  text-decoration: none; white-space: nowrap;
+  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+.btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+.btn:active { transform: translateY(-1px); }
+.btn--orange { background: var(--orange-cta); color: #fff; }
+.btn--navy { background: var(--navy); color: #fff; }
+.btn--ghost { background: transparent; color: var(--navy); box-shadow: inset 0 0 0 1.5px var(--line); }
+.btn--ghost:hover { box-shadow: inset 0 0 0 1.5px var(--navy), var(--shadow); }
+.btn--sm { padding: 10px 20px; font-size: .92rem; }
+.btn-note { display: block; margin-top: 12px; font-size: .85rem; color: var(--muted); }
+
+/* ---------- Κάρτες ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+  padding: clamp(22px, 3vw, 30px);
+}
+.card--link { text-decoration: none; transition: transform .18s ease, box-shadow .18s ease; }
+.card--link:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.card--navy { background: var(--navy); border-color: var(--navy); color: #fff; }
+.card--navy h2, .card--navy h3 { color: #fff; }
+.card--navy .muted { color: rgba(255, 255, 255, .72); }
+.card h3 { margin-bottom: 8px; }
+.card p { font-size: .97rem; color: var(--muted); }
+.card--navy p { color: rgba(255, 255, 255, .82); }
+.card--ok { background: var(--ok-soft); border-color: var(--ok); }
+.card--ok p { color: var(--ink); }
+.card--ok .icon-chip { background: var(--card); color: var(--ok); margin-bottom: 0; }
+
+/* Εικονίδιο κάρτας: line SVG μέσα σε soft chip */
+.icon-chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 46px; height: 46px; border-radius: 13px;
+  background: var(--orange-soft); color: var(--orange);
+  margin-bottom: 16px;
+}
+.icon-chip svg { width: 24px; height: 24px; }
+.icon-chip--navy { background: rgba(44, 62, 80, .07); color: var(--navy); }
+
+/* Βέλος-link μέσα σε clickable κάρτα */
+.card-arrow { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--orange-cta); font-size: .95rem; margin-top: 14px; text-decoration: none; }
+a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Αριθμημένα βήματα ---------- */
+.steps {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 22px;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+}
+.step { position: relative; padding-top: 6px; }
+.step-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 12px;
+  background: var(--navy); color: #fff; font-weight: 700;
+  margin-bottom: 14px;
+}
+.step h3 { margin-bottom: 6px; }
+.step p { font-size: .95rem; color: var(--muted); max-width: 32ch; }
+
+/* ---------- Πριν → Μετά (Αποδείξεις) ---------- */
+.strike { text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: var(--red); color: var(--muted); }
+.after-num { color: var(--ok-text); font-family: var(--font-mono); font-weight: 700; }
+
+/* ---------- Reveal on scroll ---------- */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .55s ease, transform .55s ease; }
+.reveal.is-in { opacity: 1; transform: none; }
+
+/* ---------- Focus / a11y ---------- */
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; border-radius: 6px; }
+.skip-link {
+  position: absolute; left: -999px; top: 8px; z-index: 200;
+  background: var(--navy); color: #fff; padding: 10px 18px; border-radius: 999px;
+}
+.skip-link:focus { left: 8px; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* ---------- Φόρμες ---------- */
+.field { display: grid; gap: 6px; margin-bottom: 18px; }
+.field label { font-weight: 600; font-size: .95rem; color: var(--navy); }
+.field input, .field select, .field textarea {
+  border: 1.5px solid var(--line); border-radius: 12px; background: var(--card);
+  padding: 13px 16px; width: 100%;
+  transition: border-color .15s ease;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--orange); outline: none; }
+.field .hint { font-size: .82rem; color: var(--muted); }

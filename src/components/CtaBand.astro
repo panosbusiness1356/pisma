@@ -1,0 +1,41 @@
+---
+/**
+ * Navy CTA banner — ένα κύριο CTA ανά οθόνη.
+ * Προαιρετικό note κάτω από το κουμπί.
+ */
+interface Props {
+  title: string;
+  sub?: string;
+  ctaText: string;
+  ctaHref: string;
+  note?: string;
+}
+const { title, sub, ctaText, ctaHref, note } = Astro.props;
+---
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="band reveal">
+      <div class="band-text">
+        <h2>{title}</h2>
+        {sub && <p>{sub}</p>}
+      </div>
+      <div class="band-cta">
+        <a class="btn btn--orange" href={ctaHref}>{ctaText}</a>
+        {note && <span class="btn-note">{note}</span>}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .band {
+    background: var(--navy); border-radius: var(--r); box-shadow: var(--shadow);
+    padding: clamp(30px, 5vw, 52px);
+    display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap;
+  }
+  .band h2 { color: #fff; max-width: 22ch; }
+  .band p { color: rgba(255, 255, 255, .78); margin-top: 10px; }
+  .band-cta { text-align: center; }
+  .band-cta .btn-note { color: rgba(255, 255, 255, .65); }
+</style>

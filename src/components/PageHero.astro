@@ -1,0 +1,25 @@
+---
+/**
+ * Hero εσωτερικής σελίδας: kicker + τίτλος (slot, επιτρέπει <span class="accent">) + sub.
+ */
+interface Props {
+  kicker?: string;
+  sub?: string;
+}
+const { kicker, sub } = Astro.props;
+---
+
+<section class="section hero">
+  <div class="container container--narrow">
+    {kicker && <p class="kicker">{kicker}</p>}
+    <h1><slot /></h1>
+    {sub && <p class="sub">{sub}</p>}
+    <slot name="extra" />
+  </div>
+</section>
+
+<style>
+  .hero { padding-bottom: clamp(28px, 4vw, 48px); text-align: center; }
+  .hero .kicker { margin-bottom: 18px; }
+  .hero .sub { margin: 18px auto 0; color: var(--muted); font-size: 1.15rem; max-width: 54ch; }
+</style>

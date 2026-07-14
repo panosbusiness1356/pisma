@@ -1,0 +1,242 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { SITE, ELEGXOS } from '../config';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Ο Έλεγχος PISMA',
+  serviceType: 'Έλεγχος ορατότητας και αυτοματισμού για μικρομεσαίες επιχειρήσεις',
+  description: `Ραντεβού ${ELEGXOS.minutes} λεπτών, από κοντά ή online. Δύο σκορ, ανάλυση ανά τομέα και κόστος αδράνειας σε ευρώ — γραπτά, σε ${ELEGXOS.reportHours} ώρες.`,
+  areaServed: SITE.region,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: SITE.name,
+    email: SITE.email,
+    telephone: SITE.phone,
+    url: SITE.url,
+  },
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'EUR',
+  },
+};
+
+const steps = [
+  {
+    t: 'Χαρτογράφηση ροών',
+    d: 'Τι μπαίνει, τι βγαίνει, ποιος το κάνει. Τα γράφουμε μαζί, στα απλά.',
+  },
+  {
+    t: 'Μέτρηση',
+    d: 'Τα δύο σκορ βγαίνουν μπροστά σου — όχι σε παρουσίαση μετά.',
+  },
+  {
+    t: 'Γραπτή αναφορά',
+    d: `Σε ${ELEGXOS.reportHours} ώρες στο inbox σου, με προτεραιότητες και ευρώ.`,
+  },
+];
+---
+
+<Base
+  title={`Ο Έλεγχος PISMA — Δωρεάν ραντεβού ${ELEGXOS.minutes} λεπτών | Γλυφάδα`}
+  description={`Κλείσε τον δωρεάν Έλεγχο PISMA: ${ELEGXOS.minutes} λεπτά, από κοντά στα νότια προάστια ή online. Δύο σκορ, ανάλυση ανά τομέα και το κόστος αδράνειας σε ευρώ.`}
+  schema={schema}
+>
+  <!-- 1. Hero -->
+  <PageHero
+    kicker="Ο Έλεγχος PISMA"
+    sub="Από κοντά στα νότια προάστια ή online. Φεύγεις με γραπτή εικόνα του τι χάνεις — σε πελάτες και σε ευρώ."
+  >
+    {ELEGXOS.minutes} λεπτά. Δύο σκορ. <span class="accent">Μηδέν κόστος.</span>
+  </PageHero>
+
+  <!-- 2. Με τι φεύγεις -->
+  <section class="section section--tight" aria-labelledby="takeaway-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Με τι φεύγεις</p>
+        <h2 id="takeaway-title">Τρία πράγματα, όλα στο χαρτί.</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4.5 15.5a7.5 7.5 0 1 1 15 0" /><path d="M12 15.5l3.4-4.2" /><path d="M4.5 19.5h15" />
+            </svg>
+          </span>
+          <h3>Τα δύο σκορ</h3>
+          <p>Ορατότητα και Αυτοματισμός, από το 0 έως το 100. Ξέρεις ακριβώς πού στέκεσαι.</p>
+        </div>
+        <div class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 20V11" /><path d="M12 20V4" /><path d="M19 20v-6" />
+            </svg>
+          </span>
+          <h3>Ανάλυση ανά τομέα</h3>
+          <p>Site, Google, τιμολόγια, εισπράξεις: πού χάνεις και πού είσαι ήδη εντάξει.</p>
+        </div>
+        <div class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17.5 7A7 7 0 1 0 17.5 17" /><path d="M4 10.5h9" /><path d="M4 13.5h9" />
+            </svg>
+          </span>
+          <h3>Κόστος αδράνειας</h3>
+          <p>Πόσα σου κοστίζει κάθε μήνας που μένει όπως είναι — σε ευρώ, όχι σε ευχολόγια.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Πώς κυλάει το ραντεβού -->
+  <section class="section" aria-labelledby="flow-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Πώς κυλάει</p>
+        <h2 id="flow-title">Τρία βήματα, {ELEGXOS.minutes} λεπτά.</h2>
+      </div>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="step reveal">
+            <span class="step-num num" aria-hidden="true">{i + 1}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4. Φόρμα κράτησης -->
+  <section class="section section--tight" aria-labelledby="booking-title">
+    <div class="container">
+      <div class="sec-head sec-head--center">
+        <p class="kicker">Κράτηση</p>
+        <h2 id="booking-title">Κλείσε τον Έλεγχό σου</h2>
+        <p>Συμπλήρωσε τα στοιχεία σου και θα σου προτείνουμε 2–3 ώρες μέσα στην εβδομάδα.</p>
+      </div>
+
+      <!-- TODO: Μελλοντικά, εδώ μπαίνει embed Cal.com / Calendly αντί για τη φόρμα mailto. -->
+      <form class="card booking reveal" id="booking-form" data-email={SITE.email} novalidate>
+        <div class="field">
+          <label for="f-name">Ονοματεπώνυμο</label>
+          <input type="text" id="f-name" name="name" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label for="f-biz">Επιχείρηση</label>
+          <input type="text" id="f-biz" name="business" autocomplete="organization" required />
+        </div>
+        <div class="field">
+          <label for="f-tel">Τηλέφωνο</label>
+          <input type="tel" id="f-tel" name="phone" autocomplete="tel" required />
+        </div>
+        <div class="field">
+          <label for="f-email">Email</label>
+          <input type="email" id="f-email" name="email" autocomplete="email" required />
+        </div>
+
+        <fieldset class="mode">
+          <legend>Πώς προτιμάς να γίνει;</legend>
+          <div class="mode-options">
+            <label class="mode-option">
+              <input type="radio" name="mode" value={`Από κοντά — ${SITE.region}`} checked />
+              <span>Από κοντά — {SITE.region}</span>
+            </label>
+            <label class="mode-option">
+              <input type="radio" name="mode" value="Online" />
+              <span>Online</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <button type="submit" class="btn btn--orange booking-btn">Κλείσε τον Έλεγχο</button>
+        <span class="btn-note">{ELEGXOS.price} · {ELEGXOS.minutes} λεπτά · χωρίς καμία δέσμευση</span>
+
+        <p class="booking-msg" id="booking-msg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- 5. Γιατί δωρεάν; -->
+  <section class="section section--tight" aria-labelledby="why-title">
+    <div class="container">
+      <div class="why reveal">
+        <h2 id="why-title">Γιατί δωρεάν;</h2>
+        <p>Γιατί όταν δεις τα νούμερα, δεν χρειάζεσαι πίεση από εμάς. Η αναφορά είναι δική σου, ό,τι κι αν αποφασίσεις.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.getElementById('booking-form') as HTMLFormElement;
+  const msg = document.getElementById('booking-msg') as HTMLElement;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      msg.textContent = 'Κάτι λείπει ακόμα — έλεγξε τα πεδία που σημειώθηκαν.';
+      msg.classList.remove('is-ok');
+      msg.classList.add('is-error');
+      return;
+    }
+
+    const data = new FormData(form);
+    const body = [
+      `Όνομα: ${data.get('name')}`,
+      `Επιχείρηση: ${data.get('business')}`,
+      `Τηλέφωνο: ${data.get('phone')}`,
+      `Email: ${data.get('email')}`,
+      `Προτίμηση: ${data.get('mode')}`,
+    ].join('\n');
+
+    location.href =
+      `mailto:${form.dataset.email}` +
+      `?subject=${encodeURIComponent('Κράτηση Ελέγχου PISMA')}` +
+      `&body=${encodeURIComponent(body)}`;
+
+    msg.textContent = 'Άνοιξε το email σου για να σταλεί η κράτηση.';
+    msg.classList.remove('is-error');
+    msg.classList.add('is-ok');
+  });
+</script>
+
+<style>
+  /* Φόρμα κράτησης */
+  .booking { max-width: 640px; margin-inline: auto; }
+  .booking-btn { width: 100%; margin-top: 6px; }
+  .booking .btn-note { text-align: center; }
+
+  .mode { border: 0; padding: 0; margin: 0 0 22px; }
+  .mode legend { font-weight: 600; font-size: .95rem; color: var(--navy); margin-bottom: 8px; padding: 0; }
+  .mode-options { display: flex; flex-wrap: wrap; gap: 10px; }
+  .mode-option {
+    display: inline-flex; align-items: center; gap: 9px;
+    border: 1.5px solid var(--line); border-radius: 999px;
+    padding: 11px 18px; cursor: pointer; font-size: .95rem; font-weight: 600;
+    transition: border-color .15s ease, background-color .15s ease;
+  }
+  .mode-option:hover { border-color: var(--orange); }
+  .mode-option:has(input:checked) { border-color: var(--orange); background: var(--orange-soft); }
+  .mode-option input { accent-color: var(--orange-cta); width: 17px; height: 17px; margin: 0; }
+
+  .booking-msg { margin-top: 14px; font-size: .95rem; font-weight: 600; text-align: center; }
+  .booking-msg:empty { display: none; }
+  .booking-msg.is-ok { color: var(--ok-text); }
+  .booking-msg.is-error { color: var(--red-text); }
+
+  /* Γιατί δωρεάν; */
+  .why {
+    max-width: 640px; margin-inline: auto;
+    background: var(--orange-soft); border-radius: var(--r);
+    padding: clamp(22px, 3vw, 30px);
+  }
+  .why h2 { font-size: 1.2rem; margin-bottom: 8px; }
+  .why p { color: var(--muted); font-size: .97rem; }
+</style>

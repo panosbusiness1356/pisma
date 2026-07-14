@@ -1,0 +1,317 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, EINVOICE } from '../config';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Δουλεύει Μόνο Του',
+  serviceType: 'Αυτοματισμοί γραφείου, ηλεκτρονική τιμολόγηση, myDATA',
+  description:
+    'Η ρουτίνα του γραφείου τρέχει μόνη της: τιμολόγια, εισπράξεις, προσφορές, προθεσμίες, καθημερινή αναφορά.',
+  provider: {
+    '@type': 'LocalBusiness',
+    name: SITE.name,
+    email: SITE.email,
+    telephone: SITE.phone,
+    url: SITE.url,
+  },
+  areaServed: SITE.region,
+};
+
+const faqItems = [
+  {
+    q: 'Θα αλλάξω πρόγραμμα;',
+    a: 'Όχι. Χτίζουμε πάνω σε ό,τι ήδη χρησιμοποιείς — το τιμολογιακό σου, το email σου, το κινητό σου.',
+  },
+  {
+    q: 'Αν χαλάσει;',
+    a: 'Ειδοποιούμαστε εμείς πρώτοι, συνήθως πριν το προσέξεις. Η αποκατάσταση καλύπτεται από τη μηνιαία συντήρηση.',
+  },
+  {
+    q: 'Τα δεδομένα μου;',
+    a: 'Μένουν σε δικούς σου λογαριασμούς, σε servers εντός ΕΕ, με πλήρη συμμόρφωση GDPR.',
+  },
+  {
+    q: 'Θα χάσει τη δουλειά του ο υπάλληλός μου;',
+    a: 'Όχι — θα σταματήσει να πληκτρολογεί. Ο χρόνος που ελευθερώνεται πάει σε πελάτες, όχι σε καταχωρήσεις.',
+  },
+];
+---
+
+<Base
+  title="Δουλεύει Μόνο Του — Αυτοματισμοί γραφείου για ΜμΕ | PISMA"
+  description="Τιμολόγια, εισπράξεις, προσφορές και προθεσμίες τρέχουν μόνα τους. Ηλεκτρονική τιμολόγηση και myDATA στην ώρα τους — εσύ βλέπεις μόνο την αναφορά."
+  schema={schema}
+>
+  <!-- 1. Hero -->
+  <PageHero
+    kicker="Πυλώνας Β'"
+    sub="Η βαρετή δουλειά ρουτίνας τρέχει μόνη της. Εσύ βλέπεις μόνο την αναφορά."
+  >
+    Δουλεύει <span class="accent">Μόνο Του</span>
+  </PageHero>
+
+  <!-- 2. Υπηρεσίες -->
+  <section class="section section--tight" aria-labelledby="services-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Τι τρέχει μόνο του</p>
+        <h2 id="services-title">Έξι δουλειές ρουτίνας που φεύγουν από το κεφάλι σου.</h2>
+      </div>
+      <div class="grid-3">
+        <article class="card reveal">
+          <div class="card-top">
+            <span class="icon-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 3h7.5L19 7.5V21H7z" /><path d="M14.5 3v4.5H19" /><path d="M10.2 12.2h5.6M10.2 15.7h5.6" />
+              </svg>
+            </span>
+            <span class="tag tag--red">Υποχρεωτικό από {EINVOICE.deadlineShort}</span>
+          </div>
+          <h3>Ηλεκτρονική τιμολόγηση</h3>
+          <p>Πάροχος, myDATA και μετάβαση χωρίς να αλλάξεις πρόγραμμα. Έτοιμος πριν την προθεσμία, χωρίς πρόστιμα.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M13 2.5 4.5 13.5h6l-1 8L19.5 10.5h-6z" />
+            </svg>
+          </span>
+          <h3>Τιμολόγια χωρίς πληκτρολόγηση</h3>
+          <p>Το εισερχόμενο παραστατικό διαβάζεται και καταχωρείται μόνο του. Από <span class="strike num">4′</span> σε <span class="after-num">10″</span> το ένα.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 9.5a6 6 0 0 1 12 0c0 5.2 1.8 6.5 1.8 6.5H4.2S6 14.7 6 9.5" /><path d="M10 19.7a2.2 2.2 0 0 0 4 0" />
+            </svg>
+          </span>
+          <h3>Οι οφειλές κυνηγιούνται μόνες</h3>
+          <p>Ευγενικές υπενθυμίσεις στέλνονται αυτόματα, τη σωστή στιγμή. Εσύ βλέπεις μόνο ποιος πλήρωσε.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 3 3.5 10.3l6.8 2.6L12.9 20 21 3z" /><path d="M21 3 10.3 12.9" />
+            </svg>
+          </span>
+          <h3>Προσφορά αυθημερόν</h3>
+          <p>Ο πελάτης ζητάει τιμή το πρωί και έχει προσφορά πριν βραδιάσει — πριν προλάβει να ρωτήσει αλλού.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3.5" y="5" width="17" height="16" rx="2.5" /><path d="M8 2.5V6.5M16 2.5V6.5M3.5 10.5h17" /><path d="m9 15.3 2.1 2.1 3.9-4" />
+            </svg>
+          </span>
+          <h3>Τέλος οι χαμένες προθεσμίες</h3>
+          <p>ΦΠΑ, ασφαλιστικές, ανανεώσεις: το σύστημα τα θυμάται και σε ειδοποιεί πριν είναι αργά.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 11.7a8.3 8.3 0 0 1-12.1 7.4L3.5 20.5l1.4-5.2A8.3 8.3 0 1 1 21 11.7z" /><path d="M8.5 10.3h7M8.5 13.7h4.5" />
+            </svg>
+          </span>
+          <h3>Καθημερινή εικόνα σε 1 μήνυμα</h3>
+          <p>Κάθε απόγευμα, ένα μήνυμα: τι μπήκε, τι βγήκε, τι εκκρεμεί. Η επιχείρηση σε μία ματιά.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Live ημέρα του συστήματος -->
+  <section class="section" aria-labelledby="live-title">
+    <div class="container">
+      <div class="sec-head sec-head--center">
+        <p class="kicker">Δες το ζωντανά</p>
+        <h2 id="live-title">Μία ημέρα του συστήματος, σε πέντε γραμμές.</h2>
+        <p>Έτσι μοιάζει η δουλειά που δεν έκανε κανείς με το χέρι.</p>
+      </div>
+
+      <div class="card card--navy terminal reveal" id="live-day">
+        <div class="term-head">
+          <span class="term-title num" aria-hidden="true">pisma — ημέρα εργασίας</span>
+          <span class="tag tag--live term-live"><span class="live-dot" aria-hidden="true"></span>LIVE</span>
+        </div>
+        <ol class="term-log num" aria-label="Καταγραφή ενεργειών μίας ημέρας">
+          <li class="log-line"><span class="log-time">09:12</span> Υπενθύμιση είσπραξης εστάλη — Καραγιάννης ΟΕ (ΤΔΑ-1042)</li>
+          <li class="log-line"><span class="log-time">10:05</span> 31 εισερχόμενα τιμολόγια καταχωρήθηκαν αυτόματα</li>
+          <li class="log-line"><span class="log-time">12:31</span> 2 αποκλίσεις myDATA → στάλθηκαν στον λογιστή</li>
+          <li class="log-line"><span class="log-time">14:47</span> Εξόφληση 1.230€ — ΤΔΑ-1038 <span class="log-ok">✓</span></li>
+          <li class="log-line"><span class="log-time">18:00</span> Ημερήσια αναφορά στάλθηκε στον ιδιοκτήτη</li>
+        </ol>
+        <button class="term-replay" id="term-replay" type="button" hidden aria-label="Ξαναπαίξε την ημέρα από την αρχή">
+          <span aria-hidden="true">↺</span> Ξαναπαίξε
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Δείκτης Αυτοματισμού -->
+  <section class="section section--tight" aria-labelledby="deiktis-title">
+    <div class="container">
+      <div class="card deiktis reveal">
+        <div class="deiktis-text">
+          <p class="kicker">Δείκτης Αυτοματισμού</p>
+          <h2 id="deiktis-title">Ένα νούμερο, από το <span class="num">0</span> έως το <span class="num">100</span>.</h2>
+          <p>Μετράει πόσες ώρες τον μήνα φεύγουν σε χειροκίνητη δουλειά, σε τρεις τομείς. Όσο λιγότερες οι ώρες, τόσο ψηλότερα το σκορ — στο 100 η ρουτίνα τρέχει χωρίς εσένα.</p>
+          <a class="card-arrow" href="/tablo/">Μέτρησέ τον στο Ταμπλό →</a>
+        </div>
+        <ul class="deiktis-areas" aria-label="Τομείς που μετράει ο Δείκτης">
+          <li class="chip">Παραστατικά <span class="muted">ώρες/μήνα</span></li>
+          <li class="chip">Εισπράξεις <span class="muted">ώρες/μήνα</span></li>
+          <li class="chip">Προσφορές <span class="muted">ώρες/μήνα</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Συχνές ερωτήσεις</p>
+        <h2 id="faq-title">Αυτά που ρωτάνε όλοι πριν ξεκινήσουν.</h2>
+      </div>
+      <Faq items={faqItems} withSchema />
+    </div>
+  </section>
+
+  <!-- 6. CTA -->
+  <CtaBand
+    title="Πόσο «μόνο του» δουλεύει το δικό σου γραφείο;"
+    sub="Απάντησε 6 ερωτήσεις και δες τον Δείκτη Αυτοματισμού σου — μαζί με το τι σου κοστίζει σε ευρώ."
+    ctaText="Μέτρησε τον Δείκτη σου"
+    ctaHref="/tablo/"
+    note="2 λεπτά · δωρεάν · χωρίς στοιχεία"
+  />
+</Base>
+
+<script>
+  // «Live ημέρα»: οι γραμμές υπάρχουν ήδη στο HTML — το JS μόνο
+  // κρύβει/εμφανίζει με κλάσεις. Χωρίς JS, όλες ορατές από την αρχή.
+  const term = document.getElementById('live-day');
+  const log = term?.querySelector('.term-log');
+  const lines = term ? Array.from(term.querySelectorAll('.log-line')) : [];
+  const replay = document.getElementById('term-replay');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let timers: ReturnType<typeof setTimeout>[] = [];
+
+  function play() {
+    timers.forEach(clearTimeout);
+    timers = [];
+    lines.forEach((l) => l.classList.remove('is-on'));
+    lines.forEach((l, i) => {
+      timers.push(setTimeout(() => l.classList.add('is-on'), 350 + i * 700));
+    });
+  }
+
+  if (term && log && lines.length && !reduce && 'IntersectionObserver' in window) {
+    log.classList.add('is-armed'); // μόνο τώρα κρύβονται οι γραμμές
+    replay?.removeAttribute('hidden');
+    replay?.addEventListener('click', play);
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          play();
+          io.disconnect();
+        }
+      },
+      { threshold: 0.35 }
+    );
+    io.observe(term);
+  }
+  // Με reduced-motion (ή χωρίς IO): καμία κλάση — τελικό state αμέσως.
+</script>
+
+<style>
+  /* Κάρτα με tag δίπλα στο εικονίδιο */
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .card-top .tag { margin-top: 4px; }
+
+  /* ---- Terminal «Live ημέρα» ---- */
+  .terminal {
+    --orange-on-navy: #F5A356; /* AA πάνω σε navy για small text (5.36:1) */
+    max-width: 720px;
+    margin-inline: auto;
+    padding: clamp(22px, 3.5vw, 34px);
+  }
+  .term-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    padding-bottom: 14px; margin-bottom: 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, .14);
+  }
+  .term-title { font-size: .85rem; color: rgba(255, 255, 255, .55); }
+  .term-live {
+    display: inline-flex; align-items: center; gap: 7px;
+  }
+  .live-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--ok);
+    animation: livePulse 1.4s ease-in-out infinite;
+  }
+  @keyframes livePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .3; }
+  }
+
+  .term-log {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; gap: 12px;
+    font-size: clamp(.82rem, 1.6vw, .93rem);
+  }
+  .term-log li { color: rgba(255, 255, 255, .85); overflow-wrap: anywhere; }
+  .log-time { color: var(--orange-on-navy); font-weight: 700; margin-right: 4px; }
+  .log-ok {
+    display: inline-block; margin-left: 4px;
+    background: var(--ok-soft); color: var(--ok-text);
+    font-weight: 700; line-height: 1.3;
+    padding: 0 7px; border-radius: 7px;
+  }
+
+  /* Οι γραμμές κρύβονται ΜΟΝΟ όταν το JS «οπλίσει» το log */
+  .term-log.is-armed .log-line {
+    opacity: 0; transform: translateY(7px);
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  .term-log.is-armed .log-line.is-on { opacity: 1; transform: none; }
+
+  .term-replay {
+    margin-top: 20px; justify-self: start;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: rgba(255, 255, 255, .85);
+    border: 1.5px solid rgba(255, 255, 255, .28); border-radius: 999px;
+    padding: 8px 18px; font-size: .87rem; font-weight: 600;
+    font-family: var(--font-body); cursor: pointer;
+    transition: border-color .18s ease, color .18s ease;
+  }
+  .term-replay:hover { border-color: rgba(255, 255, 255, .65); color: #fff; }
+
+  /* ---- Δείκτης Αυτοματισμού ---- */
+  .deiktis {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: clamp(24px, 4vw, 48px); flex-wrap: wrap;
+    padding: clamp(26px, 4vw, 44px);
+  }
+  .deiktis-text { max-width: 52ch; }
+  .deiktis-text .kicker { margin-bottom: 14px; }
+  .deiktis-text h2 { margin-bottom: 12px; }
+  .deiktis-text p { color: var(--muted); }
+  .deiktis-areas {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; gap: 10px;
+  }
+  .deiktis-areas .chip { justify-content: space-between; }
+  .deiktis-areas .muted { font-weight: 400; font-size: .82rem; }
+</style>

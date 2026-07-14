@@ -1,0 +1,351 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, EINVOICE, ELEGXOS, PRICES, eur } from '../config';
+
+// Build-time fallback για το countdown — να μη δείχνει 0 χωρίς JS.
+const daysLeftBuild = Math.max(
+  0,
+  Math.ceil((new Date(EINVOICE.deadlineISO + 'T00:00:00').getTime() - Date.now()) / 86400000)
+);
+
+const title = 'Υποχρεωτική ηλεκτρονική τιμολόγηση 2026 — προθεσμία & βήματα';
+const description = `Από ${EINVOICE.deadlineShort} η ηλεκτρονική τιμολόγηση B2B γίνεται υποχρεωτική για όλες τις επιχειρήσεις. Τι αλλάζει, πρόστιμα έως ${eur(EINVOICE.maxFine)} και πώς γίνεται η μετάβαση βήμα-βήμα.`;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: 'Μετάβαση σε υποχρεωτική ηλεκτρονική τιμολόγηση',
+  name: 'Μετάβαση σε υποχρεωτική ηλεκτρονική τιμολόγηση',
+  description: `Μετάβαση επιχειρήσεων στην υποχρεωτική ηλεκτρονική τιμολόγηση B2B πριν από την προθεσμία της ${EINVOICE.deadlineHuman}: επιλογή πιστοποιημένου παρόχου, σύνδεση με εμπορικό πρόγραμμα, δοκιμαστικά τιμολόγια, εκπαίδευση και checklist συμμόρφωσης.`,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: SITE.name,
+    email: SITE.email,
+    telephone: SITE.phone,
+    url: SITE.url,
+  },
+  areaServed: SITE.region,
+};
+
+const changes = [
+  {
+    t: 'Έκδοση μόνο μέσω παρόχου',
+    d: 'Τα B2B τιμολόγια εκδίδονται πλέον μόνο μέσω πιστοποιημένου παρόχου ηλεκτρονικής έκδοσης ή μέσω του timologio της ΑΑΔΕ.',
+  },
+  {
+    t: 'Το ERP μόνο του δεν αρκεί',
+    d: 'Τιμολόγιο από το εμπορικό σου πρόγραμμα χωρίς πάροχο λογίζεται ως «μη έκδοση». Σαν να μην κόπηκε ποτέ.',
+  },
+  {
+    t: 'Πρόστιμα ανά παράβαση',
+    d: 'Κάθε τιμολόγιο εκτός συστήματος μετράει ξεχωριστά. Τα ποσά ανεβαίνουν πολύ γρήγορα.',
+  },
+];
+
+const steps = [
+  {
+    t: 'Επιλογή πιστοποιημένου παρόχου',
+    d: 'Συγκρίνουμε τους παρόχους ουδέτερα — χωρίς προμήθειες — και διαλέγεις με νούμερα.',
+  },
+  {
+    t: 'Σύνδεση με εμπορικό & αποθήκη',
+    d: 'Ό,τι πρόγραμμα κι αν τρέχεις, το ενώνουμε με τον πάροχο χωρίς να αλλάξεις ρουτίνα.',
+  },
+  {
+    t: 'Δοκιμαστικά τιμολόγια',
+    d: 'Κόβουμε δοκιμαστικά πριν από τα αληθινά. Τα λάθη βγαίνουν στη δοκιμή, όχι στον πελάτη.',
+  },
+  {
+    t: 'Εκπαίδευση μισής μέρας',
+    d: 'Η ομάδα σου μαθαίνει το νέο κύκλωμα σε μισή μέρα, πάνω στα δικά της τιμολόγια.',
+  },
+  {
+    t: 'Checklist συμμόρφωσης',
+    d: 'Κλείνουμε μόνο όταν κάθε σημείο της λίστας είναι τικαρισμένο — γραπτά.',
+  },
+];
+
+const faqItems = [
+  {
+    q: 'Με αφορά η υποχρεωτική ηλεκτρονική τιμολόγηση;',
+    a: `Ναι. Από ${EINVOICE.deadlineShort} αφορά όλες τις επιχειρήσεις που εκδίδουν τιμολόγια προς άλλες επιχειρήσεις (B2B), ανεξάρτητα από τζίρο ή μέγεθος.`,
+  },
+  {
+    q: 'Πόσο διαρκεί η μετάβαση;',
+    a: `Ρεαλιστικά ${EINVOICE.migrationWeeks}, ανάλογα με το εμπορικό πρόγραμμα και τον όγκο τιμολογίων. Γι' αυτό δεν την αφήνεις για τον Σεπτέμβριο.`,
+  },
+  {
+    q: 'Τι πάροχο ηλεκτρονικής τιμολόγησης να διαλέξω;',
+    a: 'Σε βοηθάμε να συγκρίνεις ουδέτερα — δεν παίρνουμε προμήθεια από κανέναν πάροχο, οπότε η πρόταση βγαίνει από τις ανάγκες σου, όχι από συμφωνίες.',
+  },
+  {
+    q: 'Πόσο κοστίζει η μετάβαση;',
+    a: `Καλύπτεται από το πακέτο «${PRICES.ekkinisi.name}» — δες αναλυτικά στη σελίδα Τιμές. Σταθερή τιμή, γραπτή, πριν ξεκινήσει οτιδήποτε.`,
+  },
+];
+---
+
+<Base title={title} description={description} schema={schema}>
+  <!-- 1. Hero -->
+  <section class="section hero">
+    <div class="container">
+      <p class="kicker">Ηλεκτρονική τιμολόγηση B2B</p>
+      <h1>
+        <span class="deadline-date">{EINVOICE.deadlineHuman}</span>
+        <span class="deadline-what">Υποχρεωτική ηλεκτρονική τιμολόγηση για όλες τις επιχειρήσεις</span>
+      </h1>
+      <p class="sub">
+        Η Α' φάση — για επιχειρήσεις με τζίρο άνω του 1 εκατ. — τρέχει ήδη· τώρα είναι η σειρά όλων των υπολοίπων.
+      </p>
+      <a class="btn btn--orange" href="/elegxos/">Κλείσε τη μετάβασή σου</a>
+      <span class="btn-note">{ELEGXOS.price} έλεγχος {ELEGXOS.minutes} λεπτών · χωρίς δέσμευση</span>
+    </div>
+  </section>
+
+  <!-- 2. Countdown -->
+  <section class="section section--tight" aria-label="Αντίστροφη μέτρηση μέχρι την προθεσμία">
+    <div class="container">
+      <div class="card countdown reveal">
+        <div class="count-box">
+          <span class="count-num num" id="days-left">{daysLeftBuild}</span>
+          <span class="count-label">ημέρες μέχρι την προθεσμία</span>
+        </div>
+        <p class="count-note">
+          Η μετάβαση διαρκεί <strong>{EINVOICE.migrationWeeks}</strong>. Μέτρα ανάποδα.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Τι αλλάζει -->
+  <section class="section" aria-labelledby="changes-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Τι αλλάζει</p>
+        <h2 id="changes-title">Τρία πράγματα που πρέπει να ξέρεις</h2>
+      </div>
+      <div class="grid-3">
+        <article class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 3h8l4 4v14H7z" /><path d="M15 3v4h4" /><path d="M10 14l2 2 3.5-4" />
+            </svg>
+          </span>
+          <h3>{changes[0].t}</h3>
+          <p>{changes[0].d}</p>
+        </article>
+        <article class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3.5 21.5 20h-19z" /><path d="M12 10v4.5" /><path d="M12 17.4v.1" />
+            </svg>
+          </span>
+          <h3>{changes[1].t}</h3>
+          <p>{changes[1].d}</p>
+        </article>
+        <article class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17.5 7a6.5 6.5 0 1 0 0 10" /><path d="M5 10.5h9M5 13.5h9" />
+            </svg>
+          </span>
+          <h3>{changes[2].t}</h3>
+          <p>{changes[2].d}</p>
+          <p class="fine"><span class="tag tag--red">έως {eur(EINVOICE.maxFine)}/παράβαση</span></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Η μετάβαση με το κλειδί στο χέρι -->
+  <section class="section section--tight" aria-labelledby="steps-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Πώς γίνεται</p>
+        <h2 id="steps-title">Η μετάβαση με το κλειδί στο χέρι</h2>
+        <p>Πέντε βήματα, με τη σειρά. Εσύ συνεχίζεις τη δουλειά σου — εμείς στήνουμε το κύκλωμα.</p>
+      </div>
+      <ol class="checklist">
+        {steps.map((s, i) => (
+          <li class="check-step reveal">
+            <span class="check-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12.5l4.5 4.5L19 7.5" />
+              </svg>
+            </span>
+            <div>
+              <p class="check-i num">Βήμα {i + 1}</p>
+              <h3>{s.t}</h3>
+              <p>{s.d}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. Κίνητρο early bird -->
+  <section class="section section--tight" aria-labelledby="early-title">
+    <div class="container">
+      <div class="card card--ok early reveal">
+        <span class="icon-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" />
+          </svg>
+        </span>
+        <div>
+          <h2 id="early-title">Μπες νωρίς — πληρώνεσαι γι' αυτό</h2>
+          <p>
+            Όσοι ενταχθούν έως <strong>{EINVOICE.earlyBirdHuman}</strong> κερδίζουν
+            <strong>100% προσαυξημένη έκπτωση δαπάνης</strong> για το κόστος της ηλεκτρονικής τιμολόγησης.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Λογιστικά γραφεία -->
+  <section class="section" aria-labelledby="partners-title">
+    <div class="container">
+      <div class="card card--navy partners reveal">
+        <div class="partners-text">
+          <p class="kicker">Για λογιστικά γραφεία</p>
+          <h2 id="partners-title">150 πελάτες. Μία προθεσμία. Πόσα χέρια έχετε;</h2>
+          <p>
+            Η μετάβαση δεν είναι ένα έργο — είναι δεκάδες, όλα με την ίδια καταληκτική ημερομηνία.
+            Γινόμαστε το τεχνικό χέρι του γραφείου σας: εσείς κρατάτε τον πελάτη και τη λογιστική,
+            εμείς στήνουμε παρόχους, συνδέσεις και δοκιμές.
+          </p>
+          <a class="btn btn--ghost" href="/epikoinonia/">Συνεργασία για λογιστικά γραφεία</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. FAQ -->
+  <section class="section section--tight" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Συχνές ερωτήσεις</p>
+        <h2 id="faq-title">Ό,τι μας ρωτούν για την τιμολόγηση</h2>
+      </div>
+      <Faq items={faqItems} withSchema={true} />
+    </div>
+  </section>
+
+  <!-- 8. Τελικό CTA -->
+  <CtaBand
+    title="Η προθεσμία δεν μετακινείται. Η σειρά σου ναι."
+    ctaText="Κλείσε τη μετάβασή σου"
+    ctaHref="/elegxos/"
+    note={`Η μετάβαση διαρκεί ${EINVOICE.migrationWeeks}`}
+  />
+</Base>
+
+<script define:vars={{ deadlineISO: EINVOICE.deadlineISO }}>
+  // Countdown ημερών — client-side, με build-time fallback ήδη στο HTML.
+  const el = document.getElementById('days-left');
+  if (el) {
+    const deadline = new Date(deadlineISO + 'T00:00:00');
+    const days = Math.max(0, Math.ceil((deadline.getTime() - Date.now()) / 86400000));
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) {
+      el.textContent = String(days);
+    } else {
+      const dur = 900;
+      const start = performance.now();
+      const tick = (now) => {
+        const t = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = String(Math.round(days * eased));
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+  }
+</script>
+
+<style>
+  /* Hero */
+  .hero { text-align: center; padding-top: clamp(56px, 9vw, 110px); padding-bottom: clamp(28px, 5vw, 56px); }
+  .hero .kicker { margin-bottom: 26px; }
+  .deadline-date {
+    display: block;
+    font-size: clamp(2.5rem, 9vw, 5.2rem);
+    line-height: 1.05;
+    color: var(--orange-cta);
+    letter-spacing: -.02em;
+  }
+  .deadline-what {
+    display: block;
+    margin: 18px auto 0;
+    max-width: 24ch;
+    font-size: clamp(1.25rem, 2.6vw, 1.8rem);
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .hero .sub { margin: 20px auto 32px; color: var(--muted); font-size: 1.15rem; max-width: 52ch; }
+
+  /* Countdown */
+  .countdown {
+    display: flex; align-items: center; justify-content: center;
+    gap: clamp(24px, 5vw, 64px); flex-wrap: wrap;
+    text-align: center;
+    padding: clamp(28px, 4vw, 44px);
+  }
+  .count-box { display: grid; justify-items: center; gap: 4px; }
+  .count-num {
+    font-size: clamp(3.4rem, 8vw, 5.5rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--navy);
+  }
+  .count-label { font-size: .95rem; color: var(--muted); font-weight: 600; }
+  .count-note { color: var(--muted); max-width: 26ch; text-align: left; }
+  .count-note strong { color: var(--navy); }
+
+  /* Τι αλλάζει */
+  .fine { margin-top: 14px; }
+
+  /* Checklist μετάβασης */
+  .checklist {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; gap: 18px; max-width: 760px;
+  }
+  .check-step {
+    display: flex; gap: 18px; align-items: flex-start;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r); box-shadow: var(--shadow);
+    padding: clamp(18px, 3vw, 26px);
+  }
+  .check-badge {
+    flex: none;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; border-radius: 12px;
+    background: var(--ok-soft); color: var(--ok);
+  }
+  .check-badge svg { width: 22px; height: 22px; }
+  .check-i {
+    font-size: .78rem; font-weight: 700; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--orange-cta);
+    margin-bottom: 2px;
+  }
+  .check-step h3 { margin-bottom: 4px; }
+  .check-step p { font-size: .95rem; color: var(--muted); max-width: 56ch; }
+
+  /* Κίνητρο early bird */
+  .early { display: flex; align-items: flex-start; gap: 20px; flex-wrap: wrap; }
+  .early h2 { font-size: clamp(1.25rem, 2.4vw, 1.6rem); margin-bottom: 8px; }
+  .early p { max-width: 56ch; }
+  .early strong { color: var(--ok-text); }
+
+  /* Λογιστικά γραφεία */
+  .partners { padding: clamp(30px, 5vw, 52px); }
+  .partners-text { max-width: 60ch; }
+  .partners-text .kicker { margin-bottom: 16px; }
+  .partners-text p { margin: 14px 0 26px; }
+  .partners .btn--ghost { color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .38); }
+  .partners .btn--ghost:hover { box-shadow: inset 0 0 0 1.5px #fff, var(--shadow-hover); }
+</style>

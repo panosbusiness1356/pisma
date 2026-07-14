@@ -1,0 +1,64 @@
+---
+import { SITE } from '../config';
+
+const pages = [
+  { href: '/se-vriskoun/', label: 'Σε Βρίσκουν' },
+  { href: '/doulevei-mono-tou/', label: 'Δουλεύει Μόνο Του' },
+  { href: '/tablo/', label: 'Το Ταμπλό' },
+  { href: '/timologisi-2026/', label: 'Ηλεκτρονική Τιμολόγηση 2026' },
+  { href: '/times/', label: 'Τιμές' },
+  { href: '/apodeixeis/', label: 'Αποδείξεις' },
+  { href: '/elegxos/', label: 'Ο Έλεγχος PISMA' },
+  { href: '/epikoinonia/', label: 'Επικοινωνία' },
+];
+---
+
+<footer class="footer">
+  <div class="container cols">
+    <div>
+      <p class="logo">PISMA<span>.</span></p>
+      <p class="tagline">{SITE.tagline}</p>
+      <p class="who">{SITE.founder} · {SITE.area}</p>
+    </div>
+
+    <nav aria-label="Σελίδες">
+      <h2 class="col-title">Σελίδες</h2>
+      <ul>
+        {pages.map((p) => (
+          <li><a href={p.href}>{p.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div>
+      <h2 class="col-title">Επικοινωνία</h2>
+      <ul>
+        <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+        <li><a href={`tel:${SITE.phone.replace(/\s/g, '')}`}>{SITE.phone}</a></li>
+      </ul>
+      <a class="btn btn--orange btn--sm cta" href="/elegxos/">Κλείσε τον Έλεγχο PISMA</a>
+    </div>
+  </div>
+  <div class="container bottom">
+    <p>© {new Date().getFullYear()} PISMA</p>
+  </div>
+</footer>
+
+<style>
+  .footer { border-top: 1px solid var(--line); background: var(--card); margin-top: clamp(40px, 7vw, 80px); }
+  .cols {
+    display: grid; gap: 36px;
+    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+    padding-block: clamp(40px, 6vw, 64px) 28px;
+  }
+  .logo { font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; color: var(--navy); }
+  .logo span { color: var(--orange); }
+  .tagline { margin-top: 10px; font-size: .95rem; color: var(--muted); font-style: italic; }
+  .who { margin-top: 14px; font-size: .92rem; font-weight: 600; color: var(--navy); }
+  .col-title { font-family: var(--font-body); font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  ul { list-style: none; padding: 0; display: grid; gap: 9px; }
+  ul a { text-decoration: none; font-size: .95rem; color: var(--ink); }
+  ul a:hover { color: var(--orange-text); }
+  .cta { margin-top: 20px; }
+  .bottom { border-top: 1px solid var(--line); padding-block: 18px; font-size: .85rem; color: var(--muted); }
+</style>

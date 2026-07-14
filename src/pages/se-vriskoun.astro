@@ -1,0 +1,399 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE } from '../config';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Σε Βρίσκουν — Ορατότητα σε Google και AI',
+  serviceType: 'Κατασκευή ιστοσελίδων, SEO, GEO/AEO, Google Reviews',
+  areaServed: SITE.region,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: SITE.name,
+    email: SITE.email,
+    telephone: SITE.phone,
+    url: SITE.url,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Γλυφάδα',
+      addressRegion: 'Αττική',
+      addressCountry: 'GR',
+    },
+  },
+  description:
+    'Site που πουλάει, πρώτες θέσεις στη Google και προτάσεις από το ChatGPT — με μέτρηση ορατότητας πριν και μετά.',
+};
+
+const services = [
+  {
+    t: 'Site που πουλάει',
+    d: 'Γρήγορο, καθαρό, με ένα ξεκάθαρο επόμενο βήμα σε κάθε σελίδα. Όχι βιτρίνα — εργαλείο δουλειάς.',
+    icon: 'site',
+  },
+  {
+    t: 'Πρώτος στη Google (SEO)',
+    d: 'Όταν ψάχνουν ό,τι κάνεις στην περιοχή σου, να βγαίνεις στα πρώτα αποτελέσματα. Με μηνιαία αναφορά θέσεων.',
+    icon: 'seo',
+  },
+  {
+    t: 'Να σε προτείνει το AI (GEO/AEO)',
+    d: 'Ολοένα περισσότεροι ρωτάνε το ChatGPT «πού να πάω;». Φροντίζουμε η απάντηση να έχει το όνομά σου.',
+    icon: 'ai',
+  },
+  {
+    t: 'Reviews με σύστημα',
+    d: 'Κάθε ευχαριστημένος πελάτης παίρνει το link την ώρα που πρέπει. Οι κριτικές μαζεύονται χωρίς να κυνηγάς.',
+    icon: 'star',
+  },
+  {
+    t: 'Μάτι στον ανταγωνισμό',
+    d: 'Βλέπεις πού βγαίνει ο απέναντι και πού εσύ. Κάθε μήνα, στην ίδια αναφορά.',
+    icon: 'eye',
+  },
+];
+
+const faqItems = [
+  {
+    q: 'Σε πόσο καιρό φαίνεται αποτέλεσμα στο SEO;',
+    a: 'Πρώτες ενδείξεις σε 2–3 μήνες, σταθερή άνοδο σε 4–6. Κάθε μήνα βλέπεις τα νούμερα — θέσεις, επισκέψεις, κλήσεις — και κρίνεις μόνος σου την πορεία.',
+  },
+  {
+    q: 'Τι είναι το GEO;',
+    a: 'Generative Engine Optimization: να σε προτείνουν το ChatGPT, το Gemini και το Perplexity όταν κάποιος τα ρωτάει για ό,τι κάνεις. Είναι το SEO της εποχής του AI — και μετριέται, όπως και το κλασικό.',
+  },
+  {
+    q: 'Έχω ήδη site — το κρατάμε;',
+    a: 'Αν στέκει τεχνικά, ναι — χτίζουμε πάνω του και δεν πληρώνεις κάτι απ΄ την αρχή. Αν όχι, βλέπεις γραπτά τι κοστίζει η διόρθωση και τι το νέο, και αποφασίζεις εσύ.',
+  },
+  {
+    q: 'Χρειάζομαι διαφημίσεις για να με βρίσκουν;',
+    a: 'Όχι απαραίτητα. Η οργανική ορατότητα χτίζεται πιο αργά, αλλά μένει — και δεν πληρώνεις για κάθε κλικ. Αν κάπου αξίζουν διαφημίσεις, θα το δεις με νούμερα, όχι με «πρέπει».',
+  },
+];
+---
+
+<Base
+  title="Σε Βρίσκουν — SEO, ορατότητα σε AI & Reviews | PISMA"
+  description="Site που πουλάει, πρώτες θέσεις στη Google και προτάσεις από το ChatGPT. Μετράμε την ορατότητά σου πριν και μετά — με νούμερα, όχι υποσχέσεις."
+  schema={schema}
+>
+  <!-- 1. Hero -->
+  <PageHero
+    kicker="Πυλώνας Α'"
+    sub="Όταν κάποιος ψάχνει ό,τι κάνεις στην περιοχή σου — να βγαίνεις εσύ. Στη Google και στο ChatGPT."
+  >
+    Σε <span class="accent">Βρίσκουν</span>
+  </PageHero>
+
+  <!-- 2. Υπηρεσίες -->
+  <section class="section section--tight" aria-labelledby="svc-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Τι στήνουμε</p>
+        <h2 id="svc-title">Πέντε δουλειές. Ένας στόχος: να σε βρίσκουν.</h2>
+      </div>
+      <div class="grid-3">
+        {services.map((s) => (
+          <article class="card reveal">
+            <span class="icon-chip">
+              {s.icon === 'site' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="4.5" width="18" height="15" rx="2.5" /><path d="M3 9.5h18M6.4 7h.01M9.4 7h.01" />
+                </svg>
+              )}
+              {s.icon === 'seo' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21" /><path d="M7.4 12.4l2-2 1.7 1.5 2.5-2.8" />
+                </svg>
+              )}
+              {s.icon === 'ai' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-2.9-.4-4.1-1L3 20l1-5.4A8.5 8.5 0 1 1 21 11.5z" /><path d="M12 8.5v5M9.5 11h5" />
+                </svg>
+              )}
+              {s.icon === 'star' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" />
+                </svg>
+              )}
+              {s.icon === 'eye' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" />
+                </svg>
+              )}
+            </span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Ρώτα το AI — demo -->
+  <section class="section" aria-labelledby="chat-title">
+    <div class="container container--narrow">
+      <div class="sec-head sec-head--center">
+        <p class="kicker">Δες το ζωντανά</p>
+        <h2 id="chat-title">Ρώτα το AI</h2>
+        <p>Κάπως έτσι μοιάζει η ερώτηση ενός πελάτη σήμερα — και η απάντηση που παίρνει.</p>
+      </div>
+
+      <div class="chat card" id="ai-chat">
+        <div class="chat-head">
+          <span class="win-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="chat-title">Συνομιλία με AI</span>
+          <span class="tag tag--demo">Demo</span>
+        </div>
+        <div class="chat-body">
+          <p class="msg msg--user">καλό κομμωτήριο στη Γλυφάδα;</p>
+          <div class="msg msg--ai">
+            <p class="ai-intro">Με βάση κριτικές και online παρουσία, ξεχωρίζουν τρία:</p>
+            <ol class="ai-list">
+              <li class="ai-item">
+                <strong>Salon «Ν.»</strong>
+                <span class="ai-note">4,9 · 200+ κριτικές</span>
+              </li>
+              <li class="ai-item ai-item--you">
+                <strong>Το δικό σου όνομα</strong>
+                <span class="you-flag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M19 12H5M11 6l-6 6 6 6" />
+                  </svg>
+                  εδώ πρέπει να είσαι εσύ
+                </span>
+              </li>
+              <li class="ai-item">
+                <strong>Studio «Μ.»</strong>
+                <span class="ai-note">δίπλα στην πλατεία</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-cta">
+        <a class="btn btn--orange" href="/tablo/">Μάθε αν σε προτείνει</a>
+        <span class="btn-note">2 λεπτά · δωρεάν · χωρίς στοιχεία</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. AI Visibility Index -->
+  <section class="section section--tight" aria-labelledby="avi-title">
+    <div class="container">
+      <div class="card avi reveal">
+        <div class="avi-intro">
+          <p class="kicker">AI Visibility Index</p>
+          <h2 id="avi-title">Η ορατότητά σου στο AI, σε ένα νούμερο.</h2>
+          <p>Το μετράμε πριν ξεκινήσουμε και κάθε μήνα μετά — για να βλέπεις την αλλαγή στο χαρτί.</p>
+        </div>
+        <ol class="avi-points">
+          <li>
+            <span class="avi-num num">1</span>
+            <div>
+              <h3>Τι είναι</h3>
+              <p>Σε πόσες σχετικές ερωτήσεις — «κομμωτήριο κοντά μου», «καλός λογιστής» — σε προτείνει το AI.</p>
+            </div>
+          </li>
+          <li>
+            <span class="avi-num num">2</span>
+            <div>
+              <h3>Πώς βγαίνει</h3>
+              <p>Ρωτάμε ChatGPT, Gemini και Perplexity πραγματικές ερωτήσεις πελατών και καταγράφουμε πού εμφανίζεσαι.</p>
+            </div>
+          </li>
+          <li>
+            <span class="avi-num num">3</span>
+            <div>
+              <h3>Γιατί μετράει</h3>
+              <p>Αν το AI δεν σε αναφέρει, ο πελάτης πάει αλλού — και δεν το μαθαίνεις ποτέ.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Συχνές ερωτήσεις</p>
+        <h2 id="faq-title">Πριν ρωτήσεις, ρώτησαν άλλοι.</h2>
+      </div>
+      <Faq items={faqItems} withSchema />
+    </div>
+  </section>
+
+  <!-- 6. Τελικό CTA -->
+  <CtaBand
+    title="Δες πόσο σε βρίσκουν — πριν το δει ο ανταγωνισμός."
+    sub="Το Ταμπλό σού δίνει σκορ ορατότητας σε δύο λεπτά."
+    ctaText="Μέτρησε την ορατότητά σου"
+    ctaHref="/tablo/"
+    note="2 λεπτά · δωρεάν · χωρίς στοιχεία"
+  />
+</Base>
+
+<script>
+  // «Ρώτα το AI»: τα μηνύματα υπάρχουν ήδη στο HTML — το JS μόνο τα κρύβει
+  // (is-armed) και τα εμφανίζει σταδιακά (is-play). Χωρίς JS, όλα ορατά από την αρχή.
+  const chat = document.getElementById('ai-chat');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (chat) {
+    if (!reduce && 'IntersectionObserver' in window) {
+      chat.classList.add('is-armed'); // μόνο τώρα κρύβονται τα μηνύματα
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              chat.classList.add('is-play');
+              io.disconnect();
+            }
+          }
+        },
+        { threshold: 0.35 }
+      );
+      io.observe(chat);
+    }
+    // Με reduced-motion (ή χωρίς IO): καμία κλάση — τελικό state αμέσως.
+  }
+</script>
+
+<style>
+  /* ---------- Chat demo ---------- */
+  .chat {
+    max-width: 620px;
+    margin-inline: auto;
+    padding: 0;
+    overflow: hidden;
+  }
+  .chat-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 20px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .win-dots { display: inline-flex; gap: 6px; }
+  .win-dots i {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--line);
+  }
+  .chat-title { font-size: .88rem; font-weight: 700; color: var(--navy); margin-right: auto; }
+  .chat-body { padding: clamp(18px, 3vw, 26px); display: grid; gap: 14px; }
+
+  .msg--user {
+    justify-self: end;
+    background: var(--navy); color: #fff;
+    border-radius: 16px 16px 4px 16px;
+    padding: 11px 18px;
+    max-width: 80%;
+    font-weight: 600;
+  }
+  .msg--ai {
+    justify-self: start;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 16px 16px 16px 4px;
+    padding: 16px 18px;
+    width: 100%;
+  }
+  .ai-intro { font-size: .95rem; color: var(--muted); }
+  .ai-list {
+    list-style: none; padding: 0;
+    margin-top: 12px;
+    display: grid; gap: 8px;
+    counter-reset: shop;
+  }
+  .ai-item {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 6px 14px; flex-wrap: wrap;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: .95rem;
+  }
+  .ai-item::before {
+    counter-increment: shop;
+    content: counter(shop) '.';
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--muted);
+  }
+  .ai-item strong { color: var(--navy); margin-right: auto; }
+  .ai-note { color: var(--muted); font-size: .85rem; }
+  .ai-item--you {
+    border: 2px solid var(--orange);
+    background: var(--orange-soft);
+  }
+  .ai-item--you::before { color: var(--orange-text); }
+  .you-flag {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--orange-text);
+    font-size: .76rem; font-weight: 700;
+    letter-spacing: .05em; text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .you-flag svg { width: 16px; height: 16px; flex: none; }
+
+  .chat-cta { text-align: center; margin-top: clamp(24px, 4vw, 36px); }
+
+  /* Staggered εμφάνιση μηνυμάτων (κρύβονται μόνο όταν το JS βάλει is-armed) */
+  .chat.is-armed .msg,
+  .chat.is-armed .ai-item {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .45s ease, transform .45s ease;
+  }
+  .chat.is-play .msg,
+  .chat.is-play .ai-item { opacity: 1; transform: none; }
+  .chat.is-play .msg--user { transition-delay: .15s; }
+  .chat.is-play .msg--ai { transition-delay: .85s; }
+  .chat.is-play .ai-item:nth-child(1) { transition-delay: 1.25s; }
+  .chat.is-play .ai-item:nth-child(2) { transition-delay: 1.55s; }
+  .chat.is-play .ai-item:nth-child(3) { transition-delay: 1.85s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chat.is-armed .msg,
+    .chat.is-armed .ai-item {
+      transition: none !important;
+      transition-delay: 0s !important;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* ---------- AI Visibility Index ---------- */
+  .avi {
+    display: grid;
+    grid-template-columns: minmax(min(300px, 100%), .9fr) minmax(min(300px, 100%), 1.1fr);
+    gap: clamp(26px, 5vw, 56px);
+    align-items: start;
+    padding: clamp(26px, 4vw, 48px);
+  }
+  @media (max-width: 760px) {
+    .avi { grid-template-columns: 1fr; }
+  }
+  .avi-intro .kicker { margin-bottom: 14px; }
+  .avi-intro p:not(.kicker) { margin-top: 12px; color: var(--muted); }
+  .avi-points {
+    list-style: none; padding: 0;
+    display: grid; gap: 18px;
+  }
+  .avi-points li { display: flex; gap: 16px; align-items: flex-start; }
+  .avi-num {
+    flex: none;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; border-radius: 10px;
+    background: var(--orange-soft); color: var(--orange-cta);
+    font-weight: 700;
+  }
+  .avi-points h3 { font-size: 1rem; margin-bottom: 2px; }
+  .avi-points p { font-size: .95rem; color: var(--muted); }
+</style>

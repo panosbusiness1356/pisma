@@ -1,0 +1,187 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, ELEGXOS, PRICES, eur } from '../config';
+
+const plans = [
+  {
+    ...PRICES.ekkinisi,
+    highlighted: false,
+    features: [
+      'Μετάβαση σε ηλεκτρονική τιμολόγηση',
+      '1 αυτοματισμός γραφείου',
+      'Συντήρηση συστήματος',
+      'Μηνιαία αναφορά αξίας',
+    ],
+  },
+  {
+    ...PRICES.leitourgia,
+    highlighted: true,
+    features: [
+      'Όλα της Εκκίνησης',
+      'Εισερχόμενα + συμφωνία myDATA',
+      'Κυνήγι εισπράξεων',
+      'Κάθε τρίμηνο ένας νέος αυτοματισμός',
+    ],
+  },
+  {
+    ...PRICES.parousia,
+    highlighted: false,
+    features: [
+      'Site ή ανακατασκευή',
+      'SEO που μετριέται',
+      'Μέτρηση & βελτίωση AI Visibility',
+      'Reviews στο αυτόματο',
+    ],
+  },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Πακέτα συνεργασίας PISMA',
+  provider: { '@type': 'LocalBusiness', name: SITE.name, url: SITE.url },
+  areaServed: SITE.region,
+  offers: plans.map((p) => ({
+    '@type': 'Offer',
+    name: p.name,
+    price: p.setup,
+    priceCurrency: 'EUR',
+    description: `+ ${eur(p.monthly)}/μήνα συντήρηση`,
+  })),
+};
+
+const faqItems = [
+  {
+    q: 'Τι περιλαμβάνει η συντήρηση;',
+    a: 'Παρακολούθηση ότι όλα τρέχουν, διορθώσεις όταν κάτι στραβώσει και μικρο-βελτιώσεις στην πορεία. Και κάθε μήνα, η Απόδειξη Αξίας — τι σου γλίτωσε το σύστημα, σε ώρες και ευρώ.',
+  },
+  {
+    q: 'Custom έργο;',
+    a: `Γίνεται. Παίρνεις γραπτή πρόταση σε ${ELEGXOS.reportHours} ώρες, με σταθερή τιμή — καμία έκπληξη στον λογαριασμό.`,
+  },
+  {
+    q: 'Υπάρχει δέσμευση;',
+    a: 'Όχι, δεν υπάρχει ετήσια δέσμευση. Μένεις όσο βλέπεις νούμερα που σε πείθουν.',
+  },
+];
+---
+
+<Base
+  title="Τιμές PISMA — Τρία πακέτα με σταθερή τιμή, στα φανερά"
+  description="Τρία πακέτα με ξεκάθαρη τιμή — Εκκίνηση, Λειτουργία, Παρουσία+. Εφάπαξ στήσιμο, μηνιαία συντήρηση με μετρήσιμη αξία και εγγύηση 30 ημερών. Χωρίς εκπλήξεις."
+  schema={schema}
+>
+  <PageHero kicker="Τιμές" sub="Ξέρεις τι πληρώνεις πριν μας πάρεις τηλέφωνο.">
+    Τιμές, <span class="accent">στα φανερά</span>.
+  </PageHero>
+
+  <!-- Πακέτα -->
+  <section class="section section--tight" aria-labelledby="plans-title">
+    <div class="container">
+      <h2 id="plans-title" class="visually-hidden">Τα πακέτα</h2>
+      <div class="grid-3 plans">
+        {plans.map((p) => (
+          <article class:list={['card', 'plan', 'reveal', { 'plan--hot': p.highlighted }]}>
+            {p.highlighted && <span class="plan-badge">Το πιο συνηθισμένο</span>}
+            <h3>{p.name}</h3>
+            <p class="plan-price">
+              <span class="num plan-setup">{eur(p.setup)}</span>
+              <span class="plan-once">εφάπαξ</span>
+            </p>
+            <p class="plan-monthly">+ <span class="num">{eur(p.monthly)}</span>/μήνα συντήρηση</p>
+            <ul class="plan-list">
+              {p.features.map((f) => (
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4.5 12.5l4.8 4.8L19.5 6.8" />
+                  </svg>
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+            <a class:list={['btn', p.highlighted ? 'btn--orange' : 'btn--ghost']} href="/elegxos/">
+              Ξεκίνα με Έλεγχο
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Εγγύηση -->
+  <section class="section section--tight" aria-labelledby="guarantee-title">
+    <div class="container">
+      <div class="card card--ok guarantee reveal">
+        <span class="icon-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3l7.5 2.8v5.4c0 4.6-3.1 7.8-7.5 9.3-4.4-1.5-7.5-4.7-7.5-9.3V5.8L12 3z" />
+            <path d="M8.8 12.2l2.3 2.3 4.4-4.8" />
+          </svg>
+        </span>
+        <div>
+          <h2 id="guarantee-title">Η εγγύησή μας</h2>
+          <p>Αν σε 30 ημέρες το σύστημα δεν σου γλιτώνει μετρήσιμες ώρες, ο πρώτος μήνας συντήρησης δεν χρεώνεται.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mini FAQ -->
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Συχνές ερωτήσεις</p>
+        <h2 id="faq-title">Ό,τι ρωτάνε πριν ξεκινήσουν</h2>
+      </div>
+      <Faq items={faqItems} withSchema={true} />
+    </div>
+  </section>
+
+  <!-- Τελικό CTA -->
+  <CtaBand
+    title="Πρώτα η μέτρηση, μετά η τιμή."
+    sub="Δες τι χάνεις σε ώρες και ευρώ — και μετά αποφασίζεις αν αξίζει."
+    ctaText="Κλείσε τον Έλεγχό σου"
+    ctaHref="/elegxos/"
+    note={`Ο Έλεγχος είναι ${ELEGXOS.price.toLowerCase()} · ${ELEGXOS.minutes} λεπτά · φεύγεις με νούμερα`}
+  />
+</Base>
+
+<style>
+  /* Πακέτα */
+  .plans { align-items: stretch; }
+  .plan { position: relative; display: flex; flex-direction: column; }
+  .plan--hot { border: 2px solid var(--orange); box-shadow: var(--shadow-hover); }
+  .plan-badge {
+    position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%);
+    background: var(--navy); color: var(--card);
+    font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 999px; white-space: nowrap;
+  }
+  .plan h3 { font-size: 1.25rem; margin-bottom: 14px; }
+  .plan-price { display: flex; align-items: baseline; gap: 8px; }
+  .plan-setup { font-size: 2.1rem; font-weight: 700; color: var(--navy); }
+  .plan-once { font-size: .9rem; color: var(--muted); }
+  .plan-monthly { margin-top: 2px; font-size: .97rem; color: var(--muted); }
+  .plan-monthly .num { font-weight: 700; color: var(--orange-cta); }
+  .plan-list {
+    list-style: none; padding: 0; margin: 22px 0 26px;
+    display: grid; gap: 10px; align-content: start; flex-grow: 1;
+  }
+  .plan-list li { display: flex; gap: 10px; align-items: flex-start; font-size: .95rem; color: var(--muted); }
+  .plan-list svg { width: 18px; height: 18px; flex: none; margin-top: 4px; color: var(--ok); }
+  .plan .btn { width: 100%; }
+
+  /* Εγγύηση */
+  .guarantee { display: flex; align-items: flex-start; gap: clamp(16px, 3vw, 24px); }
+  .guarantee .icon-chip { flex: none; }
+  .guarantee h2 { font-size: 1.25rem; margin-bottom: 8px; }
+  .guarantee p { max-width: 60ch; }
+
+  @media (max-width: 480px) {
+    .guarantee { flex-direction: column; }
+  }
+</style>
