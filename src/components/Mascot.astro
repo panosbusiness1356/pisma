@@ -66,15 +66,21 @@ const cloudB = dots.slice(half);
   const W = () => (isMobile() ? 80 : 110);
   const H = () => W();
 
-  /* Γεννιέται μέσα από την πορτοκαλί τελεία του logo. */
-  const logoDot = document.querySelector('.logo span');
+  /* Γεννιέται μέσα από την πορτοκαλί τελεία του logo: μένει κολλημένος πάνω
+     της σαν τελεία, φουσκώνει με spring και μετά κολυμπάει στην πρώτη στάση. */
+  const logoDot = document.querySelector<HTMLElement>('.logo span');
   let px = window.innerWidth - W() - 20;
   let py = window.innerHeight - H() - 24;
+  let dotPos: { x: number; y: number } | null = null;
   if (logoDot) {
     const r = logoDot.getBoundingClientRect();
-    px = r.left + r.width / 2 - W() / 2;
-    py = r.top + r.height / 2 - H() / 2;
+    dotPos = { x: r.left + r.width / 2 - W() / 2, y: r.top + r.height / 2 - H() / 2 };
+    px = dotPos.x;
+    py = dotPos.y;
   }
+  const birth = { start: performance.now() + 600, dur: 900 };
+  let scale = dotPos ? 0.08 : 1;
+  let pulsed = false;
 
   let rot = 0;
   let lastY = window.scrollY;
@@ -83,6 +89,7 @@ const cloudB = dots.slice(half);
   let arrivedAt = 0;
   let bubbleOn = false;
   let greeted = false;
+  let spokenIdx = -99;
   let mouseX = -1;
   let mouseY = -1;
   let eyeX = 0;
@@ -118,20 +125,42 @@ const cloudB = dots.slice(half);
     if (s.dataset.mascotPose === 'sit') {
       return { x: r.right - W() - r.width * 0.05, y: r.top - H() * 0.62, idx, side };
     }
+    /* Στάση δίπλα σε συγκεκριμένο στοιχείο (π.χ. δίπλα στον τίτλο του hero). */
+    const anchorSel = s.dataset.mascotAnchor;
+    if (anchorSel) {
+      const a = document.querySelector(anchorSel);
+      if (a) {
+        const ar = a.getBoundingClientRect();
+        const x = side === 'left' ? ar.left - W() - 26 : ar.right + 26;
+        const fits = x >= 8 && x + W() <= window.innerWidth - 8;
+        if (fits) {
+          const ay = Math.min(
+            Math.max(ar.top + ar.height * 0.5 - H() * 0.5, 100),
+            window.innerHeight - H() - 40
+          );
+          return { x, y: ay, idx, side };
+        }
+      }
+    }
     const y = hasGutter()
       ? Math.min(Math.max(r.top + r.height * 0.3, 250), window.innerHeight - H() - 60)
       : window.innerHeight - H() - 28;
     return { x: sideX(side), y, idx, side };
   };
 
+  let bubbleTimer: ReturnType<typeof setTimeout> | undefined;
   const showBubble = (msg: string | undefined, side: string) => {
     if (!msg) return;
     bubbleText.textContent = msg;
     el.classList.toggle('bubble-left', side === 'left');
     el.classList.add('has-bubble');
     bubbleOn = true;
+    /* Κλείνει μόνο του για να μη μένει πάνω από κείμενα. */
+    clearTimeout(bubbleTimer);
+    bubbleTimer = setTimeout(hideBubble, 6500);
   };
   const hideBubble = () => {
+    clearTimeout(bubbleTimer);
     el.classList.remove('has-bubble');
     bubbleOn = false;
   };
@@ -156,17 +185,45 @@ const cloudB = dots.slice(half);
         if (bubbleOn) hideBubble();
       }
 
+      /* Φάση γέννησης: καρφωμένος στην τελεία του logo, φουσκώνει με spring. */
+      const now = performance.now();
+      const birthing = dotPos && now < birth.start + birth.dur;
+      if (birthing) {
+        px = dotPos!.x;
+        py = dotPos!.y;
+        if (now >= birth.start) {
+          if (!pulsed) {
+            pulsed = true;
+            try {
+              logoDot!.style.display = 'inline-block';
+              logoDot!.animate(
+                [{ transform: 'scale(1)' }, { transform: 'scale(2.2)' }, { transform: 'scale(1)' }],
+                { duration: 550, easing: 'ease-out' }
+              );
+            } catch { /* χωρίς παλμό */ }
+          }
+          const t01 = Math.min(1, (now - birth.start) / birth.dur);
+          const c1 = 1.70158;
+          const eased = 1 + (c1 + 1) * Math.pow(t01 - 1, 3) + c1 * Math.pow(t01 - 1, 2);
+          scale = 0.08 + 0.92 * eased;
+        }
+      } else {
+        scale = 1;
+      }
+
       const dx = t.x - px;
       const dy = t.y - py;
-      px += dx * 0.075;
-      py += dy * 0.075;
+      if (!birthing) {
+        px += dx * 0.032;
+        py += dy * 0.032;
+      }
       const dist = Math.hypot(dx, dy);
 
       const y = window.scrollY;
       const vel = y - lastY;
       lastY = y;
-      const lean = Math.max(-14, Math.min(14, dx * 0.045 + vel * 0.35));
-      rot += (lean - rot) * 0.08;
+      const lean = Math.max(-10, Math.min(10, dx * 0.028 + vel * 0.25));
+      rot += (lean - rot) * 0.06;
 
       /* Τα μάτια κοιτούν τον κέρσορα — ή προς τα εκεί που ταξιδεύει. */
       const cx = px + W() / 2;
@@ -189,17 +246,17 @@ const cloudB = dots.slice(half);
       pupR.style.transform = `translate(${(eyeX * 0.85).toFixed(1)}px, ${(eyeY * 0.85).toFixed(1)}px)`;
 
       el.style.transform = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px)`;
-      motion.style.transform = `rotate(${rot.toFixed(2)}deg)`;
+      motion.style.transform = `rotate(${rot.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
 
       if (dist < 40) {
         if (!arrivedAt) arrivedAt = performance.now();
-        else if (!bubbleOn && performance.now() - arrivedAt > 350) {
+        else if (!bubbleOn && spokenIdx !== activeIdx && performance.now() - arrivedAt > 350) {
+          spokenIdx = activeIdx;
           if (activeIdx >= 0) {
             showBubble(stops[activeIdx].dataset.mascotSay, t.side);
           } else if (!greeted) {
             greeted = true;
             showBubble(GREETING, 'right');
-            setTimeout(hideBubble, 8000);
           }
         }
       } else if (dist > 130 && bubbleOn) {
