@@ -156,8 +156,19 @@ const demoCases = [
 
       <h1 id="hero-title" class="blur-in" style="--d:.22s">
         Να σε βρίσκουν πελάτες.<br />
-        Να δουλεύει <span class="hero-hl">μόνο του</span>.
+        Να δουλεύει <span class="hero-hl">μόνο του<svg class="hl-stroke" viewBox="0 0 320 30" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="hlGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF8A50" /><stop offset="1" stop-color="#D63E1B" /></linearGradient></defs><path d="M6 15 C 60 9, 130 21, 200 14 C 245 10, 285 12, 314 13 C 260 18, 200 22, 120 21 C 90 20.5, 72 19, 58 18" fill="none" stroke="url(#hlGrad)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" opacity=".95" /></svg></span>.
       </h1>
+      <script is:inline>
+        // Κρύβει την υπογράμμιση πριν το πρώτο paint — θα τη «ζωγραφίσει» ο Ντοτ.
+        (function () {
+          var p = document.querySelector('.hl-stroke path');
+          if (p && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            var L = p.getTotalLength();
+            p.style.strokeDasharray = String(L);
+            p.style.strokeDashoffset = String(L);
+          }
+        })();
+      </script>
       <p class="sub blur-in" style="--d:.34s">
         Μετράμε τι χάνεις — σε πελάτες και σε ώρες — και το διορθώνουμε.
         Με νούμερα, όχι λόγια. Για ελληνικές μικρομεσαίες επιχειρήσεις.
@@ -570,9 +581,10 @@ const demoCases = [
   .hero-inner { text-align: center; position: relative; z-index: 1; }
   .hero h1 { max-width: 20ch; margin-inline: auto; font-size: clamp(2.4rem, 6vw, 4.6rem); }
   .hero-hl { position: relative; white-space: nowrap; }
-  .hero-hl::after {
-    content: ''; position: absolute; left: 0; right: 0; bottom: .04em; height: .14em;
-    background: var(--grad); border-radius: 999px; opacity: .9;
+  .hl-stroke {
+    position: absolute; left: -.06em; bottom: -.16em;
+    width: calc(100% + .12em); height: .34em;
+    overflow: visible; pointer-events: none;
   }
   .hero .sub { margin: 26px auto 0; font-size: 1.16rem; color: var(--muted); max-width: 52ch; }
   .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 40px; }

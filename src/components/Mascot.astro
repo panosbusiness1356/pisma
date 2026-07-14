@@ -82,6 +82,16 @@ const cloudB = dots.slice(half);
   let scale = dotPos ? 0.08 : 1;
   let pulsed = false;
 
+  /* Χορογραφία εισόδου: πετάει ως το «μόνο του» και ζωγραφίζει την υπογράμμιση
+     σαν μαρκαδόρο, συγχρονισμένη με τη θέση του — μετά ξεκινά η ξενάγηση. */
+  const hlSpan = document.querySelector<HTMLElement>('.hero-hl');
+  const hlPath = document.querySelector<SVGPathElement>('.hl-stroke path');
+  const hlLen = hlPath?.style.strokeDasharray ? parseFloat(hlPath.style.strokeDasharray) : 0;
+  let phase: 'approach' | 'draw' | 'tour' = hlSpan && hlPath && hlLen > 0 && !reduce ? 'approach' : 'tour';
+  const finishStroke = () => {
+    if (hlPath) hlPath.style.strokeDashoffset = '0';
+  };
+
   let rot = 0;
   let lastY = window.scrollY;
   let activeIdx = -2;
@@ -177,7 +187,32 @@ const cloudB = dots.slice(half);
     el.classList.add('is-ready');
   } else {
     const loop = () => {
-      const t = targetPos();
+      let t = targetPos();
+
+      /* Φάσεις εισόδου: πάνω από το «μόνο του», τραβώντας τη γραμμή. */
+      if (phase !== 'tour') {
+        if (!hlSpan || window.scrollY > 80) {
+          phase = 'tour';
+          finishStroke();
+        } else {
+          const sr = hlSpan.getBoundingClientRect();
+          const yLine = sr.bottom - H() * 0.35;
+          if (phase === 'approach') {
+            t = { x: sr.left - W() * 0.55, y: yLine, idx: -2, side: 'right' };
+            if (Math.hypot(t.x - px, t.y - py) < 24) phase = 'draw';
+          }
+          if (phase === 'draw') {
+            t = { x: sr.right - W() * 0.4, y: yLine, idx: -2, side: 'right' };
+            const p = Math.min(1, Math.max(0, (px + W() / 2 - sr.left) / sr.width));
+            hlPath!.style.strokeDashoffset = String(hlLen * (1 - p));
+            if (p >= 0.97) {
+              phase = 'tour';
+              finishStroke();
+            }
+          }
+        }
+      }
+
       lastSide = t.side;
       if (t.idx !== activeIdx) {
         activeIdx = t.idx;
@@ -214,8 +249,9 @@ const cloudB = dots.slice(half);
       const dx = t.x - px;
       const dy = t.y - py;
       if (!birthing) {
-        px += dx * 0.032;
-        py += dy * 0.032;
+        const k = phase === 'tour' ? 0.032 : 0.045;
+        px += dx * k;
+        py += dy * k;
       }
       const dist = Math.hypot(dx, dy);
 
@@ -248,7 +284,7 @@ const cloudB = dots.slice(half);
       el.style.transform = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px)`;
       motion.style.transform = `rotate(${rot.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
 
-      if (dist < 40) {
+      if (dist < 40 && phase === 'tour') {
         if (!arrivedAt) arrivedAt = performance.now();
         else if (!bubbleOn && spokenIdx !== activeIdx && performance.now() - arrivedAt > 350) {
           spokenIdx = activeIdx;
