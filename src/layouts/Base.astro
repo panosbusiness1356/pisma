@@ -63,32 +63,120 @@ const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
     <Footer />
 
     <script>
-      // Ήχος click σε κουμπιά/links — μικρό «τικ» με Web Audio, χωρίς αρχεία ήχου.
-      let audioCtx: AudioContext | undefined;
-      const tick = () => {
-        try {
-          audioCtx ||= new AudioContext();
-          if (audioCtx.state === 'suspended') audioCtx.resume();
-          const t = audioCtx.currentTime;
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(720, t);
-          osc.frequency.exponentialRampToValueAtTime(240, t + 0.07);
-          gain.gain.setValueAtTime(0.09, t);
-          gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
-          osc.connect(gain).connect(audioCtx.destination);
-          osc.start(t);
-          osc.stop(t + 0.1);
-        } catch {
-          /* χωρίς ήχο αν το μπλοκάρει ο browser */
-        }
+      // Ηχητικά εφέ UI — συντίθενται live με Web Audio (χωρίς αρχεία ήχου).
+      // Δημόσιο API: window.pismaSound.{enabled, toggle(), play(name)}
+      // + event 'pisma-sound-change' για συγχρονισμό του διακόπτη στο μενού.
+      type SoundName = 'click' | 'tick' | 'on' | 'off';
+
+      const store = {
+        get enabled() {
+          try { return localStorage.getItem('pisma-sound') !== 'off'; } catch { return true; }
+        },
+        set enabled(v: boolean) {
+          try { localStorage.setItem('pisma-sound', v ? 'on' : 'off'); } catch { /* χωρίς αποθήκευση */ }
+        },
       };
+
+      let ctx: AudioContext | undefined;
+      let master: GainNode | undefined;
+      let noiseBuf: AudioBuffer | undefined;
+      const audio = () => {
+        ctx ||= new AudioContext();
+        if (!master) {
+          master = ctx.createGain();
+          master.gain.value = 0.9;
+          master.connect(ctx.destination);
+        }
+        if (ctx.state === 'suspended') ctx.resume();
+        return ctx;
+      };
+
+      /** Καθαρός τόνος με πτώση/άνοδο συχνότητας και εκθετικό σβήσιμο. */
+      const tone = (o: { type?: OscillatorType; from: number; to?: number; delay?: number; dur: number; peak: number }) => {
+        const c = audio();
+        const t = c.currentTime + (o.delay ?? 0);
+        const osc = c.createOscillator();
+        const g = c.createGain();
+        osc.type = o.type ?? 'sine';
+        osc.frequency.setValueAtTime(o.from, t);
+        if (o.to) osc.frequency.exponentialRampToValueAtTime(o.to, t + o.dur);
+        g.gain.setValueAtTime(o.peak, t);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + o.dur);
+        osc.connect(g).connect(master!);
+        osc.start(t);
+        osc.stop(t + o.dur + 0.02);
+      };
+
+      /** Σύντομη «πνοή» θορύβου για το φυσικό αίσθημα του tap. */
+      const puff = (o: { delay?: number; dur: number; peak: number; cutoff: number }) => {
+        const c = audio();
+        if (!noiseBuf) {
+          noiseBuf = c.createBuffer(1, Math.floor(c.sampleRate * 0.1), c.sampleRate);
+          const d = noiseBuf.getChannelData(0);
+          for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+        }
+        const t = c.currentTime + (o.delay ?? 0);
+        const src = c.createBufferSource();
+        src.buffer = noiseBuf;
+        const f = c.createBiquadFilter();
+        f.type = 'highpass';
+        f.frequency.value = o.cutoff;
+        const g = c.createGain();
+        g.gain.setValueAtTime(o.peak, t);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + o.dur);
+        src.connect(f).connect(g).connect(master!);
+        src.start(t);
+        src.stop(t + o.dur + 0.02);
+      };
+
+      const sounds: Record<SoundName, () => void> = {
+        // Κουμπιά/CTA: ζεστό, γεμάτο «ποπ»
+        click() {
+          tone({ from: 440, to: 170, dur: 0.09, peak: 0.1 });
+          tone({ type: 'triangle', from: 920, to: 540, dur: 0.07, peak: 0.03 });
+          puff({ dur: 0.03, peak: 0.045, cutoff: 2600 });
+        },
+        // Links/tabs/πεδία: ελαφρύ «τικ»
+        tick() {
+          tone({ from: 980, to: 620, dur: 0.05, peak: 0.05 });
+          puff({ dur: 0.02, peak: 0.02, cutoff: 4200 });
+        },
+        // Ενεργοποίηση ήχων: ανοδικό κουδουνάκι (Ντο→Σολ)
+        on() {
+          tone({ from: 523.25, dur: 0.18, peak: 0.06 });
+          tone({ from: 783.99, delay: 0.09, dur: 0.22, peak: 0.05 });
+          tone({ type: 'triangle', from: 1046.5, delay: 0.09, dur: 0.2, peak: 0.015 });
+        },
+        // Απενεργοποίηση: χαμηλό, σβηστό «ντουπ»
+        off() {
+          tone({ from: 340, to: 150, dur: 0.12, peak: 0.06 });
+        },
+      };
+
+      const play = (name: SoundName) => {
+        try { sounds[name](); } catch { /* χωρίς ήχο αν το μπλοκάρει ο browser */ }
+      };
+
+      (window as any).pismaSound = {
+        get enabled() { return store.enabled; },
+        toggle() {
+          const next = !store.enabled;
+          if (next) { store.enabled = true; play('on'); }
+          else { play('off'); store.enabled = false; }
+          document.dispatchEvent(new CustomEvent('pisma-sound-change', { detail: { enabled: next } }));
+          return next;
+        },
+        play,
+      };
+
       document.addEventListener(
         'pointerdown',
         (e) => {
+          if (!store.enabled) return;
           const el = e.target as Element | null;
-          if (el?.closest('a, button, [role="tab"], label, select, input')) tick();
+          if (!el || el.closest('[data-sound-toggle]')) return; // ο διακόπτης έχει δικούς του ήχους
+          if (el.closest('.btn')) play('click');
+          else if (el.closest('a, button, [role="tab"], label, select, input, summary')) play('tick');
         },
         { capture: true, passive: true }
       );

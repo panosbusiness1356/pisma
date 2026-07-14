@@ -23,6 +23,17 @@ const path = norm(Astro.url.pathname);
       <li class="nav-cta-mobile"><a class="btn btn--orange btn--sm" href="/tablo/">Δωρεάν μέτρηση</a></li>
     </ul>
 
+    <button class="sound-btn" type="button" data-sound-toggle aria-pressed="true" aria-label="Ήχοι κλικ" title="Ήχοι κλικ">
+      <svg class="s-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M11 5 6 9H3v6h3l5 4z" />
+        <path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a9 9 0 0 1 0 12" />
+      </svg>
+      <svg class="s-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none">
+        <path d="M11 5 6 9H3v6h3l5 4z" />
+        <path d="m16 9 5 6M21 9l-5 6" />
+      </svg>
+    </button>
+
     <a class="btn btn--orange btn--sm nav-cta" href="/tablo/">Δωρεάν μέτρηση</a>
 
     <button class="burger" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Μενού">
@@ -50,6 +61,21 @@ const path = norm(Astro.url.pathname);
   const onScroll = () => wrap.classList.toggle('is-scrolled', window.scrollY > 50);
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Διακόπτης ήχων — συγχρονίζεται με το window.pismaSound (ορίζεται στο Base).
+  const soundBtn = document.querySelector<HTMLButtonElement>('[data-sound-toggle]')!;
+  const syncSound = (on: boolean) => {
+    soundBtn.setAttribute('aria-pressed', String(on));
+    (soundBtn.querySelector('.s-on') as SVGElement).style.display = on ? '' : 'none';
+    (soundBtn.querySelector('.s-off') as SVGElement).style.display = on ? 'none' : '';
+  };
+  try {
+    syncSound(localStorage.getItem('pisma-sound') !== 'off');
+  } catch { /* default: on */ }
+  soundBtn.addEventListener('click', () => {
+    const api = (window as unknown as { pismaSound?: { toggle: () => boolean } }).pismaSound;
+    if (api) syncSound(api.toggle());
+  });
 </script>
 
 <style>
@@ -90,6 +116,16 @@ const path = norm(Astro.url.pathname);
     text-decoration-color: var(--orange);
   }
   .nav-cta-mobile { display: none; }
+  .sound-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px; border-radius: 50%; flex: none;
+    background: transparent; border: 1px solid var(--line-strong);
+    color: var(--muted); cursor: pointer;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .sound-btn:hover { color: var(--navy); border-color: rgba(255, 255, 255, .35); }
+  .sound-btn[aria-pressed='false'] { opacity: .65; }
+  .sound-btn svg { width: 18px; height: 18px; }
   .burger { display: none; background: none; border: 0; cursor: pointer; color: var(--navy); padding: 8px; border-radius: 10px; }
   .burger svg { width: 26px; height: 26px; }
 
