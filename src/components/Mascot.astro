@@ -66,14 +66,41 @@ const cloudB = dots.slice(half);
   const W = () => (isMobile() ? 80 : 110);
   const H = () => W();
 
-  /* Γεννιέται μέσα από την πορτοκαλί τελεία του logo: μένει κολλημένος πάνω
-     της σαν τελεία, φουσκώνει με spring και μετά κολυμπάει στην πρώτη στάση. */
-  const logoDot = document.querySelector<HTMLElement>('.logo span');
+  /* Σημείο γέννησης: στην αρχική βγαίνει από την τελεία του logo· κάθε άλλη
+     σελίδα τον γεννάει από δικό της, σχετικό σημείο (τιμή, chat, κουκίδα...).
+     Αν το σημείο δεν είναι ορατό στο φόρτωμα, πέφτει στον τίτλο της σελίδας. */
+  const SPAWNS: Array<[string, string]> = [
+    ['/se-vriskoun', '.msg--user'],
+    ['/doulevei-mono-tou', '.term-title'],
+    ['/times', '.plan-setup'],
+    ['/apodeixeis', '.after-num'],
+    ['/tablo', '.dot'],
+    ['/epikoinonia', '.c-value'],
+    ['/timologisi-2026', '.count-num'],
+    ['/elegxos', 'main h1'],
+  ];
+  const resolveSpawn = (): HTMLElement | null => {
+    const path = location.pathname.replace(/\/$/, '') || '/';
+    if (path === '/') return document.querySelector('.logo span');
+    const visible = (e: HTMLElement | null) => {
+      if (!e) return false;
+      const r = e.getBoundingClientRect();
+      return r.width > 0 && r.bottom > 90 && r.top < window.innerHeight - 60;
+    };
+    let el: HTMLElement | null = null;
+    for (const [prefix, sel] of SPAWNS) {
+      if (path.startsWith(prefix)) { el = document.querySelector(sel); break; }
+    }
+    if (!visible(el)) el = document.querySelector('main h1');
+    if (!visible(el)) el = document.querySelector('.logo span');
+    return el;
+  };
+  const spawnEl = resolveSpawn();
   let px = window.innerWidth - W() - 20;
   let py = window.innerHeight - H() - 24;
   let dotPos: { x: number; y: number } | null = null;
-  if (logoDot) {
-    const r = logoDot.getBoundingClientRect();
+  if (spawnEl) {
+    const r = spawnEl.getBoundingClientRect();
     dotPos = { x: r.left + r.width / 2 - W() / 2, y: r.top + r.height / 2 - H() / 2 };
     px = dotPos.x;
     py = dotPos.y;
@@ -230,9 +257,12 @@ const cloudB = dots.slice(half);
           if (!pulsed) {
             pulsed = true;
             try {
-              logoDot!.style.display = 'inline-block';
-              logoDot!.animate(
-                [{ transform: 'scale(1)' }, { transform: 'scale(2.2)' }, { transform: 'scale(1)' }],
+              /* Μικρά στοιχεία (τελεία) πάλλονται έντονα, μεγάλα πιο διακριτικά. */
+              const sw = spawnEl!.getBoundingClientRect().width;
+              const k = sw < 40 ? 2.2 : sw < 140 ? 1.35 : 1.12;
+              if (getComputedStyle(spawnEl!).display === 'inline') spawnEl!.style.display = 'inline-block';
+              spawnEl!.animate(
+                [{ transform: 'scale(1)' }, { transform: `scale(${k})` }, { transform: 'scale(1)' }],
                 { duration: 550, easing: 'ease-out' }
               );
             } catch { /* χωρίς παλμό */ }
