@@ -1,56 +1,53 @@
 ---
 /**
- * Οκτώ — το χταποδάκι-ξεναγός της PISMA.
- * Κολυμπάει από section σε section καθώς ο χρήστης σκρολάρει, αλλάζει πλευρές
- * (δεξιά/αριστερά) και δείχνει συννεφάκι με το σημαντικό μήνυμα κάθε ενότητας.
- * Τα σημεία-στάσεις ορίζονται με data-mascot-stop / data-mascot-say /
- * data-mascot-side / data-mascot-pose πάνω στα sections της σελίδας.
- * Σε σελίδες χωρίς στάσεις μένει στην κάτω-δεξιά γωνία με έναν χαιρετισμό.
+ * Ντοτ — η τελεία της PISMA που ζωντάνεψε.
+ * Σύννεφο από πορτοκαλί κουκίδες με googly μάτια που ακολουθούν τον κέρσορα.
+ * Ξεναγεί τον επισκέπτη: ταξιδεύει από section σε section (data-mascot-stop),
+ * αλλάζει πλευρές και δείχνει συννεφάκι με το μήνυμα κάθε στάσης.
+ * Οι κουκίδες παράγονται με seeded τυχαιότητα στο build — ίδιο σχήμα σε κάθε build.
  */
+const palette = ['#FF7A45', '#FF9159', '#E8481F', '#FFB27A', '#FFD9A8'];
+let seed = 7;
+const rnd = () => {
+  seed = (seed * 16807) % 2147483647;
+  return seed / 2147483647;
+};
+type Dot = { x: number; y: number; r: number; c: string; o: number };
+const dots: Dot[] = [];
+for (let i = 0; i < 135; i++) {
+  const a = rnd() * Math.PI * 2;
+  const rr = 78 * Math.pow(rnd(), 0.55);
+  dots.push({
+    x: +(100 + Math.cos(a) * rr).toFixed(1),
+    y: +(100 + Math.sin(a) * rr * 0.98).toFixed(1),
+    r: +(rnd() < 0.12 ? 3.4 + rnd() * 1.8 : 1.2 + rnd() * 2.2).toFixed(1),
+    c: palette[Math.floor(rnd() * palette.length)],
+    o: +(0.45 + rnd() * 0.55).toFixed(2),
+  });
+}
+const half = Math.ceil(dots.length / 2);
+const cloudA = dots.slice(0, half);
+const cloudB = dots.slice(half);
 ---
 
 <div id="pisma-mascot" aria-hidden="true">
   <div class="m-bubble"><span class="m-bubble-text"></span></div>
   <div class="m-motion">
     <div class="m-bob">
-      <svg viewBox="0 0 220 176" fill="none">
-        <g class="m-tent" style="--dur:6.2s;--del:-1.3s;--amp:3.6deg">
-          <path d="M65 115 C52 146 34 146 24 134" stroke="#FF7A45" stroke-width="11" stroke-linecap="round" />
-          <rect x="8" y="118" width="18" height="24" rx="3" fill="#F5F2FB" />
-          <path d="M12 125 h10 M12 131 h10 M12 137 h6" stroke="#A79DBB" stroke-width="2" stroke-linecap="round" />
+      <svg viewBox="0 0 200 200" fill="none">
+        <g class="d-spin">
+          {cloudA.map((d) => <circle cx={d.x} cy={d.y} r={d.r} fill={d.c} opacity={d.o} />)}
         </g>
-        <g class="m-tent" style="--dur:5.1s;--del:-2.6s;--amp:4.4deg">
-          <path d="M88 123 C84 152 66 162 54 156" stroke="#FF7A45" stroke-width="11" stroke-linecap="round" />
+        <g class="d-spin2">
+          {cloudB.map((d) => <circle cx={d.x} cy={d.y} r={d.r} fill={d.c} opacity={d.o} />)}
         </g>
-        <g class="m-tent" style="--dur:5.7s;--del:-.7s;--amp:3.2deg">
-          <path d="M110 127 C112 152 98 164 88 162" stroke="#FF7A45" stroke-width="11" stroke-linecap="round" />
-          <g transform="translate(62,151)">
-            <rect width="24" height="17" rx="2.5" fill="#FFFFFF" />
-            <path d="M2.5 4 L12 10.5 L21.5 4" stroke="#EA4335" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-            <rect x="1.2" y="2.5" width="3" height="12.5" rx="1.2" fill="#EA4335" />
-            <rect x="19.8" y="2.5" width="3" height="12.5" rx="1.2" fill="#EA4335" />
-          </g>
+        <g class="d-eyes">
+          <circle cx="78" cy="95" r="18" fill="#FFF8F0" />
+          <circle cx="120" cy="90" r="15" fill="#FFF8F0" />
+          <g class="d-pup-l"><circle cx="78" cy="95" r="9" fill="#14101E" /></g>
+          <g class="d-pup-r"><circle cx="120" cy="90" r="7.5" fill="#14101E" /></g>
         </g>
-        <g class="m-tent" style="--dur:4.8s;--del:-3.4s;--amp:4.6deg">
-          <path d="M132 123 C136 152 154 162 166 156" stroke="#FF7A45" stroke-width="11" stroke-linecap="round" />
-        </g>
-        <g class="m-tent" style="--dur:6.6s;--del:-1.9s;--amp:3.8deg">
-          <path d="M155 115 C168 144 186 144 198 134" stroke="#FF7A45" stroke-width="11" stroke-linecap="round" />
-          <circle cx="202" cy="132" r="10" fill="#FFC24B" stroke="#C1841D" stroke-width="1.5" />
-          <text x="202" y="136.5" text-anchor="middle" font-size="11" font-weight="700" fill="#7A5410" font-family="Commissioner, sans-serif">€</text>
-        </g>
-        <ellipse cx="110" cy="80" rx="52" ry="46" fill="#FF7A45" />
-        <circle cx="80" cy="92" r="5" fill="#FFD9A8" opacity=".7" />
-        <circle cx="140" cy="92" r="5" fill="#FFD9A8" opacity=".7" />
-        <g class="m-eyes">
-          <circle cx="93" cy="78" r="9" fill="#FFFFFF" />
-          <circle cx="127" cy="78" r="9" fill="#FFFFFF" />
-          <circle cx="95" cy="80" r="4.5" fill="#14101E" />
-          <circle cx="125" cy="80" r="4.5" fill="#14101E" />
-          <circle cx="97" cy="77" r="1.6" fill="#FFFFFF" />
-          <circle cx="127" cy="77" r="1.6" fill="#FFFFFF" />
-        </g>
-        <path d="M99 98 Q110 105 121 98" stroke="#7A2408" stroke-width="3" stroke-linecap="round" />
+        <circle cx="101" cy="117" r="12.5" fill="#E8481F" />
       </svg>
     </div>
   </div>
@@ -60,15 +57,25 @@
   const el = document.getElementById('pisma-mascot')!;
   const motion = el.querySelector<HTMLElement>('.m-motion')!;
   const bubbleText = el.querySelector<HTMLElement>('.m-bubble-text')!;
+  const pupL = el.querySelector<HTMLElement>('.d-pup-l')!;
+  const pupR = el.querySelector<HTMLElement>('.d-pup-r')!;
   const stops = [...document.querySelectorAll<HTMLElement>('[data-mascot-stop]')];
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isMobile = () => window.matchMedia('(max-width: 680px)').matches;
 
-  const W = () => (isMobile() ? 72 : 100);
-  const H = () => W() * 0.8;
+  const W = () => (isMobile() ? 80 : 110);
+  const H = () => W();
 
+  /* Γεννιέται μέσα από την πορτοκαλί τελεία του logo. */
+  const logoDot = document.querySelector('.logo span');
   let px = window.innerWidth - W() - 20;
   let py = window.innerHeight - H() - 24;
+  if (logoDot) {
+    const r = logoDot.getBoundingClientRect();
+    px = r.left + r.width / 2 - W() / 2;
+    py = r.top + r.height / 2 - H() / 2;
+  }
+
   let rot = 0;
   let lastY = window.scrollY;
   let activeIdx = -2;
@@ -76,6 +83,10 @@
   let arrivedAt = 0;
   let bubbleOn = false;
   let greeted = false;
+  let mouseX = -1;
+  let mouseY = -1;
+  let eyeX = 0;
+  let eyeY = 0;
 
   el.style.width = W() + 'px';
 
@@ -125,7 +136,12 @@
     bubbleOn = false;
   };
 
-  const GREETING = 'Γεια! Είμαι ο Οκτώ. Θες μια γρήγορη μέτρηση; Πάτα «Δωρεάν μέτρηση» πάνω δεξιά!';
+  const GREETING = 'Γεια! Είμαι ο Ντοτ — η τελεία της PISMA. Θες μια γρήγορη μέτρηση; Πάτα «Δωρεάν μέτρηση» πάνω δεξιά!';
+
+  window.addEventListener('pointermove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  }, { passive: true });
 
   if (reduce) {
     el.style.transform = `translate(${px}px, ${py}px)`;
@@ -151,6 +167,26 @@
       lastY = y;
       const lean = Math.max(-14, Math.min(14, dx * 0.045 + vel * 0.35));
       rot += (lean - rot) * 0.08;
+
+      /* Τα μάτια κοιτούν τον κέρσορα — ή προς τα εκεί που ταξιδεύει. */
+      const cx = px + W() / 2;
+      const cy = py + H() / 2;
+      let tx = 0;
+      let ty = 0;
+      if (mouseX >= 0) {
+        tx = mouseX - cx;
+        ty = mouseY - cy;
+      } else if (dist > 24) {
+        tx = dx;
+        ty = dy;
+      }
+      const len = Math.hypot(tx, ty) || 1;
+      const max = 7;
+      const k = Math.min(1, len / 160);
+      eyeX += ((tx / len) * max * k - eyeX) * 0.14;
+      eyeY += ((ty / len) * max * k - eyeY) * 0.14;
+      pupL.style.transform = `translate(${eyeX.toFixed(1)}px, ${eyeY.toFixed(1)}px)`;
+      pupR.style.transform = `translate(${(eyeX * 0.85).toFixed(1)}px, ${(eyeY * 0.85).toFixed(1)}px)`;
 
       el.style.transform = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px)`;
       motion.style.transform = `rotate(${rot.toFixed(2)}deg)`;
@@ -197,17 +233,17 @@
 <style>
   #pisma-mascot {
     position: fixed; left: 0; top: 0; z-index: 90;
-    width: 100px; opacity: 0; cursor: pointer;
+    width: 110px; opacity: 0; cursor: pointer;
     will-change: transform;
-    filter: drop-shadow(0 12px 26px rgba(0, 0, 0, .4));
-    transition: opacity .6s ease;
+    filter: drop-shadow(0 10px 26px rgba(238, 79, 39, .22));
+    transition: opacity .7s ease;
   }
   #pisma-mascot.is-ready { opacity: 1; }
   #pisma-mascot svg { overflow: visible; width: 100%; height: auto; }
 
   /* Συννεφάκι ξενάγησης */
   .m-bubble {
-    position: absolute; bottom: calc(100% + 14px); right: -8px;
+    position: absolute; bottom: calc(100% + 12px); right: -8px;
     width: max-content; max-width: 250px;
     background: #221A33;
     border: 1px solid rgba(255, 122, 80, .5);
@@ -238,21 +274,22 @@
   .m-motion { transform-origin: 50% 60%; }
   .m-bob { animation: m-bob 4.6s ease-in-out infinite alternate; }
   @keyframes m-bob {
-    from { transform: translateY(0); }
-    to { transform: translateY(5px); }
+    from { transform: translateY(0) scale(1); }
+    to { transform: translateY(5px) scale(1.03); }
   }
 
-  .m-tent {
+  /* Το σύννεφο κουκίδων γυρίζει αργά — δύο στρώσεις, αντίθετες φορές. */
+  .d-spin, .d-spin2 {
     transform-box: fill-box;
-    transform-origin: 50% 6%;
-    animation: m-sway var(--dur, 5s) ease-in-out var(--del, 0s) infinite alternate;
+    transform-origin: center;
   }
-  @keyframes m-sway {
-    from { transform: rotate(var(--amp, 4deg)); }
-    to { transform: rotate(calc(-1 * var(--amp, 4deg))); }
+  .d-spin { animation: d-spin 75s linear infinite; }
+  .d-spin2 { animation: d-spin 110s linear infinite reverse; }
+  @keyframes d-spin {
+    to { transform: rotate(360deg); }
   }
 
-  .m-eyes {
+  .d-eyes {
     transform-box: fill-box;
     transform-origin: center;
     animation: m-blink 5.4s infinite;
@@ -270,7 +307,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .m-bob, .m-tent, .m-eyes { animation: none; }
+    .m-bob, .d-spin, .d-spin2, .d-eyes { animation: none; }
   }
   @media print { #pisma-mascot { display: none; } }
 </style>
