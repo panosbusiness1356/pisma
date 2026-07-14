@@ -65,6 +65,28 @@ const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
     <Mascot />
 
     <script>
+      // Smooth scroll με αδράνεια (Lenis) — ίδιο σύστημα με τα σύγχρονα studio sites.
+      // Σεβασμός στο prefers-reduced-motion: εκεί μένει το native scroll.
+      import Lenis from 'lenis';
+
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const lenis = new Lenis({
+          duration: 1.15,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+          wheelMultiplier: 1,
+          touchMultiplier: 1.4,
+          anchors: true,
+        });
+        const raf = (time: number) => {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        };
+        requestAnimationFrame(raf);
+      }
+    </script>
+
+    <script>
       // Ηχητικά εφέ UI — συντίθενται live με Web Audio (χωρίς αρχεία ήχου).
       // Δημόσιο API: window.pismaSound.{enabled, toggle(), play(name)}
       // + event 'pisma-sound-change' για συγχρονισμό του διακόπτη στο μενού.
