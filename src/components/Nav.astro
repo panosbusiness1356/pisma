@@ -44,17 +44,32 @@ const path = norm(Astro.url.pathname);
     (burger.querySelector('.i-open') as SVGElement).style.display = open ? '' : 'none';
     (burger.querySelector('.i-close') as SVGElement).style.display = open ? 'none' : '';
   });
+
+  // Floating nav: μαζεύει σε «κάψουλα» με blur μετά από λίγο scroll.
+  const wrap = document.querySelector<HTMLElement>('.nav-wrap')!;
+  const onScroll = () => wrap.classList.toggle('is-scrolled', window.scrollY > 50);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
 </script>
 
 <style>
   .nav-wrap {
     position: sticky; top: 0; z-index: 100;
-    background: rgba(13, 10, 20, .78);
+    padding: 8px 10px 0;
+  }
+  .nav {
+    display: flex; align-items: center; gap: 28px; height: 64px;
+    border: 1px solid transparent; border-radius: 18px;
+    transition: max-width .35s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
+  }
+  .nav-wrap.is-scrolled .nav {
+    max-width: 900px;
+    background: rgba(13, 10, 20, .72);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--line);
+    border-color: var(--line-strong);
+    box-shadow: var(--shadow);
   }
-  .nav { display: flex; align-items: center; gap: 28px; height: 68px; }
   .logo {
     font-family: var(--font-display); font-weight: 800; font-size: 1.25rem;
     color: var(--navy); text-decoration: none; letter-spacing: .01em; margin-right: auto;
@@ -84,7 +99,7 @@ const path = norm(Astro.url.pathname);
     .burger { display: inline-flex; }
     .nav-links {
       display: none;
-      position: absolute; top: 68px; left: 0; right: 0;
+      position: absolute; top: 76px; left: 0; right: 0;
       flex-direction: column; align-items: stretch; gap: 4px;
       background: var(--bg-soft); border-bottom: 1px solid var(--line);
       padding: 12px clamp(20px, 4vw, 36px) 20px;
