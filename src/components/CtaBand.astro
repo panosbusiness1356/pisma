@@ -31,11 +31,12 @@ const { title, sub, ctaText, ctaHref, note } = Astro.props;
 <style>
   .band {
     position: relative; overflow: hidden;
+    /* Σκούρα ζώνη αντίθεσης πάνω στο φωτεινό θέμα */
     background:
-      radial-gradient(80% 130% at 85% -20%, rgba(238, 79, 39, .22), transparent 60%),
-      radial-gradient(60% 120% at 10% 120%, rgba(139, 92, 246, .18), transparent 65%),
-      var(--card-2);
-    border: 1px solid var(--line-strong);
+      radial-gradient(80% 130% at 85% -20%, rgba(238, 79, 39, .28), transparent 60%),
+      radial-gradient(60% 120% at 10% 120%, rgba(216, 160, 60, .2), transparent 65%),
+      #2B1A0E;
+    border: 1px solid rgba(43, 26, 14, .4);
     border-radius: var(--r); box-shadow: var(--shadow);
     padding: clamp(30px, 5vw, 52px);
     display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap;

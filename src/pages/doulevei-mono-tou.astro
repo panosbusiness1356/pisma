@@ -241,6 +241,9 @@ const faqItems = [
   .card-top .tag { margin-top: 4px; }
 
   /* ---- Terminal «Live ημέρα» ---- */
+  /* Το τερματικό μένει σκούρο (card--navy) και στο φωτεινό θέμα — τα πράσινα
+     chips θέλουν ανοιχτούς τόνους εδώ, όχι τους σκούρους του global. */
+  .terminal .tag--live, .terminal .log-ok { background: rgba(62, 207, 142, .16); color: #7DE8B8; }
   .terminal {
     --orange-on-navy: #F5A356; /* AA πάνω σε navy για small text (5.36:1) */
     max-width: 720px;

@@ -5,37 +5,40 @@
    ============================================================ */
 
 :root {
-  --bg: #0D0A14;
-  --bg-soft: #14101E;
-  --card: #171221;
-  --card-2: #1E1830;
-  --navy: #F5F2FB;        /* χρώμα επικεφαλίδων / «σκούρο» κείμενο του παλιού theme */
-  --ink: #E6E1F0;
-  --muted: #A79DBB;
-  --orange: #FF7A50;      /* accent: εικονίδια, λεπτομέρειες, logo dot */
+  /* Φωτεινό θέμα «Κρέμα & Πηλός» (15/07/2026) — ζεστά σπασμένα λευκά,
+     σκούρο μελάνι για κείμενο, πηλός/πορτοκαλί για δράση. */
+  --bg: #FFF7EA;
+  --bg-soft: #FBF0DE;
+  --card: #FFFDF8;
+  --card-2: #FFF9EF;
+  --navy: #2B1A0E;        /* χρώμα επικεφαλίδων — σκούρο μελάνι */
+  --ink: #4A3B2C;
+  --muted: #7A6A57;
+  --orange: #E1521F;      /* accent: εικονίδια, λεπτομέρειες, logo dot */
   --orange-cta: #EE4F27;  /* φόντο κουμπιών */
   --orange-hi: #FF6A3D;
-  --orange-soft: rgba(255, 122, 80, .13);
-  --orange-text: #FFA284; /* πορτοκαλί ΚΕΙΜΕΝΟ πάνω σε σκούρο — AA */
+  --orange-soft: rgba(238, 79, 39, .10);
+  --orange-text: #C2431B; /* πορτοκαλί ΚΕΙΜΕΝΟ πάνω σε κρέμα — AA */
   --purple: #8B5CF6;
-  --purple-soft: rgba(139, 92, 246, .14);
-  --purple-text: #C4B0FF;
-  --line: rgba(255, 255, 255, .09);
-  --line-strong: rgba(255, 255, 255, .16);
-  --ok: #3ECF8E;
-  --ok-soft: rgba(62, 207, 142, .13);
-  --ok-text: #7DE8B8;
-  --red: #FF5C41;
+  --purple-soft: rgba(139, 92, 246, .12);
+  --purple-text: #6D48C8;
+  --line: rgba(43, 26, 14, .10);
+  --line-strong: rgba(43, 26, 14, .18);
+  --ok: #2E9E63;
+  --ok-soft: rgba(46, 158, 99, .12);
+  --ok-text: #1D7A45;
+  --red: #E0442B;
   --red-deep: #C13A20;
-  --red-soft: rgba(255, 92, 65, .13);
-  --red-text: #FF9B8A;
+  --red-soft: rgba(224, 68, 43, .12);
+  --red-text: #B02E14;
   --grad: linear-gradient(92deg, #FF6A3D 0%, #EE4F27 55%, #D63E1B 100%);
-  --grad-text: linear-gradient(92deg, #FF9159 0%, #FF5C2E 100%);
+  --grad-text: linear-gradient(92deg, #E1521F 0%, #C2431B 100%);
   --r: 16px;
 
-  --shadow: 0 2px 8px rgba(0, 0, 0, .35), 0 14px 40px rgba(0, 0, 0, .35);
-  --shadow-hover: 0 4px 12px rgba(0, 0, 0, .4), 0 22px 52px rgba(0, 0, 0, .5);
-  --glow-orange: 0 0 44px rgba(238, 79, 39, .35);
+  /* Απαλές, ζεστές σκιές — δίνουν βάθος στις κάρτες πάνω στην κρέμα */
+  --shadow: 0 2px 6px rgba(43, 26, 14, .06), 0 16px 40px rgba(43, 26, 14, .10);
+  --shadow-hover: 0 6px 16px rgba(43, 26, 14, .10), 0 26px 56px rgba(43, 26, 14, .15);
+  --glow-orange: 0 0 44px rgba(238, 79, 39, .16);
 
   --font-display: 'Unbounded', 'Commissioner', sans-serif;
   --font-body: 'Commissioner', system-ui, sans-serif;
@@ -53,12 +56,13 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 body {
-  /* Χρωματικό ταξίδι (κατεύθυνση Γ): μωβ-μαύρο → μπλε νύχτας → πετρόλ → ζεστό,
-     ένα συνεχές πέρασμα σε όλο το ύψος της σελίδας, χωρίς όρια sections. */
+  /* Φωτεινό χρωματικό ταξίδι: κρέμα → άμμος → σχεδόν λευκό → ζεστή άμμος.
+     Ένα συνεχές, ομοιόμορφο πέρασμα σε όλο το ύψος — τα χρώματα σβήνουν
+     το ένα μέσα στο άλλο καθώς κατεβαίνεις, χωρίς όρια sections. */
   background:
-    radial-gradient(58% 34% at 82% -4%, rgba(139, 92, 246, .16), transparent 62%),
-    radial-gradient(46% 30% at 8% 0%, rgba(238, 79, 39, .10), transparent 60%),
-    linear-gradient(180deg, #120C1C 0%, #101425 34%, #0E1B20 66%, #1B120C 100%);
+    radial-gradient(52% 30% at 85% -2%, rgba(238, 79, 39, .09), transparent 60%),
+    radial-gradient(40% 26% at 5% 2%, rgba(216, 160, 60, .10), transparent 60%),
+    linear-gradient(180deg, #FFF7EA 0%, #F5E8D2 32%, #FDFAF1 64%, #F6E6CF 100%);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 1.0625rem;
@@ -148,15 +152,15 @@ p { max-width: 62ch; }
   background: var(--card-2); color: var(--navy);
   box-shadow: inset 0 0 0 1px var(--line-strong);
 }
-.btn--navy:hover { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3), var(--shadow); }
+.btn--navy:hover { box-shadow: inset 0 0 0 1px rgba(43, 26, 14, .3), var(--shadow); }
 .btn--ghost { background: transparent; color: var(--navy); box-shadow: inset 0 0 0 1.5px var(--line-strong); }
-.btn--ghost:hover { box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .35), var(--shadow); }
+.btn--ghost:hover { box-shadow: inset 0 0 0 1.5px rgba(43, 26, 14, .35), var(--shadow); }
 .btn--sm { padding: 10px 20px; font-size: .92rem; }
 .btn-note { display: block; margin-top: 12px; font-size: .85rem; color: var(--muted); }
 
 /* ---------- Κάρτες ---------- */
 .card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, .03), rgba(255, 255, 255, 0) 60%), var(--card);
+  background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--r);
   box-shadow: var(--shadow);
@@ -165,10 +169,11 @@ p { max-width: 62ch; }
 .card--link { text-decoration: none; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
 .card--link:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--line-strong); }
 .card--navy {
+  /* Κάρτα αντίθεσης: σκούρο μελάνι πάνω στο φωτεινό θέμα */
   background:
-    radial-gradient(90% 100% at 50% 0%, rgba(139, 92, 246, .16), transparent 70%),
-    var(--card-2);
-  border-color: var(--line-strong); color: #fff;
+    radial-gradient(90% 100% at 50% 0%, rgba(238, 79, 39, .18), transparent 70%),
+    #2B1A0E;
+  border-color: rgba(43, 26, 14, .4); color: #fff;
 }
 .card--navy h2, .card--navy h3 { color: #fff; }
 .card--navy .muted { color: rgba(255, 255, 255, .72); }
@@ -223,7 +228,7 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
 :focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; border-radius: 6px; }
 .skip-link {
   position: absolute; left: -999px; top: 8px; z-index: 200;
-  background: var(--card-2); color: #fff; padding: 10px 18px; border-radius: 999px;
+  background: var(--navy); color: #FFF7EA; padding: 10px 18px; border-radius: 999px;
 }
 .skip-link:focus { left: 8px; }
 .visually-hidden {
