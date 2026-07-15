@@ -20,6 +20,12 @@ const path = norm(Astro.url.pathname);
           <a href={l.href} aria-current={path === norm(l.href) ? 'page' : undefined}>{l.label}</a>
         </li>
       ))}
+      <li class="nav-sound-mobile">
+        <button type="button" data-sound-toggle aria-pressed="true">
+          Ήχοι κλικ
+          <span class="switch" aria-hidden="true"></span>
+        </button>
+      </li>
       <li class="nav-cta-mobile"><a class="btn btn--orange btn--sm" href="/elegxos/">Δωρεάν αξιολόγηση</a></li>
     </ul>
 
@@ -62,20 +68,27 @@ const path = norm(Astro.url.pathname);
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // Διακόπτης ήχων — συγχρονίζεται με το window.pismaSound (ορίζεται στο Base).
-  const soundBtn = document.querySelector<HTMLButtonElement>('[data-sound-toggle]')!;
+  // Διακόπτες ήχων (εικονίδιο στο nav + σειρά στο mobile μενού) —
+  // συγχρονίζονται όλοι μεταξύ τους μέσω του window.pismaSound (ορίζεται στο Base).
+  const soundToggles = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-sound-toggle]'));
   const syncSound = (on: boolean) => {
-    soundBtn.setAttribute('aria-pressed', String(on));
-    (soundBtn.querySelector('.s-on') as SVGElement).style.display = on ? '' : 'none';
-    (soundBtn.querySelector('.s-off') as SVGElement).style.display = on ? 'none' : '';
+    for (const btn of soundToggles) {
+      btn.setAttribute('aria-pressed', String(on));
+      const sOn = btn.querySelector<SVGElement>('.s-on');
+      const sOff = btn.querySelector<SVGElement>('.s-off');
+      if (sOn) sOn.style.display = on ? '' : 'none';
+      if (sOff) sOff.style.display = on ? 'none' : '';
+    }
   };
   try {
     syncSound(localStorage.getItem('pisma-sound') !== 'off');
   } catch { /* default: on */ }
-  soundBtn.addEventListener('click', () => {
-    const api = (window as unknown as { pismaSound?: { toggle: () => boolean } }).pismaSound;
-    if (api) syncSound(api.toggle());
-  });
+  for (const btn of soundToggles) {
+    btn.addEventListener('click', () => {
+      const api = (window as unknown as { pismaSound?: { toggle: () => boolean } }).pismaSound;
+      if (api) syncSound(api.toggle());
+    });
+  }
 </script>
 
 <style>
@@ -118,6 +131,7 @@ const path = norm(Astro.url.pathname);
     text-decoration-color: var(--orange);
   }
   .nav-cta-mobile { display: none; }
+  .nav-sound-mobile { display: none; }
   .sound-btn {
     display: inline-flex; align-items: center; justify-content: center;
     width: 44px; height: 44px; border-radius: 10px; flex: none;
@@ -147,6 +161,28 @@ const path = norm(Astro.url.pathname);
     }
     .nav-links.is-open { display: flex; }
     .nav-links a:not(.btn) { display: block; padding: 12px 4px; font-size: 1.05rem; }
+    .nav-sound-mobile { display: block; border-top: 1px solid var(--line); margin-top: 6px; }
+    .nav-sound-mobile button {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      width: 100%; padding: 14px 4px; background: none; border: 0; cursor: pointer;
+      font: inherit; font-weight: 600; font-size: 1.05rem; color: var(--navy); text-align: left;
+    }
+    .nav-sound-mobile .switch {
+      position: relative; flex: none; width: 46px; height: 26px; border-radius: 13px;
+      background: var(--card-2); border: 1px solid var(--line-strong);
+      transition: background .2s ease, border-color .2s ease;
+    }
+    .nav-sound-mobile .switch::after {
+      content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px;
+      border-radius: 50%; background: var(--muted);
+      transition: transform .2s ease, background .2s ease;
+    }
+    .nav-sound-mobile button[aria-pressed='true'] .switch {
+      background: var(--orange-soft); border-color: var(--orange);
+    }
+    .nav-sound-mobile button[aria-pressed='true'] .switch::after {
+      transform: translateX(20px); background: var(--orange);
+    }
     .nav-cta-mobile { display: block; margin-top: 10px; }
     .nav-cta-mobile .btn { width: 100%; }
   }
