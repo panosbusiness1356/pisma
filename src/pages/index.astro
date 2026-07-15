@@ -194,8 +194,8 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
           </ul>
           <a class="card-arrow" href="/se-vriskoun/">Αναλυτικά →</a>
         </article>
-        <article class="card svc svc--blue reveal">
-          <span class="icon-chip icon-chip--blue">
+        <article class="card svc reveal">
+          <span class="icon-chip">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="3.2" /><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1" />
             </svg>
@@ -222,7 +222,7 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
   >
     <div class="container">
       <div class="sec-head">
-        <p class="kicker kicker--yellow">Μεθοδολογία</p>
+        <p class="kicker">Μεθοδολογία</p>
         <h2 id="method-title">Τέσσερα στάδια, με μετρήσιμο αποτέλεσμα σε καθένα</h2>
       </div>
       <ol class="steps">
@@ -250,7 +250,7 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
   >
     <div class="container">
       <div class="sec-head sec-head--center">
-        <p class="kicker kicker--ok">Αποτελέσματα</p>
+        <p class="kicker">Αποτελέσματα</p>
         <h2 id="cases-title">Πριν και μετά, σε μετρήσιμα μεγέθη</h2>
       </div>
       <div class="case-rows">
@@ -287,7 +287,7 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
   >
     <div class="container">
       <div class="sec-head">
-        <p class="kicker kicker--blue">Τιμολόγηση</p>
+        <p class="kicker">Τιμολόγηση</p>
         <h2 id="pricing-title">Διαφανής τιμολόγηση, δημοσιευμένη αναλυτικά</h2>
         <p>Γνωρίζετε το κόστος πριν από την πρώτη επικοινωνία.</p>
       </div>
@@ -418,7 +418,8 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
   .hero-screen { position: relative; margin-top: clamp(36px, 6vw, 72px); padding-inline: clamp(10px, 3vw, 36px); }
   .hero-screen-fade {
     position: absolute; inset: 0; z-index: 2; pointer-events: none;
-    background: linear-gradient(to bottom, transparent 35%, var(--bg) 100%);
+    /* Δένει με το χρωματικό ταξίδι του body στη ζώνη του hero (όχι var(--bg)) */
+    background: linear-gradient(to bottom, transparent 35%, #110E20 100%);
   }
   .screen-frame {
     max-width: 980px; margin-inline: auto;
@@ -478,13 +479,6 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
     background: var(--orange);
   }
   .svc .card-arrow { margin-top: auto; padding-top: 12px; }
-  .svc--blue .svc-list li::before { background: var(--blue); }
-  .svc--blue .card-arrow { color: var(--blue-text); }
-
-  /* Μεθοδολογία: κάθε στάδιο με τη δική του απόχρωση (μουντοί, σοβαροί τόνοι) */
-  .steps li:nth-child(2) .step-num { background: var(--blue); }
-  .steps li:nth-child(3) .step-num { background: var(--yellow); color: #2E2107; }
-  .steps li:nth-child(4) .step-num { background: var(--ok); color: #0E2B1B; }
 
   /* ---------- Πορτοκαλί panel ---------- */
   .einv {
@@ -536,9 +530,7 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
   .cases-cta { text-align: center; margin-top: clamp(20px, 3vw, 32px); }
 
   /* ---------- Τιμολόγηση ---------- */
-  .plan-mini { text-align: center; border-top: 3px solid var(--orange); }
-  .grid-3 .plan-mini:nth-child(2) { border-top-color: var(--blue); }
-  .grid-3 .plan-mini:nth-child(3) { border-top-color: var(--yellow); }
+  .plan-mini { text-align: center; }
   .plan-mini h3 { margin-bottom: 10px; }
   .plan-mini-setup { font-size: 1.05rem; color: var(--muted); }
   .plan-mini-setup .num { font-size: 1.9rem; font-weight: 700; color: var(--navy); margin-right: 6px; }
@@ -546,13 +538,7 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
   .plan-mini-monthly .num { font-weight: 700; color: var(--orange-text); }
 
   /* ---------- Η εταιρία ---------- */
-  .who {
-    max-width: 760px; margin-inline: auto;
-    border-color: rgba(91, 127, 166, .35);
-    background:
-      radial-gradient(90% 120% at 85% 0%, rgba(91, 127, 166, .12), transparent 60%),
-      var(--card);
-  }
+  .who { max-width: 760px; margin-inline: auto; }
   .who .kicker { margin-bottom: 14px; }
   .who h2 { font-size: 1.4rem; margin-bottom: 10px; }
   .who p { color: var(--muted); }

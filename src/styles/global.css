@@ -20,17 +20,11 @@
   --purple: #8B5CF6;
   --purple-soft: rgba(139, 92, 246, .14);
   --purple-text: #C4B0FF;
-  --blue: #5B7FA6;
-  --blue-soft: rgba(91, 127, 166, .16);
-  --blue-text: #A9C3DE;
-  --yellow: #C0913D;
-  --yellow-soft: rgba(192, 145, 61, .15);
-  --yellow-text: #DDBE85;
   --line: rgba(255, 255, 255, .09);
   --line-strong: rgba(255, 255, 255, .16);
-  --ok: #55A874;
-  --ok-soft: rgba(85, 168, 116, .15);
-  --ok-text: #A5D6B8;
+  --ok: #3ECF8E;
+  --ok-soft: rgba(62, 207, 142, .13);
+  --ok-text: #7DE8B8;
   --red: #FF5C41;
   --red-deep: #C13A20;
   --red-soft: rgba(255, 92, 65, .13);
@@ -59,10 +53,12 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 body {
+  /* Χρωματικό ταξίδι (κατεύθυνση Γ): μωβ-μαύρο → μπλε νύχτας → πετρόλ → ζεστό,
+     ένα συνεχές πέρασμα σε όλο το ύψος της σελίδας, χωρίς όρια sections. */
   background:
     radial-gradient(58% 34% at 82% -4%, rgba(139, 92, 246, .16), transparent 62%),
     radial-gradient(46% 30% at 8% 0%, rgba(238, 79, 39, .10), transparent 60%),
-    var(--bg);
+    linear-gradient(180deg, #120C1C 0%, #101425 34%, #0E1B20 66%, #1B120C 100%);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 1.0625rem;
@@ -123,10 +119,6 @@ p { max-width: 62ch; }
   font-size: .76rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
   padding: 7px 14px; border-radius: 999px;
 }
-/* Χρωματικές παραλλαγές kicker — μία απόχρωση ανά section για ποικιλία */
-.kicker--blue { background: var(--blue-soft); color: var(--blue-text); border-color: rgba(91, 127, 166, .4); }
-.kicker--yellow { background: var(--yellow-soft); color: var(--yellow-text); border-color: rgba(192, 145, 61, .4); }
-.kicker--ok { background: var(--ok-soft); color: var(--ok-text); border-color: rgba(85, 168, 116, .4); }
 .chip {
   display: inline-flex; align-items: baseline; gap: 8px;
   background: var(--card); border: 1px solid var(--line); border-radius: 999px;
@@ -196,7 +188,6 @@ p { max-width: 62ch; }
 }
 .icon-chip svg { width: 24px; height: 24px; }
 .icon-chip--navy { background: var(--purple-soft); color: #C4B5FD; }
-.icon-chip--blue { background: var(--blue-soft); color: #8FAECB; }
 
 /* Βέλος-link μέσα σε clickable κάρτα */
 .card-arrow { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--orange-text); font-size: .95rem; margin-top: 14px; text-decoration: none; }
