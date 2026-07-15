@@ -234,6 +234,23 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
   .reveal { opacity: 1; transform: none; }
 }
 
+/* ---------- Mobile: λιγότερο scroll, πιο σφιχτή δομή ---------- */
+@media (max-width: 680px) {
+  .section { padding-block: 44px; }
+  .section--tight { padding-block: 30px; }
+  .grid-2, .grid-3, .grid-4 { gap: 14px; }
+  .sec-head { margin-bottom: 22px; }
+  .card { padding: 20px 18px; }
+  .btn { padding: 13px 22px; }
+
+  /* Βήματα ως συμπαγείς σειρές: αριθμός αριστερά, κείμενο δεξιά */
+  .steps { gap: 14px; }
+  .step { display: grid; grid-template-columns: 38px 1fr; column-gap: 14px; row-gap: 2px; padding-top: 0; }
+  .step-num { width: 38px; height: 38px; margin-bottom: 0; grid-row: 1 / span 2; }
+  .step h3 { align-self: center; }
+  .step p { grid-column: 2; max-width: none; }
+}
+
 /* ---------- Φόρμες ---------- */
 .field { display: grid; gap: 6px; margin-bottom: 18px; }
 .field label { font-weight: 600; font-size: .95rem; color: var(--navy); }

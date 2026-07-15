@@ -4,7 +4,8 @@ import { EINVOICE } from '../config';
 
 <div class="ribbon" id="deadline-ribbon">
   <a href="/timologisi-2026/">
-    <strong>{EINVOICE.deadlineShort}</strong> — Υποχρεωτική ηλεκτρονική τιμολόγηση για όλες τις επιχειρήσεις. Είστε έτοιμοι; →
+    <span class="r-full"><strong>{EINVOICE.deadlineShort}</strong> — Υποχρεωτική ηλεκτρονική τιμολόγηση για όλες τις επιχειρήσεις. Είστε έτοιμοι; →</span>
+    <span class="r-short"><strong>{EINVOICE.deadlineShort}</strong>: Υποχρεωτική η ηλεκτρονική τιμολόγηση →</span>
   </a>
   <button type="button" aria-label="Κλείσιμο ειδοποίησης" data-dismiss>&times;</button>
 </div>
@@ -38,4 +39,11 @@ import { EINVOICE } from '../config';
     font-size: 1.25rem; line-height: 1; padding: 2px 8px; border-radius: 6px; flex: none;
   }
   .ribbon button:hover { background: rgba(255, 255, 255, .18); }
+  .r-short { display: none; }
+  @media (max-width: 640px) {
+    .ribbon { font-size: .78rem; padding-block: 7px; }
+    .ribbon a { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+    .r-full { display: none; }
+    .r-short { display: inline; }
+  }
 </style>

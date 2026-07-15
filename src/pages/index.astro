@@ -101,7 +101,8 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
       <p class="sub blur-in" style="--d:.34s">
         Η PISMA σχεδιάζει και υλοποιεί την παρουσία της επιχείρησής σας σε ιστοσελίδα,
         Google και εφαρμογές AI, και αυτοματοποιεί τις καθημερινές διαδικασίες —
-        τιμολόγηση, προσφορές, εισπράξεις. Με προκαθορισμένο κόστος και μετρήσιμο αποτέλεσμα.
+        τιμολόγηση, προσφορές, εισπράξεις. <span class="sub-more">Με προκαθορισμένο κόστος
+        και μετρήσιμο αποτέλεσμα.</span>
       </p>
 
       <div class="hero-ctas blur-in" style="--d:.46s">
@@ -578,6 +579,33 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
   .final-cta h2 { font-size: clamp(1.9rem, 4.6vw, 3.2rem); max-width: 24ch; margin-inline: auto; }
   .final-cta p { margin: 18px auto 28px; color: var(--muted); max-width: 58ch; }
   .final-cta .btn-note { margin-inline: auto; }
+
+  /* ---------- Mobile: σύντομο, γρήγορο, χωρίς περιττό scroll ---------- */
+  @media (max-width: 680px) {
+    .hero { padding-top: 32px; }
+    .hero-kicker { margin-bottom: 16px; }
+    .hero .sub { font-size: .98rem; margin-top: 18px; }
+    .sub-more { display: none; }
+    .hero-ctas { margin-top: 26px; }
+    .hero-ctas, .btn-frame, .hero-ctas .btn { width: 100%; }
+    .announce { font-size: .8rem; margin-bottom: 20px; }
+    .hero-screen { margin-top: 26px; }
+    .screen-body { padding: 16px; }
+    .einv-panel { display: none; }
+    .cases-cta { margin-top: 18px; }
+    .plan-mini {
+      display: flex; align-items: baseline; justify-content: space-between;
+      flex-wrap: wrap; gap: 4px 12px; text-align: left;
+    }
+    .plan-mini h3 { margin: 0; }
+    .plan-mini-setup, .plan-mini-monthly { margin: 0; font-size: .9rem; }
+    .plan-mini-setup .num { font-size: 1.25rem; margin-right: 4px; }
+  }
+  @media (max-width: 560px) {
+    .screen-stats { display: none; }
+    .screen-body { grid-template-columns: 1fr; }
+    .screen-rings { justify-content: center; }
+  }
 
   /* ---------- Blur-in ---------- */
   .blur-in {
