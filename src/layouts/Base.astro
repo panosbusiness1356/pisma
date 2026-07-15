@@ -104,14 +104,33 @@ const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
       let ctx: AudioContext | undefined;
       let master: GainNode | undefined;
       let noiseBuf: AudioBuffer | undefined;
+      let resumeTried = false; // δοκιμάστηκε resume που δεν «έπιασε» ακόμα;
+
+      /** Πλήρες γκρέμισμα — το επόμενο audio() χτίζει καθαρό context. */
+      const teardown = () => {
+        try { ctx?.close(); } catch { /* ήδη κλειστό */ }
+        ctx = undefined; master = undefined; noiseBuf = undefined; resumeTried = false;
+      };
+
       const audio = () => {
-        ctx ||= new AudioContext();
+        if (ctx && (ctx.state as string) === 'closed') { ctx = undefined; master = undefined; noiseBuf = undefined; }
+        if (!ctx) {
+          ctx = new AudioContext();
+          // «Κλωτσιά» ξεκλειδώματος για iOS/WebKit: αθόρυβο buffer μέσα στο gesture.
+          try {
+            const b = ctx.createBuffer(1, 1, 22050);
+            const s = ctx.createBufferSource();
+            s.buffer = b;
+            s.connect(ctx.destination);
+            s.start(0);
+          } catch { /* προαιρετικό */ }
+        }
         if (!master) {
           master = ctx.createGain();
           master.gain.value = 0.9;
           master.connect(ctx.destination);
         }
-        if (ctx.state === 'suspended') ctx.resume();
+        if ((ctx.state as string) !== 'running') ctx.resume().catch(() => { /* θα ξαναδοκιμαστεί */ });
         return ctx;
       };
 
@@ -199,10 +218,26 @@ const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
       const play = (name: SoundName) => {
         try {
           const c = audio();
-          // Στο iOS το context «παγώνει» — αν δεν έχει προλάβει να ξυπνήσει,
-          // παίξε αμέσως μόλις γίνει resume αντί να χαθεί/καθυστερήσει ο ήχος.
-          if (c.state === 'suspended') c.resume().then(() => { try { sounds[name](); } catch { /* μπλοκαρισμένο */ } });
-          else sounds[name]();
+          if ((c.state as string) === 'running') {
+            resumeTried = false;
+            sounds[name]();
+            return;
+          }
+          // Το iOS «παγώνει» το context μετά από κλείδωμα/κλήση/εναλλαγή app.
+          // Αν το προηγούμενο resume δεν έπιασε, το context έχει κολλήσει οριστικά:
+          // γκρέμισέ το και χτίσε καινούργιο ΜΕΣΑ στο τρέχον πάτημα (επιτρεπτό gesture).
+          if (resumeTried) {
+            teardown();
+            const c2 = audio();
+            if ((c2.state as string) === 'running') { sounds[name](); return; }
+            c2.resume().then(() => { try { sounds[name](); } catch { /* μπλοκαρισμένο */ } }).catch(() => { /* άτυχο πάτημα */ });
+            return;
+          }
+          resumeTried = true;
+          c.resume().then(() => {
+            resumeTried = false;
+            try { sounds[name](); } catch { /* μπλοκαρισμένο */ }
+          }).catch(() => { /* θα αναδημιουργηθεί στο επόμενο πάτημα */ });
         } catch { /* χωρίς ήχο αν το μπλοκάρει ο browser */ }
       };
 
@@ -212,6 +247,17 @@ const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
       for (const ev of ['touchstart', 'pointerdown', 'keydown'] as const) {
         window.addEventListener(ev, warm, { once: true, capture: true, passive: true });
       }
+
+      // Επιστροφή στη σελίδα: ξύπνα το context προληπτικά — κι αν η σελίδα ήρθε
+      // από το bfcache (πίσω/μπροστά στο iOS), το παλιό context είναι άχρηστο: πέτα το.
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible' && ctx && (ctx.state as string) !== 'running') {
+          ctx.resume().catch(() => { /* θα γίνει στο επόμενο πάτημα */ });
+        }
+      });
+      window.addEventListener('pageshow', (e) => {
+        if ((e as PageTransitionEvent).persisted && ctx) teardown();
+      });
 
       (window as any).pismaSound = {
         get enabled() { return store.enabled; },
