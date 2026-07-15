@@ -120,14 +120,13 @@ const path = norm(Astro.url.pathname);
   .nav-cta-mobile { display: none; }
   .sound-btn {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 44px; height: 44px; border-radius: 50%; flex: none;
-    background: var(--card-2); border: 1px solid var(--line-strong);
+    width: 44px; height: 44px; border-radius: 10px; flex: none;
+    background: none; border: 0;
     color: var(--navy); cursor: pointer;
-    transition: color .15s ease, border-color .15s ease;
+    transition: opacity .15s ease;
   }
-  .sound-btn:hover { border-color: rgba(255, 255, 255, .35); }
-  .sound-btn[aria-pressed='true'] { color: var(--orange); }
-  .sound-btn[aria-pressed='false'] { color: var(--muted); }
+  .sound-btn:hover { opacity: .8; }
+  .sound-btn[aria-pressed='false'] { opacity: .65; }
   .sound-btn svg { flex: none; display: block; width: 26px; height: 26px; }
   .burger { display: none; background: none; border: 0; cursor: pointer; color: var(--navy); padding: 8px; border-radius: 10px; }
   .burger svg { width: 26px; height: 26px; }
