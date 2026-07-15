@@ -90,7 +90,7 @@ const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
       // Ηχητικά εφέ UI — συντίθενται live με Web Audio (χωρίς αρχεία ήχου).
       // Δημόσιο API: window.pismaSound.{enabled, toggle(), play(name)}
       // + event 'pisma-sound-change' για συγχρονισμό του διακόπτη στο μενού.
-      type SoundName = 'click' | 'tick' | 'on' | 'off';
+      type SoundName = 'click' | 'tick' | 'nav' | 'back' | 'open' | 'close' | 'on' | 'off';
 
       const store = {
         get enabled() {
@@ -154,32 +154,64 @@ const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
       };
 
       const sounds: Record<SoundName, () => void> = {
-        // Κουμπιά/CTA: ζεστό, γεμάτο «ποπ»
+        // Κουμπιά/CTA: γεμάτο, στρογγυλό «ποπ»
         click() {
-          tone({ from: 440, to: 170, dur: 0.09, peak: 0.1 });
-          tone({ type: 'triangle', from: 920, to: 540, dur: 0.07, peak: 0.03 });
-          puff({ dur: 0.03, peak: 0.045, cutoff: 2600 });
+          tone({ from: 520, to: 165, dur: 0.085, peak: 0.14 });
+          puff({ dur: 0.02, peak: 0.05, cutoff: 2400 });
         },
-        // Links/tabs/πεδία: ελαφρύ «τικ»
+        // Μικρά στοιχεία/πεδία: διακριτικό, τραγανό «τικ»
         tick() {
-          tone({ from: 980, to: 620, dur: 0.05, peak: 0.05 });
-          puff({ dur: 0.02, peak: 0.02, cutoff: 4200 });
+          tone({ from: 1250, to: 850, dur: 0.035, peak: 0.045 });
+          puff({ dur: 0.014, peak: 0.028, cutoff: 5000 });
+        },
+        // Επιλογή link/μετάβαση: διπλή ανοδική επιβεβαίωση «τι-ντικ» (Μι→Σι)
+        nav() {
+          tone({ from: 659.26, dur: 0.055, peak: 0.055 });
+          tone({ from: 987.77, delay: 0.05, dur: 0.075, peak: 0.05 });
+          puff({ dur: 0.015, peak: 0.02, cutoff: 4500 });
+        },
+        // Πίσω: το αντίστροφο — καθοδικό «ντικ-τι» (Σι→Μι)
+        back() {
+          tone({ from: 987.77, dur: 0.055, peak: 0.05 });
+          tone({ from: 659.26, delay: 0.05, dur: 0.075, peak: 0.05 });
+        },
+        // Άνοιγμα μενού/ερώτησης: απαλό ανοδικό sweep
+        open() {
+          tone({ from: 320, to: 640, dur: 0.09, peak: 0.06 });
+          puff({ dur: 0.018, peak: 0.03, cutoff: 3200 });
+        },
+        // Κλείσιμο: καθοδικό sweep
+        close() {
+          tone({ from: 620, to: 300, dur: 0.08, peak: 0.055 });
+          puff({ dur: 0.015, peak: 0.022, cutoff: 3200 });
         },
         // Ενεργοποίηση ήχων: ανοδικό κουδουνάκι (Ντο→Σολ)
         on() {
-          tone({ from: 523.25, dur: 0.18, peak: 0.06 });
-          tone({ from: 783.99, delay: 0.09, dur: 0.22, peak: 0.05 });
-          tone({ type: 'triangle', from: 1046.5, delay: 0.09, dur: 0.2, peak: 0.015 });
+          tone({ from: 523.25, dur: 0.16, peak: 0.06 });
+          tone({ from: 783.99, delay: 0.08, dur: 0.2, peak: 0.05 });
         },
         // Απενεργοποίηση: χαμηλό, σβηστό «ντουπ»
         off() {
-          tone({ from: 340, to: 150, dur: 0.12, peak: 0.06 });
+          tone({ from: 340, to: 150, dur: 0.11, peak: 0.06 });
         },
       };
 
       const play = (name: SoundName) => {
-        try { sounds[name](); } catch { /* χωρίς ήχο αν το μπλοκάρει ο browser */ }
+        try {
+          const c = audio();
+          // Στο iOS το context «παγώνει» — αν δεν έχει προλάβει να ξυπνήσει,
+          // παίξε αμέσως μόλις γίνει resume αντί να χαθεί/καθυστερήσει ο ήχος.
+          if (c.state === 'suspended') c.resume().then(() => { try { sounds[name](); } catch { /* μπλοκαρισμένο */ } });
+          else sounds[name]();
+        } catch { /* χωρίς ήχο αν το μπλοκάρει ο browser */ }
       };
+
+      // Προθέρμανση: δημιουργία/ξεκλείδωμα του AudioContext στο πρώτο άγγιγμα,
+      // ώστε κάθε επόμενος ήχος να παίζει ακαριαία (χωρίς lag στο πάτημα).
+      const warm = () => { try { audio(); } catch { /* μπλοκαρισμένο */ } };
+      for (const ev of ['touchstart', 'pointerdown', 'keydown'] as const) {
+        window.addEventListener(ev, warm, { once: true, capture: true, passive: true });
+      }
 
       (window as any).pismaSound = {
         get enabled() { return store.enabled; },
@@ -193,14 +225,31 @@ const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
         play,
       };
 
+      // Δρομολόγηση ήχου ανά είδος ενέργειας. Τρέχει σε pointerdown (πριν το click),
+      // άρα τα aria-expanded / details.open δείχνουν ακόμα την ΠΡΙΝ κατάσταση.
       document.addEventListener(
         'pointerdown',
         (e) => {
           if (!store.enabled) return;
           const el = e.target as Element | null;
-          if (!el || el.closest('[data-sound-toggle]')) return; // ο διακόπτης έχει δικούς του ήχους
-          if (el.closest('.btn')) play('click');
-          else if (el.closest('a, button, [role="tab"], label, select, input, summary')) play('tick');
+          if (!el) return;
+          if (el.closest('[data-sound-toggle]')) return; // ο διακόπτης έχει δικούς του ήχους (on/off)
+
+          // Ρητή επιλογή ήχου από το markup, π.χ. data-sound="back"
+          const explicit = el.closest<HTMLElement>('[data-sound]');
+          if (explicit) { play(explicit.dataset.sound as SoundName); return; }
+
+          if (el.closest('.quiz-back')) { play('back'); return; }
+
+          const burger = el.closest('.burger');
+          if (burger) { play(burger.getAttribute('aria-expanded') === 'true' ? 'close' : 'open'); return; }
+
+          const sum = el.closest('summary');
+          if (sum) { play((sum.parentElement as HTMLDetailsElement | null)?.open ? 'close' : 'open'); return; }
+
+          if (el.closest('.btn')) { play('click'); return; }
+          if (el.closest('a[href]')) { play('nav'); return; }
+          if (el.closest('button, [role="tab"], label, select, input')) play('tick');
         },
         { capture: true, passive: true }
       );
