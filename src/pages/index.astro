@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { SITE, EINVOICE, ELEGXOS, PRICES, eur } from '../config';
+import { SITE, ELEGXOS, PRICES, eur } from '../config';
 
 const schema = {
   '@context': 'https://schema.org',
@@ -237,38 +237,8 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
     </div>
   </section>
 
-  <!-- 4. Ηλεκτρονική τιμολόγηση 2026 -->
-  <section
-    class="section section--tight"
-    aria-labelledby="einv-title"
-    data-mascot-stop
-    data-mascot-side="left"
-    data-mascot-say={`Προθεσμία ${EINVOICE.deadlineShort}: η ηλεκτρονική τιμολόγηση γίνεται υποχρεωτική. Η μετάβαση απαιτεί ${EINVOICE.migrationWeeks}.`}
-  >
-    <div class="container">
-      <div class="einv reveal">
-        <div class="einv-copy">
-          <h2 id="einv-title">Ηλεκτρονική τιμολόγηση 2026</h2>
-          <p>
-            Από την {EINVOICE.deadlineHuman}, η ηλεκτρονική τιμολόγηση καθίσταται υποχρεωτική
-            για όλες τις επιχειρήσεις. Αναλαμβάνουμε τον πλήρη κύκλο προσαρμογής, ώστε να
-            είστε συμβατοί πριν από την προθεσμία.
-          </p>
-          <ul class="einv-checks">
-            <li><span aria-hidden="true">✓</span> Προθεσμία: {EINVOICE.deadlineHuman}, για όλες τις επιχειρήσεις</li>
-            <li><span aria-hidden="true">✓</span> Πρόστιμα έως {eur(EINVOICE.maxFine)} ανά παράβαση</li>
-            <li><span aria-hidden="true">✓</span> Απαιτούμενος χρόνος μετάβασης: {EINVOICE.migrationWeeks}</li>
-          </ul>
-          <a class="btn btn--light" href="/timologisi-2026/">Ενημερωθείτε αναλυτικά</a>
-        </div>
-        <div class="einv-panel" aria-hidden="true">
-          <div class="einv-node">Τιμολόγιο</div>
-          <div class="einv-arrow">→</div>
-          <div class="einv-node einv-node--ok">myDATA ✓</div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- 4. Ηλεκτρονική τιμολόγηση 2026: ΠΡΟΣΩΡΙΝΑ ΕΚΤΟΣ — φυλάσσεται στο
+       components/Einvoice2026.astro, επαναφορά με <Einvoice2026 /> εδώ. -->
 
   <!-- 5. Αποτελέσματα -->
   <section
