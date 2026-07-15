@@ -24,13 +24,13 @@ const path = norm(Astro.url.pathname);
     </ul>
 
     <button class="sound-btn" type="button" data-sound-toggle aria-pressed="true" aria-label="Ήχοι κλικ" title="Ήχοι κλικ">
-      <svg class="s-on" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:26px;height:26px">
-        <path d="M11 5 6 9H3v6h3l5 4z" />
-        <path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a9 9 0 0 1 0 12" />
+      <svg class="s-on" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:26px;height:26px">
+        <path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor" stroke-width="2" />
+        <path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a9 9 0 0 1 0 12" stroke-width="2.6" />
       </svg>
-      <svg class="s-off" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none;width:26px;height:26px">
-        <path d="M11 5 6 9H3v6h3l5 4z" />
-        <path d="m16 9 5 6M21 9l-5 6" />
+      <svg class="s-off" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none;width:26px;height:26px">
+        <path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor" stroke-width="2" />
+        <path d="m16 9 5 6M21 9l-5 6" stroke-width="2.6" />
       </svg>
     </button>
 
@@ -126,8 +126,9 @@ const path = norm(Astro.url.pathname);
     transition: color .15s ease, border-color .15s ease;
   }
   .sound-btn:hover { border-color: rgba(255, 255, 255, .35); }
+  .sound-btn[aria-pressed='true'] { color: var(--orange); }
   .sound-btn[aria-pressed='false'] { color: var(--muted); }
-  .sound-btn svg { flex: none; display: block; }
+  .sound-btn svg { flex: none; display: block; width: 26px; height: 26px; }
   .burger { display: none; background: none; border: 0; cursor: pointer; color: var(--navy); padding: 8px; border-radius: 10px; }
   .burger svg { width: 26px; height: 26px; }
 
