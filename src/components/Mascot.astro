@@ -31,7 +31,6 @@ const cloudB = dots.slice(half);
 ---
 
 <div id="pisma-mascot" aria-hidden="true">
-  <div class="m-bubble"><span class="m-bubble-text"></span></div>
   <div class="m-motion">
     <div class="m-bob">
       <svg viewBox="0 0 200 200" fill="none">
@@ -56,7 +55,6 @@ const cloudB = dots.slice(half);
 <script>
   const el = document.getElementById('pisma-mascot')!;
   const motion = el.querySelector<HTMLElement>('.m-motion')!;
-  const bubbleText = el.querySelector<HTMLElement>('.m-bubble-text')!;
   const pupL = el.querySelector<HTMLElement>('.d-pup-l')!;
   const pupR = el.querySelector<HTMLElement>('.d-pup-r')!;
   const stops = [...document.querySelectorAll<HTMLElement>('[data-mascot-stop]')];
@@ -185,24 +183,13 @@ const cloudB = dots.slice(half);
     return { x: sideX(side), y, idx, side };
   };
 
-  let bubbleTimer: ReturnType<typeof setTimeout> | undefined;
-  const showBubble = (msg: string | undefined, side: string) => {
-    if (!msg) return;
-    bubbleText.textContent = msg;
-    el.classList.toggle('bubble-left', side === 'left');
-    el.classList.add('has-bubble');
-    bubbleOn = true;
-    /* Κλείνει μόνο του για να μη μένει πάνω από κείμενα. */
-    clearTimeout(bubbleTimer);
-    bubbleTimer = setTimeout(hideBubble, 6500);
-  };
-  const hideBubble = () => {
-    clearTimeout(bubbleTimer);
-    el.classList.remove('has-bubble');
-    bubbleOn = false;
-  };
+  /* Συννεφάκι: αφαιρέθηκε — αποσπούσε την προσοχή και έπαιρνε χώρο.
+     Ο Ντοτ απλώς πηγαίνει στα σημεία που θέλουν προσοχή. Οι συναρτήσεις
+     μένουν ως no-ops ώστε η χορογραφία να μείνει ανέπαφη. */
+  const showBubble = (_msg: string | undefined, _side: string) => {};
+  const hideBubble = () => {};
 
-  const GREETING = 'Καλώς ήρθατε στην PISMA. Για μια γρήγορη εικόνα της επιχείρησής σας, δοκιμάστε το Ταμπλό — 2 λεπτά, χωρίς στοιχεία.';
+  const GREETING = '';
 
   window.addEventListener('pointermove', (e) => {
     mouseX = e.clientX;
@@ -363,36 +350,6 @@ const cloudB = dots.slice(half);
   }
   #pisma-mascot.is-ready { opacity: 1; }
   #pisma-mascot svg { overflow: visible; width: 100%; height: auto; }
-
-  /* Συννεφάκι ξενάγησης */
-  .m-bubble {
-    position: absolute; bottom: calc(100% + 12px); right: -8px;
-    width: max-content; max-width: 250px;
-    background: #221A33;
-    border: 1px solid rgba(255, 122, 80, .5);
-    border-radius: 14px;
-    padding: 10px 14px;
-    font-size: .85rem; line-height: 1.5; color: #F5F2FB;
-    box-shadow: 0 14px 34px rgba(0, 0, 0, .45);
-    opacity: 0; transform: translateY(8px) scale(.82);
-    transform-origin: bottom right;
-    transition: opacity .35s ease, transform .45s cubic-bezier(.34, 1.56, .64, 1);
-    pointer-events: none;
-  }
-  .m-bubble::after {
-    content: ''; position: absolute; bottom: -6px; right: 34px;
-    width: 11px; height: 11px;
-    background: #221A33;
-    border-right: 1px solid rgba(255, 122, 80, .5);
-    border-bottom: 1px solid rgba(255, 122, 80, .5);
-    transform: rotate(45deg);
-  }
-  #pisma-mascot.bubble-left .m-bubble { right: auto; left: -8px; transform-origin: bottom left; }
-  #pisma-mascot.bubble-left .m-bubble::after { right: auto; left: 34px; }
-  #pisma-mascot.has-bubble .m-bubble { opacity: 1; transform: translateY(0) scale(1); }
-  @media (max-width: 680px) {
-    .m-bubble { max-width: 180px; font-size: .8rem; }
-  }
 
   .m-motion { transform-origin: 50% 60%; }
   .m-bob { animation: m-bob 4.6s ease-in-out infinite alternate; }
