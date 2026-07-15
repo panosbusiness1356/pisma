@@ -71,7 +71,7 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
 
     <div class="container hero-inner">
       <a class="announce blur-in" style="--d:.1s" href="/timologisi-2026/">
-        <span class="announce-text">Οδηγός: Ηλεκτρονική τιμολόγηση 2026 — τι ισχύει και πώς προετοιμάζεστε</span>
+        <span class="announce-text">Οδηγός: Ηλεκτρονική τιμολόγηση 2026 — τι ισχύει</span>
         <span class="announce-sep" aria-hidden="true"></span>
         <span class="announce-arrow" aria-hidden="true">
           <span class="announce-arrow-track">
@@ -81,7 +81,7 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
         </span>
       </a>
 
-      <p class="kicker blur-in" style="--d:.16s">Ψηφιακή παρουσία & αυτοματοποίηση για μικρομεσαίες επιχειρήσεις</p>
+      <p class="hero-kicker blur-in" style="--d:.16s">Ψηφιακή παρουσία & αυτοματοποίηση για μικρομεσαίες επιχειρήσεις</p>
 
       <h1 id="hero-title" class="blur-in" style="--d:.22s">
         Η επιχείρησή σας, ορατή στους πελάτες.<br />
@@ -379,7 +379,13 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
   /* ---------- Hero ---------- */
   .hero { padding-top: clamp(48px, 7vw, 100px); position: relative; overflow: clip; }
   .hero-inner { text-align: center; position: relative; z-index: 1; }
-  .hero .kicker { margin-bottom: clamp(18px, 3vw, 28px); }
+  .hero-kicker {
+    margin-bottom: clamp(18px, 3vw, 28px);
+    font-size: .76rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--orange-text);
+    text-wrap: balance;
+  }
   .hero h1 { max-width: 24ch; margin-inline: auto; font-size: clamp(2rem, 5vw, 3.9rem); }
   .hero-hl { position: relative; white-space: nowrap; }
   .hl-stroke {
@@ -404,7 +410,11 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
     box-shadow: var(--shadow);
     transition: border-color .25s ease, background-color .25s ease;
     margin-bottom: clamp(22px, 3.5vw, 36px);
-    max-width: 92%;
+    max-width: min(94%, 560px);
+  }
+  .announce-text {
+    min-width: 0; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
   }
   .announce:hover { border-color: rgba(255, 255, 255, .28); background: var(--bg-soft); }
   .announce-sep { width: 1px; height: 16px; background: var(--line-strong); flex: none; }
