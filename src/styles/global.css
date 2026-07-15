@@ -19,6 +19,13 @@
   --orange-text: #FFA284; /* πορτοκαλί ΚΕΙΜΕΝΟ πάνω σε σκούρο — AA */
   --purple: #8B5CF6;
   --purple-soft: rgba(139, 92, 246, .14);
+  --purple-text: #C4B0FF;
+  --teal: #2DD4BF;
+  --teal-soft: rgba(45, 212, 191, .13);
+  --teal-text: #7EEADC;
+  --sky: #4DA6FF;
+  --sky-soft: rgba(77, 166, 255, .13);
+  --sky-text: #8FC7FF;
   --line: rgba(255, 255, 255, .09);
   --line-strong: rgba(255, 255, 255, .16);
   --ok: #3ECF8E;
@@ -116,6 +123,11 @@ p { max-width: 62ch; }
   font-size: .76rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
   padding: 7px 14px; border-radius: 999px;
 }
+/* Χρωματικές παραλλαγές kicker — μία απόχρωση ανά section για ποικιλία */
+.kicker--teal { background: var(--teal-soft); color: var(--teal-text); border-color: rgba(45, 212, 191, .3); }
+.kicker--violet { background: var(--purple-soft); color: var(--purple-text); border-color: rgba(139, 92, 246, .35); }
+.kicker--ok { background: var(--ok-soft); color: var(--ok-text); border-color: rgba(62, 207, 142, .3); }
+.kicker--sky { background: var(--sky-soft); color: var(--sky-text); border-color: rgba(77, 166, 255, .3); }
 .chip {
   display: inline-flex; align-items: baseline; gap: 8px;
   background: var(--card); border: 1px solid var(--line); border-radius: 999px;
@@ -185,6 +197,7 @@ p { max-width: 62ch; }
 }
 .icon-chip svg { width: 24px; height: 24px; }
 .icon-chip--navy { background: var(--purple-soft); color: #C4B5FD; }
+.icon-chip--teal { background: var(--teal-soft); color: var(--teal); }
 
 /* Βέλος-link μέσα σε clickable κάρτα */
 .card-arrow { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--orange-text); font-size: .95rem; margin-top: 14px; text-decoration: none; }

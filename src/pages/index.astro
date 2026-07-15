@@ -31,18 +31,18 @@ const steps = [
 
 const demoCases = [
   {
-    title: 'Εμπορική εταιρεία — περίπου 400 παραστατικά τον μήνα',
-    metric: 'Καταχώρηση εισερχόμενων παραστατικών',
-    before: '22 ώρες/μήνα',
+    title: 'Εμπορική εταιρεία',
+    detail: '400 παραστατικά/μήνα — αυτόματη καταχώρηση από το email',
+    before: '22 ώρες',
     after: '3 ώρες/μήνα',
-    setup: 'Αυτόματη ανάγνωση παραστατικών από το email και καταχώρηση στο σύστημα. Το προσωπικό μόνο εγκρίνει.',
+    delta: '−86%',
   },
   {
-    title: 'Τεχνική εταιρεία — έργα με πίστωση',
-    metric: 'Μέσος χρόνος είσπραξης',
+    title: 'Τεχνική εταιρεία',
+    detail: 'Έργα με πίστωση — υπενθυμίσεις είσπραξης σε 3 στάδια',
     before: '47 ημέρες',
     after: '31 ημέρες',
-    setup: 'Συστηματικές υπενθυμίσεις είσπραξης σε τρία στάδια, με προκαθορισμένο τόνο και χρονισμό.',
+    delta: '−16 ημέρες',
   },
 ] as const;
 
@@ -194,8 +194,8 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
           </ul>
           <a class="card-arrow" href="/se-vriskoun/">Αναλυτικά →</a>
         </article>
-        <article class="card svc reveal">
-          <span class="icon-chip">
+        <article class="card svc svc--teal reveal">
+          <span class="icon-chip icon-chip--teal">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="3.2" /><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1" />
             </svg>
@@ -222,7 +222,7 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
   >
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">Μεθοδολογία</p>
+        <p class="kicker kicker--violet">Μεθοδολογία</p>
         <h2 id="method-title">Τέσσερα στάδια, με μετρήσιμο αποτέλεσμα σε καθένα</h2>
       </div>
       <ol class="steps">
@@ -249,30 +249,28 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
     data-mascot-say="Κάθε έργο μετριέται πριν και μετά — σε ώρες και ευρώ."
   >
     <div class="container">
-      <div class="sec-head">
-        <p class="kicker">Αποτελέσματα</p>
+      <div class="sec-head sec-head--center">
+        <p class="kicker kicker--ok">Αποτελέσματα</p>
         <h2 id="cases-title">Πριν και μετά, σε μετρήσιμα μεγέθη</h2>
-        <p>
-          Ενδεικτικά σενάρια εφαρμογής με ρεαλιστικά μεγέθη — επισημαίνονται ως τέτοια.
-          Κάθε μελλοντική αναφορά πελάτη θα δημοσιεύεται επώνυμα.
-        </p>
       </div>
-      <div class="grid-2">
+      <div class="case-rows">
         {demoCases.map((c) => (
-          <article class="card card--navy case reveal">
-            <span class="tag tag--demo">Ενδεικτικό σενάριο εφαρμογής</span>
-            <h3>{c.title}</h3>
-            <p class="case-metric">{c.metric}</p>
+          <article class="card case-row reveal">
+            <div class="case-row-info">
+              <h3>{c.title}</h3>
+              <p>{c.detail}</p>
+            </div>
             <p class="case-nums">
               <span class="strike num">{c.before}</span>
               <span class="case-arrow" aria-hidden="true">→</span>
               <span class="visually-hidden">έγινε</span>
               <span class="after-num">{c.after}</span>
             </p>
-            <p class="case-setup">{c.setup}</p>
+            <span class="tag tag--live case-delta num">{c.delta}</span>
           </article>
         ))}
       </div>
+      <p class="cases-note">Ενδεικτικά σενάρια εφαρμογής</p>
       <div class="cases-cta">
         <a class="btn btn--navy" href="/apodeixeis/">Δείτε όλα τα αποτελέσματα →</a>
       </div>
@@ -289,9 +287,9 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
   >
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">Τιμολόγηση</p>
+        <p class="kicker kicker--sky">Τιμολόγηση</p>
         <h2 id="pricing-title">Διαφανής τιμολόγηση, δημοσιευμένη αναλυτικά</h2>
-        <p>Γνωρίζετε το κόστος πριν από την πρώτη επικοινωνία. Κάθε πακέτο περιλαμβάνει γραπτή πρόταση με σταθερή τιμή.</p>
+        <p>Γνωρίζετε το κόστος πριν από την πρώτη επικοινωνία.</p>
       </div>
       <div class="grid-3">
         {plans.map((p) => (
@@ -316,9 +314,8 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
           <p class="kicker">Η εταιρία</p>
           <h2 id="who-title">Άμεση συνεργασία, χωρίς ενδιάμεσους</h2>
           <p>
-            Συνεργάζεστε απευθείας με τον υπεύθυνο σχεδιασμού και υλοποίησης — χωρίς τμήμα
-            πωλήσεων. Κάθε έργο μετριέται πριν και μετά· ό,τι υλοποιείται, τεκμηριώνεται
-            και ανήκει στην επιχείρησή σας.
+            Συνεργάζεστε απευθείας με τον υπεύθυνο σχεδιασμού και υλοποίησης — χωρίς
+            τμήμα πωλήσεων. Ό,τι υλοποιείται, ανήκει στην επιχείρησή σας.
           </p>
           <p class="who-sig">{SITE.founder} · {SITE.area}</p>
         </div>
@@ -337,8 +334,7 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
     <div class="container">
       <h2 id="final-title">Ξεκινήστε με μια δωρεάν<br /><span class="grad-text">αξιολόγηση 45 λεπτών</span></h2>
       <p>
-        Καταγράφουμε τι χάνει η επιχείρησή σας σε πελάτες και χρόνο. Παραλαμβάνετε τα
-        ευρήματα γραπτώς — ανεξάρτητα από το αν θα συνεργαστούμε.
+        Καταγράφουμε τι χάνετε σε πελάτες και χρόνο — παραλαμβάνετε τα ευρήματα γραπτώς.
       </p>
       <a class="btn btn--orange" href="/elegxos/">Κλείστε τη δωρεάν αξιολόγηση</a>
       <p class="btn-note">45 λεπτά · χωρίς χρέωση · χωρίς δέσμευση</p>
@@ -482,6 +478,13 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
     background: var(--orange);
   }
   .svc .card-arrow { margin-top: auto; padding-top: 12px; }
+  .svc--teal .svc-list li::before { background: var(--teal); }
+  .svc--teal .card-arrow { color: var(--teal-text); }
+
+  /* Μεθοδολογία: κάθε στάδιο με τη δική του απόχρωση */
+  .steps li:nth-child(2) .step-num { background: var(--teal); color: #04342C; }
+  .steps li:nth-child(3) .step-num { background: var(--purple); }
+  .steps li:nth-child(4) .step-num { background: var(--ok); color: #0A3524; }
 
   /* ---------- Πορτοκαλί panel ---------- */
   .einv {
@@ -515,18 +518,27 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
   .einv-arrow { color: rgba(255, 255, 255, .8); font-weight: 700; }
   @media (max-width: 780px) { .einv { grid-template-columns: 1fr; } }
 
-  /* ---------- Αποτελέσματα ---------- */
-  .case .tag { align-self: flex-start; }
-  .case h3 { margin-top: 14px; max-width: 30ch; }
-  .case-metric { margin-top: 12px; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
-  .case-nums { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 4px 0 14px; }
-  .case-arrow { color: var(--orange); font-weight: 700; font-size: 1.2rem; }
-  .after-num { font-size: clamp(1.9rem, 4vw, 2.5rem); line-height: 1; }
-  .case-setup { border-top: 1px dashed var(--line-strong); padding-top: 14px; font-size: .93rem; }
-  .cases-cta { text-align: center; margin-top: clamp(26px, 4vw, 40px); }
+  /* ---------- Αποτελέσματα: συμπαγείς σειρές πριν→μετά ---------- */
+  .case-rows { display: grid; gap: 14px; max-width: 860px; margin-inline: auto; }
+  .case-row {
+    display: flex; align-items: center; gap: clamp(14px, 3vw, 28px); flex-wrap: wrap;
+    padding: clamp(16px, 2.5vw, 22px) clamp(18px, 3vw, 28px);
+    border-left: 3px solid var(--ok); border-radius: 0 var(--r) var(--r) 0;
+  }
+  .case-row-info { flex: 1 1 240px; min-width: 0; }
+  .case-row-info h3 { margin: 0 0 4px; font-size: 1.05rem; }
+  .case-row-info p { font-size: .9rem; }
+  .case-nums { display: flex; align-items: baseline; gap: 10px; margin: 0; flex-wrap: wrap; }
+  .case-arrow { color: var(--ok); font-weight: 700; font-size: 1.1rem; }
+  .after-num { font-size: clamp(1.4rem, 3vw, 1.8rem); line-height: 1; }
+  .case-delta { flex: none; }
+  .cases-note { text-align: center; margin-top: 14px; font-size: .8rem; color: var(--muted); }
+  .cases-cta { text-align: center; margin-top: clamp(20px, 3vw, 32px); }
 
   /* ---------- Τιμολόγηση ---------- */
-  .plan-mini { text-align: center; }
+  .plan-mini { text-align: center; border-top: 3px solid var(--orange); }
+  .grid-3 .plan-mini:nth-child(2) { border-top-color: var(--sky); }
+  .grid-3 .plan-mini:nth-child(3) { border-top-color: var(--purple); }
   .plan-mini h3 { margin-bottom: 10px; }
   .plan-mini-setup { font-size: 1.05rem; color: var(--muted); }
   .plan-mini-setup .num { font-size: 1.9rem; font-weight: 700; color: var(--navy); margin-right: 6px; }
@@ -534,7 +546,13 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
   .plan-mini-monthly .num { font-weight: 700; color: var(--orange-text); }
 
   /* ---------- Η εταιρία ---------- */
-  .who { max-width: 760px; margin-inline: auto; }
+  .who {
+    max-width: 760px; margin-inline: auto;
+    border-color: rgba(139, 92, 246, .3);
+    background:
+      radial-gradient(90% 120% at 85% 0%, rgba(139, 92, 246, .1), transparent 60%),
+      var(--card);
+  }
   .who .kicker { margin-bottom: 14px; }
   .who h2 { font-size: 1.4rem; margin-bottom: 10px; }
   .who p { color: var(--muted); }
