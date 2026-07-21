@@ -101,12 +101,13 @@ const path = norm(Astro.url.pathname);
     padding: 8px 10px 0;
   }
   .nav {
-    display: flex; align-items: center; gap: 28px; height: 64px;
+    display: flex; align-items: center; gap: 20px; height: 64px;
+    max-width: 1280px; /* φαρδύτερο από το default container για να χωρούν τα CTAs */
     border: 1px solid transparent; border-radius: 18px;
     transition: max-width .35s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
   }
   .nav-wrap.is-scrolled .nav {
-    max-width: 960px;
+    max-width: 1060px;
     background: rgba(13, 10, 20, .72);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -119,7 +120,9 @@ const path = norm(Astro.url.pathname);
     white-space: nowrap; flex: none;
   }
   .logo span { color: var(--orange); }
-  .nav-links { display: flex; align-items: center; gap: 26px; list-style: none; padding: 0; flex-wrap: nowrap; }
+  .nav-links { display: flex; align-items: center; gap: 20px; list-style: none; padding: 0; flex-wrap: nowrap; }
+  /* Στην κάψουλα του scroll κρύβεται το δεύτερο κουμπί — μένει το κύριο CTA */
+  .nav-wrap.is-scrolled .nav-cta { display: none; }
   .nav-links a:not(.btn) {
     text-decoration: none; font-weight: 600; font-size: .95rem; color: var(--muted);
     padding: 6px 2px; border-radius: 6px;
@@ -151,6 +154,10 @@ const path = norm(Astro.url.pathname);
   .burger { display: none; background: none; border: 0; cursor: pointer; color: var(--navy); padding: 8px; border-radius: 10px; }
   .burger svg { width: 26px; height: 26px; }
 
+  /* Σε στενότερα desktop δεν χωράνε δύο κουμπιά — μένει μόνο το τεστ */
+  @media (max-width: 1340px) {
+    .nav-cta { display: none; }
+  }
   @media (max-width: 1080px) {
     .nav { gap: 14px; }
     .nav-cta { display: none; }
