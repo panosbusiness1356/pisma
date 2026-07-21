@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
-import { SITE, ELEGXOS, QUIZ } from '../config';
+import { SITE, ELEGXOS } from '../config';
 
 const schema = {
   '@context': 'https://schema.org',
@@ -10,22 +10,59 @@ const schema = {
   url: `${SITE.url}/tablo/`,
   inLanguage: 'el',
   description:
-    'Διαδραστικό τεστ 7 ερωτήσεων: σκορ ορατότητας, σκορ αυτοματισμού και εκτίμηση κόστους χειροκίνητης δουλειάς σε ευρώ τον μήνα.',
+    'Διαδραστικό τεστ 11 ερωτήσεων — μία για κάθε εργαλείο: σκορ ορατότητας και σκορ αυτοματισμού στα 100.',
   isPartOf: { '@type': 'WebSite', name: SITE.name, url: SITE.url },
 };
 
-/** Οι 7 ερωτήσεις — τα values μπαίνουν σε data-val και διαβάζονται με parseFloat. */
+/* Μία ερώτηση για κάθε εργαλείο της PISMA — σειρά: Προβολή → Αυτοματοποίηση. */
 const questions = [
+  /* — Προβολή: πώς σε βρίσκουν — */
   {
-    key: 'vol',
-    q: 'Πόσα παραστατικά βγάζεις τον μήνα;',
+    key: 'site',
+    q: 'Η ιστοσελίδα σου;',
     opts: [
-      { label: 'Έως 50', v: '0.5' },
-      { label: '50–200', v: '1' },
-      { label: '200–1.000', v: '2' },
-      { label: '1.000+', v: '3.5' },
+      { label: 'Δεν έχω / παρατημένη', v: '0' },
+      { label: 'Απλή, στατική', v: '1' },
+      { label: 'Σύγχρονη — φέρνει πελάτες', v: '2' },
     ],
   },
+  {
+    key: 'gbp',
+    q: 'Το προφίλ σου στο Google (Χάρτες);',
+    opts: [
+      { label: 'Δεν έχω', v: '0' },
+      { label: 'Έχω, αλλά παρατημένο', v: '0.5' },
+      { label: 'Ενημερωμένο, πλήρες', v: '2' },
+    ],
+  },
+  {
+    key: 'reviews',
+    q: 'Οι κριτικές σου στο Google;',
+    opts: [
+      { label: 'Λίγες ή καθόλου', v: '0' },
+      { label: 'Έρχονται πού και πού', v: '1' },
+      { label: 'Τις ζητάμε από κάθε πελάτη', v: '2' },
+    ],
+  },
+  {
+    key: 'social',
+    q: 'Τα social media της επιχείρησης;',
+    opts: [
+      { label: 'Ανύπαρκτα', v: '0' },
+      { label: 'Ανεβάζουμε όποτε θυμηθούμε', v: '1' },
+      { label: 'Τακτικά, με πλάνο', v: '2' },
+    ],
+  },
+  {
+    key: 'ai',
+    q: 'Σε προτείνει το ChatGPT;',
+    opts: [
+      { label: 'Δεν ξέρω', v: '0' },
+      { label: 'Όχι', v: '0.5' },
+      { label: 'Ναι 🎉', v: '2' },
+    ],
+  },
+  /* — Αυτοματοποίηση: πώς δουλεύει το γραφείο — */
   {
     key: 'entry',
     q: 'Τα εισερχόμενα τιμολόγια πώς καταχωρούνται;',
@@ -36,12 +73,21 @@ const questions = [
     ],
   },
   {
+    key: 'pay',
+    q: 'Το ταίριασμα πληρωμών με τιμολόγια;',
+    opts: [
+      { label: 'Με το χέρι, ένα-ένα', v: '0' },
+      { label: 'Εν μέρει', v: '1' },
+      { label: 'Αυτόματα', v: '2' },
+    ],
+  },
+  {
     key: 'coll',
     q: 'Ποιος κυνηγάει τις οφειλές;',
     opts: [
       { label: 'Όποτε θυμηθούμε 😅', v: '0' },
       { label: 'Κάποιος, όταν προλαβαίνει', v: '1' },
-      { label: 'Σύστημα', v: '2' },
+      { label: 'Σύστημα με υπενθυμίσεις', v: '2' },
     ],
   },
   {
@@ -54,30 +100,21 @@ const questions = [
     ],
   },
   {
-    key: 'site',
-    q: 'Το site σου;',
+    key: 'report',
+    q: 'Ξέρεις κάθε μέρα τι μπήκε, τι βγήκε, τι εκκρεμεί;',
     opts: [
-      { label: 'Δεν έχω / παρατημένο', v: '0' },
-      { label: 'Απλό', v: '1' },
-      { label: 'Σύγχρονο με SEO', v: '2' },
+      { label: 'Όχι — ψάχνω όταν χρειαστεί', v: '0' },
+      { label: 'Στο περίπου', v: '1' },
+      { label: 'Ναι, με καθημερινή εικόνα', v: '2' },
     ],
   },
   {
-    key: 'gbp',
-    q: 'Το προφίλ σου στο Google (Χάρτες, κριτικές);',
+    key: 'spy',
+    q: 'Παρακολουθείς τι κάνει ο ανταγωνισμός;',
     opts: [
-      { label: 'Δεν έχω', v: '0' },
-      { label: 'Έχω, αλλά παρατημένο', v: '0.5' },
-      { label: 'Ενημερωμένο, με κριτικές', v: '2' },
-    ],
-  },
-  {
-    key: 'ai',
-    q: 'Σε προτείνει το ChatGPT;',
-    opts: [
-      { label: 'Δεν ξέρω', v: '0' },
-      { label: 'Όχι', v: '0.5' },
-      { label: 'Ναι 🎉', v: '2' },
+      { label: 'Καθόλου', v: '0' },
+      { label: 'Πού και πού', v: '1' },
+      { label: 'Συστηματικά', v: '2' },
     ],
   },
 ];
@@ -85,12 +122,12 @@ const questions = [
 
 <Base
   title="Το Ταμπλό — Μέτρησε ορατότητα και αυτοματισμό | PISMA"
-  description="7 ερωτήσεις, 2 λεπτά, χωρίς email: δες πόσο εύκολα σε βρίσκουν οι πελάτες και πόσες ώρες γραφείου χάνεις τον μήνα — με σκορ και εκτίμηση σε ευρώ."
+  description="11 γρήγορες ερωτήσεις, χωρίς email: δες πόσο εύκολα σε βρίσκουν οι πελάτες και πόσο μόνο του δουλεύει το γραφείο σου — με σκορ στα 100."
   schema={schema}
 >
   <PageHero
     kicker="Το Ταμπλό"
-    sub="7 ερωτήσεις, 2 λεπτά. Χωρίς email, χωρίς στοιχεία — το σκορ βγαίνει μπροστά σου."
+    sub="11 γρήγορες ερωτήσεις — μία για κάθε εργαλείο. Χωρίς email, χωρίς στοιχεία: το σκορ βγαίνει μπροστά σου."
   >
     Δες το <span class="accent">σκορ</span> σου
   </PageHero>
@@ -104,7 +141,7 @@ const questions = [
           <div class="dots" id="quiz-dots" aria-hidden="true">
             {questions.map(() => <span class="dot"></span>)}
           </div>
-          <span class="quiz-count num" id="quiz-count">Ερώτηση 1 από 7</span>
+          <span class="quiz-count num" id="quiz-count">Ερώτηση 1 από 11</span>
         </div>
 
         <!-- Βήματα: όλα στο HTML, εναλλαγή με hidden -->
@@ -147,14 +184,6 @@ const questions = [
 
             <p class="quiz-verdict" id="quiz-verdict"></p>
 
-            <div class="card card--navy cost-card">
-              <p class="cost-big num" aria-hidden="true">~<span id="cost-num">0</span> €/μήνα</p>
-              <p class="cost-note">
-                Περίπου <strong class="num" id="hours-num">0</strong> ώρες γραφείου τον μήνα σε
-                δουλειά που μπορεί να τρέχει μόνη της. Και πελάτες που δεν σε βρίσκουν — αυτούς
-                τους μετράμε στη δωρεάν αξιολόγηση.
-              </p>
-            </div>
 
             <p class="visually-hidden" id="result-sr"></p>
 
@@ -184,7 +213,7 @@ const questions = [
   </section>
 </Base>
 
-<script define:vars={{ HOUR_RATE: QUIZ.hourRate }}>
+<script>
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const CIRC = 2 * Math.PI * 52;
 
@@ -202,8 +231,6 @@ const questions = [
   const ringAuto = document.getElementById('ring-auto');
   const numVis = document.getElementById('num-vis');
   const numAuto = document.getElementById('num-auto');
-  const costNum = document.getElementById('cost-num');
-  const hoursNum = document.getElementById('hours-num');
   const resultSr = document.getElementById('result-sr');
   const copyBtn = document.getElementById('quiz-copy');
   const copyLabel = copyBtn.textContent.trim();
@@ -283,14 +310,13 @@ const questions = [
   }
 
   function showResults() {
-    const automation = Math.round(((answers.entry + answers.coll + answers.quote) / 6) * 100);
-    const visibility = Math.round(((answers.site + answers.ai + answers.gbp) / 6) * 100);
-    const h =
-      (2 - answers.entry) * 7 * answers.vol +
-      (2 - answers.coll) * 4 +
-      (2 - answers.quote) * 3;
-    const cost = Math.round((h * HOUR_RATE) / 10) * 10;
-    last = { visibility, automation, cost, hours: Math.round(h) };
+    const visibility = Math.round(
+      ((answers.site + answers.gbp + answers.reviews + answers.social + answers.ai) / 10) * 100
+    );
+    const automation = Math.round(
+      ((answers.entry + answers.pay + answers.coll + answers.quote + answers.report + answers.spy) / 12) * 100
+    );
+    last = { visibility, automation };
 
     setRing(ringVis, numVis, visibility);
     setRing(ringAuto, numAuto, automation);
@@ -303,20 +329,14 @@ const questions = [
         : avg < 70
           ? 'Υπάρχει σοβαρό περιθώριο: κάποια πράγματα δουλεύουν, αλλά αφήνεις λεφτά στο τραπέζι.'
           : 'Καλά νούμερα! Με λίγες κινήσεις ακόμα, η ρουτίνα τρέχει χωρίς εσένα.';
-    hoursNum.textContent = String(last.hours);
-    countUp(costNum, cost, (x) => Math.round(x).toLocaleString('el-GR'));
     resultSr.textContent =
-      'Ορατότητα ' + visibility + ' στα 100, Αυτοματισμός ' + automation +
-      ' στα 100, εκτίμηση περίπου ' + cost.toLocaleString('el-GR') +
-      ' ευρώ τον μήνα, ' + last.hours + ' ώρες γραφείου.';
+      'Ορατότητα ' + visibility + ' στα 100, Αυτοματισμός ' + automation + ' στα 100.';
   }
 
   copyBtn.addEventListener('click', async () => {
     if (!last) return;
     const text =
-      'Το Ταμπλό PISMA — Ορατότητα: ' + last.visibility + '/100 · Αυτοματισμός: ' +
-      last.automation + '/100 · Εκτίμηση κόστους: ~' +
-      last.cost.toLocaleString('el-GR') + ' €/μήνα';
+      'Το Ταμπλό PISMA — Ορατότητα: ' + last.visibility + '/100 · Αυτοματισμός: ' + last.automation + '/100';
     try {
       await navigator.clipboard.writeText(text);
       copyBtn.textContent = 'Αντιγράφηκε ✓';
@@ -337,8 +357,6 @@ const questions = [
     });
     numVis.textContent = '0';
     numAuto.textContent = '0';
-    costNum.textContent = '0';
-    hoursNum.textContent = '0';
     resultSr.textContent = '';
     show(0);
   });
@@ -456,17 +474,6 @@ const questions = [
   .ring-label { display: block; margin-top: 10px; font-size: .88rem; color: var(--muted); }
 
   /* Navy κάρτα κόστους */
-  .cost-card { text-align: center; padding: clamp(24px, 4vw, 36px); }
-  .cost-big {
-    font-size: clamp(1.9rem, 5vw, 2.6rem);
-    font-weight: 700;
-    color: var(--orange);
-    line-height: 1.15;
-    margin-bottom: 12px;
-    max-width: none;
-  }
-  .cost-note { margin-inline: auto; max-width: 46ch; font-size: .97rem; }
-  .cost-note strong { color: #fff; }
 
   /* CTA αποτελεσμάτων */
   .result-cta { text-align: center; margin-top: 14px; }
