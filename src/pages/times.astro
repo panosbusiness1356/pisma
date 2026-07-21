@@ -3,97 +3,97 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { SITE, ELEGXOS, PRICES, eur } from '../config';
-
-const plans = [
-  {
-    ...PRICES.ekkinisi,
-    highlighted: false,
-    features: [
-      'Μετάβαση σε ηλεκτρονική τιμολόγηση',
-      '1 αυτοματισμός γραφείου',
-      'Συντήρηση συστήματος',
-      'Μηνιαία αναφορά αξίας',
-    ],
-  },
-  {
-    ...PRICES.leitourgia,
-    highlighted: true,
-    features: [
-      'Όλα της Εκκίνησης',
-      'Εισερχόμενα + συμφωνία myDATA',
-      'Κυνήγι εισπράξεων',
-      'Κάθε τρίμηνο ένας νέος αυτοματισμός',
-    ],
-  },
-  {
-    ...PRICES.parousia,
-    highlighted: false,
-    features: [
-      'Site ή ανακατασκευή',
-      'SEO που μετριέται',
-      'Μέτρηση & βελτίωση AI Visibility',
-      'Reviews στο αυτόματο',
-    ],
-  },
-];
+import { SITE, ELEGXOS, eur } from '../config';
+import { CATEGORIES, PRESETS, sumOf, optionById } from '../data/pricing';
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'Πακέτα συνεργασίας PISMA',
+  name: 'Υπηρεσίες & πακέτα PISMA',
   provider: { '@type': 'LocalBusiness', name: SITE.name, url: SITE.url },
   areaServed: SITE.region,
-  offers: plans.map((p) => ({
+  offers: PRESETS.map((p) => ({
     '@type': 'Offer',
     name: p.name,
-    price: p.setup,
+    price: p.bundleOnce,
     priceCurrency: 'EUR',
-    description: `+ ${eur(p.monthly)}/μήνα συντήρηση`,
+    description: p.bundleMonthly > 0 ? `+ ${eur(p.bundleMonthly)}/μήνα` : 'Χωρίς μηνιαίο κόστος',
   })),
 };
 
 const faqItems = [
   {
     q: 'Τι περιλαμβάνει η συντήρηση;',
-    a: 'Παρακολούθηση ότι όλα τρέχουν, διορθώσεις όταν κάτι στραβώσει και μικρο-βελτιώσεις στην πορεία. Και κάθε μήνα, η Απόδειξη Αξίας — τι σου γλίτωσε το σύστημα, σε ώρες και ευρώ.',
+    a: 'Παρακολούθηση ότι όλα τρέχουν, διορθώσεις όταν κάτι στραβώσει και μικρο-βελτιώσεις στην πορεία. Όπου υπάρχει μηνιαία διαχείριση, λαμβάνετε και μηνιαίο Proof of Value report — τι σας γλίτωσε το σύστημα, σε ώρες και ευρώ.',
   },
   {
-    q: 'Custom έργο;',
-    a: `Γίνεται. Παίρνεις γραπτή πρόταση σε ${ELEGXOS.reportHours} ώρες, με σταθερή τιμή — καμία έκπληξη στον λογαριασμό.`,
+    q: 'Θέλω κάτι που δεν είναι στη λίστα.',
+    a: `Γίνεται. Λαμβάνετε γραπτή πρόταση εντός ${ELEGXOS.reportHours} ωρών, με σταθερή τιμή — καμία έκπληξη στον λογαριασμό.`,
   },
   {
     q: 'Υπάρχει δέσμευση;',
-    a: 'Όχι, δεν υπάρχει ετήσια δέσμευση. Μένεις όσο βλέπεις νούμερα που σε πείθουν.',
+    a: 'Όχι, δεν υπάρχει ετήσια δέσμευση. Μένετε όσο βλέπετε νούμερα που σας πείθουν.',
   },
 ];
+
+/* Πληροφορίες πακέτων για την όψη — υπολογίζονται από τα δεδομένα */
+const presetView = PRESETS.map((p) => {
+  const sum = sumOf(p.optionIds);
+  return {
+    ...p,
+    sumOnce: sum.once,
+    sumMonthly: sum.monthly,
+    saveOnce: sum.once - p.bundleOnce,
+    saveMonthly: sum.monthly - p.bundleMonthly,
+    items: p.optionIds.map((id) => optionById(id)?.label ?? id),
+  };
+});
 ---
 
 <Base
-  title="Τιμές PISMA — Τρία πακέτα με σταθερή τιμή, στα φανερά"
-  description="Τρία πακέτα με ξεκάθαρη τιμή — Εκκίνηση, Λειτουργία, Παρουσία+. Εφάπαξ στήσιμο, μηνιαία συντήρηση με μετρήσιμη αξία και εγγύηση 30 ημερών. Χωρίς εκπλήξεις."
+  title="Τιμές PISMA — Διαφανής τιμοκατάλογος: φτιάξτε το πακέτο σας"
+  description="Όλες οι τιμές δημοσιευμένες: ιστοσελίδα, Google, ορατότητα σε AI, social media, αυτοματισμοί. Επιλέξτε έτοιμο πακέτο ή φτιάξτε το δικό σας και δείτε το κόστος ζωντανά."
   schema={schema}
 >
-  <PageHero kicker="Τιμές" sub="Ξέρεις τι πληρώνεις πριν μας πάρεις τηλέφωνο.">
+  <PageHero kicker="Τιμές" sub="Καμία «ζητήστε προσφορά». Όλες οι τιμές δημοσιευμένες — επιλέγετε και βλέπετε το σύνολο πριν μας καλέσετε.">
     Τιμές, <span class="accent">στα φανερά</span>.
   </PageHero>
 
-  <!-- Πακέτα -->
-  <section class="section section--tight" aria-labelledby="plans-title">
+  <!-- Έτοιμα πακέτα -->
+  <section
+    class="section section--tight"
+    aria-labelledby="presets-title"
+    data-mascot-stop
+    data-mascot-side="left"
+  >
     <div class="container">
-      <h2 id="plans-title" class="visually-hidden">Τα πακέτα</h2>
+      <div class="sec-head">
+        <p class="kicker">Έτοιμα πακέτα</p>
+        <h2 id="presets-title">Τρεις έτοιμοι συνδυασμοί — ή φτιάξτε τον δικό σας</h2>
+        <p>Κάθε πακέτο κοστίζει λιγότερο από τις υπηρεσίες του μεμονωμένα. Πατώντας το, οι επιλογές του περνούν στον πίνακα από κάτω για να τις προσαρμόσετε.</p>
+      </div>
       <div class="grid-3 plans">
-        {plans.map((p) => (
+        {presetView.map((p, i) => (
           <article class:list={['card', 'plan', 'reveal', { 'plan--hot': p.highlighted }]}>
             {p.highlighted && <span class="plan-badge">Το πιο συνηθισμένο</span>}
             <h3>{p.name}</h3>
+            <p class="plan-tagline">{p.tagline}</p>
             <p class="plan-price">
-              <span class="num plan-setup">{eur(p.setup)}</span>
+              <span class:list={['num', 'plan-setup-price', { 'plan-setup': i === 0 }]}>{eur(p.bundleOnce)}</span>
               <span class="plan-once">εφάπαξ</span>
             </p>
-            <p class="plan-monthly">+ <span class="num">{eur(p.monthly)}</span>/μήνα συντήρηση</p>
+            <p class="plan-monthly">
+              {p.bundleMonthly > 0
+                ? <>+ <span class="num">{eur(p.bundleMonthly)}</span>/μήνα</>
+                : <>χωρίς μηνιαίο κόστος</>}
+            </p>
+            {(p.saveOnce > 0 || p.saveMonthly > 0) && (
+              <p class="plan-save">
+                Όφελος <span class="num">{eur(p.saveOnce)}</span> έναντι μεμονωμένης τιμολόγησης{p.saveMonthly > 0 && <> + <span class="num">{eur(p.saveMonthly)}</span>/μήνα</>}
+              </p>
+            )}
             <ul class="plan-list">
-              {p.features.map((f) => (
+              {p.items.map((f) => (
                 <li>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M4.5 12.5l4.8 4.8L19.5 6.8" />
@@ -102,11 +102,114 @@ const faqItems = [
                 </li>
               ))}
             </ul>
-            <a class:list={['btn', p.highlighted ? 'btn--orange' : 'btn--ghost']} href="/elegxos/">
-              Ξεκίνα με Έλεγχο
-            </a>
+            <button
+              class:list={['btn', p.highlighted ? 'btn--orange' : 'btn--ghost', 'preset-pick']}
+              type="button"
+              data-preset={p.id}
+            >
+              Επιλέξτε το
+            </button>
           </article>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Custom builder -->
+  <section
+    class="section"
+    id="builder"
+    aria-labelledby="builder-title"
+    data-mascot-stop
+    data-mascot-side="right"
+  >
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Φτιάξτε το πακέτο σας</p>
+        <h2 id="builder-title">Επιλέγετε — και βλέπετε το κόστος ζωντανά</h2>
+        <p>Ό,τι επιλέγετε αθροίζεται αμέσως, χωρισμένο σε εφάπαξ και μηνιαίο. Τίποτα δεν είναι υποχρεωτικό.</p>
+      </div>
+
+      <div class="builder">
+        <div class="b-cats">
+          {CATEGORIES.map((cat) => (
+            <fieldset class="card b-cat reveal" data-cat={cat.id}>
+              <legend class="b-cat-head">
+                <span class="b-cat-title">{cat.title}</span>
+                {cat.desc && <span class="b-cat-desc">{cat.desc}</span>}
+              </legend>
+              {cat.mode === 'radio' && (
+                <label class="b-opt">
+                  <input type="radio" name={cat.id} value="" checked />
+                  <span class="b-opt-text"><span class="b-opt-label">Καμία</span></span>
+                  <span class="b-price b-price--none">—</span>
+                </label>
+              )}
+              {cat.options.map((o) => (
+                <label class="b-opt">
+                  <input
+                    type={cat.mode}
+                    name={cat.mode === 'radio' ? cat.id : o.id}
+                    value={o.id}
+                    data-opt={o.id}
+                    data-price={o.price}
+                    data-ptype={o.type}
+                    data-label={`${cat.title}: ${o.label}`}
+                  />
+                  <span class="b-opt-text">
+                    <span class="b-opt-label">{o.label}</span>
+                    {o.detail && <span class="b-opt-detail">{o.detail}</span>}
+                  </span>
+                  <span class="b-price"><span class="num">{eur(o.price)}</span><em>{o.type === 'once' ? 'εφάπαξ' : '/μήνα'}</em></span>
+                </label>
+              ))}
+            </fieldset>
+          ))}
+        </div>
+
+        <aside class="card b-total" id="b-total" aria-live="polite">
+          <p class="b-total-title">Η προσφορά σας</p>
+          <div class="b-sums">
+            <div class="b-sum">
+              <span class="b-sum-label">Εφάπαξ</span>
+              <span class="b-sum-val num" id="sum-once">0€</span>
+            </div>
+            <div class="b-sum">
+              <span class="b-sum-label">Μηνιαίο</span>
+              <span class="b-sum-val num" id="sum-monthly">0€</span>
+            </div>
+          </div>
+          <p class="b-save" id="b-save" hidden></p>
+          <button class="btn btn--orange b-send" id="b-send" type="button">Στείλτε μου αυτή την προσφορά</button>
+          <p class="btn-note">Χωρίς δέσμευση — τη λαμβάνετε γραπτώς.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Φόρμα αποστολής προσφοράς -->
+  <section class="section section--tight" id="offer" aria-labelledby="offer-title">
+    <div class="container container--narrow">
+      <div class="card offer-card reveal">
+        <h2 id="offer-title">Λάβετε την προσφορά σας γραπτώς</h2>
+        <p class="offer-sub">Σας απαντάμε εντός {ELEGXOS.reportHours} ωρών — χωρίς καμία δέσμευση.</p>
+        <form id="offer-form" novalidate>
+          <label class="f-field">
+            <span>Ονοματεπώνυμο ή επωνυμία</span>
+            <input type="text" name="name" required autocomplete="name" />
+          </label>
+          <label class="f-field">
+            <span>Email ή τηλέφωνο</span>
+            <input type="text" name="contact" required autocomplete="email" inputmode="email" />
+          </label>
+          <label class="f-field">
+            <span>Η επιλογή σας <em>(συμπληρώνεται αυτόματα — μπορείτε να προσθέσετε σχόλιο)</em></span>
+            <textarea name="summary" id="offer-summary" rows="6"></textarea>
+          </label>
+          <input type="text" name="website" tabindex="-1" autocomplete="off" class="f-hp" aria-hidden="true" />
+          <button class="btn btn--orange" type="submit" id="offer-submit">Αποστολή προσφοράς</button>
+          <p class="f-msg" id="offer-msg" hidden></p>
+        </form>
       </div>
     </div>
   </section>
@@ -123,7 +226,7 @@ const faqItems = [
         </span>
         <div>
           <h2 id="guarantee-title">Η εγγύησή μας</h2>
-          <p>Αν σε 30 ημέρες το σύστημα δεν σου γλιτώνει μετρήσιμες ώρες, ο πρώτος μήνας συντήρησης δεν χρεώνεται.</p>
+          <p>Αν σε 30 ημέρες το σύστημα δεν σας γλιτώνει μετρήσιμες ώρες, ο πρώτος μήνας συντήρησης δεν χρεώνεται.</p>
         </div>
       </div>
     </div>
@@ -142,13 +245,166 @@ const faqItems = [
 
   <!-- Τελικό CTA -->
   <CtaBand
-    title="Πρώτα η μέτρηση, μετά η τιμή."
-    sub="Δες τι χάνεις σε ώρες και ευρώ — και μετά αποφασίζεις αν αξίζει."
-    ctaText="Κλείσε τον Έλεγχό σου"
+    title="Δεν ξέρετε τι χρειάζεστε;"
+    sub="Η δωρεάν αξιολόγηση 45′ σας δείχνει τι αξίζει να πάρετε — με νούμερα, όχι υποθέσεις."
+    ctaText="Κλείστε τη δωρεάν αξιολόγηση"
     ctaHref="/elegxos/"
-    note={`Ο Έλεγχος είναι ${ELEGXOS.price.toLowerCase()} · ${ELEGXOS.minutes} λεπτά · φεύγεις με νούμερα`}
+    note={`${ELEGXOS.price} · ${ELEGXOS.minutes} λεπτά · φεύγετε με γραπτά ευρήματα`}
   />
 </Base>
+
+<script>
+  import { PRESETS, FORM_ENDPOINT } from '../data/pricing';
+  import { SITE } from '../config';
+
+  const eur = (n: number): string => n.toLocaleString('el-GR') + '€';
+
+  const inputs = Array.from(document.querySelectorAll<HTMLInputElement>('#builder input[data-opt]'));
+  const sumOnceEl = document.getElementById('sum-once')!;
+  const sumMonthlyEl = document.getElementById('sum-monthly')!;
+  const saveEl = document.getElementById('b-save')!;
+  const summaryEl = document.getElementById('offer-summary') as HTMLTextAreaElement;
+
+  let activePreset: string | null = null;
+  let applying = false;
+
+  const selected = () => inputs.filter((i) => i.checked);
+
+  const rawSums = () => {
+    let once = 0;
+    let monthly = 0;
+    for (const i of selected()) {
+      const price = Number(i.dataset.price);
+      if (i.dataset.ptype === 'once') once += price;
+      else monthly += price;
+    }
+    return { once, monthly };
+  };
+
+  const update = () => {
+    const raw = rawSums();
+    const preset = activePreset ? PRESETS.find((p) => p.id === activePreset) : undefined;
+    const once = preset ? preset.bundleOnce : raw.once;
+    const monthly = preset ? preset.bundleMonthly : raw.monthly;
+    sumOnceEl.textContent = eur(once);
+    sumMonthlyEl.textContent = monthly > 0 ? eur(monthly) + '/μήνα' : '0€';
+    if (preset) {
+      const so = raw.once - preset.bundleOnce;
+      const sm = raw.monthly - preset.bundleMonthly;
+      saveEl.textContent =
+        `Πακέτο «${preset.name}» — όφελος ${eur(so)}` + (sm > 0 ? ` και ${eur(sm)}/μήνα` : '') + ' έναντι μεμονωμένης τιμολόγησης.';
+      saveEl.hidden = false;
+    } else {
+      saveEl.hidden = true;
+    }
+    fillSummary(once, monthly, preset?.name);
+  };
+
+  const fillSummary = (once: number, monthly: number, presetName?: string) => {
+    const lines = selected().map((i) => {
+      const price = Number(i.dataset.price);
+      return `• ${i.dataset.label} — ${eur(price)}${i.dataset.ptype === 'monthly' ? '/μήνα' : ' εφάπαξ'}`;
+    });
+    const head = presetName ? [`Πακέτο «${presetName}»`, ''] : [];
+    summaryEl.value = [
+      ...head,
+      ...(lines.length ? lines : ['(καμία επιλογή ακόμα)']),
+      '',
+      `Σύνολο εφάπαξ: ${eur(once)}`,
+      `Σύνολο μηνιαίο: ${eur(monthly)}/μήνα`,
+    ].join('\n');
+  };
+
+  for (const i of inputs) {
+    i.addEventListener('change', () => {
+      if (!applying) activePreset = null; // χειροκίνητη αλλαγή = τέλος πακέτου
+      update();
+    });
+  }
+  // Και τα radio «Καμία» (χωρίς data-opt) πρέπει να ενημερώνουν το σύνολο
+  for (const none of document.querySelectorAll<HTMLInputElement>('#builder input[type="radio"]:not([data-opt])')) {
+    none.addEventListener('change', () => {
+      if (!applying) activePreset = null;
+      update();
+    });
+  }
+
+  // Έτοιμα πακέτα → φορτώνουν τις επιλογές τους στον builder
+  for (const btn of document.querySelectorAll<HTMLButtonElement>('.preset-pick')) {
+    btn.addEventListener('click', () => {
+      const preset = PRESETS.find((p) => p.id === btn.dataset.preset);
+      if (!preset) return;
+      applying = true;
+      const wanted = new Set(preset.optionIds);
+      for (const i of inputs) i.checked = wanted.has(i.dataset.opt!);
+      // Radio κατηγορίες χωρίς επιλογή στο πακέτο → «Καμία»
+      for (const none of document.querySelectorAll<HTMLInputElement>('#builder input[type="radio"]:not([data-opt])')) {
+        const group = document.querySelectorAll<HTMLInputElement>(`#builder input[name="${none.name}"][data-opt]`);
+        none.checked = !Array.from(group).some((g) => g.checked);
+      }
+      applying = false;
+      activePreset = preset.id;
+      update();
+      document.getElementById('builder')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  // «Στείλτε μου αυτή την προσφορά» → μετάβαση στη φόρμα
+  document.getElementById('b-send')?.addEventListener('click', () => {
+    document.getElementById('offer')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    (document.querySelector('#offer-form input[name="name"]') as HTMLInputElement)?.focus({ preventScroll: true });
+  });
+
+  // Φόρμα: αποθήκευση σε υπηρεσία φορμών αν έχει οριστεί endpoint, αλλιώς email
+  const form = document.getElementById('offer-form') as HTMLFormElement;
+  const msg = document.getElementById('offer-msg')!;
+  const showMsg = (text: string, ok: boolean) => {
+    msg.textContent = text;
+    msg.hidden = false;
+    msg.classList.toggle('f-msg--ok', ok);
+  };
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    if ((data.get('website') as string)?.length) return; // honeypot — bot
+    const name = (data.get('name') as string || '').trim();
+    const contact = (data.get('contact') as string || '').trim();
+    if (!name || !contact) {
+      showMsg('Συμπληρώστε όνομα και email ή τηλέφωνο.', false);
+      return;
+    }
+
+    const body =
+      `Όνομα: ${name}\nΕπικοινωνία: ${contact}\n\n${summaryEl.value}`;
+
+    if (FORM_ENDPOINT) {
+      try {
+        const res = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: data,
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        update();
+        showMsg('Η προσφορά στάλθηκε — θα επικοινωνήσουμε εντός 48 ωρών.', true);
+      } catch {
+        showMsg('Κάτι πήγε στραβά. Δοκιμάστε ξανά ή στείλτε μας email στο ' + SITE.email + '.', false);
+      }
+    } else {
+      // Χωρίς endpoint ακόμα: άνοιγμα email με έτοιμη την προσφορά
+      const url =
+        'mailto:' + SITE.email +
+        '?subject=' + encodeURIComponent('Προσφορά από τη σελίδα Τιμών — ' + name) +
+        '&body=' + encodeURIComponent(body);
+      window.location.href = url;
+      showMsg('Ανοίξαμε το email σας με έτοιμη την προσφορά — απλώς πατήστε αποστολή.', true);
+    }
+  });
+
+  update();
+</script>
 
 <style>
   /* Πακέτα */
@@ -161,19 +417,83 @@ const faqItems = [
     font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
     padding: 6px 14px; border-radius: 999px; white-space: nowrap;
   }
-  .plan h3 { font-size: 1.25rem; margin-bottom: 14px; }
+  .plan h3 { font-size: 1.25rem; margin-bottom: 4px; }
+  .plan-tagline { font-size: .9rem; color: var(--muted); margin-bottom: 14px; }
   .plan-price { display: flex; align-items: baseline; gap: 8px; }
-  .plan-setup { font-size: 2.1rem; font-weight: 700; color: var(--navy); }
+  .plan-setup-price { font-size: 2.1rem; font-weight: 700; color: var(--navy); }
   .plan-once { font-size: .9rem; color: var(--muted); }
   .plan-monthly { margin-top: 2px; font-size: .97rem; color: var(--muted); }
-  .plan-monthly .num { font-weight: 700; color: var(--orange-cta); }
-  .plan-list {
-    list-style: none; padding: 0; margin: 22px 0 26px;
-    display: grid; gap: 10px; align-content: start; flex-grow: 1;
+  .plan-monthly .num { font-weight: 700; color: var(--orange-text); }
+  .plan-save {
+    margin-top: 10px; font-size: .82rem; font-weight: 600;
+    color: var(--ok-text); background: var(--ok-soft);
+    border-radius: 8px; padding: 6px 10px; align-self: flex-start;
   }
-  .plan-list li { display: flex; gap: 10px; align-items: flex-start; font-size: .95rem; color: var(--muted); }
-  .plan-list svg { width: 18px; height: 18px; flex: none; margin-top: 4px; color: var(--ok); }
+  .plan-list {
+    list-style: none; padding: 0; margin: 18px 0 24px;
+    display: grid; gap: 9px; align-content: start; flex-grow: 1;
+  }
+  .plan-list li { display: flex; gap: 10px; align-items: flex-start; font-size: .93rem; color: var(--muted); }
+  .plan-list svg { width: 18px; height: 18px; flex: none; margin-top: 3px; color: var(--ok); }
   .plan .btn { width: 100%; }
+
+  /* Builder */
+  .builder {
+    display: grid; gap: 22px;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: start;
+  }
+  .b-cats { display: grid; gap: 18px; min-width: 0; }
+  .b-cat { padding: clamp(18px, 2.5vw, 24px); border: 1px solid var(--line); margin: 0; }
+  .b-cat-head { float: left; width: 100%; padding: 0; margin-bottom: 12px; }
+  .b-cat-title { display: block; font-weight: 700; font-size: 1.05rem; color: var(--navy); }
+  .b-cat-desc { display: block; margin-top: 2px; font-size: .85rem; color: var(--muted); }
+  .b-opt {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px; border-radius: 10px; cursor: pointer;
+    transition: background-color .12s ease;
+  }
+  .b-opt:hover { background: rgba(255, 255, 255, .04); }
+  .b-opt input {
+    width: 18px; height: 18px; flex: none;
+    accent-color: var(--orange-cta); cursor: pointer;
+  }
+  .b-opt-text { min-width: 0; }
+  .b-opt-label { display: block; font-weight: 600; font-size: .95rem; color: var(--ink); }
+  .b-opt-detail { display: block; font-size: .82rem; color: var(--muted); }
+  .b-price { margin-left: auto; flex: none; text-align: right; font-weight: 700; color: var(--navy); font-size: .95rem; }
+  .b-price em { display: block; font-style: normal; font-weight: 500; font-size: .72rem; color: var(--muted); }
+  .b-price--none { color: var(--muted); font-weight: 500; }
+  .b-opt:has(input:checked) { background: var(--orange-soft); }
+
+  /* Σύνολο */
+  .b-total { position: sticky; top: 92px; padding: clamp(20px, 2.5vw, 26px); }
+  .b-total-title { font-weight: 700; color: var(--navy); margin-bottom: 14px; }
+  .b-sums { display: grid; gap: 10px; margin-bottom: 12px; }
+  .b-sum { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .b-sum-label { font-size: .9rem; color: var(--muted); }
+  .b-sum-val { font-size: 1.45rem; font-weight: 700; color: var(--navy); }
+  .b-save { font-size: .84rem; color: var(--ok-text); background: var(--ok-soft); border-radius: 8px; padding: 8px 10px; margin-bottom: 12px; }
+  .b-send { width: 100%; }
+  .b-total .btn-note { text-align: center; }
+
+  /* Φόρμα */
+  .offer-card h2 { font-size: 1.35rem; margin-bottom: 6px; }
+  .offer-sub { color: var(--muted); margin-bottom: 20px; }
+  #offer-form { display: grid; gap: 14px; }
+  .f-field span { display: block; font-size: .88rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .f-field em { font-style: normal; font-weight: 400; color: var(--muted); }
+  .f-field input, .f-field textarea {
+    width: 100%; padding: 12px 14px;
+    background: var(--bg-soft); color: var(--ink);
+    border: 1px solid var(--line-strong); border-radius: 10px; outline: none;
+  }
+  .f-field input:focus, .f-field textarea:focus { border-color: var(--orange); }
+  .f-field textarea { resize: vertical; font-family: var(--font-mono); font-size: .85rem; line-height: 1.6; }
+  .f-hp { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
+  #offer-form .btn { justify-self: start; }
+  .f-msg { font-size: .92rem; color: var(--red-text); }
+  .f-msg--ok { color: var(--ok-text); }
 
   /* Εγγύηση */
   .guarantee { display: flex; align-items: flex-start; gap: clamp(16px, 3vw, 24px); }
@@ -181,7 +501,29 @@ const faqItems = [
   .guarantee h2 { font-size: 1.25rem; margin-bottom: 8px; }
   .guarantee p { max-width: 60ch; }
 
+  /* Mobile: το σύνολο γίνεται σταθερή μπάρα στο κάτω μέρος */
+  @media (max-width: 880px) {
+    .builder { grid-template-columns: 1fr; }
+    .b-total {
+      position: fixed; left: 10px; right: 10px; bottom: 10px; top: auto; z-index: 95;
+      display: flex; align-items: center; flex-wrap: wrap; gap: 6px 16px;
+      padding: 12px 16px;
+      background: var(--card-2); border-color: var(--line-strong);
+      box-shadow: var(--shadow-hover);
+    }
+    .b-total-title { display: none; }
+    .b-sums { display: contents; }
+    .b-sum { flex: none; gap: 8px; }
+    .b-sum-val { font-size: 1.1rem; }
+    .b-save { display: none; }
+    .b-send { width: auto; margin-left: auto; padding: 10px 16px; font-size: .9rem; }
+    .b-total .btn-note { display: none; }
+  }
+  @media (max-width: 880px) {
+    :global(body) { padding-bottom: 92px; }
+  }
   @media (max-width: 480px) {
     .guarantee { flex-direction: column; }
+    .b-send { width: 100%; margin-left: 0; }
   }
 </style>

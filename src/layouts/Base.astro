@@ -333,5 +333,14 @@ const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
         .page-in { animation: none; }
       }
     </style>
+    <script>
+      // Μόλις τελειώσει το entrance animation, φύγε από το .page-in:
+      // όσο υπάρχει animation με transform, το <main> γίνεται containing block
+      // και «φυλακίζει» τα position:fixed παιδιά του (π.χ. μπάρα συνόλου στις Τιμές).
+      const mainEl = document.getElementById('main');
+      const endPageIn = () => mainEl?.classList.remove('page-in');
+      mainEl?.addEventListener('animationend', (e) => { if (e.target === mainEl) endPageIn(); });
+      setTimeout(endPageIn, 700); // δίχτυ ασφαλείας αν το event δεν φτάσει ποτέ
+    </script>
   </body>
 </html>

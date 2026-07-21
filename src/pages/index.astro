@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-import { SITE, ELEGXOS, PRICES, eur } from '../config';
+import { SITE, ELEGXOS, eur } from '../config';
+import { PRESETS } from '../data/pricing';
 
 const schema = {
   '@context': 'https://schema.org',
@@ -46,7 +47,8 @@ const demoCases = [
   },
 ] as const;
 
-const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
+const plans = PRESETS;
+const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
 ---
 
 <Base
@@ -283,7 +285,7 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
     aria-labelledby="pricing-title"
     data-mascot-stop
     data-mascot-side="left"
-    data-mascot-say={`Όλες οι τιμές δημοσιεύονται αναλυτικά — πακέτα από ${eur(PRICES.ekkinisi.setup)} εφάπαξ.`}
+    data-mascot-say={`Όλες οι τιμές δημοσιεύονται αναλυτικά — πακέτα από ${eur(minSetup)} εφάπαξ.`}
   >
     <div class="container">
       <div class="sec-head">
@@ -295,8 +297,12 @@ const plans = [PRICES.ekkinisi, PRICES.leitourgia, PRICES.parousia];
         {plans.map((p) => (
           <article class="card plan-mini reveal">
             <h3>{p.name}</h3>
-            <p class="plan-mini-setup"><span class="num">{eur(p.setup)}</span> εφάπαξ</p>
-            <p class="plan-mini-monthly">+ <span class="num">{eur(p.monthly)}</span> / μήνα</p>
+            <p class="plan-mini-setup"><span class="num">{eur(p.bundleOnce)}</span> εφάπαξ</p>
+            <p class="plan-mini-monthly">
+              {p.bundleMonthly > 0
+                ? <>+ <span class="num">{eur(p.bundleMonthly)}</span> / μήνα</>
+                : <>χωρίς μηνιαίο κόστος</>}
+            </p>
           </article>
         ))}
       </div>

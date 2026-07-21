@@ -32,12 +32,7 @@ export const ELEGXOS = {
   reportHours: 48,
 } as const;
 
-/** Πακέτα τιμών — ενδεικτικά placeholders, εύκολα configurable */
-export const PRICES = {
-  ekkinisi: { name: 'Εκκίνηση', setup: 590, monthly: 90 },
-  leitourgia: { name: 'Λειτουργία', setup: 1400, monthly: 220 },
-  parousia: { name: 'Παρουσία+', setup: 1200, monthly: 180 },
-} as const;
+/** Οι τιμές ζουν πλέον στο src/data/pricing.ts (κατηγορίες, πακέτα, builder). */
 
 /** Παράμετροι υπολογισμών στο Ταμπλό (quiz) */
 export const QUIZ = {
