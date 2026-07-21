@@ -59,62 +59,6 @@ const presetView = PRESETS.map((p) => {
     Τιμές, <span class="accent">στα φανερά</span>.
   </PageHero>
 
-  <!-- Έτοιμα πακέτα -->
-  <section
-    class="section section--tight"
-    aria-labelledby="presets-title"
-    data-mascot-stop
-    data-mascot-side="left"
-  >
-    <div class="container">
-      <div class="sec-head">
-        <p class="kicker">Έτοιμα πακέτα</p>
-        <h2 id="presets-title">Τρεις έτοιμοι συνδυασμοί — ή φτιάξτε τον δικό σας</h2>
-        <p>Κάθε πακέτο κοστίζει λιγότερο από τις υπηρεσίες του μεμονωμένα. Πατώντας το, οι επιλογές του περνούν στον πίνακα από κάτω για να τις προσαρμόσετε.</p>
-      </div>
-      <div class="grid-3 plans">
-        {presetView.map((p, i) => (
-          <article class:list={['card', 'plan', 'reveal', { 'plan--hot': p.highlighted }]}>
-            {p.highlighted && <span class="plan-badge">Το πιο συνηθισμένο</span>}
-            <h3>{p.name}</h3>
-            <p class="plan-tagline">{p.tagline}</p>
-            <p class="plan-price">
-              <span class:list={['num', 'plan-setup-price', { 'plan-setup': i === 0 }]}>{eur(p.bundleOnce)}</span>
-              <span class="plan-once">εφάπαξ</span>
-            </p>
-            <p class="plan-monthly">
-              {p.bundleMonthly > 0
-                ? <>+ <span class="num">{eur(p.bundleMonthly)}</span>/μήνα</>
-                : <>χωρίς μηνιαίο κόστος</>}
-            </p>
-            {(p.saveOnce > 0 || p.saveMonthly > 0) && (
-              <p class="plan-save">
-                Όφελος <span class="num">{eur(p.saveOnce)}</span> έναντι μεμονωμένης τιμολόγησης{p.saveMonthly > 0 && <> + <span class="num">{eur(p.saveMonthly)}</span>/μήνα</>}
-              </p>
-            )}
-            <ul class="plan-list">
-              {p.items.map((f) => (
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M4.5 12.5l4.8 4.8L19.5 6.8" />
-                  </svg>
-                  <span>{f}</span>
-                </li>
-              ))}
-            </ul>
-            <button
-              class:list={['btn', p.highlighted ? 'btn--orange' : 'btn--ghost', 'preset-pick']}
-              type="button"
-              data-preset={p.id}
-            >
-              Επιλέξτε το
-            </button>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <!-- Custom builder -->
   <section
     class="section"
@@ -183,6 +127,62 @@ const presetView = PRESETS.map((p) => {
           <button class="btn btn--orange b-send" id="b-send" type="button">Στείλτε μου αυτή την προσφορά</button>
           <p class="btn-note">Χωρίς δέσμευση — τη λαμβάνετε γραπτώς.</p>
         </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Έτοιμα πακέτα -->
+  <section
+    class="section section--tight"
+    aria-labelledby="presets-title"
+    data-mascot-stop
+    data-mascot-side="left"
+  >
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Έτοιμα πακέτα</p>
+        <h2 id="presets-title">Ή διαλέξτε έναν έτοιμο συνδυασμό</h2>
+        <p>Κάθε πακέτο κοστίζει λιγότερο από τις υπηρεσίες του μεμονωμένα. Πατώντας το, οι επιλογές του περνούν στον πίνακα από πάνω για να τις προσαρμόσετε.</p>
+      </div>
+      <div class="grid-3 plans">
+        {presetView.map((p, i) => (
+          <article class:list={['card', 'plan', 'reveal', { 'plan--hot': p.highlighted }]}>
+            {p.highlighted && <span class="plan-badge">Το πιο συνηθισμένο</span>}
+            <h3>{p.name}</h3>
+            <p class="plan-tagline">{p.tagline}</p>
+            <p class="plan-price">
+              <span class:list={['num', 'plan-setup-price', { 'plan-setup': i === 0 }]}>{eur(p.bundleOnce)}</span>
+              <span class="plan-once">εφάπαξ</span>
+            </p>
+            <p class="plan-monthly">
+              {p.bundleMonthly > 0
+                ? <>+ <span class="num">{eur(p.bundleMonthly)}</span>/μήνα</>
+                : <>χωρίς μηνιαίο κόστος</>}
+            </p>
+            {(p.saveOnce > 0 || p.saveMonthly > 0) && (
+              <p class="plan-save">
+                Όφελος <span class="num">{eur(p.saveOnce)}</span> έναντι μεμονωμένης τιμολόγησης{p.saveMonthly > 0 && <> + <span class="num">{eur(p.saveMonthly)}</span>/μήνα</>}
+              </p>
+            )}
+            <ul class="plan-list">
+              {p.items.map((f) => (
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4.5 12.5l4.8 4.8L19.5 6.8" />
+                  </svg>
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+            <button
+              class:list={['btn', p.highlighted ? 'btn--orange' : 'btn--ghost', 'preset-pick']}
+              type="button"
+              data-preset={p.id}
+            >
+              Επιλέξτε το
+            </button>
+          </article>
+        ))}
       </div>
     </div>
   </section>
