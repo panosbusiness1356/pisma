@@ -40,7 +40,11 @@ const path = norm(Astro.url.pathname);
       </svg>
     </button>
 
-    <a class="btn btn--orange btn--sm nav-cta" href="/elegxos/">Δωρεάν αξιολόγηση</a>
+    <a class="btn btn--orange btn--sm nav-quiz" href="/tablo/">
+      <span class="nav-quiz-long">Κάντε το τεστ 2′</span>
+      <span class="nav-quiz-short">Τεστ 2′</span>
+    </a>
+    <a class="btn btn--ghost btn--sm nav-cta" href="/elegxos/">Δωρεάν αξιολόγηση</a>
 
     <button class="burger" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Μενού">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
@@ -142,12 +146,17 @@ const path = norm(Astro.url.pathname);
   .sound-btn:hover { opacity: .8; }
   .sound-btn[aria-pressed='false'] { opacity: .65; }
   .sound-btn svg { flex: none; display: block; width: 26px; height: 26px; }
+  .nav-quiz { flex: none; }
+  .nav-quiz-short { display: none; }
   .burger { display: none; background: none; border: 0; cursor: pointer; color: var(--navy); padding: 8px; border-radius: 10px; }
   .burger svg { width: 26px; height: 26px; }
 
   @media (max-width: 1080px) {
     .nav { gap: 14px; }
     .nav-cta { display: none; }
+    .nav-quiz { padding: 9px 14px; }
+    .nav-quiz-long { display: none; }
+    .nav-quiz-short { display: inline; }
     .burger { display: inline-flex; }
     .sound-btn { display: none; }
     .burger svg { width: 30px; height: 30px; }

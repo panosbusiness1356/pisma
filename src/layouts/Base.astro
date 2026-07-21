@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import Ribbon from '../components/Ribbon.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Mascot from '../components/Mascot.astro';
@@ -56,7 +55,6 @@ const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
   </head>
   <body>
     <a class="skip-link" href="#main">Μετάβαση στο περιεχόμενο</a>
-    <Ribbon />
     <Nav />
     <main id="main" class="page-in">
       <slot />
