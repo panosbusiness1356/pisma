@@ -30,22 +30,6 @@ const steps = [
   { t: 'Υποστήριξη', d: 'Μηνιαία αναφορά αποτελεσμάτων σε ώρες και ευρώ.' },
 ];
 
-const demoCases = [
-  {
-    title: 'Εμπορική εταιρεία',
-    detail: '400 παραστατικά/μήνα — αυτόματη καταχώρηση από το email',
-    before: '22 ώρες',
-    after: '3 ώρες/μήνα',
-    delta: '−86%',
-  },
-  {
-    title: 'Τεχνική εταιρεία',
-    detail: 'Έργα με πίστωση — υπενθυμίσεις είσπραξης σε 3 στάδια',
-    before: '47 ημέρες',
-    after: '31 ημέρες',
-    delta: '−16 ημέρες',
-  },
-] as const;
 
 const plans = PRESETS;
 const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
@@ -72,7 +56,7 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     </div>
 
     <div class="container hero-inner">
-      <p class="hero-kicker blur-in" style="--d:.16s">Ψηφιακή παρουσία & αυτοματοποίηση για μικρομεσαίες επιχειρήσεις</p>
+      <p class="hero-kicker blur-in" style="--d:.16s">Ψηφιακή παρουσία & αυτοματοποίηση</p>
 
       <h1 id="hero-title" class="blur-in" style="--d:.22s">
         Η επιχείρησή σας, ορατή στους πελάτες.<br />
@@ -98,11 +82,11 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
 
       <div class="hero-ctas blur-in" style="--d:.46s">
         <span class="btn-frame">
-          <a class="btn btn--orange" href="/elegxos/">Δωρεάν αξιολόγηση 45′</a>
+          <a class="btn btn--orange" href="/tablo/">Μέτρησε την επιχείρησή σου — 2′</a>
         </span>
-        <a class="btn btn--ghost" href="/times/">Δείτε τις τιμές</a>
+        <a class="btn btn--ghost" href="/elegxos/">Δωρεάν αξιολόγηση 45′</a>
       </div>
-      <p class="btn-note blur-in" style="--d:.54s">Χωρίς χρέωση · χωρίς δέσμευση · παραλαμβάνετε τα ευρήματα γραπτώς</p>
+      <p class="btn-note blur-in" style="--d:.54s">Χωρίς email · χωρίς δέσμευση · το σκορ βγαίνει αμέσως</p>
     </div>
 
     <!-- Mockup Ταμπλό -->
@@ -214,7 +198,7 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--yellow">Μεθοδολογία</p>
-        <h2 id="method-title">Τέσσερα στάδια, με μετρήσιμο αποτέλεσμα σε καθένα</h2>
+        <h2 id="method-title">Πώς δουλεύουμε — σε 4 βήματα</h2>
       </div>
       <ol class="steps">
         {steps.map((s, i) => (
@@ -231,43 +215,6 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   <!-- 4. Ηλεκτρονική τιμολόγηση 2026: ΠΡΟΣΩΡΙΝΑ ΕΚΤΟΣ — φυλάσσεται στο
        components/Einvoice2026.astro, επαναφορά με <Einvoice2026 /> εδώ. -->
 
-  <!-- 5. Αποτελέσματα -->
-  <section
-    class="section"
-    aria-labelledby="cases-title"
-    data-mascot-stop
-    data-mascot-side="right"
-    data-mascot-say="Κάθε έργο μετριέται πριν και μετά — σε ώρες και ευρώ."
-  >
-    <div class="container">
-      <div class="sec-head sec-head--center">
-        <p class="kicker kicker--ok">Αποτελέσματα</p>
-        <h2 id="cases-title">Πριν και μετά, σε μετρήσιμα μεγέθη</h2>
-      </div>
-      <div class="case-rows">
-        {demoCases.map((c) => (
-          <article class="card case-row reveal">
-            <div class="case-row-info">
-              <h3>{c.title}</h3>
-              <p>{c.detail}</p>
-            </div>
-            <p class="case-nums">
-              <span class="strike num">{c.before}</span>
-              <span class="case-arrow" aria-hidden="true">→</span>
-              <span class="visually-hidden">έγινε</span>
-              <span class="after-num">{c.after}</span>
-            </p>
-            <span class="tag tag--live case-delta num">{c.delta}</span>
-          </article>
-        ))}
-      </div>
-      <p class="cases-note">Ενδεικτικά σενάρια εφαρμογής</p>
-      <div class="cases-cta">
-        <a class="btn btn--navy" href="/apodeixeis/">Δείτε όλα τα αποτελέσματα →</a>
-      </div>
-    </div>
-  </section>
-
   <!-- 6. Τιμολόγηση -->
   <section
     class="section section--tight"
@@ -279,7 +226,7 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">Τιμολόγηση</p>
-        <h2 id="pricing-title">Διαφανής τιμολόγηση, δημοσιευμένη αναλυτικά</h2>
+        <h2 id="pricing-title">Οι τιμές μας, δημόσιες — φτιάξτε το πακέτο σας</h2>
         <p>Γνωρίζετε το κόστος πριν από την πρώτη επικοινωνία.</p>
       </div>
       <div class="grid-3">

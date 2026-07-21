@@ -1,9 +1,9 @@
 ---
 const links = [
-  { href: '/se-vriskoun/', label: 'Σε Βρίσκουν' },
-  { href: '/doulevei-mono-tou/', label: 'Δουλεύει Μόνο Του' },
+  { href: '/se-vriskoun/', label: 'Ψηφιακή Προβολή' },
+  { href: '/doulevei-mono-tou/', label: 'Αυτοματοποίηση' },
   { href: '/times/', label: 'Τιμές' },
-  { href: '/apodeixeis/', label: 'Αποδείξεις' },
+  { href: '/apodeixeis/', label: 'Αποτελέσματα' },
 ];
 // Κανονικοποίηση χωρίς trailing slash και στις δύο πλευρές της σύγκρισης.
 const norm = (p: string) => p.replace(/\/$/, '') || '/';
@@ -26,7 +26,7 @@ const path = norm(Astro.url.pathname);
           <span class="switch" aria-hidden="true"></span>
         </button>
       </li>
-      <li class="nav-cta-mobile"><a class="btn btn--orange btn--sm" href="/elegxos/">Δωρεάν αξιολόγηση</a></li>
+      <li class="nav-cta-mobile"><a class="btn btn--orange btn--sm" href="/elegxos/">Δωρεάν αξιολόγηση 45′</a></li>
     </ul>
 
     <button class="sound-btn" type="button" data-sound-toggle aria-pressed="true" aria-label="Ήχοι κλικ" title="Ήχοι κλικ">
@@ -41,10 +41,10 @@ const path = norm(Astro.url.pathname);
     </button>
 
     <a class="btn btn--orange btn--sm nav-quiz" href="/tablo/">
-      <span class="nav-quiz-long">Κάντε το τεστ 2′</span>
-      <span class="nav-quiz-short">Τεστ 2′</span>
+      <span class="nav-quiz-long">Μέτρησε την επιχείρησή σου</span>
+      <span class="nav-quiz-short">Μέτρησέ την</span>
     </a>
-    <a class="btn btn--ghost btn--sm nav-cta" href="/elegxos/">Δωρεάν αξιολόγηση</a>
+    <a class="btn btn--ghost btn--sm nav-cta" href="/elegxos/">Δωρεάν αξιολόγηση 45′</a>
 
     <button class="burger" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Μενού">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
