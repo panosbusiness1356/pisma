@@ -53,6 +53,21 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
       <span class="beam beam--c"></span>
     </div>
 
+    <!-- Αιωρούμενα λογότυπα πλατφορμών — αυθεντικά SVG στο /public/logos -->
+    <div class="float-logos" aria-hidden="true">
+      <span class="flogo flogo-ig" data-speed="0.10" style="left:5%;top:13%;--w:44px;--dur:5.2s"><img src="/logos/instagram-icon.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo-fb" data-speed="-0.07" style="left:12%;top:38%;--w:38px;--dur:6.4s"><img src="/logos/facebook.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo-gm" data-speed="0.13" style="left:4%;top:64%;--w:38px;--dur:7.1s"><img src="/logos/google-gmail.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo--sm flogo-ai" data-speed="-0.05" style="left:19%;top:22%;--w:28px;--dur:6s"><img class="inv" src="/logos/openai-icon.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo--sm flogo-vb" data-speed="0.08" style="left:14%;top:85%;--w:30px;--dur:5.8s"><img src="/logos/viber.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo--sm flogo-li" data-speed="-0.1" style="left:6%;top:91%;--w:28px;--dur:6.6s"><img src="/logos/linkedin-icon.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo-go" data-speed="0.08" style="right:5%;top:12%;--w:42px;--dur:5.6s"><img src="/logos/google-icon.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo-wa" data-speed="-0.11" style="right:12%;top:38%;--w:40px;--dur:6.8s"><img src="/logos/whatsapp-icon.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo-mp" data-speed="0.06" style="right:4%;top:64%;--w:30px;--dur:7.4s"><img src="/logos/google-maps.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo--sm flogo-xl" data-speed="0.12" style="right:19%;top:22%;--w:30px;--dur:6.2s"><img src="/logos/excel.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo--sm flogo-tt" data-speed="-0.08" style="right:14%;top:86%;--w:28px;--dur:5.4s"><img class="chip" src="/logos/tiktok-icon.svg" alt="" loading="lazy" /></span>
+    </div>
+
     <div class="container hero-inner">
       <p class="hero-kicker blur-in" style="--d:.16s">Ψηφιακή παρουσία & αυτοματοποίηση</p>
 
@@ -77,6 +92,11 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
         τιμολόγηση, προσφορές, εισπράξεις. <span class="sub-more">Με προκαθορισμένο κόστος
         και μετρήσιμο αποτέλεσμα.</span>
       </p>
+
+      <div class="hero-reviews blur-in" style="--d:.40s" aria-label="2.000 κριτικές πελατών στο Google">
+        <span class="hero-stars" aria-hidden="true">★★★★★</span>
+        <span class="hero-rev-text" aria-hidden="true"><span class="num" id="rev-count">0</span> κριτικές</span>
+      </div>
 
       <div class="hero-ctas blur-in" style="--d:.46s">
         <span class="btn-frame">
@@ -281,6 +301,51 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   </section>
 </Base>
 
+<script>
+  // Parallax λογοτύπων στο scroll + μετρητής κριτικών — σέβονται το reduced motion.
+  const reduceFx = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const flogos = Array.from(document.querySelectorAll<HTMLElement>('.flogo'));
+  if (!reduceFx && flogos.length) {
+    let raf = 0;
+    const apply = () => {
+      raf = 0;
+      const y = window.scrollY;
+      for (const el of flogos) {
+        el.style.transform = `translateY(${(y * parseFloat(el.dataset.speed || '0')).toFixed(1)}px)`;
+      }
+    };
+    window.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(apply); }, { passive: true });
+    apply();
+  }
+
+  const revEl = document.getElementById('rev-count');
+  if (revEl) {
+    const REV_TARGET = 2000;
+    const fmt = (n: number) => Math.round(n).toLocaleString('el-GR');
+    if (reduceFx) {
+      revEl.textContent = fmt(REV_TARGET);
+    } else {
+      let started = false;
+      const run = () => {
+        if (started) return;
+        started = true;
+        const t0 = performance.now();
+        const dur = 2200;
+        const tick = (t: number) => {
+          const p = Math.min((t - t0) / dur, 1);
+          revEl.textContent = fmt(REV_TARGET * (1 - Math.pow(1 - p, 3)));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+      const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { run(); io.disconnect(); } });
+      io.observe(revEl);
+      window.setTimeout(run, 2500); // δίχτυ: αν το observer δεν πυροδοτήσει
+    }
+  }
+</script>
+
 <style>
   /* ---------- Hero ---------- */
   .hero { padding-top: clamp(48px, 7vw, 100px); position: relative; overflow: clip; }
@@ -336,6 +401,35 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   }
   .announce:hover .announce-arrow-track { transform: translateX(0); }
   .announce-arrow-track svg { width: 12px; height: 26px; margin-inline: auto; color: var(--orange-text); flex: none; padding-block: 7px; box-sizing: content-box; padding-inline: 7px; }
+
+  /* Αιωρούμενα λογότυπα */
+  .float-logos { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+  .flogo { position: absolute; will-change: transform; }
+  .flogo img {
+    display: block; width: var(--w, 40px); height: auto;
+    animation: flogoFloat var(--dur, 6s) ease-in-out infinite alternate;
+    filter: drop-shadow(0 8px 22px rgba(0, 0, 0, .5));
+    opacity: .92;
+  }
+  .flogo img.inv { filter: invert(1) drop-shadow(0 8px 22px rgba(0, 0, 0, .5)); opacity: .8; }
+  .flogo img.chip { background: #fff; border-radius: 9px; padding: 4px; }
+  @keyframes flogoFloat {
+    from { translate: 0 -9px; rotate: -2.5deg; }
+    to { translate: 0 9px; rotate: 2.5deg; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flogo img { animation: none; }
+  }
+
+  /* Σήμα κριτικών Google */
+  .hero-reviews {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #fff; border-radius: 999px; padding: 9px 18px;
+    margin-top: 22px;
+    box-shadow: var(--shadow);
+  }
+  .hero-stars { color: #FBBC05; letter-spacing: 2px; font-size: .95rem; }
+  .hero-rev-text { font-weight: 700; font-size: .95rem; color: #1D1D1F; }
 
   /* Beams */
   .beams { position: absolute; inset: 0; pointer-events: none; opacity: .5; display: none; }
@@ -511,7 +605,15 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
 
   /* ---------- Mobile: σύντομο, γρήγορο, χωρίς περιττό scroll ---------- */
   @media (max-width: 680px) {
-    .hero { padding-top: 32px; }
+    .hero { padding-top: 60px; }
+    /* Λογότυπα σε κινητό: μόνο 4, μικρότερα, στις άκρες — μακριά από το κείμενο */
+    .flogo--sm, .flogo-fb, .flogo-mp { display: none; }
+    .flogo { --w: 28px !important; }
+    .flogo-ig { left: 5% !important; top: 10px !important; }
+    .flogo-go { right: 5% !important; top: 10px !important; }
+    .flogo-gm { left: 5% !important; top: 77% !important; }
+    .flogo-wa { right: 5% !important; top: 77% !important; }
+    .hero-reviews { margin-top: 16px; padding: 8px 14px; }
     .hero-kicker { margin-bottom: 16px; }
     .hero .sub { font-size: .98rem; margin-top: 18px; }
     .sub-more { display: none; }
