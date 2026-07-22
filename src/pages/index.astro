@@ -162,17 +162,6 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     </div>
   </section>
 
-  <!-- Διασκορπισμένα λογότυπα στην υπόλοιπη αρχική (μόνο κινητό) -->
-  <div class="scatter-logos" aria-hidden="true">
-    <span class="flogo" style="right:5%;top:25%;--w:26px;--dur:6.2s"><img src="/logos/google-gmail.svg" alt="" loading="lazy" /></span>
-    <span class="flogo" style="left:5%;top:48.2%;--w:28px;--dur:5.6s"><img src="/logos/whatsapp-icon.svg" alt="" loading="lazy" /></span>
-    <span class="flogo" style="right:5%;top:50.4%;--w:26px;--dur:7s"><img src="/logos/google-maps.svg" alt="" loading="lazy" /></span>
-    <span class="flogo" style="left:5%;top:64.3%;--w:22px;--dur:6.4s"><img src="/logos/linkedin-icon.svg" alt="" loading="lazy" /></span>
-    <span class="flogo" style="right:5%;top:65.2%;--w:24px;--dur:5.9s"><img src="/logos/facebook.svg" alt="" loading="lazy" /></span>
-    <span class="flogo" style="right:6%;top:80.7%;--w:22px;--dur:6.8s"><img class="chip" src="/logos/tiktok-icon.svg" alt="" loading="lazy" /></span>
-    <span class="flogo" style="left:6%;top:89.3%;--w:24px;--dur:5.4s"><img src="/logos/viber.svg" alt="" loading="lazy" /></span>
-  </div>
-
   <!-- 2. Υπηρεσίες -->
   <section
     class="section"
@@ -181,6 +170,8 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     data-mascot-side="left"
     data-mascot-say="Δύο υπηρεσίες: προβολή που φέρνει πελάτες, και διαδικασίες που τρέχουν αυτόματα."
   >
+    <span class="flogo sflogo" aria-hidden="true" style="right:4%;top:60px;--w:26px;--dur:6.2s"><img src="/logos/google-gmail.svg" alt="" loading="lazy" /></span>
+    <span class="flogo sflogo" aria-hidden="true" style="left:4%;bottom:8px;--w:28px;--dur:5.6s"><img src="/logos/whatsapp-icon.svg" alt="" loading="lazy" /></span>
     <div class="container">
       <div class="sec-head">
         <p class="kicker">Υπηρεσίες</p>
@@ -227,6 +218,7 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     data-mascot-side="right"
     data-mascot-say="Κάθε συνεργασία ξεκινά με δωρεάν αξιολόγηση 45 λεπτών — παραλαμβάνετε τα ευρήματα γραπτώς."
   >
+    <span class="flogo sflogo" aria-hidden="true" style="right:4%;top:40px;--w:24px;--dur:5.9s"><img src="/logos/google-maps.svg" alt="" loading="lazy" /></span>
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--yellow">Μεθοδολογία</p>
@@ -255,6 +247,8 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     data-mascot-side="left"
     data-mascot-say={`Όλες οι τιμές δημοσιεύονται αναλυτικά — πακέτα από ${eur(minSetup)} εφάπαξ.`}
   >
+    <span class="flogo sflogo" aria-hidden="true" style="left:4%;top:2px;--w:22px;--dur:6.4s"><img src="/logos/linkedin-icon.svg" alt="" loading="lazy" /></span>
+    <span class="flogo sflogo" aria-hidden="true" style="right:4%;top:42px;--w:26px;--dur:6.8s"><img src="/logos/facebook.svg" alt="" loading="lazy" /></span>
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">Τιμολόγηση</p>
@@ -282,6 +276,7 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
 
   <!-- 7. Η εταιρία -->
   <section class="section section--tight" aria-labelledby="who-title">
+    <span class="flogo sflogo" aria-hidden="true" style="right:5%;top:4px;--w:22px;--dur:6.6s"><img class="chip" src="/logos/tiktok-icon.svg" alt="" loading="lazy" /></span>
     <div class="container">
       <div class="card who reveal">
         <div>
@@ -304,6 +299,7 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     data-mascot-side="right"
     data-mascot-say="Ξεκινήστε με τη δωρεάν αξιολόγηση — 45 λεπτά, χωρίς δέσμευση."
   >
+    <span class="flogo sflogo" aria-hidden="true" style="left:5%;top:12px;--w:24px;--dur:5.4s"><img src="/logos/viber.svg" alt="" loading="lazy" /></span>
     <div class="container">
       <h2 id="final-title">Ξεκινήστε με μια δωρεάν<br /><span class="grad-text">αξιολόγηση 45 λεπτών</span></h2>
       <p>
@@ -418,7 +414,8 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
 
   /* Αιωρούμενα λογότυπα */
   .float-logos { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
-  .scatter-logos { display: none; }
+  section { position: relative; }
+  .sflogo { display: none; pointer-events: none; z-index: 2; }
   .flogo { position: absolute; will-change: transform; }
   .flogo img {
     display: block; width: var(--w, 40px); height: auto;
@@ -636,10 +633,7 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     .flogo-ai { left: 4% !important; top: 40% !important; --w: 26px !important; }
     .flogo-xl { right: 4% !important; top: 40% !important; --w: 26px !important; }
     .flogo-fb, .flogo-wa, .flogo-gm, .flogo-mp, .flogo-li, .flogo-tt, .flogo-vb { display: none; }
-    .scatter-logos {
-      display: block; position: absolute; inset: 0;
-      pointer-events: none; z-index: 2;
-    }
+    .sflogo { display: block; }
     .hero-reviews { margin-top: 16px; padding: 8px 14px; }
     .hero-kicker { margin-bottom: 16px; }
     .hero .sub { font-size: .98rem; margin-top: 18px; }
