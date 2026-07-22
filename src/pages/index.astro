@@ -329,6 +329,21 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     apply();
   }
 
+  // Τα σκόρπια λογότυπα αναδύονται όταν μπουν στην οθόνη
+  const sflogos = Array.from(document.querySelectorAll('.sflogo'));
+  if (sflogos.length) {
+    if (reduceFx || !('IntersectionObserver' in window)) {
+      sflogos.forEach((el) => el.classList.add('in'));
+    } else {
+      const sIo = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) { e.target.classList.add('in'); sIo.unobserve(e.target); }
+        }
+      }, { rootMargin: '0px 0px -8% 0px' });
+      sflogos.forEach((el) => sIo.observe(el));
+    }
+  }
+
   const revEl = document.getElementById('rev-count');
   if (revEl) {
     const REV_TARGET = 2000;
@@ -416,6 +431,34 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   .float-logos { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
   section { position: relative; }
   .sflogo { display: none; pointer-events: none; z-index: 2; }
+
+  /* Είσοδος: απαλή ανάδυση με ξεθόλωμα (επιλογή χρήστη).
+     Παίζει στο span — το λίκνισμα (translate/rotate στο img) και το parallax
+     (inline transform από JS) δεν συγκρούονται μαζί της. */
+  @keyframes flogoIn {
+    from { opacity: 0; translate: 0 22px; filter: blur(8px); }
+    to { opacity: 1; translate: 0 0; filter: blur(0); }
+  }
+  .float-logos .flogo { animation: flogoIn .7s cubic-bezier(.22, 1, .36, 1) both; }
+  .float-logos .flogo:nth-child(1) { animation-delay: .15s; }
+  .float-logos .flogo:nth-child(2) { animation-delay: .45s; }
+  .float-logos .flogo:nth-child(3) { animation-delay: .3s; }
+  .float-logos .flogo:nth-child(4) { animation-delay: .7s; }
+  .float-logos .flogo:nth-child(5) { animation-delay: .55s; }
+  .float-logos .flogo:nth-child(6) { animation-delay: .25s; }
+  .float-logos .flogo:nth-child(7) { animation-delay: .5s; }
+  .float-logos .flogo:nth-child(8) { animation-delay: .35s; }
+  .float-logos .flogo:nth-child(9) { animation-delay: .65s; }
+  .float-logos .flogo:nth-child(10) { animation-delay: .8s; }
+  .float-logos .flogo:nth-child(11) { animation-delay: .6s; }
+  /* Τα σκόρπια στα sections: αναδύονται όταν πρωτοφανούν στην οθόνη */
+  .sflogo { opacity: 0; }
+  .sflogo.in { animation: flogoIn .8s cubic-bezier(.22, 1, .36, 1) both; }
+  @media (prefers-reduced-motion: reduce) {
+    .float-logos .flogo { animation: none; }
+    .sflogo { opacity: 1; }
+    .sflogo.in { animation: none; }
+  }
   .flogo { position: absolute; will-change: transform; }
   .flogo img {
     display: block; width: var(--w, 40px); height: auto;
