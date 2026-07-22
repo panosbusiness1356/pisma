@@ -13,12 +13,10 @@ const schema = {
   url: SITE.url,
   address: {
     '@type': 'PostalAddress',
-    addressLocality: 'Γλυφάδα',
     addressRegion: 'Αττική',
     addressCountry: 'GR',
   },
   areaServed: 'Νότια προάστια Αθήνας',
-  founder: { '@type': 'Person', name: 'Πάνος' },
   description:
     'Ψηφιακή παρουσία και αυτοματοποίηση διαδικασιών για ελληνικές μικρομεσαίες επιχειρήσεις.',
 };
@@ -36,7 +34,7 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
 ---
 
 <Base
-  title="PISMA — Ψηφιακή παρουσία & αυτοματοποίηση για μικρομεσαίες επιχειρήσεις | Γλυφάδα"
+  title="PISMA — Ψηφιακή παρουσία & αυτοματοποίηση για μικρομεσαίες επιχειρήσεις"
   description="Η PISMA σχεδιάζει την παρουσία της επιχείρησής σας σε ιστοσελίδα, Google και εφαρμογές AI, και αυτοματοποιεί τιμολόγηση, προσφορές και εισπράξεις. Σταθερές τιμές, μετρήσιμα αποτελέσματα."
   schema={schema}
 >
@@ -259,7 +257,6 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
             Συνεργάζεστε απευθείας με τον υπεύθυνο σχεδιασμού και υλοποίησης — χωρίς
             τμήμα πωλήσεων. Ό,τι υλοποιείται, ανήκει στην επιχείρησή σας.
           </p>
-          <p class="who-sig">{SITE.founder} · {SITE.area}</p>
         </div>
       </div>
     </div>

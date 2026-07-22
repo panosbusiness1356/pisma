@@ -6,8 +6,6 @@
 export const SITE = {
   name: 'PISMA',
   tagline: 'Με πείσμα, μέχρι να δουλεύει μόνο του.',
-  founder: 'Πάνος',
-  area: 'Γλυφάδα, Αθήνα',
   region: 'Νότια προάστια Αθήνας',
   email: 'hello@pisma.gr', // placeholder — θα αντικατασταθεί
   phone: '+30 210 000 0000', // placeholder — θα αντικατασταθεί
