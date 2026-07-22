@@ -286,6 +286,7 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   .hero { padding-top: clamp(48px, 7vw, 100px); position: relative; overflow: clip; }
   .hero-inner { text-align: center; position: relative; z-index: 1; }
   .hero-kicker {
+    margin-inline: auto; /* κεντράρισμα — το p έχει max-width από το global */
     margin-bottom: clamp(18px, 3vw, 28px);
     font-size: .76rem; font-weight: 700;
     letter-spacing: .14em; text-transform: uppercase;
@@ -301,7 +302,7 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   }
   .hero .sub { margin: 24px auto 0; font-size: 1.1rem; color: var(--muted); max-width: 62ch; }
   .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 36px; }
-  .hero .btn-note { margin-top: 14px; }
+  .hero .btn-note { margin-top: 14px; margin-inline: auto; }
   .btn-frame {
     display: inline-flex; padding: 3px; border-radius: 14px;
     background: rgba(255, 255, 255, .08); border: 1px solid var(--line);
