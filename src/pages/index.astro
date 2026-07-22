@@ -162,6 +162,17 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     </div>
   </section>
 
+  <!-- Διασκορπισμένα λογότυπα στην υπόλοιπη αρχική (μόνο κινητό) -->
+  <div class="scatter-logos" aria-hidden="true">
+    <span class="flogo" style="right:5%;top:25%;--w:26px;--dur:6.2s"><img src="/logos/facebook.svg" alt="" loading="lazy" /></span>
+    <span class="flogo" style="left:5%;top:49.3%;--w:28px;--dur:5.6s"><img src="/logos/whatsapp-icon.svg" alt="" loading="lazy" /></span>
+    <span class="flogo" style="right:5%;top:50.4%;--w:26px;--dur:7s"><img src="/logos/google-gmail.svg" alt="" loading="lazy" /></span>
+    <span class="flogo" style="left:5%;top:63.8%;--w:22px;--dur:6.4s"><img src="/logos/linkedin-icon.svg" alt="" loading="lazy" /></span>
+    <span class="flogo" style="right:5%;top:65.2%;--w:24px;--dur:5.9s"><img src="/logos/google-maps.svg" alt="" loading="lazy" /></span>
+    <span class="flogo" style="right:6%;top:80.7%;--w:22px;--dur:6.8s"><img class="chip" src="/logos/tiktok-icon.svg" alt="" loading="lazy" /></span>
+    <span class="flogo" style="left:6%;top:89.3%;--w:24px;--dur:5.4s"><img src="/logos/viber.svg" alt="" loading="lazy" /></span>
+  </div>
+
   <!-- 2. Υπηρεσίες -->
   <section
     class="section"
@@ -308,7 +319,7 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   // Parallax λογοτύπων στο scroll + μετρητής κριτικών — σέβονται το reduced motion.
   const reduceFx = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const flogos = Array.from(document.querySelectorAll<HTMLElement>('.flogo'));
+  const flogos = Array.from(document.querySelectorAll<HTMLElement>('.float-logos .flogo'));
   if (!reduceFx && flogos.length) {
     let raf = 0;
     const apply = () => {
@@ -406,7 +417,8 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   .announce-arrow-track svg { width: 12px; height: 26px; margin-inline: auto; color: var(--orange-text); flex: none; padding-block: 7px; box-sizing: content-box; padding-inline: 7px; }
 
   /* Αιωρούμενα λογότυπα */
-  .float-logos { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+  .float-logos { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+  .scatter-logos { display: none; }
   .flogo { position: absolute; will-change: transform; }
   .flogo img {
     display: block; width: var(--w, 40px); height: auto;
@@ -623,13 +635,11 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     .flogo-go { right: 4% !important; top: 19% !important; --w: 30px !important; }
     .flogo-ai { left: 4% !important; top: 40% !important; --w: 26px !important; }
     .flogo-xl { right: 4% !important; top: 40% !important; --w: 26px !important; }
-    .flogo-fb { left: 4% !important; top: 79% !important; }
-    .flogo-wa { right: 4% !important; top: 79% !important; --w: 28px !important; }
-    .flogo-gm { left: 13% !important; top: 88% !important; --w: 26px !important; }
-    .flogo-mp { right: 13% !important; top: 88% !important; --w: 24px !important; }
-    .flogo-li { left: 5% !important; top: 95% !important; --w: 22px !important; }
-    .flogo-tt { right: 5% !important; top: 95% !important; --w: 22px !important; }
-    .flogo-vb { left: 46% !important; top: 97% !important; --w: 22px !important; }
+    .flogo-fb, .flogo-wa, .flogo-gm, .flogo-mp, .flogo-li, .flogo-tt, .flogo-vb { display: none; }
+    .scatter-logos {
+      display: block; position: absolute; inset: 0;
+      pointer-events: none; z-index: 2;
+    }
     .hero-reviews { margin-top: 16px; padding: 8px 14px; }
     .hero-kicker { margin-bottom: 16px; }
     .hero .sub { font-size: .98rem; margin-top: 18px; }
