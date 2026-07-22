@@ -93,12 +93,19 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
         και μετρήσιμο αποτέλεσμα.</span>
       </p>
 
-      <div class="hero-reviews blur-in" style="--d:.40s" aria-label="4,5 αστέρια — περισσότερες από 2.000 κριτικές">
-        <span class="hero-stars" aria-hidden="true">
-          <span class="stars-base">★★★★★</span>
-          <span class="stars-fill">★★★★★</span>
+      <div class="hero-reviews blur-in" style="--d:.40s" aria-label="Κριτικές: 4,5 στα 5 αστέρια, περισσότερες από 2.000">
+        <img class="hr-g" src="/logos/google-icon.svg" alt="" width="26" height="26" loading="lazy" />
+        <span class="hr-body" aria-hidden="true">
+          <span class="hr-label">Κριτικές</span>
+          <span class="hr-row">
+            <span class="hr-score num">4,5</span>
+            <span class="hero-stars">
+              <span class="stars-base">★★★★★</span>
+              <span class="stars-fill">★★★★★</span>
+            </span>
+            <span class="hr-count num">(<span id="rev-count">0</span>)</span>
+          </span>
         </span>
-        <span class="hero-rev-text" aria-hidden="true"><span class="num" id="rev-count">0</span> κριτικές</span>
       </div>
 
       <div class="hero-ctas blur-in" style="--d:.46s">
@@ -476,14 +483,20 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     .flogo img { animation: none; }
   }
 
-  /* Σήμα κριτικών Google */
+  /* Κάρτα κριτικών με το G της Google */
   .hero-reviews {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: #fff; border-radius: 999px; padding: 9px 18px;
-    margin-top: 22px;
+    display: inline-flex; align-items: center; gap: 12px;
+    background: #fff; border-radius: 14px; padding: 10px 16px;
+    margin-top: 22px; text-align: left;
     box-shadow: var(--shadow);
   }
-  .hero-stars { position: relative; display: inline-block; letter-spacing: 2px; font-size: .95rem; line-height: 1; }
+  .hr-g { width: 26px; height: 26px; flex: none; }
+  .hr-body { display: block; line-height: 1.25; }
+  .hr-label { display: block; font-size: .72rem; color: #5F6368; }
+  .hr-row { display: flex; align-items: center; gap: 7px; }
+  .hr-score { font-size: 1.05rem; font-weight: 700; color: #1D1D1F; }
+  .hr-count { font-size: .78rem; color: #5F6368; }
+  .hero-stars { position: relative; display: inline-block; letter-spacing: 2px; font-size: .8rem; line-height: 1; }
   .stars-base { color: #DADCE0; }
   .stars-fill {
     position: absolute; left: 0; top: 0;
@@ -491,7 +504,6 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     overflow: hidden; white-space: nowrap;
     color: #FBBC05;
   }
-  .hero-rev-text { font-weight: 700; font-size: .95rem; color: #1D1D1F; }
 
   /* Beams */
   .beams { position: absolute; inset: 0; pointer-events: none; opacity: .5; display: none; }
