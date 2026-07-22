@@ -59,16 +59,23 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 body {
-  background:
-    radial-gradient(58% 34% at 82% -4%, rgba(139, 92, 246, .16), transparent 62%),
-    radial-gradient(46% 30% at 8% 0%, rgba(238, 79, 39, .10), transparent 60%),
-    var(--bg);
+  background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 1.0625rem;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
+}
+/* Οι λάμψεις της κορυφής σε δικό τους στρώμα (100vh) — ζωγραφίζονται ενιαία,
+   χωρίς τη «γραμμή» που άφηνε το propagation του body background στο όριο του main. */
+body::before {
+  content: '';
+  position: absolute; left: 0; right: 0; top: 0; height: 100vh;
+  z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(58% 34% at 82% -4%, rgba(139, 92, 246, .16), transparent 62%),
+    radial-gradient(46% 30% at 8% 0%, rgba(238, 79, 39, .10), transparent 60%);
 }
 img, svg { display: block; max-width: 100%; }
 input, button, textarea, select { font: inherit; color: inherit; }
