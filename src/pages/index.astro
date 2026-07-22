@@ -615,20 +615,21 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
 
   /* ---------- Mobile: σύντομο, γρήγορο, χωρίς περιττό scroll ---------- */
   @media (max-width: 680px) {
-    .hero { padding-top: 60px; }
-    /* Λογότυπα σε κινητό: ΟΛΑ, σε δύο ζώνες — πάνω από την ετικέτα και γύρω από το ταμπλό */
+    .hero { padding-top: 32px; }
+    /* Λογότυπα σε κινητό: 2+2 στα πλαϊνά κενά (σήμα κριτικών / σημείωση),
+       τα υπόλοιπα στη ζώνη του ταμπλό — ΤΙΠΟΤΑ μπροστά από κείμενο */
     .flogo { --w: 26px !important; }
-    .flogo-ig { left: 4% !important; top: 12px !important; --w: 30px !important; }
-    .flogo-ai { left: 26% !important; top: 17px !important; --w: 24px !important; }
-    .flogo-go { right: 4% !important; top: 12px !important; --w: 30px !important; }
-    .flogo-xl { right: 26% !important; top: 17px !important; --w: 24px !important; }
-    .flogo-fb { left: 4% !important; top: 72% !important; }
-    .flogo-gm { left: 12% !important; top: 84% !important; --w: 28px !important; }
-    .flogo-li { left: 5% !important; top: 93% !important; --w: 24px !important; }
-    .flogo-wa { right: 4% !important; top: 72% !important; --w: 28px !important; }
-    .flogo-mp { right: 12% !important; top: 84% !important; --w: 24px !important; }
-    .flogo-tt { right: 5% !important; top: 93% !important; --w: 24px !important; }
-    .flogo-vb { left: 46% !important; top: 95% !important; --w: 24px !important; }
+    .flogo-ig { left: 3% !important; top: 44% !important; --w: 28px !important; }
+    .flogo-go { right: 3% !important; top: 44% !important; --w: 28px !important; }
+    .flogo-ai { left: 4% !important; top: 71.6% !important; --w: 24px !important; }
+    .flogo-xl { right: 4% !important; top: 71.6% !important; --w: 24px !important; }
+    .flogo-fb { left: 4% !important; top: 79% !important; }
+    .flogo-wa { right: 4% !important; top: 79% !important; --w: 28px !important; }
+    .flogo-gm { left: 13% !important; top: 88% !important; --w: 26px !important; }
+    .flogo-mp { right: 13% !important; top: 88% !important; --w: 24px !important; }
+    .flogo-li { left: 5% !important; top: 95% !important; --w: 22px !important; }
+    .flogo-tt { right: 5% !important; top: 95% !important; --w: 22px !important; }
+    .flogo-vb { left: 46% !important; top: 97% !important; --w: 22px !important; }
     .hero-reviews { margin-top: 16px; padding: 8px 14px; }
     .hero-kicker { margin-bottom: 16px; }
     .hero .sub { font-size: .98rem; margin-top: 18px; }
