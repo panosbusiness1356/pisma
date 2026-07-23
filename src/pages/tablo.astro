@@ -10,7 +10,7 @@ const schema = {
   url: `${SITE.url}/tablo/`,
   inLanguage: 'el',
   description:
-    'Διαδραστικό τεστ 11 ερωτήσεων — μία για κάθε εργαλείο: σκορ ορατότητας και σκορ αυτοματισμού στα 100.',
+    'Διαδραστικό τεστ 10 ερωτήσεων — μία για κάθε εργαλείο: σκορ ορατότητας και σκορ αυτοματισμού στα 100.',
   isPartOf: { '@type': 'WebSite', name: SITE.name, url: SITE.url },
 };
 
@@ -64,12 +64,12 @@ const questions = [
   },
   /* — Αυτοματοποίηση: πώς δουλεύει το γραφείο — */
   {
-    key: 'entry',
-    q: 'Τα εισερχόμενα τιμολόγια πώς καταχωρούνται;',
+    key: 'excel',
+    q: 'Η οικονομική εικόνα της επιχείρησης σε Excel;',
     opts: [
-      { label: 'Με το χέρι', v: '0' },
-      { label: 'Μισά-μισά', v: '1' },
-      { label: 'Αυτόματα', v: '2' },
+      { label: 'Δεν υπάρχει / σκόρπια', v: '0' },
+      { label: 'Ενημερώνεται με το χέρι', v: '1' },
+      { label: 'Ενημερώνεται μόνη της', v: '2' },
     ],
   },
   {
@@ -88,15 +88,6 @@ const questions = [
       { label: 'Όποτε θυμηθούμε 😅', v: '0' },
       { label: 'Κάποιος, όταν προλαβαίνει', v: '1' },
       { label: 'Σύστημα με υπενθυμίσεις', v: '2' },
-    ],
-  },
-  {
-    key: 'quote',
-    q: 'Πόσο γρήγορα βγαίνει προσφορά σε νέο αίτημα;',
-    opts: [
-      { label: '3+ μέρες', v: '0' },
-      { label: '1–2 μέρες', v: '1' },
-      { label: 'Αυθημερόν', v: '2' },
     ],
   },
   {
@@ -122,12 +113,12 @@ const questions = [
 
 <Base
   title="Το Ταμπλό — Μέτρησε ορατότητα και αυτοματισμό | PISMA"
-  description="11 γρήγορες ερωτήσεις, χωρίς email: δες πόσο εύκολα σε βρίσκουν οι πελάτες και πόσο μόνο του δουλεύει το γραφείο σου — με σκορ στα 100."
+  description="10 γρήγορες ερωτήσεις, χωρίς email: δες πόσο εύκολα σε βρίσκουν οι πελάτες και πόσο μόνο του δουλεύει το γραφείο σου — με σκορ στα 100."
   schema={schema}
 >
   <PageHero
     kicker="Το Ταμπλό"
-    sub="11 γρήγορες ερωτήσεις — μία για κάθε εργαλείο. Χωρίς email, χωρίς στοιχεία: το σκορ βγαίνει μπροστά σου."
+    sub="10 γρήγορες ερωτήσεις — μία για κάθε εργαλείο. Χωρίς email, χωρίς στοιχεία: το σκορ βγαίνει μπροστά σου."
   >
     Δες το <span class="accent">σκορ</span> σου
   </PageHero>
@@ -141,7 +132,7 @@ const questions = [
           <div class="dots" id="quiz-dots" aria-hidden="true">
             {questions.map(() => <span class="dot"></span>)}
           </div>
-          <span class="quiz-count num" id="quiz-count">Ερώτηση 1 από 11</span>
+          <span class="quiz-count num" id="quiz-count">Ερώτηση 1 από 10</span>
         </div>
 
         <!-- Βήματα: όλα στο HTML, εναλλαγή με hidden -->
@@ -314,7 +305,7 @@ const questions = [
       ((answers.site + answers.gbp + answers.reviews + answers.social + answers.ai) / 10) * 100
     );
     const automation = Math.round(
-      ((answers.entry + answers.pay + answers.coll + answers.quote + answers.report + answers.spy) / 12) * 100
+      ((answers.excel + answers.pay + answers.coll + answers.report + answers.spy) / 10) * 100
     );
     last = { visibility, automation };
 
