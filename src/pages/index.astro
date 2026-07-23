@@ -217,6 +217,41 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     </div>
   </section>
 
+  <!-- 2β. Πριν → Μετά -->
+  <section class="section section--tight" aria-labelledby="ba-title">
+    <div class="container container--narrow">
+      <div class="sec-head sec-head--center">
+        <p class="kicker">Πριν → Μετά</p>
+        <h2 id="ba-title">Τι αλλάζει όταν συνεργαστούμε</h2>
+        <p>Ενδεικτικά μεγέθη — τα δικά σας τα μετράμε πριν ξεκινήσουμε.</p>
+      </div>
+      <div class="ba-grid">
+        <div class="card ba-before reveal">
+          <p class="ba-label">Πριν</p>
+          <ul class="ba-list">
+            <li><strong>46</strong> κριτικές</li>
+            <li><strong>Σελίδα 3</strong> στη Google</li>
+            <li><strong>Χάσιμο</strong> χρόνου</li>
+            <li><strong>Αόρατοι</strong> στο AI</li>
+          </ul>
+        </div>
+        <div class="card card--navy ba-after reveal">
+          <span class="ba-shine" aria-hidden="true"></span>
+          <p class="ba-label ba-label--after">Με την PISMA</p>
+          <ul class="ba-list ba-list--after">
+            <li><strong>210+</strong> κριτικές</li>
+            <li><strong>Πρώτοι</strong> στη Google</li>
+            <li><strong>Αυτοματισμοί</strong></li>
+            <li>Το AI <strong>σας προτείνει</strong></li>
+          </ul>
+        </div>
+      </div>
+      <p class="ba-cta">
+        <a class="btn btn--orange" href="/tablo/">Μέτρησε την επιχείρησή σου — 2′</a>
+      </p>
+    </div>
+  </section>
+
   <!-- 3. Μεθοδολογία -->
   <section
     class="section section--tight"
@@ -725,5 +760,41 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   }
   @media (prefers-reduced-motion: reduce) {
     .blur-in { animation: none; opacity: 1; filter: none; transform: none; }
+  }
+
+  /* ---------- Πριν → Μετά ---------- */
+  .ba-grid {
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+    align-items: stretch;
+  }
+  .ba-before { opacity: .75; }
+  .ba-after { position: relative; overflow: hidden; }
+  .ba-label {
+    font-size: .78rem; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
+  }
+  .ba-label--after { color: var(--purple-text); }
+  .ba-list { list-style: none; padding: 0; display: grid; gap: 11px; }
+  .ba-list li { font-size: 1rem; color: var(--muted); }
+  .ba-list li strong { color: var(--ink); font-weight: 700; }
+  .ba-list--after li { color: rgba(255, 255, 255, .82); }
+  .ba-list--after li strong { color: var(--orange-text); }
+  .ba-list--after li::before {
+    content: '✓'; color: var(--ok-text); font-weight: 700; margin-right: 9px;
+  }
+  .ba-shine {
+    position: absolute; top: 0; bottom: 0; left: -70%; width: 45%;
+    background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, .07) 50%, transparent 100%);
+    animation: baShine 3.2s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes baShine {
+    0% { left: -70%; }
+    55%, 100% { left: 120%; }
+  }
+  .ba-cta { text-align: center; margin-top: clamp(22px, 4vw, 32px); }
+  @media (prefers-reduced-motion: reduce) {
+    .ba-shine { display: none; }
   }
 </style>
