@@ -119,6 +119,10 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
 
     <!-- Πριν → Μετά -->
     <div class="hero-ba blur-in" style="--d:.62s">
+      <div class="ba-head">
+        <p class="kicker">Πριν → Μετά</p>
+        <h2>Τι αλλάζει όταν συνεργαστούμε</h2>
+      </div>
       <div class="ba-grid">
         <div class="card ba-before">
           <p class="ba-label">Πριν</p>
@@ -499,6 +503,12 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
 
   /* Πριν → Μετά (στη θέση του mockup) */
   .hero-ba { max-width: 880px; margin: clamp(36px, 6vw, 64px) auto 0; }
+  .ba-head { text-align: center; margin-bottom: clamp(18px, 3vw, 26px); }
+  .ba-head h2 {
+    font-size: clamp(1.35rem, 2.8vw, 1.8rem);
+    margin-top: 14px;
+    letter-spacing: -.01em;
+  }
 
   /* ---------- Υπηρεσίες ---------- */
   .svc { display: flex; flex-direction: column; }
@@ -610,11 +620,11 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     /* Λογότυπα σε κινητό: 2+2 στα πλαϊνά κενά (σήμα κριτικών / σημείωση),
        τα υπόλοιπα στη ζώνη του ταμπλό — ΤΙΠΟΤΑ μπροστά από κείμενο */
     .flogo { --w: 26px !important; }
-    .flogo-ig { left: 4% !important; top: 33.5% !important; --w: 30px !important; }
-    .flogo-go { right: 4% !important; top: 33.5% !important; --w: 30px !important; }
+    .flogo-ig { left: 4% !important; top: auto !important; bottom: 843px !important; --w: 30px !important; }
+    .flogo-go { right: 4% !important; top: auto !important; bottom: 843px !important; --w: 30px !important; }
     /* Αγκύρωση από το κάτω άκρο του hero: σταθερή απόσταση πάνω από τις κάρτες Πριν/Μετά */
-    .flogo-ai { left: 4% !important; top: auto !important; bottom: 514px !important; --w: 26px !important; }
-    .flogo-xl { right: 4% !important; top: auto !important; bottom: 514px !important; --w: 26px !important; }
+    .flogo-ai { left: 4% !important; top: auto !important; bottom: 610px !important; --w: 26px !important; }
+    .flogo-xl { right: 4% !important; top: auto !important; bottom: 610px !important; --w: 26px !important; }
     .btn-note { width: fit-content; margin-inline: auto; max-width: 85%; }
     .flogo-fb, .flogo-wa, .flogo-gm, .flogo-mp, .flogo-li, .flogo-tt, .flogo-vb { display: none; }
     .sflogo { display: block; }
