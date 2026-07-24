@@ -219,11 +219,12 @@ const cloudB = dots.slice(half);
   let spinTh = { a: 0, b: 0 };
   /* Εξομάλυνση: η πρόοδος «κυνηγά» το scroll με αδράνεια, ώστε ακόμα και σε
      απότομο ρολάρισμα η μεταμόρφωση να ξετυλίγεται ομαλά και κατανοητά. */
+  /* Καθαρός συγχρονισμός με το scroll: το Lenis ήδη ομαλοποιεί τη ροή του
+     scrollY, οπότε η πρόοδος το ακολουθεί σχεδόν 1:1 — μόνο ένα ανεπαίσθητο
+     μαλάκωμα λίγων frames για τις εναλλαγές στάσεων. */
   let sForm = 0;
   let sDec = 0;
-  let formedAt = 0; // πότε ολοκληρώθηκε ο σχηματισμός — για ελάχιστο χρόνο παραμονής
-  const EASE_K = 0.055;
-  const MIN_HOLD_MS = 1000;
+  const EASE_K = 0.3;
 
   const resetMorphVisuals = () => {
     mDots.forEach((d) => {
@@ -359,10 +360,10 @@ const cloudB = dots.slice(half);
     const yC = r.top + r.height / 2;
     const form = m.type === 'clock'
       ? mClamp((1.08 * vh - yC) / (0.36 * vh))
-      : mClamp((1.02 * vh - yC) / (0.38 * vh));
+      : mClamp((1.02 * vh - yC) / (0.4 * vh));
     const dec = m.type === 'clock'
       ? mClamp((0.1 * vh - yC) / (0.18 * vh))
-      : mClamp((0.16 * vh - yC) / (0.2 * vh));
+      : mClamp((0.28 * vh - yC) / (0.26 * vh));
     return { form, dec };
   };
 
@@ -371,7 +372,6 @@ const cloudB = dots.slice(half);
     mActive = -1;
     sForm = 0;
     sDec = 0;
-    formedAt = 0;
   };
 
   /* Επιστρέφει true όταν μια μεταμόρφωση «κρατάει» τον Ντοτ αυτό το frame. */
@@ -392,18 +392,12 @@ const cloudB = dots.slice(half);
       const cur = MORPHS[mActive];
       const p = rawProgress(cur);
       const wantSwitch = best !== mActive;
-      /* Ελάχιστη παραμονή: μόλις σχηματιστεί, το σχήμα μένει τουλάχιστον
-         MIN_HOLD_MS πριν επιτραπεί διάλυση — όσο γρήγορα κι αν ρολάρει ο χρήστης. */
-      if (!formedAt && sForm > 0.9) formedAt = performance.now();
-      const holdMet = formedAt > 0 && performance.now() - formedAt > MIN_HOLD_MS;
-      const wantsOut = wantSwitch || p.dec > 0;
       /* Αν πρέπει να αλλάξουμε στόχο (ή φύγαμε από τη ζώνη), πρώτα ολοκληρώνεται
          ομαλά η διάλυση της τρέχουσας μορφής — ποτέ απότομο κόψιμο. */
       const tF = wantSwitch ? sForm : p.form;
-      const tD = wantsOut && !holdMet && sForm > 0.5 ? 0 : (wantSwitch ? 1 : p.dec);
-      /* Σβέλτο χτίσιμο (να προλαβαίνει τον χρήστη), ήρεμη διάλυση. */
-      sForm += (tF - sForm) * (tF > sForm ? 0.095 : EASE_K);
-      sDec += (tD - sDec) * 0.06;
+      const tD = wantSwitch ? 1 : p.dec;
+      sForm += (tF - sForm) * EASE_K;
+      sDec += (tD - sDec) * EASE_K;
       if ((wantSwitch || p.dec >= 1) && sDec > 0.97) { deactivateMorph(); }
       else if (!wantSwitch && p.form <= 0 && sForm < 0.03 && sDec < 0.03) { deactivateMorph(); return false; }
       if (mActive >= 0) {
