@@ -272,6 +272,11 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
             Συνεργάζεστε απευθείας με τον υπεύθυνο σχεδιασμού και υλοποίησης — χωρίς
             τμήμα πωλήσεων. Ό,τι υλοποιείται, ανήκει στην επιχείρησή σας.
           </p>
+          <div class="who-bridge" aria-hidden="true">
+            <span class="wb-chip" id="bridge-you">Εσείς</span>
+            <span class="wb-line" id="bridge-line"></span>
+            <span class="wb-chip" id="bridge-pisma">PISMA<span class="wb-dot">.</span></span>
+          </div>
         </div>
       </div>
     </div>
@@ -695,6 +700,16 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     text-align: center; font-size: .85rem; color: var(--muted);
     margin: 14px auto 0; width: fit-content; max-width: 34ch;
   }
+
+  /* Εταιρία: «Εσείς ——— PISMA.» — τη γραμμή τη σχηματίζει ο Ντοτ σε desktop,
+     αλλιώς μένει η στατική. */
+  .who-bridge { display: flex; align-items: center; gap: 14px; margin-top: 24px; max-width: 560px; }
+  .wb-chip {
+    background: var(--bg); border: 1px solid var(--line-strong); border-radius: 999px;
+    padding: 8px 18px; font-weight: 700; font-size: .92rem; color: var(--navy); white-space: nowrap;
+  }
+  .wb-dot { color: var(--orange); }
+  .wb-line { flex: 1; height: 2px; border-radius: 99px; background: var(--line-strong); transition: opacity .3s ease; }
   @media (prefers-reduced-motion: reduce) {
     .ba-shine { display: none; }
   }

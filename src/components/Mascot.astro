@@ -34,19 +34,30 @@ const cloudB = dots.slice(half);
   <div class="m-motion">
     <div class="m-bob">
       <svg viewBox="0 0 200 200" fill="none">
-        <g class="d-spin">
-          {cloudA.map((d) => <circle cx={d.x} cy={d.y} r={d.r} fill={d.c} opacity={d.o} />)}
+        <defs>
+          <!-- «Υγρή» ένωση κουκίδων — ενεργό ΜΟΝΟ κατά τις μεταμορφώσεις (scroll morphs). -->
+          <filter id="dot-goo" x="-300%" y="-300%" width="700%" height="700%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="b" />
+            <feColorMatrix in="b" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" />
+          </filter>
+        </defs>
+        <g class="d-cloud">
+          <g class="d-spin">
+            {cloudA.map((d) => <circle cx={d.x} cy={d.y} r={d.r} fill={d.c} opacity={d.o} />)}
+          </g>
+          <g class="d-spin2">
+            {cloudB.map((d) => <circle cx={d.x} cy={d.y} r={d.r} fill={d.c} opacity={d.o} />)}
+          </g>
         </g>
-        <g class="d-spin2">
-          {cloudB.map((d) => <circle cx={d.x} cy={d.y} r={d.r} fill={d.c} opacity={d.o} />)}
+        <g class="d-eyes-move">
+          <g class="d-eyes">
+            <circle cx="78" cy="95" r="18" fill="#FFF8F0" />
+            <circle cx="120" cy="90" r="15" fill="#FFF8F0" />
+            <g class="d-pup-l"><circle cx="78" cy="95" r="9" fill="#14101E" /></g>
+            <g class="d-pup-r"><circle cx="120" cy="90" r="7.5" fill="#14101E" /></g>
+          </g>
         </g>
-        <g class="d-eyes">
-          <circle cx="78" cy="95" r="18" fill="#FFF8F0" />
-          <circle cx="120" cy="90" r="15" fill="#FFF8F0" />
-          <g class="d-pup-l"><circle cx="78" cy="95" r="9" fill="#14101E" /></g>
-          <g class="d-pup-r"><circle cx="120" cy="90" r="7.5" fill="#14101E" /></g>
-        </g>
-        <circle cx="101" cy="117" r="12.5" fill="#E8481F" />
+        <circle class="d-nose" cx="101" cy="117" r="12.5" fill="#E8481F" />
       </svg>
     </div>
   </div>
@@ -131,6 +142,242 @@ const cloudB = dots.slice(half);
   let eyeY = 0;
 
   el.style.width = W() + 'px';
+
+  /* ============================================================
+     Μεταμορφώσεις scroll (μόνο αρχική + desktop + όχι reduced-motion):
+     οι κουκίδες του σώματος ρέουν και «λιώνουν» σε σχήματα ανά section,
+     δεμένες 100% με το scroll και προς τις δύο κατευθύνσεις.
+     Σε ηρεμία ο Ντοτ είναι ΑΚΡΙΒΩΣ όπως πριν — όλα εδώ είναι πρόσθετο στρώμα.
+     ============================================================ */
+  const cloudG = el.querySelector<SVGGElement>('.d-cloud')!;
+  const spinA = el.querySelector<SVGGElement>('.d-spin')!;
+  const spinB = el.querySelector<SVGGElement>('.d-spin2')!;
+  const eyesMove = el.querySelector<SVGGElement>('.d-eyes-move')!;
+  const noseEl = el.querySelector<SVGCircleElement>('.d-nose')!;
+  const bobEl = el.querySelector<HTMLElement>('.m-bob')!;
+  const mDots = [...el.querySelectorAll<SVGCircleElement>('.d-cloud circle')].map((c) => {
+    const fill = c.getAttribute('fill')!;
+    return {
+      c,
+      x: +c.getAttribute('cx')!, y: +c.getAttribute('cy')!,
+      r: +c.getAttribute('r')!, fill, o: c.getAttribute('opacity')!,
+      rgb: [1, 3, 5].map((k) => parseInt(fill.slice(k, k + 2), 16)),
+    };
+  });
+  const M_TGT = [255, 106, 61]; // #FF6A3D — το ενιαίο πορτοκαλί των σχημάτων
+  const mClamp = (t: number) => Math.max(0, Math.min(1, t));
+  const mSm = (t: number) => (t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t));
+  const mBez = (p0: {x:number;y:number}, p1: {x:number;y:number}, p2: {x:number;y:number}, t: number) => {
+    const u = 1 - t;
+    return { x: u*u*p0.x + 2*u*t*p1.x + t*t*p2.x, y: u*u*p0.y + 2*u*t*p1.y + t*t*p2.y };
+  };
+  const gAngle = (g: SVGGElement) => {
+    const t = getComputedStyle(g).transform;
+    if (!t || t === 'none') return 0;
+    const m = t.match(/matrix\(([^)]+)\)/);
+    if (!m) return 0;
+    const [a, b] = m[1].split(',').map(parseFloat);
+    return Math.atan2(b, a);
+  };
+  type MorphDef = { sel: string; type: 'line' | 'path' | 'euro' | 'bridge' | 'clock'; el?: HTMLElement | null };
+  const MORPHS: MorphDef[] = [
+    { sel: '#svc-title', type: 'line' },
+    { sel: '#method-title', type: 'path' },
+    { sel: '#pricing-title', type: 'euro' },
+    { sel: '#who-title', type: 'bridge' },
+    { sel: '#final-title', type: 'clock' },
+  ];
+  const onHome = (location.pathname.replace(/\/$/, '') || '/') === '/';
+  MORPHS.forEach((m) => { m.el = document.querySelector<HTMLElement>(m.sel); });
+  const stepNums = [...document.querySelectorAll<HTMLElement>('.steps .step-num')];
+  const bridgeLine = document.getElementById('bridge-line');
+  const bridgeYou = document.getElementById('bridge-you');
+  const bridgePisma = document.getElementById('bridge-pisma');
+  let euroPts: Array<[number, number]> | null = null;
+  const sampleEuro = () => {
+    if (euroPts) return;
+    try {
+      const cv = document.createElement('canvas');
+      cv.width = 140; cv.height = 140;
+      const ctx = cv.getContext('2d')!;
+      ctx.font = '800 104px Commissioner, Arial';
+      ctx.fillText('€', 20, 112);
+      const im = ctx.getImageData(0, 0, 140, 140).data;
+      const raw: Array<[number, number]> = [];
+      for (let y = 0; y < 140; y += 3) for (let x = 0; x < 140; x += 3)
+        if (im[(y * 140 + x) * 4 + 3] > 128) raw.push([x - 70, y - 78]);
+      if (raw.length < 30) return;
+      const out: Array<[number, number]> = [];
+      for (let i = 0; i < 135; i++) out.push(raw[Math.floor((i * raw.length) / 135)]);
+      euroPts = out;
+    } catch { /* χωρίς € — θα πέσει σε γραμμή */ }
+  };
+  (document as unknown as { fonts?: { ready?: Promise<unknown> } }).fonts?.ready?.then(sampleEuro);
+
+  let mActive = -1;
+  let mOrigin = { x: 0, y: 0 };
+  let spinTh = { a: 0, b: 0 };
+
+  const resetMorphVisuals = () => {
+    mDots.forEach((d) => {
+      d.c.style.transform = '';
+      d.c.setAttribute('r', String(d.r));
+      d.c.setAttribute('fill', d.fill);
+      d.c.setAttribute('opacity', d.o);
+    });
+    eyesMove.style.transform = '';
+    noseEl.style.opacity = '';
+    cloudG.removeAttribute('filter');
+    spinA.style.animation = spinB.style.animation = '';
+    spinA.style.transform = spinB.style.transform = '';
+    bobEl.style.animation = '';
+    if (bridgeLine) bridgeLine.style.opacity = '';
+    stepNums.forEach((s) => { s.style.boxShadow = ''; });
+  };
+
+  const textRect = (h: HTMLElement) => {
+    try {
+      const rg = document.createRange();
+      rg.selectNodeContents(h);
+      const r = rg.getBoundingClientRect();
+      return r.width > 0 ? r : h.getBoundingClientRect();
+    } catch { return h.getBoundingClientRect(); }
+  };
+
+  /* Στόχοι (σε συντεταγμένες viewport) + θέση ματιών, ανά τύπο μεταμόρφωσης. */
+  const targetsFor = (m: MorphDef, form: number) => {
+    const pts: Array<{x:number;y:number}> = [];
+    const r = textRect(m.el!);
+    if (m.type === 'path' && stepNums.length === 4) {
+      const cs = stepNums.map((s) => {
+        const b = s.getBoundingClientRect();
+        return { x: b.left + b.width / 2, y: b.top + b.height / 2 };
+      });
+      /* Αν τα βήματα έχουν διπλώσει σε 2 σειρές (στενά viewports), το «μονοπάτι»
+         θα έβγαινε διαγώνιο — πέφτουμε σε απλή γραμμή κάτω από τον τίτλο. */
+      const ys = cs.map((c) => c.y);
+      if (Math.max(...ys) - Math.min(...ys) > 30) {
+        stepNums.forEach((s) => { s.style.boxShadow = ''; });
+      } else {
+      const tip = { x: cs[0].x + (cs[3].x - cs[0].x) * form, y: cs[0].y + (cs[3].y - cs[0].y) * form };
+      for (let i = 0; i < 135; i++) {
+        const f = ((i * 37) % 135) / 134;
+        pts.push({ x: cs[0].x + f * (tip.x - cs[0].x), y: cs[0].y + f * (tip.y - cs[0].y) });
+      }
+      stepNums.forEach((s, k) => {
+        const lit = form > 0.05 && tip.x >= cs[k].x - 8;
+        s.style.boxShadow = lit ? '0 0 0 3px rgba(255, 122, 80, .55), 0 0 20px rgba(255, 122, 80, .5)' : '';
+      });
+      return { pts, eye: { x: tip.x + 6, y: tip.y - 34 } };
+      }
+    }
+    if (m.type === 'euro' && euroPts) {
+      const cx = Math.min(r.right + 92, window.innerWidth - 80);
+      const cy = r.top + r.height / 2 + 6;
+      for (let i = 0; i < 135; i++) pts.push({ x: cx + euroPts[i][0] * 0.62, y: cy + euroPts[i][1] * 0.62 });
+      return { pts, eye: { x: cx - 62, y: cy - 34 } };
+    }
+    if (m.type === 'bridge' && bridgeYou && bridgePisma) {
+      const b1 = bridgeYou.getBoundingClientRect();
+      const b2 = bridgePisma.getBoundingClientRect();
+      const y = b1.top + b1.height / 2;
+      const x0 = b1.right + 8, x1 = b2.left - 8;
+      for (let i = 0; i < 135; i++) {
+        const f = ((i * 37) % 135) / 134;
+        pts.push({ x: x0 + f * (x1 - x0), y });
+      }
+      return { pts, eye: { x: (x0 + x1) / 2, y: y - 30 } };
+    }
+    if (m.type === 'clock') {
+      const C = { x: mOrigin.x + W() / 2, y: mOrigin.y + H() / 2 };
+      const R = W() * 0.42;
+      const now = performance.now();
+      const thM = -Math.PI / 2 + (now / 6000) * Math.PI * 2;
+      const thH = -Math.PI / 2 + (now / 72000) * Math.PI * 2 + 1.1;
+      for (let i = 0; i < 135; i++) {
+        if (i < 66) { const th = (i / 66) * Math.PI * 2; pts.push({ x: C.x + Math.cos(th) * R, y: C.y + Math.sin(th) * R }); }
+        else if (i < 90) { const k = Math.floor((i - 66) / 2); const th = (k / 12) * Math.PI * 2; const rr = (i - 66) % 2 ? R - 6 : R - 10; pts.push({ x: C.x + Math.cos(th) * rr, y: C.y + Math.sin(th) * rr }); }
+        else if (i < 110) { const f = (i - 90) / 19; pts.push({ x: C.x + Math.cos(thM) * f * (R - 13), y: C.y + Math.sin(thM) * f * (R - 13) }); }
+        else if (i < 128) { const f = (i - 110) / 17; pts.push({ x: C.x + Math.cos(thH) * f * (R - 22), y: C.y + Math.sin(thH) * f * (R - 22) }); }
+        else { const a = i * 2.4; const rr = 2.4 * Math.sqrt(i - 127); pts.push({ x: C.x + Math.cos(a) * rr, y: C.y + Math.sin(a) * rr }); }
+      }
+      return { pts, eye: { x: C.x - 2, y: C.y - R - 18 } };
+    }
+    /* line (και fallback του euro αν δεν δειγματίστηκε η γραμματοσειρά) */
+    const ly = r.bottom + 12;
+    for (let i = 0; i < 135; i++) {
+      const f = ((i * 37) % 135) / 134;
+      pts.push({ x: r.left + f * (r.right - r.left), y: ly });
+    }
+    return { pts, eye: { x: r.right + 26, y: ly - 6 } };
+  };
+
+  const renderMorph = (m: MorphDef, form: number, dec: number) => {
+    const F = W() / 200;
+    const uw = mClamp(form / 0.25);
+    spinA.style.transform = `rotate(${(spinTh.a * (1 - uw)).toFixed(4)}rad)`;
+    spinB.style.transform = `rotate(${(spinTh.b * (1 - uw)).toFixed(4)}rad)`;
+    cloudG.setAttribute('filter', 'url(#dot-goo)');
+    const tg = targetsFor(m, form);
+    const toLocal = (X: number, Y: number) => ({ x: (X - mOrigin.x) / F, y: (Y - mOrigin.y) / F });
+    mDots.forEach((d, i) => {
+      const fr = ((i * 37) % 135) / 135;
+      const st = fr * 0.5;
+      const t1 = mSm(mClamp((form * 1.5 - st) / 0.5));
+      const t2 = dec > 0 ? mSm(mClamp((dec * 1.5 - st) / 0.5)) : 0;
+      const u = t1 * (1 - t2);
+      const sl = toLocal(tg.pts[i].x, tg.pts[i].y);
+      const p = mBez({ x: d.x, y: d.y }, { x: (d.x + sl.x) / 2 - 40, y: Math.min(d.y, sl.y) - 60 }, sl, u);
+      d.c.style.transform = `translate(${(p.x - d.x).toFixed(1)}px, ${(p.y - d.y).toFixed(1)}px)`;
+      const mm = mClamp((u - 0.62) / 0.38);
+      const rgb = d.rgb.map((v, k) => Math.round(v + (M_TGT[k] - v) * mm));
+      d.c.setAttribute('r', (d.r + (2.6 - d.r) * mm).toFixed(2));
+      d.c.setAttribute('fill', `rgb(${rgb.join(',')})`);
+      d.c.setAttribute('opacity', (parseFloat(d.o) + (1 - parseFloat(d.o)) * mm).toFixed(2));
+    });
+    const ue = mSm(form) * (1 - mSm(dec));
+    const eL = toLocal(tg.eye.x, tg.eye.y);
+    eyesMove.style.transform = `translate(${((eL.x - 99) * ue).toFixed(1)}px, ${((eL.y - 92.5) * ue).toFixed(1)}px)`;
+    noseEl.style.opacity = String(mClamp(1 - ue * 2.5));
+    if (m.type === 'bridge' && bridgeLine) bridgeLine.style.opacity = String(1 - mClamp(ue * 1.5));
+  };
+
+  /* Επιστρέφει true όταν μια μεταμόρφωση «κρατάει» τον Ντοτ αυτό το frame. */
+  const morphFrame = (): boolean => {
+    if (!onHome || reduce || isMobile() || phase !== 'tour') {
+      if (mActive >= 0) { resetMorphVisuals(); mActive = -1; }
+      return false;
+    }
+    const vh = window.innerHeight;
+    let best = -1, bestScore = 0, bf = 0, bd = 0;
+    MORPHS.forEach((m, i) => {
+      if (!m.el) return;
+      const r = m.el.getBoundingClientRect();
+      const yC = r.top + r.height / 2;
+      const form = m.type === 'clock'
+        ? mClamp((0.95 * vh - yC) / (0.33 * vh))
+        : mClamp((0.8 * vh - yC) / (0.3 * vh));
+      const dec = m.type === 'clock'
+        ? mClamp((0.2 * vh - yC) / (0.18 * vh))
+        : mClamp((0.34 * vh - yC) / (0.26 * vh));
+      const score = form * (1 - dec);
+      if (form > 0 && dec < 1 && score > bestScore) { best = i; bestScore = score; bf = form; bd = dec; }
+    });
+    if (best !== mActive) {
+      if (mActive >= 0) resetMorphVisuals();
+      mActive = best;
+      if (best >= 0) {
+        mOrigin = { x: px, y: py };
+        spinTh = { a: gAngle(spinA), b: gAngle(spinB) };
+        spinA.style.animation = spinB.style.animation = 'none';
+        bobEl.style.animation = 'none';
+        if (MORPHS[best].type === 'euro') sampleEuro();
+      }
+    }
+    if (mActive < 0) return false;
+    renderMorph(MORPHS[mActive], bf, bd);
+    return true;
+  };
 
   /* Στις φαρδιές οθόνες κάθεται στο «λούκι» δίπλα στο περιεχόμενο· αλλιώς
      δεν χωράει δίπλα στο κείμενο, οπότε μένει χαμηλά στη γωνία της πλευράς του. */
@@ -263,9 +510,13 @@ const cloudB = dots.slice(half);
         scale = 1;
       }
 
+      /* Μεταμόρφωση scroll: όσο «κρατάει» τον Ντοτ, μένει καρφωμένος στη θέση
+         της διάλυσης και δεν ταξιδεύει — οι κουκίδες του κάνουν τη δουλειά. */
+      const morphing = !birthing && morphFrame();
+
       const dx = t.x - px;
       const dy = t.y - py;
-      if (!birthing) {
+      if (!birthing && !morphing) {
         const k = phase === 'tour' ? 0.032 : 0.045;
         px += dx * k;
         py += dy * k;
@@ -275,8 +526,8 @@ const cloudB = dots.slice(half);
       const y = window.scrollY;
       const vel = y - lastY;
       lastY = y;
-      const lean = Math.max(-10, Math.min(10, dx * 0.028 + vel * 0.25));
-      rot += (lean - rot) * 0.06;
+      const lean = morphing ? 0 : Math.max(-10, Math.min(10, dx * 0.028 + vel * 0.25));
+      rot += (lean - rot) * (morphing ? 0.14 : 0.06);
 
       /* Τα μάτια κοιτούν τον κέρσορα — ή προς τα εκεί που ταξιδεύει. */
       const cx = px + W() / 2;
