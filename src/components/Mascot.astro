@@ -358,8 +358,8 @@ const cloudB = dots.slice(half);
     const r = m.el!.getBoundingClientRect();
     const yC = r.top + r.height / 2;
     const form = m.type === 'clock'
-      ? mClamp((0.98 * vh - yC) / (0.36 * vh))
-      : mClamp((0.85 * vh - yC) / (0.35 * vh));
+      ? mClamp((1.08 * vh - yC) / (0.36 * vh))
+      : mClamp((1.02 * vh - yC) / (0.38 * vh));
     const dec = m.type === 'clock'
       ? mClamp((0.1 * vh - yC) / (0.18 * vh))
       : mClamp((0.16 * vh - yC) / (0.2 * vh));
@@ -401,8 +401,9 @@ const cloudB = dots.slice(half);
          ομαλά η διάλυση της τρέχουσας μορφής — ποτέ απότομο κόψιμο. */
       const tF = wantSwitch ? sForm : p.form;
       const tD = wantsOut && !holdMet && sForm > 0.5 ? 0 : (wantSwitch ? 1 : p.dec);
-      sForm += (tF - sForm) * EASE_K;
-      sDec += (tD - sDec) * EASE_K;
+      /* Σβέλτο χτίσιμο (να προλαβαίνει τον χρήστη), ήρεμη διάλυση. */
+      sForm += (tF - sForm) * (tF > sForm ? 0.095 : EASE_K);
+      sDec += (tD - sDec) * 0.06;
       if ((wantSwitch || p.dec >= 1) && sDec > 0.97) { deactivateMorph(); }
       else if (!wantSwitch && p.form <= 0 && sForm < 0.03 && sDec < 0.03) { deactivateMorph(); return false; }
       if (mActive >= 0) {
