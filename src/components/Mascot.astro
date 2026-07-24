@@ -217,6 +217,11 @@ const cloudB = dots.slice(half);
   let mActive = -1;
   let mOrigin = { x: 0, y: 0 };
   let spinTh = { a: 0, b: 0 };
+  /* Εξομάλυνση: η πρόοδος «κυνηγά» το scroll με αδράνεια, ώστε ακόμα και σε
+     απότομο ρολάρισμα η μεταμόρφωση να ξετυλίγεται ομαλά και κατανοητά. */
+  let sForm = 0;
+  let sDec = 0;
+  const EASE_K = 0.065;
 
   const resetMorphVisuals = () => {
     mDots.forEach((d) => {
@@ -342,41 +347,72 @@ const cloudB = dots.slice(half);
     if (m.type === 'bridge' && bridgeLine) bridgeLine.style.opacity = String(1 - mClamp(ue * 1.5));
   };
 
+  /* Ωμή πρόοδος (0..1) σχηματισμού/διάλυσης από τη θέση scroll ενός στόχου. */
+  const rawProgress = (m: MorphDef) => {
+    const vh = window.innerHeight;
+    const r = m.el!.getBoundingClientRect();
+    const yC = r.top + r.height / 2;
+    const form = m.type === 'clock'
+      ? mClamp((0.98 * vh - yC) / (0.36 * vh))
+      : mClamp((0.85 * vh - yC) / (0.4 * vh));
+    const dec = m.type === 'clock'
+      ? mClamp((0.22 * vh - yC) / (0.2 * vh))
+      : mClamp((0.38 * vh - yC) / (0.28 * vh));
+    return { form, dec };
+  };
+
+  const deactivateMorph = () => {
+    resetMorphVisuals();
+    mActive = -1;
+    sForm = 0;
+    sDec = 0;
+  };
+
   /* Επιστρέφει true όταν μια μεταμόρφωση «κρατάει» τον Ντοτ αυτό το frame. */
   const morphFrame = (): boolean => {
     if (!onHome || reduce || isMobile() || phase !== 'tour') {
-      if (mActive >= 0) { resetMorphVisuals(); mActive = -1; }
+      if (mActive >= 0) deactivateMorph();
       return false;
     }
-    const vh = window.innerHeight;
-    let best = -1, bestScore = 0, bf = 0, bd = 0;
+    let best = -1, bestScore = 0;
     MORPHS.forEach((m, i) => {
       if (!m.el) return;
-      const r = m.el.getBoundingClientRect();
-      const yC = r.top + r.height / 2;
-      const form = m.type === 'clock'
-        ? mClamp((0.95 * vh - yC) / (0.33 * vh))
-        : mClamp((0.8 * vh - yC) / (0.3 * vh));
-      const dec = m.type === 'clock'
-        ? mClamp((0.2 * vh - yC) / (0.18 * vh))
-        : mClamp((0.34 * vh - yC) / (0.26 * vh));
-      const score = form * (1 - dec);
-      if (form > 0 && dec < 1 && score > bestScore) { best = i; bestScore = score; bf = form; bd = dec; }
+      const p = rawProgress(m);
+      const score = p.form * (1 - p.dec);
+      if (p.form > 0 && p.dec < 1 && score > bestScore) { best = i; bestScore = score; }
     });
-    if (best !== mActive) {
-      if (mActive >= 0) resetMorphVisuals();
-      mActive = best;
-      if (best >= 0) {
-        mOrigin = { x: px, y: py };
-        spinTh = { a: gAngle(spinA), b: gAngle(spinB) };
-        spinA.style.animation = spinB.style.animation = 'none';
-        bobEl.style.animation = 'none';
-        if (MORPHS[best].type === 'euro') sampleEuro();
+
+    if (mActive >= 0) {
+      const cur = MORPHS[mActive];
+      const p = rawProgress(cur);
+      const wantSwitch = best !== mActive;
+      /* Αν πρέπει να αλλάξουμε στόχο (ή φύγαμε από τη ζώνη), πρώτα ολοκληρώνεται
+         ομαλά η διάλυση της τρέχουσας μορφής — ποτέ απότομο κόψιμο. */
+      const tF = wantSwitch ? sForm : p.form;
+      const tD = wantSwitch ? 1 : p.dec;
+      sForm += (tF - sForm) * EASE_K;
+      sDec += (tD - sDec) * EASE_K;
+      if ((wantSwitch || p.dec >= 1) && sDec > 0.97) { deactivateMorph(); }
+      else if (!wantSwitch && p.form <= 0 && sForm < 0.03 && sDec < 0.03) { deactivateMorph(); return false; }
+      if (mActive >= 0) {
+        renderMorph(cur, sForm, sDec);
+        return true;
       }
     }
-    if (mActive < 0) return false;
-    renderMorph(MORPHS[mActive], bf, bd);
-    return true;
+
+    if (mActive < 0 && best >= 0) {
+      mActive = best;
+      sForm = 0;
+      sDec = 0;
+      mOrigin = { x: px, y: py };
+      spinTh = { a: gAngle(spinA), b: gAngle(spinB) };
+      spinA.style.animation = spinB.style.animation = 'none';
+      bobEl.style.animation = 'none';
+      if (MORPHS[best].type === 'euro') sampleEuro();
+      renderMorph(MORPHS[best], 0, 0);
+      return true;
+    }
+    return false;
   };
 
   /* Στις φαρδιές οθόνες κάθεται στο «λούκι» δίπλα στο περιεχόμενο· αλλιώς
