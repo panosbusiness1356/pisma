@@ -162,6 +162,7 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
       <div class="sec-head">
         <p class="kicker">Υπηρεσίες</p>
         <h2 id="svc-title">Τι αναλαμβάνουμε</h2>
+        <span class="fx-uline" aria-hidden="true"></span>
       </div>
       <div class="grid-2">
         <article class="card svc reveal">
@@ -274,7 +275,7 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
           </p>
           <div class="who-bridge" aria-hidden="true">
             <span class="wb-chip" id="bridge-you">Εσείς</span>
-            <span class="wb-line" id="bridge-line"></span>
+            <span class="wb-line" id="bridge-line"><span class="wb-fill"></span></span>
             <span class="wb-chip" id="bridge-pisma">PISMA<span class="wb-dot">.</span></span>
           </div>
         </div>
@@ -359,6 +360,28 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
       io.observe(revEl);
       window.setTimeout(run, 2500); // δίχτυ: αν το observer δεν πυροδοτήσει
     }
+  }
+
+  // Κινήσεις sections: οπλίζονται μόνο εδώ (.fx-armed) — χωρίς JS όλα ορατά.
+  // Κάθε section πυροδοτεί (.fx-on) μία φορά, όταν μπει αρκετά στην οθόνη.
+  const fxIds = ['svc-title', 'method-title', 'pricing-title', 'who-title', 'final-title'];
+  const fxSections = fxIds
+    .map((id) => document.getElementById(id)?.closest('section'))
+    .filter((s): s is HTMLElement => !!s);
+  if (!reduceFx && 'IntersectionObserver' in window && fxSections.length) {
+    fxSections.forEach((s) => s.classList.add('fx-armed'));
+    const fxIo = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add('fx-on');
+            fxIo.unobserve(e.target);
+          }
+        }
+      },
+      { threshold: 0.25 }
+    );
+    fxSections.forEach((s) => fxIo.observe(s));
   }
 </script>
 
@@ -712,5 +735,58 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   .wb-line { flex: 1; height: 2px; border-radius: 99px; background: var(--line-strong); transition: opacity .3s ease; }
   @media (prefers-reduced-motion: reduce) {
     .ba-shine { display: none; }
+  }
+
+  /* ---------- Κινήσεις sections (εγκρίσεις 25/07/2026) ----------
+     Οπλίζονται ΜΟΝΟ όταν το JS βάλει .fx-armed — χωρίς JS όλα ορατά. */
+  .fx-uline {
+    display: block; height: 4px; width: clamp(140px, 30%, 230px);
+    margin-top: 12px; border-radius: 999px;
+    background: var(--grad);
+  }
+  .fx-armed .fx-uline { transform: scaleX(0); transform-origin: left; }
+  .fx-on .fx-uline { animation: fxDraw .9s cubic-bezier(.22, 1, .36, 1) .2s forwards; }
+  @keyframes fxDraw { to { transform: scaleX(1); } }
+
+  .fx-armed .step-num { transform: scale(0); }
+  .fx-on .step-num { animation: fxPop .55s cubic-bezier(.34, 1.56, .64, 1) forwards; }
+  .fx-on .steps li:nth-child(2) .step-num { animation-delay: .18s; }
+  .fx-on .steps li:nth-child(3) .step-num { animation-delay: .36s; }
+  .fx-on .steps li:nth-child(4) .step-num { animation-delay: .54s; }
+  @keyframes fxPop { 60% { transform: scale(1.25); } 100% { transform: scale(1); } }
+
+  .fx-on .grid-3 .plan-mini:nth-child(2) { animation: fxPulse 2.2s ease-in-out .7s; }
+  @keyframes fxPulse {
+    40% {
+      box-shadow: var(--shadow), 0 0 0 3px rgba(255, 122, 80, .4), 0 0 46px rgba(238, 79, 39, .42);
+      transform: translateY(-3px);
+    }
+  }
+
+  .wb-fill {
+    display: block; height: 100%; width: 100%; border-radius: 99px;
+    background: var(--grad);
+    transform: scaleX(0); transform-origin: left;
+  }
+  .fx-on .wb-fill { animation: fxDraw 1.4s cubic-bezier(.4, 0, .2, 1) .3s forwards; }
+  .fx-on #bridge-pisma { display: inline-block; animation: fxChip .5s cubic-bezier(.34, 1.56, .64, 1) 1.6s; }
+  @keyframes fxChip { 50% { transform: scale(1.09); } }
+
+  .fx-armed .grad-text {
+    background: linear-gradient(92deg, #FF9159 0%, #FF5C2E 42%, #FFD9A8 50%, #FF5C2E 58%, #FF9159 100%);
+    background-size: 280% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  .fx-on .grad-text { animation: fxSweep 1.6s ease .4s forwards; }
+  @keyframes fxSweep { to { background-position: 0% 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fx-uline, .step-num, .wb-fill, .grad-text,
+    .grid-3 .plan-mini:nth-child(2), #bridge-pisma {
+      animation: none !important;
+      transform: none !important;
+    }
   }
 </style>
