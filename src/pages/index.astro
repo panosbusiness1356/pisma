@@ -554,10 +554,11 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   .svc--blue .svc-list li::before { background: var(--blue); }
   .svc--blue .card-arrow { color: var(--blue-text); }
 
-  /* Μεθοδολογία: κάθε στάδιο με τη δική του απόχρωση (μουντοί, σοβαροί τόνοι) */
-  .steps li:nth-child(2) .step-num { background: var(--blue); }
-  .steps li:nth-child(3) .step-num { background: var(--yellow); color: #2E2107; }
-  .steps li:nth-child(4) .step-num { background: var(--ok); color: #0E2B1B; }
+  /* Μεθοδολογία: κλιμάκωση αποχρώσεων πορτοκαλί, από ανοιχτό στο βαθύ (1→4) */
+  .steps li:nth-child(1) .step-num { background: #FFB27A; color: #4A1B0C; }
+  .steps li:nth-child(2) .step-num { background: #FF9159; color: #3A1408; }
+  .steps li:nth-child(3) .step-num { background: #EE4F27; color: #fff; }
+  .steps li:nth-child(4) .step-num { background: #C13A20; color: #fff; }
 
   /* ---------- Πορτοκαλί panel ---------- */
   .einv {
@@ -749,11 +750,11 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   @keyframes fxDraw { to { transform: scaleX(1); } }
 
   .fx-armed .step-num { transform: scale(0); }
-  .fx-on .step-num { animation: fxPop .55s cubic-bezier(.34, 1.56, .64, 1) forwards; }
-  .fx-on .steps li:nth-child(2) .step-num { animation-delay: .18s; }
-  .fx-on .steps li:nth-child(3) .step-num { animation-delay: .36s; }
-  .fx-on .steps li:nth-child(4) .step-num { animation-delay: .54s; }
-  @keyframes fxPop { 60% { transform: scale(1.25); } 100% { transform: scale(1); } }
+  .fx-on .step-num { animation: fxPop .9s cubic-bezier(.34, 1.4, .64, 1) forwards; }
+  .fx-on .steps li:nth-child(2) .step-num { animation-delay: .4s; }
+  .fx-on .steps li:nth-child(3) .step-num { animation-delay: .8s; }
+  .fx-on .steps li:nth-child(4) .step-num { animation-delay: 1.2s; }
+  @keyframes fxPop { 60% { transform: scale(1.18); } 100% { transform: scale(1); } }
 
   .fx-on .grid-3 .plan-mini:nth-child(2) { animation: fxPulse 2.2s ease-in-out .7s; }
   @keyframes fxPulse {
