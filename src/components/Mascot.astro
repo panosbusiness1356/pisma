@@ -296,11 +296,12 @@ const cloudB = dots.slice(half);
       return { pts, eye: { x: (x0 + x1) / 2, y: y - 30 } };
     }
     if (m.type === 'clock') {
-      const C = { x: mOrigin.x + W() / 2, y: mOrigin.y + H() / 2 };
+      /* Το ρολόι «κάθεται» εκεί που κάθεται και ο Ντοτ — στη φυσική του στάση. */
+      const C = { x: px + W() / 2, y: py + H() / 2 };
       const R = W() * 0.42;
       const now = performance.now();
-      const thM = -Math.PI / 2 + (now / 6000) * Math.PI * 2;
-      const thH = -Math.PI / 2 + (now / 72000) * Math.PI * 2 + 1.1;
+      const thM = -Math.PI / 2 + (now / 14000) * Math.PI * 2;
+      const thH = -Math.PI / 2 + (now / 168000) * Math.PI * 2 + 1.1;
       for (let i = 0; i < 135; i++) {
         if (i < 66) { const th = (i / 66) * Math.PI * 2; pts.push({ x: C.x + Math.cos(th) * R, y: C.y + Math.sin(th) * R }); }
         else if (i < 90) { const k = Math.floor((i - 66) / 2); const th = (k / 12) * Math.PI * 2; const rr = (i - 66) % 2 ? R - 6 : R - 10; pts.push({ x: C.x + Math.cos(th) * rr, y: C.y + Math.sin(th) * rr }); }
@@ -326,7 +327,7 @@ const cloudB = dots.slice(half);
     spinB.style.transform = `rotate(${(spinTh.b * (1 - uw)).toFixed(4)}rad)`;
     cloudG.setAttribute('filter', 'url(#dot-goo)');
     const tg = targetsFor(m, form);
-    const toLocal = (X: number, Y: number) => ({ x: (X - mOrigin.x) / F, y: (Y - mOrigin.y) / F });
+    const toLocal = (X: number, Y: number) => ({ x: (X - px) / F, y: (Y - py) / F });
     mDots.forEach((d, i) => {
       const fr = ((i * 37) % 135) / 135;
       const st = fr * 0.5;
@@ -566,6 +567,10 @@ const cloudB = dots.slice(half);
         const k = phase === 'tour' ? 0.032 : 0.045;
         px += dx * k;
         py += dy * k;
+      } else if (morphing && mActive >= 0 && MORPHS[mActive].type === 'clock') {
+        /* Το ρολόι δεν καρφώνεται όπου έτυχε — γλιστράει ήρεμα στη φυσική στάση. */
+        px += dx * 0.03;
+        py += dy * 0.03;
       }
       const dist = Math.hypot(dx, dy);
 
