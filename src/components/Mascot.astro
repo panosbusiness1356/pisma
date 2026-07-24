@@ -144,41 +144,51 @@ const cloudB = dots.slice(half);
   el.style.width = W() + 'px';
 
   /* ============================================================
-     Μεταμορφώσεις scroll (μόνο αρχική + desktop + όχι reduced-motion):
-     οι κουκίδες του σώματος ρέουν και «λιώνουν» σε σχήματα ανά section,
-     δεμένες 100% με το scroll και προς τις δύο κατευθύνσεις.
-     Σε ηρεμία ο Ντοτ είναι ΑΚΡΙΒΩΣ όπως πριν — όλα εδώ είναι πρόσθετο στρώμα.
+     Στάσεις με εκπομπή particles (μόνο αρχική + desktop + όχι reduced-motion):
+     ο Ντοτ ΔΕΝ διαλύεται — μένει ακέραιος και «στέλνει» particles που λιώνουν
+     στο σχήμα κάθε στάσης (υγρή ένωση #dot-goo)· οι κουκίδες-«δωρητές» στο
+     σώμα του χαμηλώνουν όσο λείπουν, και όλα δένονται 1:1 με το scroll.
      ============================================================ */
-  const cloudG = el.querySelector<SVGGElement>('.d-cloud')!;
-  const spinA = el.querySelector<SVGGElement>('.d-spin')!;
-  const spinB = el.querySelector<SVGGElement>('.d-spin2')!;
-  const eyesMove = el.querySelector<SVGGElement>('.d-eyes-move')!;
-  const noseEl = el.querySelector<SVGCircleElement>('.d-nose')!;
-  const bobEl = el.querySelector<HTMLElement>('.m-bob')!;
-  const mDots = [...el.querySelectorAll<SVGCircleElement>('.d-cloud circle')].map((c) => {
-    const fill = c.getAttribute('fill')!;
-    return {
-      c,
-      x: +c.getAttribute('cx')!, y: +c.getAttribute('cy')!,
-      r: +c.getAttribute('r')!, fill, o: c.getAttribute('opacity')!,
-      rgb: [1, 3, 5].map((k) => parseInt(fill.slice(k, k + 2), 16)),
-    };
+  const NS_SVG = 'http://www.w3.org/2000/svg';
+  const bodyCircles = [...el.querySelectorAll<SVGCircleElement>('.d-cloud circle')];
+  const bodyO = bodyCircles.map((c) => c.getAttribute('opacity')!);
+  const bodyPos = bodyCircles.map((c) => ({ x: +c.getAttribute('cx')!, y: +c.getAttribute('cy')! }));
+  const NP = 56;
+  /* Δικό τους, σταθερό overlay (σε συντεταγμένες viewport) — ΔΕΝ κληρονομούν
+     το λίκνισμα/κλίση του Ντοτ, ώστε το σχήμα να στέκεται ακίνητο στο κείμενο. */
+  const overlay = document.createElementNS(NS_SVG, 'svg');
+  overlay.setAttribute('aria-hidden', 'true');
+  overlay.style.cssText =
+    'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:89;' +
+    'filter:drop-shadow(0 6px 18px rgba(238,79,39,.28));';
+  overlay.innerHTML =
+    '<defs><filter id="emit-goo" x="-50%" y="-50%" width="200%" height="200%">' +
+    '<feGaussianBlur in="SourceGraphic" stdDeviation="2.2" result="b"/>' +
+    '<feColorMatrix in="b" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"/>' +
+    '</filter></defs>';
+  const emitG = document.createElementNS(NS_SVG, 'g');
+  emitG.setAttribute('filter', 'url(#emit-goo)');
+  overlay.appendChild(emitG);
+  document.body.appendChild(overlay);
+  const emitDots = Array.from({ length: NP }, () => {
+    const c = document.createElementNS(NS_SVG, 'circle');
+    c.setAttribute('cx', '0');
+    c.setAttribute('cy', '0');
+    c.setAttribute('r', '1.7');
+    c.setAttribute('fill', '#FF6A3D');
+    c.setAttribute('opacity', '0');
+    emitG.appendChild(c);
+    return c;
   });
-  const M_TGT = [255, 106, 61]; // #FF6A3D — το ενιαίο πορτοκαλί των σχημάτων
+  const donors = Array.from({ length: NP }, (_, k) => Math.floor((k * 135) / NP) % bodyCircles.length);
+
   const mClamp = (t: number) => Math.max(0, Math.min(1, t));
   const mSm = (t: number) => (t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t));
   const mBez = (p0: {x:number;y:number}, p1: {x:number;y:number}, p2: {x:number;y:number}, t: number) => {
     const u = 1 - t;
     return { x: u*u*p0.x + 2*u*t*p1.x + t*t*p2.x, y: u*u*p0.y + 2*u*t*p1.y + t*t*p2.y };
   };
-  const gAngle = (g: SVGGElement) => {
-    const t = getComputedStyle(g).transform;
-    if (!t || t === 'none') return 0;
-    const m = t.match(/matrix\(([^)]+)\)/);
-    if (!m) return 0;
-    const [a, b] = m[1].split(',').map(parseFloat);
-    return Math.atan2(b, a);
-  };
+
   type MorphDef = { sel: string; type: 'line' | 'path' | 'euro' | 'bridge' | 'clock'; el?: HTMLElement | null };
   const MORPHS: MorphDef[] = [
     { sel: '#svc-title', type: 'line' },
@@ -198,49 +208,42 @@ const cloudB = dots.slice(half);
     if (euroPts) return;
     try {
       const cv = document.createElement('canvas');
-      cv.width = 140; cv.height = 140;
+      cv.width = 140;
+      cv.height = 140;
       const ctx = cv.getContext('2d')!;
       ctx.font = '800 104px Commissioner, Arial';
       ctx.fillText('€', 20, 112);
       const im = ctx.getImageData(0, 0, 140, 140).data;
       const raw: Array<[number, number]> = [];
-      for (let y = 0; y < 140; y += 3) for (let x = 0; x < 140; x += 3)
+      for (let y = 0; y < 140; y += 4) for (let x = 0; x < 140; x += 4)
         if (im[(y * 140 + x) * 4 + 3] > 128) raw.push([x - 70, y - 78]);
-      if (raw.length < 30) return;
+      if (raw.length < 20) return;
       const out: Array<[number, number]> = [];
-      for (let i = 0; i < 135; i++) out.push(raw[Math.floor((i * raw.length) / 135)]);
+      for (let i = 0; i < NP; i++) out.push(raw[Math.floor((i * raw.length) / NP)]);
       euroPts = out;
     } catch { /* χωρίς € — θα πέσει σε γραμμή */ }
   };
   (document as unknown as { fonts?: { ready?: Promise<unknown> } }).fonts?.ready?.then(sampleEuro);
 
+  /* Καθαρός συγχρονισμός με το scroll (το Lenis ήδη ομαλοποιεί τη ροή του) —
+     μόνο ένα ανεπαίσθητο μαλάκωμα λίγων frames για τις εναλλαγές στάσεων. */
   let mActive = -1;
-  let mOrigin = { x: 0, y: 0 };
-  let spinTh = { a: 0, b: 0 };
-  /* Εξομάλυνση: η πρόοδος «κυνηγά» το scroll με αδράνεια, ώστε ακόμα και σε
-     απότομο ρολάρισμα η μεταμόρφωση να ξετυλίγεται ομαλά και κατανοητά. */
-  /* Καθαρός συγχρονισμός με το scroll: το Lenis ήδη ομαλοποιεί τη ροή του
-     scrollY, οπότε η πρόοδος το ακολουθεί σχεδόν 1:1 — μόνο ένα ανεπαίσθητο
-     μαλάκωμα λίγων frames για τις εναλλαγές στάσεων. */
   let sForm = 0;
   let sDec = 0;
   const EASE_K = 0.3;
 
   const resetMorphVisuals = () => {
-    mDots.forEach((d) => {
-      d.c.style.transform = '';
-      d.c.setAttribute('r', String(d.r));
-      d.c.setAttribute('fill', d.fill);
-      d.c.setAttribute('opacity', d.o);
-    });
-    eyesMove.style.transform = '';
-    noseEl.style.opacity = '';
-    cloudG.removeAttribute('filter');
-    spinA.style.animation = spinB.style.animation = '';
-    spinA.style.transform = spinB.style.transform = '';
-    bobEl.style.animation = '';
+    emitDots.forEach((c) => c.setAttribute('opacity', '0'));
+    donors.forEach((di) => bodyCircles[di].setAttribute('opacity', bodyO[di]));
     if (bridgeLine) bridgeLine.style.opacity = '';
     stepNums.forEach((s) => { s.style.boxShadow = ''; });
+  };
+
+  const deactivateMorph = () => {
+    resetMorphVisuals();
+    mActive = -1;
+    sForm = 0;
+    sDec = 0;
   };
 
   const textRect = (h: HTMLElement) => {
@@ -252,108 +255,9 @@ const cloudB = dots.slice(half);
     } catch { return h.getBoundingClientRect(); }
   };
 
-  /* Στόχοι (σε συντεταγμένες viewport) + θέση ματιών, ανά τύπο μεταμόρφωσης. */
-  const targetsFor = (m: MorphDef, form: number) => {
-    const pts: Array<{x:number;y:number}> = [];
-    const r = textRect(m.el!);
-    if (m.type === 'path' && stepNums.length === 4) {
-      const cs = stepNums.map((s) => {
-        const b = s.getBoundingClientRect();
-        return { x: b.left + b.width / 2, y: b.top + b.height / 2 };
-      });
-      /* Αν τα βήματα έχουν διπλώσει σε 2 σειρές (στενά viewports), το «μονοπάτι»
-         θα έβγαινε διαγώνιο — πέφτουμε σε απλή γραμμή κάτω από τον τίτλο. */
-      const ys = cs.map((c) => c.y);
-      if (Math.max(...ys) - Math.min(...ys) > 30) {
-        stepNums.forEach((s) => { s.style.boxShadow = ''; });
-      } else {
-      const tip = { x: cs[0].x + (cs[3].x - cs[0].x) * form, y: cs[0].y + (cs[3].y - cs[0].y) * form };
-      for (let i = 0; i < 135; i++) {
-        const f = ((i * 37) % 135) / 134;
-        pts.push({ x: cs[0].x + f * (tip.x - cs[0].x), y: cs[0].y + f * (tip.y - cs[0].y) });
-      }
-      stepNums.forEach((s, k) => {
-        const lit = form > 0.05 && tip.x >= cs[k].x - 8;
-        s.style.boxShadow = lit ? '0 0 0 3px rgba(255, 122, 80, .55), 0 0 20px rgba(255, 122, 80, .5)' : '';
-      });
-      return { pts, eye: { x: tip.x + 6, y: tip.y - 34 } };
-      }
-    }
-    if (m.type === 'euro' && euroPts) {
-      const cx = Math.min(r.right + 92, window.innerWidth - 80);
-      const cy = r.top + r.height / 2 + 6;
-      for (let i = 0; i < 135; i++) pts.push({ x: cx + euroPts[i][0] * 0.62, y: cy + euroPts[i][1] * 0.62 });
-      return { pts, eye: { x: cx - 62, y: cy - 34 } };
-    }
-    if (m.type === 'bridge' && bridgeYou && bridgePisma) {
-      const b1 = bridgeYou.getBoundingClientRect();
-      const b2 = bridgePisma.getBoundingClientRect();
-      const y = b1.top + b1.height / 2;
-      const x0 = b1.right + 8, x1 = b2.left - 8;
-      for (let i = 0; i < 135; i++) {
-        const f = ((i * 37) % 135) / 134;
-        pts.push({ x: x0 + f * (x1 - x0), y });
-      }
-      return { pts, eye: { x: (x0 + x1) / 2, y: y - 30 } };
-    }
-    if (m.type === 'clock') {
-      /* Το ρολόι «κάθεται» εκεί που κάθεται και ο Ντοτ — στη φυσική του στάση. */
-      const C = { x: px + W() / 2, y: py + H() / 2 };
-      const R = W() * 0.42;
-      const now = performance.now();
-      const thM = -Math.PI / 2 + (now / 14000) * Math.PI * 2;
-      const thH = -Math.PI / 2 + (now / 168000) * Math.PI * 2 + 1.1;
-      for (let i = 0; i < 135; i++) {
-        if (i < 66) { const th = (i / 66) * Math.PI * 2; pts.push({ x: C.x + Math.cos(th) * R, y: C.y + Math.sin(th) * R }); }
-        else if (i < 90) { const k = Math.floor((i - 66) / 2); const th = (k / 12) * Math.PI * 2; const rr = (i - 66) % 2 ? R - 6 : R - 10; pts.push({ x: C.x + Math.cos(th) * rr, y: C.y + Math.sin(th) * rr }); }
-        else if (i < 110) { const f = (i - 90) / 19; pts.push({ x: C.x + Math.cos(thM) * f * (R - 13), y: C.y + Math.sin(thM) * f * (R - 13) }); }
-        else if (i < 128) { const f = (i - 110) / 17; pts.push({ x: C.x + Math.cos(thH) * f * (R - 22), y: C.y + Math.sin(thH) * f * (R - 22) }); }
-        else { const a = i * 2.4; const rr = 2.4 * Math.sqrt(i - 127); pts.push({ x: C.x + Math.cos(a) * rr, y: C.y + Math.sin(a) * rr }); }
-      }
-      return { pts, eye: { x: C.x - 2, y: C.y - R - 18 } };
-    }
-    /* line (και fallback του euro αν δεν δειγματίστηκε η γραμματοσειρά) */
-    const ly = r.bottom + 12;
-    for (let i = 0; i < 135; i++) {
-      const f = ((i * 37) % 135) / 134;
-      pts.push({ x: r.left + f * (r.right - r.left), y: ly });
-    }
-    return { pts, eye: { x: r.right + 26, y: ly - 6 } };
-  };
-
-  const renderMorph = (m: MorphDef, form: number, dec: number) => {
-    const F = W() / 200;
-    const uw = mClamp(form / 0.25);
-    spinA.style.transform = `rotate(${(spinTh.a * (1 - uw)).toFixed(4)}rad)`;
-    spinB.style.transform = `rotate(${(spinTh.b * (1 - uw)).toFixed(4)}rad)`;
-    cloudG.setAttribute('filter', 'url(#dot-goo)');
-    const tg = targetsFor(m, form);
-    const toLocal = (X: number, Y: number) => ({ x: (X - px) / F, y: (Y - py) / F });
-    mDots.forEach((d, i) => {
-      const fr = ((i * 37) % 135) / 135;
-      const st = fr * 0.5;
-      const t1 = mSm(mClamp((form * 1.5 - st) / 0.5));
-      const t2 = dec > 0 ? mSm(mClamp((dec * 1.5 - st) / 0.5)) : 0;
-      const u = t1 * (1 - t2);
-      const sl = toLocal(tg.pts[i].x, tg.pts[i].y);
-      const p = mBez({ x: d.x, y: d.y }, { x: (d.x + sl.x) / 2 - 40, y: Math.min(d.y, sl.y) - 60 }, sl, u);
-      d.c.style.transform = `translate(${(p.x - d.x).toFixed(1)}px, ${(p.y - d.y).toFixed(1)}px)`;
-      const mm = mClamp((u - 0.62) / 0.38);
-      const rgb = d.rgb.map((v, k) => Math.round(v + (M_TGT[k] - v) * mm));
-      d.c.setAttribute('r', (d.r + (2.6 - d.r) * mm).toFixed(2));
-      d.c.setAttribute('fill', `rgb(${rgb.join(',')})`);
-      d.c.setAttribute('opacity', (parseFloat(d.o) + (1 - parseFloat(d.o)) * mm).toFixed(2));
-    });
-    const ue = mSm(form) * (1 - mSm(dec));
-    const eL = toLocal(tg.eye.x, tg.eye.y);
-    eyesMove.style.transform = `translate(${((eL.x - 99) * ue).toFixed(1)}px, ${((eL.y - 92.5) * ue).toFixed(1)}px)`;
-    noseEl.style.opacity = String(mClamp(1 - ue * 2.5));
-    if (m.type === 'bridge' && bridgeLine) bridgeLine.style.opacity = String(1 - mClamp(ue * 1.5));
-  };
-
   /* Ωμή πρόοδος (0..1) σχηματισμού/διάλυσης από τη θέση scroll ενός στόχου.
-     Η διάλυση ξεκινά μόνο όταν το section φεύγει πραγματικά από την οθόνη,
-     ώστε το σχήμα να «ζει» όσο ο επισκέπτης διαβάζει. */
+     Ο σχηματισμός ξεκινά μόλις μπει το section, το σχήμα «ζει» σε όλη τη ζώνη
+     ανάγνωσης και διαλύεται μόνο όταν το section φεύγει από την οθόνη. */
   const rawProgress = (m: MorphDef) => {
     const vh = window.innerHeight;
     const r = m.el!.getBoundingClientRect();
@@ -367,20 +271,134 @@ const cloudB = dots.slice(half);
     return { form, dec };
   };
 
-  const deactivateMorph = () => {
-    resetMorphVisuals();
-    mActive = -1;
-    sForm = 0;
-    sDec = 0;
+  /* Στόχοι των particles (συντεταγμένες viewport) + μέγεθος/χρώμα ανά θέση. */
+  const targetsFor = (m: MorphDef, form: number) => {
+    const pts: Array<{x:number;y:number}> = [];
+    const rr: number[] = [];
+    let col: string[] | null = null;
+    const r = textRect(m.el!);
+    if (m.type === 'path' && stepNums.length === 4) {
+      const cs = stepNums.map((s) => {
+        const b = s.getBoundingClientRect();
+        return { x: b.left + b.width / 2, y: b.top + b.height / 2 };
+      });
+      const ys = cs.map((c) => c.y);
+      if (Math.max(...ys) - Math.min(...ys) <= 30) {
+        const tip = { x: cs[0].x + (cs[3].x - cs[0].x) * form, y: cs[0].y + (cs[3].y - cs[0].y) * form };
+        for (let i = 0; i < NP; i++) {
+          const f = ((i * 13) % NP) / (NP - 1);
+          pts.push({ x: cs[0].x + f * (tip.x - cs[0].x), y: cs[0].y + f * (tip.y - cs[0].y) });
+          rr.push(4.2);
+        }
+        stepNums.forEach((s, k) => {
+          const lit = form > 0.05 && tip.x >= cs[k].x - 8;
+          s.style.boxShadow = lit ? '0 0 0 3px rgba(255, 122, 80, .55), 0 0 20px rgba(255, 122, 80, .5)' : '';
+        });
+        return { pts, rr, col };
+      }
+      stepNums.forEach((s) => { s.style.boxShadow = ''; });
+    }
+    if (m.type === 'euro' && euroPts) {
+      const cx = Math.min(r.right + 92, window.innerWidth - 80);
+      const cy = r.top + r.height / 2 + 6;
+      for (let i = 0; i < NP; i++) {
+        pts.push({ x: cx + euroPts[i][0] * 0.62, y: cy + euroPts[i][1] * 0.62 });
+        rr.push(4.5);
+      }
+      return { pts, rr, col };
+    }
+    if (m.type === 'bridge' && bridgeYou && bridgePisma) {
+      const b1 = bridgeYou.getBoundingClientRect();
+      const b2 = bridgePisma.getBoundingClientRect();
+      const y = b1.top + b1.height / 2;
+      const x0 = b1.right + 8;
+      const x1 = b2.left - 8;
+      for (let i = 0; i < NP; i++) {
+        const f = ((i * 13) % NP) / (NP - 1);
+        pts.push({ x: x0 + f * (x1 - x0), y });
+        rr.push(4.2);
+      }
+      return { pts, rr, col };
+    }
+    if (m.type === 'clock') {
+      /* Το καντράν σχηματίζεται ΓΥΡΩ από τον ίδιο τον Ντοτ — αυτός είναι το
+         πρόσωπο του ρολογιού, με τους δείκτες σε ανοιχτό κρεμ για αντίθεση. */
+      const C = { x: px + W() / 2, y: py + H() / 2 };
+      const R = W() * 0.52;
+      const now = performance.now();
+      const thM = -Math.PI / 2 + (now / 14000) * Math.PI * 2;
+      const thH = -Math.PI / 2 + (now / 168000) * Math.PI * 2 + 1.1;
+      col = [];
+      for (let i = 0; i < NP; i++) {
+        if (i < 26) {
+          const th = (i / 26) * Math.PI * 2;
+          pts.push({ x: C.x + Math.cos(th) * R, y: C.y + Math.sin(th) * R });
+          rr.push(4);
+          col.push('#FF6A3D');
+        } else if (i < 38) {
+          const th = ((i - 26) / 12) * Math.PI * 2;
+          pts.push({ x: C.x + Math.cos(th) * (R - 7), y: C.y + Math.sin(th) * (R - 7) });
+          rr.push(5);
+          col.push('#FF9159');
+        } else if (i < 41) {
+          const f = (i - 37) / 3;
+          pts.push({ x: C.x + Math.cos(thM) * f * (R - 14), y: C.y + Math.sin(thM) * f * (R - 14) });
+          rr.push(4);
+          col.push('#FFF8F0');
+        } else {
+          const f = (i - 40) / 3;
+          pts.push({ x: C.x + Math.cos(thH) * f * (R - 26), y: C.y + Math.sin(thH) * f * (R - 26) });
+          rr.push(4);
+          col.push('#FFF8F0');
+        }
+      }
+      return { pts, rr, col };
+    }
+    /* line (και fallback των path/euro) */
+    const ly = r.bottom + 12;
+    for (let i = 0; i < NP; i++) {
+      const f = ((i * 13) % NP) / (NP - 1);
+      pts.push({ x: r.left + f * (r.right - r.left), y: ly });
+      rr.push(4.2);
+    }
+    return { pts, rr, col };
   };
 
-  /* Επιστρέφει true όταν μια μεταμόρφωση «κρατάει» τον Ντοτ αυτό το frame. */
+  const renderMorph = (m: MorphDef, form: number, dec: number) => {
+    const F = W() / 200;
+    const tg = targetsFor(m, form);
+    emitDots.forEach((c, k) => {
+      const fr = ((k * 13) % NP) / NP;
+      const st = fr * 0.5;
+      const t1 = mSm(mClamp((form * 1.5 - st) / 0.5));
+      const t2 = dec > 0 ? mSm(mClamp((dec * 1.5 - st) / 0.5)) : 0;
+      const u = t1 * (1 - t2);
+      const dpb = bodyPos[donors[k]];
+      const dp = { x: px + dpb.x * F, y: py + dpb.y * F };
+      const sl = tg.pts[k];
+      const c1 = { x: (dp.x + sl.x) / 2 - 24, y: Math.min(dp.y, sl.y) - 46 };
+      const p = mBez(dp, c1, sl, u);
+      c.setAttribute('transform', `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`);
+      const mm = mClamp((u - 0.5) / 0.5);
+      c.setAttribute('r', (1.7 + (tg.rr[k] - 1.7) * mm).toFixed(2));
+      if (tg.col) c.setAttribute('fill', tg.col[k]);
+      else c.setAttribute('fill', '#FF6A3D');
+      c.setAttribute('opacity', u < 0.02 ? '0' : '0.95');
+      const di = donors[k];
+      bodyCircles[di].setAttribute('opacity', u > 0.12 ? (parseFloat(bodyO[di]) * 0.18).toFixed(2) : bodyO[di]);
+    });
+    const ue = mSm(form) * (1 - mSm(dec));
+    if (m.type === 'bridge' && bridgeLine) bridgeLine.style.opacity = String(1 - mClamp(ue * 1.5));
+  };
+
+  /* Τρέχει κάθε frame: διαλέγει στάση από τη θέση scroll και οδηγεί τα particles. */
   const morphFrame = (): boolean => {
     if (!onHome || reduce || isMobile() || phase !== 'tour') {
       if (mActive >= 0) deactivateMorph();
       return false;
     }
-    let best = -1, bestScore = 0;
+    let best = -1;
+    let bestScore = 0;
     MORPHS.forEach((m, i) => {
       if (!m.el) return;
       const p = rawProgress(m);
@@ -392,8 +410,7 @@ const cloudB = dots.slice(half);
       const cur = MORPHS[mActive];
       const p = rawProgress(cur);
       const wantSwitch = best !== mActive;
-      /* Αν πρέπει να αλλάξουμε στόχο (ή φύγαμε από τη ζώνη), πρώτα ολοκληρώνεται
-         ομαλά η διάλυση της τρέχουσας μορφής — ποτέ απότομο κόψιμο. */
+      /* Σε αλλαγή στόχου, πρώτα ολοκληρώνεται ομαλά η επιστροφή των particles. */
       const tF = wantSwitch ? sForm : p.form;
       const tD = wantSwitch ? 1 : p.dec;
       sForm += (tF - sForm) * EASE_K;
@@ -402,7 +419,7 @@ const cloudB = dots.slice(half);
       else if (!wantSwitch && p.form <= 0 && sForm < 0.03 && sDec < 0.03) { deactivateMorph(); return false; }
       if (mActive >= 0) {
         renderMorph(cur, sForm, sDec);
-        return true;
+        return false;
       }
     }
 
@@ -410,13 +427,8 @@ const cloudB = dots.slice(half);
       mActive = best;
       sForm = 0;
       sDec = 0;
-      mOrigin = { x: px, y: py };
-      spinTh = { a: gAngle(spinA), b: gAngle(spinB) };
-      spinA.style.animation = spinB.style.animation = 'none';
-      bobEl.style.animation = 'none';
       if (MORPHS[best].type === 'euro') sampleEuro();
       renderMorph(MORPHS[best], 0, 0);
-      return true;
     }
     return false;
   };
@@ -552,28 +564,24 @@ const cloudB = dots.slice(half);
         scale = 1;
       }
 
-      /* Μεταμόρφωση scroll: όσο «κρατάει» τον Ντοτ, μένει καρφωμένος στη θέση
-         της διάλυσης και δεν ταξιδεύει — οι κουκίδες του κάνουν τη δουλειά. */
-      const morphing = !birthing && morphFrame();
+      /* Εκπομπή particles: ο Ντοτ ταξιδεύει κανονικά — το στρώμα των particles
+         οδηγείται από το scroll και δεν επηρεάζει καθόλου τη δική του κίνηση. */
+      if (!birthing) morphFrame();
 
       const dx = t.x - px;
       const dy = t.y - py;
-      if (!birthing && !morphing) {
+      if (!birthing) {
         const k = phase === 'tour' ? 0.032 : 0.045;
         px += dx * k;
         py += dy * k;
-      } else if (morphing && mActive >= 0 && MORPHS[mActive].type === 'clock') {
-        /* Το ρολόι δεν καρφώνεται όπου έτυχε — γλιστράει ήρεμα στη φυσική στάση. */
-        px += dx * 0.03;
-        py += dy * 0.03;
       }
       const dist = Math.hypot(dx, dy);
 
       const y = window.scrollY;
       const vel = y - lastY;
       lastY = y;
-      const lean = morphing ? 0 : Math.max(-10, Math.min(10, dx * 0.028 + vel * 0.25));
-      rot += (lean - rot) * (morphing ? 0.14 : 0.06);
+      const lean = Math.max(-10, Math.min(10, dx * 0.028 + vel * 0.25));
+      rot += (lean - rot) * 0.06;
 
       /* Τα μάτια κοιτούν τον κέρσορα — ή προς τα εκεί που ταξιδεύει. */
       const cx = px + W() / 2;
