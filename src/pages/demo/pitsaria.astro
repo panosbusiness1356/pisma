@@ -108,15 +108,12 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
     /* ---------- Στάδιο 1: Καλωσόρισμα ---------- */
     #s-intro .hero-emoji { font-size: 64px; margin-top: 26px; animation: bob 2.4s ease-in-out infinite; }
     @keyframes bob { 50% { transform: translateY(-8px) rotate(-4deg); } }
-    #s-intro .prizes-teaser {
-      margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
-    }
-    #s-intro .prizes-teaser span {
-      background: var(--card); border: 1px solid var(--crust);
-      border-radius: 999px; padding: 7px 13px; font-size: 13px; font-weight: 600;
-      box-shadow: 0 2px 6px rgba(51,36,27,.06);
-    }
     #s-intro .btn { margin-top: 30px; }
+    .mark {
+      font-weight: 800; color: var(--ink); font-style: normal;
+      background: linear-gradient(transparent 62%, rgba(232,161,60,.5) 62%);
+      padding: 0 2px;
+    }
 
     /* ---------- Στάδιο 2: Τροχός ---------- */
     .wheel-wrap { position: relative; width: 300px; height: 300px; margin-top: 24px; }
@@ -301,7 +298,7 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
     }
     .float-bg { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
     .float-bg span {
-      position: absolute; font-size: 30px; opacity: .13;
+      position: absolute; font-size: 28px; opacity: .09;
       animation: drift ease-in-out infinite alternate;
     }
     @keyframes drift {
@@ -313,10 +310,12 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
     .waiter {
       position: absolute; bottom: 40px; right: 4px; width: 124px; height: 172px;
       z-index: 4; pointer-events: none;
-      animation: walkIn 1.7s ease-out both;
     }
     @keyframes walkIn { from { transform: translateX(150px); } }
-    .waiter svg { width: 100%; height: 100%; overflow: visible; }
+    .waiter svg {
+      width: 100%; height: 100%; overflow: visible;
+      animation: walkIn 1.7s ease-out both;
+    }
     #wAll { animation: wBob 2.4s ease-in-out infinite; transform-box: view-box; }
     @keyframes wBob { 50% { transform: translateY(2.5px); } }
     #wArmR {
@@ -388,12 +387,10 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
 
     <!-- Αιωρούμενα υλικά στο φόντο -->
     <div class="float-bg" aria-hidden="true">
-      <span style="top:12%; left:6%; animation-duration:9s">🍅</span>
-      <span style="top:22%; right:8%; animation-duration:11s">🧀</span>
-      <span style="top:47%; left:4%; animation-duration:8s">🌿</span>
-      <span style="top:58%; right:6%; animation-duration:12s">🫒</span>
-      <span style="top:76%; left:10%; animation-duration:10s">🍕</span>
-      <span style="top:36%; left:44%; animation-duration:13s">🍄</span>
+      <span style="top:14%; left:6%; animation-duration:9s">🍅</span>
+      <span style="top:24%; right:8%; animation-duration:11s">🧀</span>
+      <span style="top:56%; left:5%; animation-duration:8s">🌿</span>
+      <span style="top:64%; right:7%; animation-duration:12s">🫒</span>
     </div>
 
     <!-- Στάδιο 1 · Καλωσόρισμα (μετά το σκανάρισμα του QR) -->
@@ -404,11 +401,8 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
         <div class="tag">Pizzeria · Est. 1987</div>
       </div>
       <div class="hero-emoji">🎁</div>
-      <h1>Κέρδισε <span class="accent">σίγουρο δώρο</span> στο τραπέζι σου!</h1>
-      <p class="sub">Γύρνα τον τροχό της Nonna — όλοι κερδίζουν κάτι. Θα σου πάρει 30 δευτερόλεπτα.</p>
-      <div class="prizes-teaser">
-        <span>🍰 Επιδόρπιο</span><span>🥤 Αναψυκτικό</span><span>🍕 -50% στη 2η πίτσα</span><span>🎉 Έκπληξη</span>
-      </div>
+      <h1>Κέρδισε <span class="accent">σίγουρο δώρο</span>!</h1>
+      <p class="sub">Γύρνα τον τροχό — <b class="mark">όλοι κερδίζουν</b>.<br />Μισό λεπτό αρκεί.</p>
       <button class="btn" data-next="s-wheel">Παίξε τώρα 🎡</button>
       <div class="steps"><i class="dot on"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
       <div class="powered">Εργαλείο κριτικών από <b>PISMA</b> · σελίδα επίδειξης</div>
@@ -444,7 +438,7 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
       </div>
       <div class="review-ask">
         <div class="stars"><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span></div>
-        <p>Το δώρο σου είναι δικό σου έτσι κι αλλιώς! Αν πέρασες καλά, μια κριτική στο Google μάς βοηθάει όσο δεν φαντάζεσαι.</p>
+        <p>Το δώρο είναι <b class="mark">ήδη δικό σου</b>.<br />Ένα αστεράκι στο Google μάς βοηθάει ❤️</p>
         <button class="btn" id="reviewBtn"><span class="g-badge"><span class="g-icon">G</span></span>Άφησε κριτική στο Google</button>
       </div>
       <div class="steps"><i class="dot"></i><i class="dot"></i><i class="dot on"></i><i class="dot"></i></div>
@@ -467,7 +461,7 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
         <div class="divider"></div>
         <div class="bottom">
           <div class="code" id="couponCode">NN-XXXXX</div>
-          <div class="hint">Δείξε αυτή την οθόνη στο ταμείο για να παραλάβεις το δώρο σου.</div>
+          <div class="hint">Δείξε την οθόνη <b class="mark">στο ταμείο</b> 👆</div>
           <div class="expiry" id="couponExpiry"></div>
         </div>
       </div>
@@ -640,8 +634,7 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
       }));
     document.getElementById('publishBtn').addEventListener('click', () => {
       veil.classList.remove('open');
-      document.getElementById('thanksLine').textContent =
-        'Ευχαριστούμε για την κριτική — καλή απόλαυση! ❤️';
+      document.getElementById('thanksLine').textContent = 'Grazie mille! ❤️';
       issueCoupon();
       go('s-coupon');
       confetti(60);
@@ -671,11 +664,11 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
     const waiter = document.getElementById('waiter');
     const bubble = document.getElementById('bubble');
     const LINES = {
-      's-intro':  'Benvenuto! Είμαι ο Τζίνο 🤌 Πάτα «Παίξε τώρα» — η Nonna κερνάει!',
-      's-wheel':  'Forza! Γύρνα τον τροχό — in bocca al lupo! 🍀',
-      'spin':     'Mamma mia… γυρίζει, γυρίζει! 🤞',
-      's-review': 'Ancora una cosa! Ένα αστεράκι για τη Nonna; Grazie mille! ⭐',
-      's-coupon': 'Perfetto! Δείξ’ το στο ταμείο — buon appetito! 🍕',
+      's-intro':  'Benvenuto! Είμαι ο Τζίνο 🤌',
+      's-wheel':  'Forza! Γύρνα τον! 🍀',
+      'spin':     'Mamma mia…! 🤞',
+      's-review': 'Ένα αστεράκι για τη Nonna; ⭐',
+      's-coupon': 'Perfetto! Buon appetito! 🍕',
     };
     function say(key) {
       bubble.textContent = LINES[key];
