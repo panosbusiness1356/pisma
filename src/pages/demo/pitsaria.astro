@@ -1,0 +1,473 @@
+---
+// Demo εργαλείου «Google Reviews στο Αυτόματο» — εικονική πιτσαρία «La Nonna».
+// Αυτόνομη σελίδα (δεν χρησιμοποιεί το Base layout): προσομοιώνει αυτό που
+// βλέπει ο πελάτης του μαγαζιού όταν σκανάρει το QR στο τραπέζι.
+const title = 'La Nonna · Κέρδισε το δώρο σου!';
+---
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>{title}</title>
+  <style>
+    :root {
+      --cream: #fdf6ec;
+      --crust: #f3e3c9;
+      --tomato: #c8371f;
+      --tomato-dark: #a02a16;
+      --basil: #2e7d43;
+      --ink: #33241b;
+      --soft: #8a7462;
+      --gold: #e8a13c;
+      --card: #ffffff;
+      --radius: 20px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      display: flex;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .phone {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      background:
+        radial-gradient(circle at 85% -5%, rgba(232,161,60,.18), transparent 40%),
+        radial-gradient(circle at 0% 100%, rgba(46,125,67,.10), transparent 45%),
+        var(--cream);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ---------- Στάδια ---------- */
+    .stage {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 22px 30px;
+      animation: fadeUp .45s ease both;
+    }
+    .stage.active { display: flex; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .brand {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      margin-bottom: 8px;
+    }
+    .brand .logo { font-size: 44px; line-height: 1; }
+    .brand .name {
+      font-size: 26px; font-weight: 800; letter-spacing: .5px;
+      color: var(--tomato);
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+    .brand .tag { font-size: 12px; color: var(--soft); letter-spacing: 2.5px; text-transform: uppercase; }
+
+    h1 { font-size: 28px; text-align: center; line-height: 1.2; margin-top: 18px; }
+    h1 .accent { color: var(--tomato); }
+    .sub { text-align: center; color: var(--soft); font-size: 15.5px; line-height: 1.5; margin-top: 10px; max-width: 300px; }
+
+    .btn {
+      appearance: none; border: 0; cursor: pointer;
+      font: inherit; font-weight: 700; font-size: 17px;
+      color: #fff; background: var(--tomato);
+      padding: 15px 34px; border-radius: 999px;
+      box-shadow: 0 6px 18px rgba(200,55,31,.35);
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .btn:active { transform: scale(.96); }
+    .btn.secondary {
+      background: transparent; color: var(--soft);
+      box-shadow: none; font-weight: 600; font-size: 14px;
+    }
+    .btn[disabled] { opacity: .45; pointer-events: none; }
+
+    .steps {
+      display: flex; gap: 8px; margin-top: 26px;
+    }
+    .steps .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(51,36,27,.15);
+    }
+    .steps .dot.on { background: var(--tomato); }
+
+    /* ---------- Στάδιο 1: Καλωσόρισμα ---------- */
+    #s-intro .hero-emoji { font-size: 64px; margin-top: 26px; animation: bob 2.4s ease-in-out infinite; }
+    @keyframes bob { 50% { transform: translateY(-8px) rotate(-4deg); } }
+    #s-intro .prizes-teaser {
+      margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    }
+    #s-intro .prizes-teaser span {
+      background: var(--card); border: 1px solid var(--crust);
+      border-radius: 999px; padding: 7px 13px; font-size: 13px; font-weight: 600;
+      box-shadow: 0 2px 6px rgba(51,36,27,.06);
+    }
+    #s-intro .btn { margin-top: 30px; }
+
+    /* ---------- Στάδιο 2: Τροχός ---------- */
+    .wheel-wrap { position: relative; width: 300px; height: 300px; margin-top: 24px; }
+    .wheel {
+      width: 100%; height: 100%;
+      transition: transform 4.6s cubic-bezier(.12,.78,.16,1);
+      filter: drop-shadow(0 10px 22px rgba(51,36,27,.22));
+    }
+    .pointer {
+      position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+      width: 0; height: 0; z-index: 3;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-top: 24px solid var(--ink);
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,.25));
+    }
+    .hub {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 64px; height: 64px; border-radius: 50%;
+      background: #fff; border: 4px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; z-index: 2;
+      box-shadow: 0 4px 12px rgba(51,36,27,.25);
+    }
+    #spinBtn { margin-top: 30px; }
+
+    /* ---------- Στάδιο 3: Κέρδος + κριτική ---------- */
+    .prize-card {
+      margin-top: 24px; background: var(--card);
+      border: 2px dashed var(--gold); border-radius: var(--radius);
+      padding: 22px 26px; text-align: center;
+      box-shadow: 0 8px 24px rgba(51,36,27,.10);
+      animation: pop .5s cubic-bezier(.3,1.6,.5,1) both;
+    }
+    @keyframes pop { from { transform: scale(.7); opacity: 0; } }
+    .prize-card .p-emoji { font-size: 46px; }
+    .prize-card .p-name { font-size: 22px; font-weight: 800; margin-top: 6px; color: var(--tomato); }
+    .review-ask {
+      margin-top: 26px; background: var(--card); border-radius: var(--radius);
+      padding: 20px; width: 100%; text-align: center;
+      border: 1px solid var(--crust);
+    }
+    .review-ask .stars { font-size: 26px; letter-spacing: 4px; }
+    .review-ask p { font-size: 14.5px; color: var(--soft); line-height: 1.5; margin-top: 8px; }
+    .review-ask .btn { margin-top: 16px; font-size: 15.5px; padding: 13px 26px; }
+    .g-icon {
+      display: inline-block; font-weight: 800; margin-right: 6px;
+      background: linear-gradient(90deg,#4285F4,#EA4335,#FBBC05,#34A853);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    /* ---------- Mock φύλλο κριτικής ---------- */
+    .sheet-veil {
+      position: absolute; inset: 0; background: rgba(30,20,14,.45);
+      display: none; align-items: flex-end; z-index: 10;
+      animation: fadeUp .25s ease both;
+    }
+    .sheet-veil.open { display: flex; }
+    .sheet {
+      background: #fff; width: 100%; border-radius: 22px 22px 0 0;
+      padding: 20px 22px 30px;
+      animation: slideUp .3s ease both;
+    }
+    @keyframes slideUp { from { transform: translateY(100%); } }
+    .sheet .demo-note {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+      color: var(--soft); text-align: center; margin-bottom: 12px;
+    }
+    .sheet .place { font-weight: 700; font-size: 17px; }
+    .sheet .place small { display: block; font-weight: 400; color: var(--soft); font-size: 12.5px; margin-top: 2px; }
+    .rate-stars { display: flex; gap: 10px; justify-content: center; margin: 18px 0 6px; }
+    .rate-stars button {
+      appearance: none; border: 0; background: none; cursor: pointer;
+      font-size: 38px; color: #d9d2c8; transition: transform .1s ease, color .1s ease;
+      line-height: 1;
+    }
+    .rate-stars button.lit { color: var(--gold); }
+    .rate-stars button:active { transform: scale(1.2); }
+    .sheet textarea {
+      width: 100%; border: 1px solid #e5ddd2; border-radius: 12px;
+      padding: 12px; font: inherit; font-size: 14.5px; resize: none; height: 76px;
+      margin-top: 10px; color: var(--ink); background: #faf7f2;
+    }
+    .sheet textarea:focus { outline: 2px solid rgba(66,133,244,.4); }
+    .sheet .publish {
+      margin-top: 14px; width: 100%;
+      background: #1a73e8; box-shadow: 0 6px 16px rgba(26,115,232,.3);
+    }
+
+    /* ---------- Στάδιο 4: Κουπόνι ---------- */
+    .coupon {
+      margin-top: 24px; width: 100%;
+      background: var(--card); border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(51,36,27,.14);
+      overflow: hidden;
+      animation: pop .5s cubic-bezier(.3,1.6,.5,1) both;
+    }
+    .coupon .top {
+      background: linear-gradient(135deg, var(--tomato), var(--tomato-dark));
+      color: #fff; padding: 20px; text-align: center;
+    }
+    .coupon .top .c-emoji { font-size: 40px; }
+    .coupon .top .c-name { font-size: 21px; font-weight: 800; margin-top: 4px; }
+    .coupon .divider {
+      position: relative; border-top: 2px dashed #e0d6c8; margin: 0 14px;
+    }
+    .coupon .divider::before, .coupon .divider::after {
+      content: ''; position: absolute; top: -11px; width: 22px; height: 22px;
+      border-radius: 50%; background: var(--cream);
+    }
+    .coupon .divider::before { left: -25px; }
+    .coupon .divider::after { right: -25px; }
+    .coupon .bottom { padding: 18px 20px 22px; text-align: center; }
+    .coupon .code {
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      font-size: 26px; font-weight: 700; letter-spacing: 3px;
+      background: var(--crust); border-radius: 12px; padding: 12px;
+    }
+    .coupon .hint { font-size: 13.5px; color: var(--soft); margin-top: 12px; line-height: 1.5; }
+    .coupon .expiry { font-size: 12px; color: var(--soft); margin-top: 8px; }
+
+    .powered {
+      margin-top: auto; padding-top: 26px;
+      font-size: 11.5px; color: var(--soft); text-align: center; letter-spacing: .5px;
+    }
+    .powered b { color: var(--ink); }
+
+    /* ---------- Κομφετί ---------- */
+    .confetti {
+      position: absolute; top: -12px; width: 9px; height: 14px;
+      z-index: 5; pointer-events: none;
+      animation: fall linear both;
+    }
+    @keyframes fall {
+      to { transform: translateY(110dvh) rotate(720deg); opacity: .2; }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone" id="phone">
+
+    <!-- Στάδιο 1 · Καλωσόρισμα (μετά το σκανάρισμα του QR) -->
+    <section class="stage active" id="s-intro">
+      <div class="brand">
+        <div class="logo">🍕</div>
+        <div class="name">La Nonna</div>
+        <div class="tag">Pizzeria · Est. 1987</div>
+      </div>
+      <div class="hero-emoji">🎁</div>
+      <h1>Κέρδισε <span class="accent">σίγουρο δώρο</span> στο τραπέζι σου!</h1>
+      <p class="sub">Γύρνα τον τροχό της Nonna — όλοι κερδίζουν κάτι. Θα σου πάρει 30 δευτερόλεπτα.</p>
+      <div class="prizes-teaser">
+        <span>🍰 Επιδόρπιο</span><span>🥤 Αναψυκτικό</span><span>🍕 -50% στη 2η πίτσα</span><span>🎉 Έκπληξη</span>
+      </div>
+      <button class="btn" data-next="s-wheel">Παίξε τώρα 🎡</button>
+      <div class="steps"><i class="dot on"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+      <div class="powered">Εργαλείο κριτικών από <b>PISMA</b> · σελίδα επίδειξης</div>
+    </section>
+
+    <!-- Στάδιο 2 · Τροχός -->
+    <section class="stage" id="s-wheel">
+      <div class="brand">
+        <div class="logo">🍕</div>
+        <div class="name">La Nonna</div>
+      </div>
+      <h1>Γύρνα τον <span class="accent">τροχό</span>!</h1>
+      <div class="wheel-wrap">
+        <div class="pointer"></div>
+        <svg class="wheel" id="wheelSvg" viewBox="0 0 200 200"></svg>
+        <div class="hub">🍕</div>
+      </div>
+      <button class="btn" id="spinBtn">Γύρνα τον! 🎡</button>
+      <div class="steps"><i class="dot"></i><i class="dot on"></i><i class="dot"></i><i class="dot"></i></div>
+      <div class="powered">Εργαλείο κριτικών από <b>PISMA</b> · σελίδα επίδειξης</div>
+    </section>
+
+    <!-- Στάδιο 3 · Κέρδος + αίτημα κριτικής -->
+    <section class="stage" id="s-review">
+      <div class="brand">
+        <div class="logo">🍕</div>
+        <div class="name">La Nonna</div>
+      </div>
+      <h1>Κέρδισες! 🎉</h1>
+      <div class="prize-card">
+        <div class="p-emoji" id="prizeEmoji">🍰</div>
+        <div class="p-name" id="prizeName">Δωρεάν επιδόρπιο</div>
+      </div>
+      <div class="review-ask">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <p>Ένα τελευταίο βήμα: πες μας τη γνώμη σου στο Google. Μας βοηθάει όσο δεν φαντάζεσαι — και ξεκλειδώνει το δώρο σου.</p>
+        <button class="btn" id="reviewBtn"><span class="g-icon">G</span>Άφησε κριτική στο Google</button>
+      </div>
+      <div class="steps"><i class="dot"></i><i class="dot"></i><i class="dot on"></i><i class="dot"></i></div>
+      <div class="powered">Εργαλείο κριτικών από <b>PISMA</b> · σελίδα επίδειξης</div>
+    </section>
+
+    <!-- Στάδιο 4 · Κουπόνι -->
+    <section class="stage" id="s-coupon">
+      <div class="brand">
+        <div class="logo">🍕</div>
+        <div class="name">La Nonna</div>
+      </div>
+      <h1>Το δώρο σου είναι <span class="accent">έτοιμο</span>!</h1>
+      <div class="coupon">
+        <div class="top">
+          <div class="c-emoji" id="couponEmoji">🍰</div>
+          <div class="c-name" id="couponName">Δωρεάν επιδόρπιο</div>
+        </div>
+        <div class="divider"></div>
+        <div class="bottom">
+          <div class="code" id="couponCode">NN-XXXXX</div>
+          <div class="hint">Δείξε αυτή την οθόνη στο ταμείο για να παραλάβεις το δώρο σου.</div>
+          <div class="expiry" id="couponExpiry"></div>
+        </div>
+      </div>
+      <p class="sub" style="margin-top:20px">Ευχαριστούμε για την κριτική — καλή απόλαυση! ❤️</p>
+      <div class="steps"><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot on"></i></div>
+      <div class="powered">Εργαλείο κριτικών από <b>PISMA</b> · σελίδα επίδειξης</div>
+    </section>
+
+    <!-- Mock φύλλο κριτικής Google (προσομοίωση για το demo) -->
+    <div class="sheet-veil" id="sheetVeil">
+      <div class="sheet">
+        <div class="demo-note">Προσομοίωση · έτσι φαίνεται στο Google</div>
+        <div class="place">Pizzeria La Nonna<small>Δημοσίευση κριτικής δημόσια</small></div>
+        <div class="rate-stars" id="rateStars">
+          <button data-v="1">★</button><button data-v="2">★</button><button data-v="3">★</button><button data-v="4">★</button><button data-v="5">★</button>
+        </div>
+        <textarea id="reviewText" placeholder="Πες μας για την εμπειρία σου (προαιρετικό)…"></textarea>
+        <button class="btn publish" id="publishBtn" disabled>Δημοσίευση</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Δεδομένα τροχού ----------
+    const PRIZES = [
+      { name: 'Δωρεάν επιδόρπιο',   emoji: '🍰', color: '#c8371f', weight: 3 },
+      { name: 'Δωρεάν αναψυκτικό',  emoji: '🥤', color: '#e8a13c', weight: 4 },
+      { name: '-50% στη 2η πίτσα',  emoji: '🍕', color: '#2e7d43', weight: 2 },
+      { name: 'Δωρεάν ορεκτικό',    emoji: '🥗', color: '#c8371f', weight: 3 },
+      { name: '-10% στον λογ/σμό',  emoji: '💶', color: '#e8a13c', weight: 3 },
+      { name: 'Έκπληξη της Nonna',  emoji: '🎉', color: '#2e7d43', weight: 1 },
+    ];
+    const N = PRIZES.length;
+    const SEG = 360 / N;
+
+    // ---------- Σχεδίαση τροχού (SVG) ----------
+    const svg = document.getElementById('wheelSvg');
+    const cx = 100, cy = 100, r = 98;
+    function polar(angleDeg, radius) {
+      const a = (angleDeg - 90) * Math.PI / 180;
+      return [cx + radius * Math.cos(a), cy + radius * Math.sin(a)];
+    }
+    let paths = '';
+    PRIZES.forEach((p, i) => {
+      const a0 = i * SEG, a1 = (i + 1) * SEG;
+      const [x0, y0] = polar(a0, r);
+      const [x1, y1] = polar(a1, r);
+      paths += `<path d="M${cx},${cy} L${x0.toFixed(2)},${y0.toFixed(2)} A${r},${r} 0 0 1 ${x1.toFixed(2)},${y1.toFixed(2)} Z"
+        fill="${p.color}" stroke="#fdf6ec" stroke-width="2"/>`;
+      const mid = a0 + SEG / 2;
+      const [tx, ty] = polar(mid, r * 0.62);
+      paths += `<text x="${tx.toFixed(2)}" y="${ty.toFixed(2)}" font-size="17" text-anchor="middle"
+        dominant-baseline="central" transform="rotate(${mid} ${tx.toFixed(2)} ${ty.toFixed(2)})">${p.emoji}</text>`;
+    });
+    svg.innerHTML = paths + `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#e8a13c" stroke-width="4"/>`;
+
+    // ---------- Πλοήγηση σταδίων ----------
+    function go(id) {
+      document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+    document.querySelectorAll('[data-next]').forEach(b =>
+      b.addEventListener('click', () => go(b.dataset.next)));
+
+    // ---------- Περιστροφή ----------
+    let prize = null;
+    let spun = false;
+    function pickPrize() {
+      const total = PRIZES.reduce((s, p) => s + p.weight, 0);
+      let roll = Math.random() * total;
+      for (const p of PRIZES) { roll -= p.weight; if (roll <= 0) return p; }
+      return PRIZES[0];
+    }
+    document.getElementById('spinBtn').addEventListener('click', () => {
+      if (spun) return;
+      spun = true;
+      prize = pickPrize();
+      const idx = PRIZES.indexOf(prize);
+      // Το κέντρο του τμήματος idx να καταλήξει κάτω από τον δείκτη (0°),
+      // με τυχαία απόκλιση ±10° για φυσικότητα.
+      const jitter = (Math.random() - 0.5) * (SEG - 16);
+      const target = 360 * 5 - (idx * SEG + SEG / 2) - jitter;
+      svg.style.transform = `rotate(${target}deg)`;
+      document.getElementById('spinBtn').disabled = true;
+      setTimeout(() => {
+        document.getElementById('prizeEmoji').textContent = prize.emoji;
+        document.getElementById('prizeName').textContent = prize.name;
+        confetti(36);
+        go('s-review');
+      }, 4900);
+    });
+
+    // ---------- Mock κριτική ----------
+    const veil = document.getElementById('sheetVeil');
+    let rating = 0;
+    document.getElementById('reviewBtn').addEventListener('click', () => veil.classList.add('open'));
+    veil.addEventListener('click', e => { if (e.target === veil) veil.classList.remove('open'); });
+    document.querySelectorAll('#rateStars button').forEach(btn =>
+      btn.addEventListener('click', () => {
+        rating = +btn.dataset.v;
+        document.querySelectorAll('#rateStars button').forEach(b =>
+          b.classList.toggle('lit', +b.dataset.v <= rating));
+        document.getElementById('publishBtn').disabled = rating === 0;
+      }));
+    document.getElementById('publishBtn').addEventListener('click', () => {
+      veil.classList.remove('open');
+      issueCoupon();
+      go('s-coupon');
+      confetti(60);
+    });
+
+    // ---------- Κουπόνι ----------
+    function issueCoupon() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let code = 'NN-';
+      for (let i = 0; i < 5; i++) code += chars[Math.floor(Math.random() * chars.length)];
+      document.getElementById('couponEmoji').textContent = prize.emoji;
+      document.getElementById('couponName').textContent = prize.name;
+      document.getElementById('couponCode').textContent = code;
+      const exp = new Date(Date.now() + 7 * 24 * 3600 * 1000);
+      document.getElementById('couponExpiry').textContent =
+        'Ισχύει έως ' + exp.toLocaleDateString('el-GR', { day: 'numeric', month: 'long' });
+    }
+
+    // ---------- Κομφετί ----------
+    const COLORS = ['#c8371f', '#e8a13c', '#2e7d43', '#f3e3c9', '#1a73e8'];
+    function confetti(n) {
+      const host = document.getElementById('phone');
+      for (let i = 0; i < n; i++) {
+        const c = document.createElement('i');
+        c.className = 'confetti';
+        c.style.left = Math.random() * 100 + '%';
+        c.style.background = COLORS[i % COLORS.length];
+        c.style.animationDuration = (1.6 + Math.random() * 1.6) + 's';
+        c.style.animationDelay = (Math.random() * 0.5) + 's';
+        c.style.transform = `rotate(${Math.random() * 360}deg)`;
+        host.appendChild(c);
+        setTimeout(() => c.remove(), 4000);
+      }
+    }
+  </script>
+</body>
+</html>
