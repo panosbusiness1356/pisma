@@ -158,10 +158,51 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
       border: 1px solid var(--crust);
     }
     .review-ask .stars { font-size: 26px; letter-spacing: 4px; }
+    .review-ask .stars span { display: inline-block; animation: twinkle 1.5s ease-in-out infinite; }
+    .review-ask .stars span:nth-child(2) { animation-delay: .15s; }
+    .review-ask .stars span:nth-child(3) { animation-delay: .3s; }
+    .review-ask .stars span:nth-child(4) { animation-delay: .45s; }
+    .review-ask .stars span:nth-child(5) { animation-delay: .6s; }
+    @keyframes twinkle {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.25) rotate(-6deg); }
+    }
     .review-ask p { font-size: 14.5px; color: var(--soft); line-height: 1.5; margin-top: 8px; }
-    .review-ask .btn { margin-top: 16px; font-size: 15.5px; padding: 13px 26px; }
+    #reviewBtn {
+      position: relative; overflow: hidden;
+      width: 100%; margin-top: 16px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: 16px; padding: 17px 12px; white-space: nowrap;
+      background: linear-gradient(135deg, #ff7a3d, var(--tomato) 55%, var(--tomato-dark));
+      animation: pulseGlow 2.2s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 6px 18px rgba(200,55,31,.35), 0 0 0 0 rgba(200,55,31,.5);
+      }
+      50% {
+        transform: scale(1.035);
+        box-shadow: 0 10px 28px rgba(200,55,31,.5), 0 0 0 14px rgba(200,55,31,0);
+      }
+    }
+    #reviewBtn::after {
+      content: ''; position: absolute; top: 0; left: -80%;
+      width: 45%; height: 100%; transform: skewX(-20deg);
+      background: linear-gradient(105deg, transparent, rgba(255,255,255,.5), transparent);
+      animation: shine 2.6s ease-in-out infinite;
+    }
+    @keyframes shine {
+      0% { left: -80%; }
+      45%, 100% { left: 130%; }
+    }
+    .g-badge {
+      flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
+      background: #fff; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,.2);
+    }
     .g-icon {
-      display: inline-block; font-weight: 800; margin-right: 6px;
+      display: inline-block; font-weight: 800; font-size: 17px;
       background: linear-gradient(90deg,#4285F4,#EA4335,#FBBC05,#34A853);
       -webkit-background-clip: text; background-clip: text; color: transparent;
     }
@@ -313,9 +354,9 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
         <div class="p-name" id="prizeName">Δωρεάν επιδόρπιο</div>
       </div>
       <div class="review-ask">
-        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <div class="stars"><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span></div>
         <p>Το δώρο σου είναι δικό σου έτσι κι αλλιώς! Αν πέρασες καλά, μια κριτική στο Google μάς βοηθάει όσο δεν φαντάζεσαι.</p>
-        <button class="btn" id="reviewBtn"><span class="g-icon">G</span>Άφησε κριτική στο Google</button>
+        <button class="btn" id="reviewBtn"><span class="g-badge"><span class="g-icon">G</span></span>Άφησε κριτική στο Google</button>
       </div>
       <div class="steps"><i class="dot"></i><i class="dot"></i><i class="dot on"></i><i class="dot"></i></div>
       <button class="skip-link" id="skipBtn">Παράλειψη</button>
