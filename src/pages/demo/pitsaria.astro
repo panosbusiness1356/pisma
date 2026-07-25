@@ -170,8 +170,8 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
     #reviewBtn {
       position: relative; overflow: hidden;
       width: 100%; margin-top: 16px;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      font-size: 16px; padding: 17px 12px; white-space: nowrap;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      font-size: 16px; padding: 14px 12px;
       background: linear-gradient(135deg, #ff7a3d, var(--tomato) 55%, var(--tomato-dark));
       animation: pulseGlow 2.2s ease-in-out infinite;
     }
@@ -194,6 +194,13 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
     @keyframes shine {
       0% { left: -80%; }
       45%, 100% { left: 130%; }
+    }
+    .rb-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.3; text-align: left; }
+    .rb-text small { font-size: 12.5px; font-weight: 600; opacity: .92; }
+    .p-lock {
+      display: inline-block; margin-top: 10px;
+      font-size: 12px; font-weight: 700; color: var(--soft);
+      background: var(--crust); border-radius: 999px; padding: 4px 11px;
     }
     .g-badge {
       flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
@@ -435,11 +442,11 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
       <div class="prize-card">
         <div class="p-emoji" id="prizeEmoji">🍰</div>
         <div class="p-name" id="prizeName">Δωρεάν επιδόρπιο</div>
+        <div class="p-lock">🔒 Κλειδωμένο</div>
       </div>
       <div class="review-ask">
         <div class="stars"><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span></div>
-        <p>Το δώρο είναι <b class="mark">ήδη δικό σου</b>.<br />Ένα αστεράκι στο Google μάς βοηθάει ❤️</p>
-        <button class="btn" id="reviewBtn"><span class="g-badge"><span class="g-icon">G</span></span>Άφησε κριτική στο Google</button>
+        <button class="btn" id="reviewBtn"><span class="g-badge"><span class="g-icon">G</span></span><span class="rb-text">Άφησε κριτική στο Google<small>και ξεκλείδωσε το δώρο σου 🔓</small></span></button>
       </div>
       <div class="steps"><i class="dot"></i><i class="dot"></i><i class="dot on"></i><i class="dot"></i></div>
       <button class="skip-link" id="skipBtn">Παράλειψη</button>
