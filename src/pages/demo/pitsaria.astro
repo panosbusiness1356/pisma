@@ -106,7 +106,8 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
     .steps .dot.on { background: var(--tomato); }
 
     /* ---------- Στάδιο 1: Καλωσόρισμα ---------- */
-    #s-intro .hero-emoji { font-size: 64px; margin-top: 26px; animation: bob 2.4s ease-in-out infinite; }
+    #s-intro .hero-gift { width: 110px; margin-top: 26px; animation: bob 2.4s ease-in-out infinite; }
+    #s-intro .hero-gift svg { width: 100%; height: auto; filter: drop-shadow(0 8px 16px rgba(51,36,27,.18)); }
     @keyframes bob { 50% { transform: translateY(-8px) rotate(-4deg); } }
     #s-intro .btn { margin-top: 30px; }
     .mark {
@@ -116,7 +117,7 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
     }
 
     /* ---------- Στάδιο 2: Τροχός ---------- */
-    .wheel-wrap { position: relative; width: 300px; height: 300px; margin-top: 24px; }
+    .wheel-wrap { position: relative; width: 300px; height: 300px; margin-top: 42px; }
     .wheel {
       width: 100%; height: 100%;
       transition: transform 4.6s cubic-bezier(.12,.78,.16,1);
@@ -361,21 +362,27 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
       35% { opacity: .55; }
       100% { opacity: 0; transform: translateY(-8px); }
     }
-    .bubble {
-      position: absolute; bottom: 88px; left: 12px; right: 132px;
-      max-width: 250px; z-index: 5;
-      background: #fff; border: 2px solid var(--crust);
-      border-radius: 16px 16px 4px 16px;
-      padding: 11px 13px; font-size: 13.5px; line-height: 1.45; color: var(--ink);
-      box-shadow: 0 6px 18px rgba(51,36,27,.14);
-      transform-origin: 100% 100%;
-      animation: bubblePop .45s cubic-bezier(.3,1.5,.5,1) both;
+    /* Έντονες «δραστηριότητες» του Τζίνο (χωρίς λόγια) */
+    .waiter.patrol { animation: patrol 5.2s ease-in-out both; }
+    @keyframes patrol {
+      0% { transform: translateX(0); }
+      42% { transform: translateX(-235px); }
+      56% { transform: translateX(-235px); }
+      100% { transform: translateX(0); }
     }
-    @keyframes bubblePop { from { transform: scale(.4); opacity: 0; } }
-    .bubble::after {
-      content: ''; position: absolute; right: -13px; bottom: 8px;
-      border: 7px solid transparent; border-left-color: #fff;
-      filter: drop-shadow(2px 0 0 var(--crust));
+    .waiter.patrol #wLegL { animation: stepA .42s linear infinite; }
+    .waiter.patrol #wLegR { animation: stepB .42s linear infinite; }
+    .waiter.toss #wPizzaGrp { animation: pizzaToss .95s cubic-bezier(.3,1.4,.5,1); }
+    @keyframes pizzaToss {
+      0%, 100% { transform: none; }
+      35% { transform: translateY(-17px) rotate(-14deg); }
+      62% { transform: translateY(2px) rotate(5deg); }
+    }
+    .waiter.twirl { animation: twirl 1.1s ease-in-out both; }
+    @keyframes twirl {
+      0%, 100% { transform: none; }
+      30% { transform: translateY(-10px) rotate(-7deg); }
+      60% { transform: translateY(-4px) rotate(6deg); }
     }
 
     /* ---------- Κομφετί ---------- */
@@ -407,10 +414,19 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
         <div class="name">La Nonna</div>
         <div class="tag">Pizzeria · Est. 1987</div>
       </div>
-      <div class="hero-emoji">🎁</div>
-      <h1>Κέρδισε <span class="accent">σίγουρο δώρο</span>!</h1>
-      <p class="sub">Γύρνα τον τροχό — <b class="mark">όλοι κερδίζουν</b>.<br />Μισό λεπτό αρκεί.</p>
-      <button class="btn" data-next="s-wheel">Παίξε τώρα 🎡</button>
+      <div class="hero-gift" aria-hidden="true">
+        <svg viewBox="0 0 120 110">
+          <rect x="22" y="46" width="76" height="54" rx="8" fill="#c8371f"/>
+          <rect x="14" y="33" width="92" height="19" rx="6" fill="#a02a16"/>
+          <rect x="52" y="33" width="16" height="67" fill="#e8a13c"/>
+          <path d="M60 31 C 44 8, 22 20, 41 33 Q52 38 60 31" fill="#e8a13c"/>
+          <path d="M60 31 C 76 8, 98 20, 79 33 Q68 38 60 31" fill="#e8a13c"/>
+          <circle cx="60" cy="32" r="7" fill="#d9902e"/>
+          <rect x="28" y="54" width="10" height="40" rx="5" fill="#fff" opacity=".18"/>
+        </svg>
+      </div>
+      <h1>Κέρδισε <span class="accent">δώρο</span></h1>
+      <button class="btn" data-next="s-wheel">Παίξε τώρα</button>
       <div class="steps"><i class="dot on"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
       <div class="powered">Εργαλείο κριτικών από <b>PISMA</b> · σελίδα επίδειξης</div>
     </section>
@@ -421,13 +437,12 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
         <div class="logo">🍕</div>
         <div class="name">La Nonna</div>
       </div>
-      <h1>Γύρνα τον <span class="accent">τροχό</span>!</h1>
       <div class="wheel-wrap">
         <div class="pointer"></div>
         <svg class="wheel" id="wheelSvg" viewBox="0 0 200 200"></svg>
         <div class="hub">🍕</div>
       </div>
-      <button class="btn" id="spinBtn">Γύρνα τον! 🎡</button>
+      <button class="btn" id="spinBtn">Γύρνα</button>
       <div class="steps"><i class="dot"></i><i class="dot on"></i><i class="dot"></i><i class="dot"></i></div>
       <div class="powered">Εργαλείο κριτικών από <b>PISMA</b> · σελίδα επίδειξης</div>
     </section>
@@ -490,8 +505,7 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
       </div>
     </div>
 
-    <!-- Ο Τζίνο — ο σερβιτόρος-ξεναγός -->
-    <div class="bubble" id="bubble">Benvenuto! 🍕</div>
+    <!-- Ο Τζίνο — ο σερβιτόρος-μασκότ -->
     <div class="waiter" id="waiter" aria-hidden="true">
       <svg viewBox="0 0 130 175">
         <g id="wAll">
@@ -592,7 +606,7 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
       document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
       window.scrollTo(0, 0);
-      if (LINES[id]) { say(id); stroll(); }
+      stroll();
     }
     document.querySelectorAll('[data-next]').forEach(b =>
       b.addEventListener('click', () => go(b.dataset.next)));
@@ -617,7 +631,6 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
       const target = 360 * 5 - (idx * SEG + SEG / 2) - jitter;
       svg.style.transform = `rotate(${target}deg)`;
       document.getElementById('spinBtn').disabled = true;
-      say('spin');
       cheer(4900);
       setTimeout(() => {
         document.getElementById('prizeEmoji').textContent = prize.emoji;
@@ -667,22 +680,8 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
         'Ισχύει έως ' + exp.toLocaleDateString('el-GR', { day: 'numeric', month: 'long' });
     }
 
-    // ---------- Ο Τζίνο (σερβιτόρος-ξεναγός) ----------
+    // ---------- Ο Τζίνο (σερβιτόρος-μασκότ, χωρίς λόγια) ----------
     const waiter = document.getElementById('waiter');
-    const bubble = document.getElementById('bubble');
-    const LINES = {
-      's-intro':  'Benvenuto! Είμαι ο Τζίνο 🤌',
-      's-wheel':  'Forza! Γύρνα τον! 🍀',
-      'spin':     'Mamma mia…! 🤞',
-      's-review': 'Ένα αστεράκι για τη Nonna; ⭐',
-      's-coupon': 'Perfetto! Buon appetito! 🍕',
-    };
-    function say(key) {
-      bubble.textContent = LINES[key];
-      bubble.style.animation = 'none';
-      void bubble.offsetWidth; // επανεκκίνηση του pop
-      bubble.style.animation = '';
-    }
     let walkTimer;
     function stroll(ms = 900) {
       waiter.classList.add('walk');
@@ -695,8 +694,24 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
       clearTimeout(cheerTimer);
       cheerTimer = setTimeout(() => waiter.classList.remove('cheer'), ms);
     }
-    say('s-intro');
     stroll(1700); // μπαίνει περπατώντας
+
+    // Κάθε λίγο κάνει και κάτι: βόλτα στην οθόνη, σάλτο πίτσας, στροφή ή πανηγύρι.
+    const ACTS = [
+      { cls: 'patrol', ms: 5300 },
+      { cls: 'toss',   ms: 1000 },
+      { cls: 'twirl',  ms: 1200 },
+      { cls: 'cheer',  ms: 1500 },
+    ];
+    let actBusy = false;
+    setInterval(() => {
+      if (actBusy || document.hidden) return;
+      actBusy = true;
+      const act = ACTS[Math.floor(Math.random() * ACTS.length)];
+      if (act.cls === 'patrol') stroll(act.ms - 200);
+      waiter.classList.add(act.cls);
+      setTimeout(() => { waiter.classList.remove(act.cls); actBusy = false; }, act.ms);
+    }, 5500);
 
     // ---------- Κομφετί ----------
     const COLORS = ['#c8371f', '#e8a13c', '#2e7d43', '#f3e3c9', '#1a73e8'];
