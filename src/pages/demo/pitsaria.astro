@@ -149,33 +149,33 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
     .stars span:nth-child(3) { animation-delay: .3s; }
     .stars span:nth-child(4) { animation-delay: .45s; }
     .stars span:nth-child(5) { animation-delay: .6s; }
-    .gino-hero { position: relative; margin-top: 2px; animation: pop .5s cubic-bezier(.3,1.6,.5,1) both; }
-    .hero-bubble {
-      position: absolute; top: -22px; right: -76px; width: 158px;
-      background: #fff; border: 2px solid var(--crust);
-      border-radius: 14px 14px 14px 4px;
-      padding: 10px 12px; font-size: 15px; font-weight: 700; line-height: 1.35; color: var(--ink);
-      text-align: left;
-      box-shadow: 0 6px 16px rgba(51,36,27,.12);
-      transform-origin: 0 100%;
-      animation: bubblePop .5s cubic-bezier(.3,1.5,.5,1) .55s both;
-      z-index: 2;
+    .serve-scene { position: relative; width: 100%; height: 232px; margin-top: 6px; }
+    .serve-gino {
+      position: absolute; left: 14px; bottom: 0; width: 118px;
+      animation: wBob 2.4s ease-in-out infinite;
     }
-    @keyframes bubblePop { from { transform: scale(.4); opacity: 0; } }
-    .hero-bubble::after {
-      content: ''; position: absolute; left: -11px; bottom: 9px;
-      border: 6px solid transparent; border-right-color: #fff;
-      filter: drop-shadow(-2px 0 0 var(--crust));
-    }
-    .gino-hero svg { width: 205px; height: auto; animation: wBob 2.4s ease-in-out infinite; }
+    .serve-gino svg { width: 100%; height: auto; display: block; transform: scaleX(-1); }
     .h-armR { transform-box: view-box; transform-origin: 80px 58px; animation: wSway 3s ease-in-out infinite; }
     .h-mou { transform-box: view-box; transform-origin: 65px 38px; animation: wWiggle 3.6s infinite; }
-    .h-gift { transform-box: view-box; transform-origin: 30px 42px; animation: wBalance 2.8s ease-in-out infinite; }
-    .won-line { margin-top: 2px; font-size: 17px; font-weight: 800; color: var(--tomato); }
-    .unlock-note {
-      margin-top: 12px; max-width: 300px;
-      font-size: 15.5px; line-height: 1.5; color: var(--ink); text-align: center;
+    .served-gift {
+      position: absolute; left: 50%; bottom: 0; width: 132px;
+      filter: drop-shadow(0 12px 20px rgba(51,36,27,.25));
+      animation: serveGift 1.1s cubic-bezier(.3,1.25,.45,1) .4s both;
     }
+    .served-gift svg { width: 100%; height: auto; display: block; }
+    .served-lock { position: absolute; top: 34px; right: 16px; font-size: 27px; filter: drop-shadow(0 2px 3px rgba(0,0,0,.25)); }
+    @keyframes serveGift {
+      from { transform: translate(calc(-50% - 86px), -64px) scale(.3); opacity: .3; }
+      70%  { transform: translate(calc(-50% + 7px), 5px) scale(1.05); opacity: 1; }
+      to   { transform: translate(-50%, 0) scale(1); opacity: 1; }
+    }
+    .serve-arrow {
+      margin: 10px 0 -8px; color: var(--tomato);
+      animation: arrowBounce 1s ease-in-out infinite;
+    }
+    .serve-arrow svg { width: 36px; height: 36px; display: block; }
+    @keyframes arrowBounce { 50% { transform: translateY(9px); } }
+    .won-line { margin-top: 4px; font-size: 17px; font-weight: 800; color: var(--tomato); }
     @keyframes twinkle {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.25) rotate(-6deg); }
@@ -454,12 +454,10 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
         <div class="logo">🍕</div>
         <div class="name">La Nonna</div>
       </div>
-      <h1>Κέρδισες! 🎉</h1>
-      <div class="stars"><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span></div>
-      <!-- Ο Τζίνο κρατάει το κλειδωμένο δώρο και παρακαλάει στα ιταλικά -->
-      <div class="gino-hero">
-        <div class="hero-bubble">Κάνε μου μια κριτική για να ξεκλειδώσεις το δώρο σου… <i>per favore!</i> 🙏</div>
-        <svg viewBox="0 0 130 175" aria-hidden="true">
+      <h1>Ξεκλείδωσε το <span class="accent">δώρο σου</span></h1>
+      <!-- Ο Τζίνο σερβίρει το κλειδωμένο δώρο μπροστά -->
+      <div class="serve-scene" aria-hidden="true">
+        <div class="serve-gino"><svg viewBox="0 0 130 175">
           <g><rect x="54" y="132" width="9" height="28" rx="3" fill="#22181f"/><ellipse cx="56" cy="162" rx="8" ry="3.6" fill="#161616"/></g>
           <g><rect x="67" y="132" width="9" height="28" rx="3" fill="#22181f"/><ellipse cx="74" cy="162" rx="8" ry="3.6" fill="#161616"/></g>
           <path d="M50 52 Q65 47 80 52 L84 98 L46 98 Z" fill="#fff" stroke="#e2d9cc" stroke-width="1.5"/>
@@ -490,22 +488,22 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
           </g>
           <path d="M50 58 Q36 60 31 47" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
           <circle cx="31" cy="46" r="5" fill="#f2c299"/>
-          <g class="h-gift">
-            <g transform="translate(7,3) scale(0.39)">
-              <rect x="22" y="46" width="76" height="54" rx="8" fill="#c8371f"/>
-              <rect x="14" y="33" width="92" height="19" rx="6" fill="#a02a16"/>
-              <rect x="52" y="33" width="16" height="67" fill="#e8a13c"/>
-              <path d="M60 31 C 44 8, 22 20, 41 33 Q52 38 60 31" fill="#e8a13c"/>
-              <path d="M60 31 C 76 8, 98 20, 79 33 Q68 38 60 31" fill="#e8a13c"/>
-              <circle cx="60" cy="32" r="7" fill="#d9902e"/>
-              <rect x="28" y="54" width="10" height="40" rx="5" fill="#fff" opacity=".18"/>
-            </g>
-            <text x="41" y="17" font-size="13">🔒</text>
-          </g>
-        </svg>
+        </svg></div>
+        <div class="served-gift">
+          <svg viewBox="0 0 120 110">
+            <rect x="22" y="46" width="76" height="54" rx="8" fill="#c8371f"/>
+            <rect x="14" y="33" width="92" height="19" rx="6" fill="#a02a16"/>
+            <rect x="52" y="33" width="16" height="67" fill="#e8a13c"/>
+            <path d="M60 31 C 44 8, 22 20, 41 33 Q52 38 60 31" fill="#e8a13c"/>
+            <path d="M60 31 C 76 8, 98 20, 79 33 Q68 38 60 31" fill="#e8a13c"/>
+            <circle cx="60" cy="32" r="7" fill="#d9902e"/>
+            <rect x="28" y="54" width="10" height="40" rx="5" fill="#fff" opacity=".18"/>
+          </svg>
+          <span class="served-lock">🔒</span>
+        </div>
       </div>
       <div class="won-line"><span id="prizeEmoji">🍰</span> <span id="prizeName">Δωρεάν επιδόρπιο</span></div>
-      <p class="unlock-note">🔒 Το δώρο σου ξεκλειδώνει <b class="mark">μόνο με μια κριτική</b> στο Google</p>
+      <div class="serve-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 v13 M5.5 10.5 L12 18 L18.5 10.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <button class="btn" id="reviewBtn">
         <span class="g-badge"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
         Άφησε κριτική
