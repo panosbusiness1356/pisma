@@ -304,8 +304,10 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
       </div>
       <div class="review-ask">
         <div class="stars">⭐⭐⭐⭐⭐</div>
-        <p>Ένα τελευταίο βήμα: πες μας τη γνώμη σου στο Google. Μας βοηθάει όσο δεν φαντάζεσαι — και ξεκλειδώνει το δώρο σου.</p>
+        <p>Το δώρο σου είναι δικό σου έτσι κι αλλιώς! Αν πέρασες καλά, μια κριτική στο Google μάς βοηθάει όσο δεν φαντάζεσαι.</p>
         <button class="btn" id="reviewBtn"><span class="g-icon">G</span>Άφησε κριτική στο Google</button>
+        <br />
+        <button class="btn secondary" id="skipBtn">Παράλειψη — πήγαινέ με στο δώρο μου →</button>
       </div>
       <div class="steps"><i class="dot"></i><i class="dot"></i><i class="dot on"></i><i class="dot"></i></div>
       <div class="powered">Εργαλείο κριτικών από <b>PISMA</b> · σελίδα επίδειξης</div>
@@ -330,7 +332,7 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
           <div class="expiry" id="couponExpiry"></div>
         </div>
       </div>
-      <p class="sub" style="margin-top:20px">Ευχαριστούμε για την κριτική — καλή απόλαυση! ❤️</p>
+      <p class="sub" style="margin-top:20px" id="thanksLine">Καλή απόλαυση! ❤️</p>
       <div class="steps"><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot on"></i></div>
       <div class="powered">Εργαλείο κριτικών από <b>PISMA</b> · σελίδα επίδειξης</div>
     </section>
@@ -434,6 +436,13 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
       }));
     document.getElementById('publishBtn').addEventListener('click', () => {
       veil.classList.remove('open');
+      document.getElementById('thanksLine').textContent =
+        'Ευχαριστούμε για την κριτική — καλή απόλαυση! ❤️';
+      issueCoupon();
+      go('s-coupon');
+      confetti(60);
+    });
+    document.getElementById('skipBtn').addEventListener('click', () => {
       issueCoupon();
       go('s-coupon');
       confetti(60);
