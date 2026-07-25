@@ -149,7 +149,24 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
     .stars span:nth-child(3) { animation-delay: .3s; }
     .stars span:nth-child(4) { animation-delay: .45s; }
     .stars span:nth-child(5) { animation-delay: .6s; }
-    .gino-hero { margin-top: 2px; animation: pop .5s cubic-bezier(.3,1.6,.5,1) both; }
+    .gino-hero { position: relative; margin-top: 2px; animation: pop .5s cubic-bezier(.3,1.6,.5,1) both; }
+    .hero-bubble {
+      position: absolute; top: -14px; right: -72px; width: 142px;
+      background: #fff; border: 2px solid var(--crust);
+      border-radius: 14px 14px 14px 4px;
+      padding: 9px 11px; font-size: 12.5px; line-height: 1.4; color: var(--ink);
+      font-style: italic; text-align: left;
+      box-shadow: 0 6px 16px rgba(51,36,27,.12);
+      transform-origin: 0 100%;
+      animation: bubblePop .5s cubic-bezier(.3,1.5,.5,1) .55s both;
+      z-index: 2;
+    }
+    @keyframes bubblePop { from { transform: scale(.4); opacity: 0; } }
+    .hero-bubble::after {
+      content: ''; position: absolute; left: -11px; bottom: 9px;
+      border: 6px solid transparent; border-right-color: #fff;
+      filter: drop-shadow(-2px 0 0 var(--crust));
+    }
     .gino-hero svg { width: 205px; height: auto; animation: wBob 2.4s ease-in-out infinite; }
     .h-armR { transform-box: view-box; transform-origin: 80px 58px; animation: wSway 3s ease-in-out infinite; }
     .h-mou { transform-box: view-box; transform-origin: 65px 38px; animation: wWiggle 3.6s infinite; }
@@ -435,9 +452,10 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
       </div>
       <h1>Κέρδισες! 🎉</h1>
       <div class="stars"><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span></div>
-      <!-- Ο Τζίνο κρατάει το κλειδωμένο δώρο -->
-      <div class="gino-hero" aria-hidden="true">
-        <svg viewBox="0 0 130 175">
+      <!-- Ο Τζίνο κρατάει το κλειδωμένο δώρο και παρακαλάει στα ιταλικά -->
+      <div class="gino-hero">
+        <div class="hero-bubble">Lasciami una recensione per sbloccare il tuo regalo… per favore! 🙏</div>
+        <svg viewBox="0 0 130 175" aria-hidden="true">
           <g><rect x="54" y="132" width="9" height="28" rx="3" fill="#22181f"/><ellipse cx="56" cy="162" rx="8" ry="3.6" fill="#161616"/></g>
           <g><rect x="67" y="132" width="9" height="28" rx="3" fill="#22181f"/><ellipse cx="74" cy="162" rx="8" ry="3.6" fill="#161616"/></g>
           <path d="M50 52 Q65 47 80 52 L84 98 L46 98 Z" fill="#fff" stroke="#e2d9cc" stroke-width="1.5"/>
