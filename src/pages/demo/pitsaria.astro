@@ -142,37 +142,28 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
     #spinBtn { margin-top: 30px; }
 
     /* ---------- Στάδιο 3: Κέρδος + κριτική ---------- */
-    .prize-card {
-      margin-top: 24px; background: var(--card);
-      border: 2px dashed var(--gold); border-radius: var(--radius);
-      padding: 22px 26px; text-align: center;
-      box-shadow: 0 8px 24px rgba(51,36,27,.10);
-      animation: pop .5s cubic-bezier(.3,1.6,.5,1) both;
-    }
     @keyframes pop { from { transform: scale(.7); opacity: 0; } }
-    .prize-card .p-emoji { font-size: 46px; }
-    .prize-card .p-name { font-size: 22px; font-weight: 800; margin-top: 6px; color: var(--tomato); }
-    .review-ask {
-      margin-top: 26px; background: var(--card); border-radius: var(--radius);
-      padding: 20px; width: 100%; text-align: center;
-      border: 1px solid var(--crust);
-    }
-    .review-ask .stars { font-size: 26px; letter-spacing: 4px; }
-    .review-ask .stars span { display: inline-block; animation: twinkle 1.5s ease-in-out infinite; }
-    .review-ask .stars span:nth-child(2) { animation-delay: .15s; }
-    .review-ask .stars span:nth-child(3) { animation-delay: .3s; }
-    .review-ask .stars span:nth-child(4) { animation-delay: .45s; }
-    .review-ask .stars span:nth-child(5) { animation-delay: .6s; }
+    .stars { font-size: 24px; letter-spacing: 5px; margin-top: 8px; }
+    .stars span { display: inline-block; animation: twinkle 1.5s ease-in-out infinite; }
+    .stars span:nth-child(2) { animation-delay: .15s; }
+    .stars span:nth-child(3) { animation-delay: .3s; }
+    .stars span:nth-child(4) { animation-delay: .45s; }
+    .stars span:nth-child(5) { animation-delay: .6s; }
+    .gino-hero { margin-top: 2px; animation: pop .5s cubic-bezier(.3,1.6,.5,1) both; }
+    .gino-hero svg { width: 205px; height: auto; animation: wBob 2.4s ease-in-out infinite; }
+    .h-armR { transform-box: view-box; transform-origin: 80px 58px; animation: wSway 3s ease-in-out infinite; }
+    .h-mou { transform-box: view-box; transform-origin: 65px 38px; animation: wWiggle 3.6s infinite; }
+    .h-gift { transform-box: view-box; transform-origin: 30px 42px; animation: wBalance 2.8s ease-in-out infinite; }
+    .won-line { margin-top: 2px; font-size: 17px; font-weight: 800; color: var(--tomato); }
     @keyframes twinkle {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.25) rotate(-6deg); }
     }
-    .review-ask p { font-size: 14.5px; color: var(--soft); line-height: 1.5; margin-top: 8px; }
     #reviewBtn {
       position: relative; overflow: hidden;
-      width: 100%; margin-top: 16px;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      font-size: 16px; padding: 14px 12px;
+      width: 100%; margin-top: 18px;
+      display: flex; align-items: center; justify-content: center; gap: 11px;
+      font-size: 18.5px; padding: 16px 14px;
       background: linear-gradient(135deg, #ff7a3d, var(--tomato) 55%, var(--tomato-dark));
       animation: pulseGlow 2.2s ease-in-out infinite;
     }
@@ -196,23 +187,12 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
       0% { left: -80%; }
       45%, 100% { left: 130%; }
     }
-    .rb-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.3; text-align: left; }
-    .rb-text small { font-size: 12.5px; font-weight: 600; opacity: .92; }
-    .p-lock {
-      display: inline-block; margin-top: 10px;
-      font-size: 12px; font-weight: 700; color: var(--soft);
-      background: var(--crust); border-radius: 999px; padding: 4px 11px;
-    }
     .g-badge {
-      flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
+      flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
       background: #fff; display: flex; align-items: center; justify-content: center;
       box-shadow: 0 2px 6px rgba(0,0,0,.2);
     }
-    .g-icon {
-      display: inline-block; font-weight: 800; font-size: 17px;
-      background: linear-gradient(90deg,#4285F4,#EA4335,#FBBC05,#34A853);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-    }
+    .g-badge svg { width: 19px; height: 19px; display: block; }
 
     /* ---------- Mock φύλλο κριτικής ---------- */
     .sheet-veil {
@@ -454,15 +434,59 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
         <div class="name">La Nonna</div>
       </div>
       <h1>Κέρδισες! 🎉</h1>
-      <div class="prize-card">
-        <div class="p-emoji" id="prizeEmoji">🍰</div>
-        <div class="p-name" id="prizeName">Δωρεάν επιδόρπιο</div>
-        <div class="p-lock">🔒 Κλειδωμένο</div>
+      <div class="stars"><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span></div>
+      <!-- Ο Τζίνο κρατάει το κλειδωμένο δώρο -->
+      <div class="gino-hero" aria-hidden="true">
+        <svg viewBox="0 0 130 175">
+          <g><rect x="54" y="132" width="9" height="28" rx="3" fill="#22181f"/><ellipse cx="56" cy="162" rx="8" ry="3.6" fill="#161616"/></g>
+          <g><rect x="67" y="132" width="9" height="28" rx="3" fill="#22181f"/><ellipse cx="74" cy="162" rx="8" ry="3.6" fill="#161616"/></g>
+          <path d="M50 52 Q65 47 80 52 L84 98 L46 98 Z" fill="#fff" stroke="#e2d9cc" stroke-width="1.5"/>
+          <path d="M50 52 L61 55 L58 98 L46 98 Z" fill="#22181f"/>
+          <path d="M80 52 L69 55 L72 98 L84 98 Z" fill="#22181f"/>
+          <rect x="46" y="96" width="38" height="7" rx="2" fill="#22181f"/>
+          <path d="M49 103 L81 103 L77 142 Q65 147 53 142 Z" fill="#fdfaf4" stroke="#e2d9cc" stroke-width="1.5"/>
+          <rect x="55" y="132" width="7" height="4" fill="#2e7d43"/>
+          <rect x="62" y="132" width="7" height="4" fill="#fff" stroke="#e2d9cc" stroke-width=".6"/>
+          <rect x="69" y="132" width="7" height="4" fill="#c8371f"/>
+          <path d="M65 55 L56 50 L56 60 Z" fill="#c8371f"/>
+          <path d="M65 55 L74 50 L74 60 Z" fill="#c8371f"/>
+          <circle cx="65" cy="55" r="2.6" fill="#a02a16"/>
+          <g class="h-armR">
+            <path d="M80 58 Q97 66 101 82" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+            <circle cx="101" cy="84" r="5" fill="#f2c299"/>
+          </g>
+          <g>
+            <circle cx="65" cy="30" r="15.5" fill="#f2c299"/>
+            <path d="M49 26 Q52 12 65 13 Q78 12 81 26 Q73 18 65 19 Q57 18 49 26 Z" fill="#2b1d14"/>
+            <circle cx="59" cy="28" r="1.9" fill="#2b1d14"/>
+            <circle cx="71" cy="28" r="1.9" fill="#2b1d14"/>
+            <path d="M56 23.5 Q59 22 61.5 23.5" stroke="#2b1d14" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+            <path d="M68.5 23.5 Q71 22 74 23.5" stroke="#2b1d14" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+            <path d="M64 30 Q63 34 65.5 34.5" stroke="#d9a05a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+            <g class="h-mou"><path d="M65 38 Q59 33 53.5 37.5 Q55 43 61.5 40.5 Q64 39.5 65 38 Q66 39.5 68.5 40.5 Q75 43 76.5 37.5 Q71 33 65 38 Z" fill="#2b1d14"/></g>
+            <path d="M60 45.5 Q65 49 70 45.5" stroke="#a3552e" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          </g>
+          <path d="M50 58 Q36 60 31 47" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <circle cx="31" cy="46" r="5" fill="#f2c299"/>
+          <g class="h-gift">
+            <g transform="translate(7,3) scale(0.39)">
+              <rect x="22" y="46" width="76" height="54" rx="8" fill="#c8371f"/>
+              <rect x="14" y="33" width="92" height="19" rx="6" fill="#a02a16"/>
+              <rect x="52" y="33" width="16" height="67" fill="#e8a13c"/>
+              <path d="M60 31 C 44 8, 22 20, 41 33 Q52 38 60 31" fill="#e8a13c"/>
+              <path d="M60 31 C 76 8, 98 20, 79 33 Q68 38 60 31" fill="#e8a13c"/>
+              <circle cx="60" cy="32" r="7" fill="#d9902e"/>
+              <rect x="28" y="54" width="10" height="40" rx="5" fill="#fff" opacity=".18"/>
+            </g>
+            <text x="41" y="17" font-size="13">🔒</text>
+          </g>
+        </svg>
       </div>
-      <div class="review-ask">
-        <div class="stars"><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span></div>
-        <button class="btn" id="reviewBtn"><span class="g-badge"><span class="g-icon">G</span></span><span class="rb-text">Άφησε κριτική στο Google<small>και ξεκλείδωσε το δώρο σου 🔓</small></span></button>
-      </div>
+      <div class="won-line"><span id="prizeEmoji">🍰</span> <span id="prizeName">Δωρεάν επιδόρπιο</span></div>
+      <button class="btn" id="reviewBtn">
+        <span class="g-badge"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
+        Άφησε κριτική
+      </button>
       <div class="steps"><i class="dot"></i><i class="dot"></i><i class="dot on"></i><i class="dot"></i></div>
       <button class="skip-link" id="skipBtn">Παράλειψη</button>
       <div class="powered">Εργαλείο κριτικών από <b>PISMA</b> · σελίδα επίδειξης</div>
@@ -606,6 +630,8 @@ const title = 'La Nonna · Κέρδισε το δώρο σου!';
       document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
       window.scrollTo(0, 0);
+      // Στην οθόνη κριτικής πρωταγωνιστεί ο μεγάλος Τζίνο — ο μικρός κρύβεται.
+      waiter.style.display = (id === 's-review') ? 'none' : '';
       stroll();
     }
     document.querySelectorAll('[data-next]').forEach(b =>
