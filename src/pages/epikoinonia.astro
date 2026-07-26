@@ -108,32 +108,73 @@ const schema = {
             <label for="cf-message">Μήνυμα</label>
             <textarea id="cf-message" name="message" rows="5" required></textarea>
           </div>
-          <button type="submit" class="btn btn--orange">Στείλε το</button>
-          <span class="btn-note">Ανοίγει το πρόγραμμα email σου με έτοιμο το μήνυμα.</span>
+          <input type="hidden" name="_subject" value="Νέο μήνυμα από τη σελίδα Επικοινωνίας — pisma.gr" />
+          <input type="hidden" name="_template" value="box" />
+          <input type="hidden" name="_captcha" value="false" />
+          <button type="submit" class="btn btn--orange" id="cf-submit">Στείλε το</button>
           <p class="feedback" data-feedback role="status" aria-live="polite"></p>
+          <!-- Εφέ επιτυχίας: παίρνει τη θέση των πεδίων όταν σταλεί -->
+          <div class="form-done">
+            <svg class="fd-tick" viewBox="0 0 52 52" aria-hidden="true">
+              <circle cx="26" cy="26" r="24" fill="none" />
+              <path d="M15 27 l8 8 l15 -16" fill="none" />
+            </svg>
+            <p class="fd-title">Το μήνυμα στάλθηκε!</p>
+            <p class="fd-sub">Θα σου απαντήσουμε το συντομότερο.</p>
+          </div>
         </form>
       </div>
     </div>
   </section>
 
   <script>
+    import { FORM_ENDPOINT } from '../data/pricing';
+
     const form = document.getElementById('contact-form') as HTMLFormElement;
-    form.addEventListener('submit', (e) => {
+    const btn = document.getElementById('cf-submit') as HTMLButtonElement;
+    const fb = form.querySelector('[data-feedback]') as HTMLElement;
+
+    // Εφέ επιτυχίας «Δ»: spinner στο κουμπί → οθόνη με τικ → κομφετί.
+    const confettiIn = (host: HTMLElement, n = 34) => {
+      const colors = ['#FF7A50', '#8B5CF6', '#55A874', '#F5F2FB'];
+      const fall = host.getBoundingClientRect().height + 30;
+      for (let i = 0; i < n; i++) {
+        const c = document.createElement('i');
+        c.className = 'fd-confetti';
+        c.style.left = 4 + Math.random() * 92 + '%';
+        c.style.background = colors[i % colors.length];
+        c.style.setProperty('--fall', fall + 'px');
+        c.style.animationDuration = 1.1 + Math.random() * 1.2 + 's';
+        c.style.animationDelay = Math.random() * 0.35 + 's';
+        host.appendChild(c);
+        setTimeout(() => c.remove(), 3200);
+      }
+    };
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = new FormData(form);
-      const subject = 'Μήνυμα από το pisma.gr';
-      const body =
-        'Όνομα: ' + data.get('name') + '\n' +
-        'Email: ' + data.get('email') + '\n\n' +
-        data.get('message');
-      window.location.href =
-        'mailto:' + form.dataset.email +
-        '?subject=' + encodeURIComponent(subject) +
-        '&body=' + encodeURIComponent(body);
-      const fb = form.querySelector('[data-feedback]') as HTMLElement;
-      fb.innerHTML =
-        'Άνοιξε το πρόγραμμα email σου. Αν δεν άνοιξε τίποτα, στείλε μας απευθείας στο ' +
-        '<a href="mailto:' + form.dataset.email + '">' + form.dataset.email + '</a>.';
+      btn.disabled = true;
+      btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span>Αποστολή…';
+      try {
+        const res = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: data,
+        });
+        // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία — έλεγχος και του JSON.
+        const json = await res.json().catch(() => null);
+        if (!res.ok || !json || String(json.success) !== 'true') throw new Error('form failed');
+        form.classList.add('is-done');
+        confettiIn(form);
+        (window as any).pismaSound?.play?.('on');
+      } catch {
+        btn.disabled = false;
+        btn.textContent = 'Στείλε το';
+        fb.innerHTML =
+          'Κάτι πήγε στραβά. Δοκίμασε ξανά ή στείλε μας απευθείας στο ' +
+          '<a href="mailto:' + form.dataset.email + '">' + form.dataset.email + '</a>.';
+      }
     });
   </script>
 </Base>
@@ -141,6 +182,38 @@ const schema = {
 <style>
   .contact-grid { align-items: start; }
   .contact-grid h3 { font-size: 1.25rem; margin-bottom: 18px; }
+
+  /* Εφέ επιτυχίας φόρμας (Δ): τικ που ζωγραφίζεται + κομφετί μέσα στην κάρτα */
+  #contact-form { position: relative; overflow: hidden; }
+  .form-done { display: none; }
+  #contact-form.is-done > :not(.form-done) { display: none; }
+  #contact-form.is-done .form-done {
+    display: block; text-align: center; padding: 26px 0 10px;
+    animation: fd-pop .45s cubic-bezier(.3, 1.4, .5, 1) both;
+  }
+  @keyframes fd-pop { from { transform: scale(.85); opacity: 0; } }
+  .fd-tick { width: 64px; height: 64px; }
+  .fd-tick circle { stroke: var(--ok); stroke-width: 2.5; opacity: .55; }
+  .fd-tick path {
+    stroke: var(--ok-text); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 34; stroke-dashoffset: 34;
+    animation: fd-draw .55s ease .25s forwards;
+  }
+  @keyframes fd-draw { to { stroke-dashoffset: 0; } }
+  .fd-title { font-size: 1.3rem; font-weight: 800; margin-top: 12px; }
+  .fd-sub { color: var(--muted); margin-top: 4px; }
+  :global(.fd-confetti) {
+    position: absolute; top: -12px; width: 8px; height: 13px; border-radius: 2px;
+    pointer-events: none; animation: fd-fall linear both;
+  }
+  @keyframes fd-fall { to { transform: translateY(var(--fall, 380px)) rotate(680deg); opacity: .15; } }
+  :global(.btn-spinner) {
+    display: inline-block; width: 15px; height: 15px;
+    border: 2px solid rgba(255, 255, 255, .35); border-top-color: #fff; border-radius: 50%;
+    vertical-align: -2px; margin-right: 8px;
+    animation: fd-spin .7s linear infinite;
+  }
+  @keyframes fd-spin { to { transform: rotate(360deg); } }
 
   /* Λίστα στοιχείων */
   .c-list { list-style: none; padding: 0; display: grid; gap: 18px; }
