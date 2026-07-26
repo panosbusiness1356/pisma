@@ -166,8 +166,15 @@ const schema = {
         const json = await res.json().catch(() => null);
         if (!res.ok || !json || String(json.success) !== 'true') throw new Error('form failed');
         form.classList.add('is-done');
+        // Επαναφορά κουμπιού & πεδίων ώστε η φόρμα να είναι έτοιμη για νέα αποστολή
+        btn.disabled = false;
+        btn.textContent = 'Στείλε το';
+        form.reset();
+        fb.textContent = '';
         confettiIn(form);
         (window as any).pismaSound?.play?.('on');
+        // Μετά από λίγο η οθόνη επιτυχίας δίνει ξανά τη θέση της στη φόρμα
+        setTimeout(() => form.classList.remove('is-done'), 6000);
       } catch {
         btn.disabled = false;
         btn.textContent = 'Στείλε το';

@@ -438,9 +438,19 @@ const presetView = PRESETS.map((p) => {
         if (!res.ok || !json || String(json.success) !== 'true') throw new Error('form failed');
         form.hidden = true;
         msg.hidden = true;
+        // Επαναφορά κουμπιού & πεδίων ώστε η φόρμα να είναι έτοιμη για νέα αποστολή
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Αποστολή προσφοράς';
+        form.reset();
+        update();
         doneEl.hidden = false;
         confettiIn(offerCard);
         (window as any).pismaSound?.play?.('on');
+        // Μετά από λίγο η οθόνη επιτυχίας δίνει ξανά τη θέση της στη φόρμα
+        setTimeout(() => {
+          doneEl.hidden = true;
+          form.hidden = false;
+        }, 6000);
       } catch {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Αποστολή προσφοράς';
@@ -535,6 +545,8 @@ const presetView = PRESETS.map((p) => {
   .offer-card h2 { font-size: 1.35rem; margin-bottom: 6px; }
   .offer-sub { color: var(--muted); margin-bottom: 20px; }
   #offer-form { display: grid; gap: 14px; }
+  /* Το author display:grid υπερισχύει του hidden — ρητό override */
+  #offer-form[hidden] { display: none; }
   .f-field span { display: block; font-size: .88rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
   .f-field em { font-style: normal; font-weight: 400; color: var(--muted); }
   .f-field input, .f-field textarea {
