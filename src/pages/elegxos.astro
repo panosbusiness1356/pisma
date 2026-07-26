@@ -120,7 +120,7 @@ const steps = [
         <p>Συμπλήρωσε τα στοιχεία σου και θα σου προτείνουμε 2–3 ώρες μέσα στην εβδομάδα.</p>
       </div>
 
-      <!-- TODO: Μελλοντικά, εδώ μπαίνει embed Cal.com / Calendly αντί για τη φόρμα mailto. -->
+      <!-- TODO: Μελλοντικά, εδώ μπαίνει embed Cal.com / Calendly αντί για τη φόρμα. -->
       <form class="card booking reveal" id="booking-form" data-email={SITE.email} novalidate>
         <div class="field">
           <label for="f-name">Ονοματεπώνυμο</label>
@@ -153,10 +153,23 @@ const steps = [
           </div>
         </fieldset>
 
-        <button type="submit" class="btn btn--orange booking-btn">Κλείσε τον Έλεγχο</button>
+        <input type="hidden" name="_subject" value="Νέα κράτηση Ελέγχου PISMA — pisma.gr" />
+        <input type="hidden" name="_template" value="box" />
+        <input type="hidden" name="_captcha" value="false" />
+
+        <button type="submit" class="btn btn--orange booking-btn" id="booking-btn">Κλείσε τον Έλεγχο</button>
         <span class="btn-note">{ELEGXOS.price} · {ELEGXOS.minutes} λεπτά · χωρίς καμία δέσμευση</span>
 
         <p class="booking-msg" id="booking-msg" role="status" aria-live="polite"></p>
+        <!-- Εφέ επιτυχίας: παίρνει τη θέση των πεδίων όταν σταλεί -->
+        <div class="form-done">
+          <svg class="fd-tick" viewBox="0 0 52 52" aria-hidden="true">
+            <circle cx="26" cy="26" r="24" fill="none" />
+            <path d="M15 27 l8 8 l15 -16" fill="none" />
+          </svg>
+          <p class="fd-title">Η κράτηση στάλθηκε!</p>
+          <p class="fd-sub">Θα σου προτείνουμε 2–3 ώρες μέσα στην εβδομάδα.</p>
+        </div>
       </form>
     </div>
   </section>
@@ -173,10 +186,30 @@ const steps = [
 </Base>
 
 <script>
+  import { FORM_ENDPOINT } from '../data/pricing';
+
   const form = document.getElementById('booking-form') as HTMLFormElement;
+  const btn = document.getElementById('booking-btn') as HTMLButtonElement;
   const msg = document.getElementById('booking-msg') as HTMLElement;
 
-  form.addEventListener('submit', (e) => {
+  // Εφέ επιτυχίας «Δ»: spinner στο κουμπί → οθόνη με τικ → κομφετί (ίδιο με Επικοινωνία/Τιμές).
+  const confettiIn = (host: HTMLElement, n = 34) => {
+    const colors = ['#FF7A50', '#8B5CF6', '#55A874', '#F5F2FB'];
+    const fall = host.getBoundingClientRect().height + 30;
+    for (let i = 0; i < n; i++) {
+      const c = document.createElement('i');
+      c.className = 'fd-confetti';
+      c.style.left = 4 + Math.random() * 92 + '%';
+      c.style.background = colors[i % colors.length];
+      c.style.setProperty('--fall', fall + 'px');
+      c.style.animationDuration = 1.1 + Math.random() * 1.2 + 's';
+      c.style.animationDelay = Math.random() * 0.35 + 's';
+      host.appendChild(c);
+      setTimeout(() => c.remove(), 3200);
+    }
+  };
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     if (!form.checkValidity()) {
@@ -188,22 +221,35 @@ const steps = [
     }
 
     const data = new FormData(form);
-    const body = [
-      `Όνομα: ${data.get('name')}`,
-      `Επιχείρηση: ${data.get('business')}`,
-      `Τηλέφωνο: ${data.get('phone')}`,
-      `Email: ${data.get('email')}`,
-      `Προτίμηση: ${data.get('mode')}`,
-    ].join('\n');
-
-    location.href =
-      `mailto:${form.dataset.email}` +
-      `?subject=${encodeURIComponent('Κράτηση Ελέγχου PISMA')}` +
-      `&body=${encodeURIComponent(body)}`;
-
-    msg.textContent = 'Άνοιξε το email σου για να σταλεί η κράτηση.';
-    msg.classList.remove('is-error');
-    msg.classList.add('is-ok');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span>Αποστολή…';
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: data,
+      });
+      // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία — έλεγχος και του JSON.
+      const json = await res.json().catch(() => null);
+      if (!res.ok || !json || String(json.success) !== 'true') throw new Error('form failed');
+      form.classList.add('is-done');
+      btn.disabled = false;
+      btn.textContent = 'Κλείσε τον Έλεγχο';
+      form.reset();
+      msg.textContent = '';
+      msg.classList.remove('is-error', 'is-ok');
+      confettiIn(form);
+      (window as any).pismaSound?.play?.('on');
+      setTimeout(() => form.classList.remove('is-done'), 6000);
+    } catch {
+      btn.disabled = false;
+      btn.textContent = 'Κλείσε τον Έλεγχο';
+      msg.innerHTML =
+        'Κάτι πήγε στραβά. Δοκίμασε ξανά ή στείλε μας απευθείας στο ' +
+        '<a href="mailto:' + form.dataset.email + '">' + form.dataset.email + '</a>.';
+      msg.classList.remove('is-ok');
+      msg.classList.add('is-error');
+    }
   });
 </script>
 
@@ -230,6 +276,39 @@ const steps = [
   .booking-msg:empty { display: none; }
   .booking-msg.is-ok { color: var(--ok-text); }
   .booking-msg.is-error { color: var(--red-text); }
+  .booking-msg a { color: var(--red-text); font-weight: 700; }
+
+  /* Εφέ επιτυχίας φόρμας (Δ): τικ που ζωγραφίζεται + κομφετί μέσα στην κάρτα */
+  #booking-form { position: relative; overflow: hidden; }
+  .form-done { display: none; }
+  #booking-form.is-done > :not(.form-done) { display: none; }
+  #booking-form.is-done .form-done {
+    display: block; text-align: center; padding: 26px 0 10px;
+    animation: fd-pop .45s cubic-bezier(.3, 1.4, .5, 1) both;
+  }
+  @keyframes fd-pop { from { transform: scale(.85); opacity: 0; } }
+  .fd-tick { display: block; margin: 0 auto; width: 64px; height: 64px; }
+  .fd-tick circle { stroke: var(--ok); stroke-width: 2.5; opacity: .55; }
+  .fd-tick path {
+    stroke: var(--ok-text); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 34; stroke-dashoffset: 34;
+    animation: fd-draw .55s ease .25s forwards;
+  }
+  @keyframes fd-draw { to { stroke-dashoffset: 0; } }
+  .fd-title { font-size: 1.3rem; font-weight: 800; margin-top: 12px; }
+  .fd-sub { color: var(--muted); margin-top: 4px; }
+  :global(.fd-confetti) {
+    position: absolute; top: -12px; width: 8px; height: 13px; border-radius: 2px;
+    pointer-events: none; animation: fd-fall linear both;
+  }
+  @keyframes fd-fall { to { transform: translateY(var(--fall, 380px)) rotate(680deg); opacity: .15; } }
+  :global(.btn-spinner) {
+    display: inline-block; width: 15px; height: 15px;
+    border: 2px solid rgba(255, 255, 255, .35); border-top-color: #fff; border-radius: 50%;
+    vertical-align: -2px; margin-right: 8px;
+    animation: fd-spin .7s linear infinite;
+  }
+  @keyframes fd-spin { to { transform: rotate(360deg); } }
 
   /* Γιατί δωρεάν; */
   .why {

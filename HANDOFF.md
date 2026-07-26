@@ -1,8 +1,30 @@
 # HANDOFF — PISMA site
 
-Κατάσταση έργου για συνέχιση σε νέο chat. Τελευταία ενημέρωση: **28/07/2026 (ξημερώματα)**.
+Κατάσταση έργου για συνέχιση σε νέο chat. Τελευταία ενημέρωση: **28/07/2026**.
 
-## ΤΙ ΕΓΙΝΕ ΣΤΟ ΤΕΛΕΥΤΑΙΟ SESSION (27–28/07) — διάβασε πρώτα αυτό
+## ΤΙ ΕΓΙΝΕ ΣΤΟ ΤΕΛΕΥΤΑΙΟ SESSION (28/07 — προετοιμασία SEO/AEO/GEO) — διάβασε πρώτα αυτό
+
+Στόχος: όλα όσα γίνονται ΠΡΙΝ το ξεκλείδωμα του site (το middleware.ts μένει ως έχει).
+
+1. **Νέα ενότητα «Οδηγοί» (/odigoi/)** — 5 answer-first άρθρα για SEO/AEO/GEO:
+   - `seo-me-apla-logia`, `na-se-proteinei-to-chatgpt`, `profil-google-maps`,
+     `perissoteres-kritikes-google`, `poso-kostizei-ena-site` + σελίδα-ευρετήριο.
+   - Νέο layout `src/layouts/Guide.astro`: ερώτηση-h1, κουτί «Η σύντομη απάντηση»
+     πρώτο, πρόζα με h2-ερωτήσεις, FAQ (FAQPage schema), Article JSON-LD, CtaBand
+     προς /elegxos/. Οι τιμές ΜΟΝΟ μέσω imports από pricing.ts (κανόνας τηρήθηκε).
+   - Link «Οδηγοί» σε Nav + Footer. Οι κανόνες copy (όχι πλαστά νούμερα, απλά
+     λόγια, έμφαση AI) τηρήθηκαν — έγινε και πέρασμα επιμέλειας.
+2. **Φόρμα /elegxos/ → FormSubmit** (τέλος το τελευταίο mailto): ίδιο pattern με
+   epikoinonia (fetch στο FORM_ENDPOINT, έλεγχος json.success, εφέ «Δ»: spinner →
+   τικ → κομφετί → auto-reset 6s). Δοκιμάστηκε live: επιτυχής υποβολή end-to-end.
+3. **sitemap.xml**: έφυγε το παρκαρισμένο `/timologisi-2026/` (έβγαζε 404),
+   μπήκαν `/odigoi/` + οι 5 οδηγοί.
+4. **launch.json**: προστέθηκε `pisma-site-4323` (όταν 4321/4322 πιασμένες από άλλα chats).
+5. **Εκκρεμότητες χρήστριας (εκτός κώδικα):** δημιουργία Google Business Profile,
+   Search Console (επαλήθευση DNS), εγγραφές σε καταλόγους με ίδια στοιχεία (NAP).
+   Το ξεκλείδωμα = σβήσιμο middleware.ts + push (τότε: request indexing στο GSC).
+
+## ΠΡΟΗΓΟΥΜΕΝΟ SESSION (27–28/07)
 
 **Πλήρες redesign της σελίδας /apodeixeis/ («Αποτελέσματα»)** — commits cfd0c91 + 10b31b5:
 

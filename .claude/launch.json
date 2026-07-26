@@ -12,6 +12,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--", "--port", "4322"],
       "port": 4322
+    },
+    {
+      "name": "pisma-site-4323",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "--port", "4323"],
+      "port": 4323
     }
   ]
 }

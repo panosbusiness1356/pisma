@@ -1,0 +1,128 @@
+---
+/**
+ * Layout οδηγού — answer-first άρθρο για SEO/AEO/GEO:
+ * ερώτηση-τίτλος, «σύντομη απάντηση» πρώτη, πρόζα, FAQ με schema, CTA.
+ * Εκπέμπει Article JSON-LD· το FAQPage βγαίνει από το <Faq withSchema>.
+ */
+import Base from './Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE } from '../config';
+
+interface Props {
+  /** Πλήρης <title>, π.χ. «Πόσο κοστίζει ένα site; | PISMA» */
+  title: string;
+  description: string;
+  /** slug κάτω από το /odigoi/, χωρίς καθέτους */
+  slug: string;
+  /** Η ερώτηση-τίτλος της σελίδας (h1) */
+  question: string;
+  sub?: string;
+  /** Η σύντομη απάντηση (2–3 προτάσεις) — εμφανίζεται πρώτη, πριν την πρόζα */
+  answer: string;
+  /** ISO ημερομηνία τελευταίας ενημέρωσης, π.χ. '2026-07-28' */
+  updated: string;
+  faq?: { q: string; a: string }[];
+}
+const { title, description, slug, question, sub, answer, updated, faq = [] } = Astro.props;
+
+const url = `${SITE.url}/odigoi/${slug}/`;
+const updatedHuman = new Date(updated).toLocaleDateString('el-GR', {
+  day: 'numeric', month: 'long', year: 'numeric',
+});
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: question,
+  description,
+  inLanguage: 'el',
+  dateModified: updated,
+  mainEntityOfPage: url,
+  author: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+};
+---
+
+<Base title={title} description={description} schema={schema}>
+  <PageHero kicker="Οδηγός" sub={sub}>{question}</PageHero>
+
+  <!-- Η σύντομη απάντηση — πάντα πρώτη, πριν από οτιδήποτε άλλο -->
+  <section class="section--tight" aria-label="Η σύντομη απάντηση">
+    <div class="container container--narrow">
+      <div class="card answer reveal">
+        <p class="answer-kicker">Η σύντομη απάντηση</p>
+        <p class="answer-text">{answer}</p>
+      </div>
+    </div>
+  </section>
+
+  <article class="section--tight">
+    <div class="container container--narrow guide-prose">
+      <slot />
+      <p class="guide-meta">
+        Τελευταία ενημέρωση: <time datetime={updated}>{updatedHuman}</time> ·
+        <a href="/odigoi/">Όλοι οι οδηγοί</a>
+      </p>
+    </div>
+  </article>
+
+  {faq.length > 0 && (
+    <section class="section--tight" aria-labelledby="guide-faq-title">
+      <div class="container container--narrow">
+        <div class="sec-head">
+          <p class="kicker">Συχνές ερωτήσεις</p>
+          <h2 id="guide-faq-title">Ό,τι ρωτάνε πιο συχνά</h2>
+        </div>
+        <Faq items={faq} withSchema />
+      </div>
+    </section>
+  )}
+
+  <CtaBand
+    title="Θες να τα δούμε μαζί, στη δική σου επιχείρηση;"
+    sub="Ο Έλεγχος PISMA: μετράμε πού στέκεσαι σε Google, AI και καθημερινή λειτουργία — και φεύγεις με γραπτή εικόνα."
+    ctaText="Κλείσε τον δωρεάν Έλεγχο"
+    ctaHref="/elegxos/"
+    note="45 λεπτά · χωρίς καμία δέσμευση"
+  />
+</Base>
+
+<style>
+  /* Κουτί σύντομης απάντησης */
+  .answer { border-left: 3px solid var(--orange); }
+  .answer-kicker {
+    font-size: .76rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--orange-text); margin-bottom: 10px;
+  }
+  .answer-text { font-size: 1.1rem; color: var(--ink); max-width: 62ch; }
+
+  /* Πρόζα οδηγού — τα στοιχεία έρχονται από slot, άρα :global κάτω από wrapper */
+  .guide-prose { max-width: 760px; }
+  .guide-prose :global(h2) {
+    font-size: clamp(1.35rem, 2.6vw, 1.8rem);
+    margin: clamp(34px, 5vw, 52px) 0 14px;
+  }
+  .guide-prose :global(h3) { margin: 26px 0 10px; }
+  .guide-prose :global(p) { margin: 0 0 16px; color: var(--ink); }
+  .guide-prose :global(ul), .guide-prose :global(ol) { margin: 0 0 16px; padding-left: 24px; }
+  .guide-prose :global(li) { margin-bottom: 8px; }
+  .guide-prose :global(li::marker) { color: var(--orange); font-weight: 700; }
+  .guide-prose :global(strong) { color: var(--navy); }
+  .guide-prose :global(a) { color: var(--orange-text); text-underline-offset: 3px; }
+  .guide-prose :global(table) {
+    width: 100%; border-collapse: collapse; margin: 0 0 16px; font-size: .95rem;
+  }
+  .guide-prose :global(th), .guide-prose :global(td) {
+    text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line);
+  }
+  .guide-prose :global(th) { color: var(--navy); font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; }
+  .guide-prose :global(td) { color: var(--ink); }
+
+  .guide-meta {
+    margin-top: clamp(30px, 4vw, 44px); padding-top: 18px; border-top: 1px solid var(--line);
+    font-size: .88rem; color: var(--muted);
+  }
+  .guide-meta a { color: var(--orange-text); }
+</style>

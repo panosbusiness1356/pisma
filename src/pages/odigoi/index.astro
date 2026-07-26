@@ -1,0 +1,85 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../config';
+
+const guides = [
+  {
+    slug: 'seo-me-apla-logia',
+    q: 'Τι είναι το SEO — με απλά λόγια;',
+    blurb: 'Χωρίς τεχνικούς όρους: τι μετράει πραγματικά για μια μικρή επιχείρηση.',
+  },
+  {
+    slug: 'na-se-proteinei-to-chatgpt',
+    q: 'Πώς θα σε προτείνει το ChatGPT;',
+    blurb: 'Οι πελάτες ρωτάνε πλέον και το AI — να τι κοιτάζει για να απαντήσει.',
+  },
+  {
+    slug: 'profil-google-maps',
+    q: 'Πώς θα φαίνεσαι σωστά στο Google και στους Χάρτες;',
+    blurb: 'Το προφίλ Google της επιχείρησής σου, στημένο σωστά βήμα-βήμα.',
+  },
+  {
+    slug: 'perissoteres-kritikes-google',
+    q: 'Πώς θα πάρεις περισσότερες κριτικές στο Google;',
+    blurb: 'Πώς να ζητάς σωστά, πώς να απαντάς — και τι να μην κάνεις ποτέ.',
+  },
+  {
+    slug: 'poso-kostizei-ena-site',
+    q: 'Πόσο κοστίζει ένα site για μικρή επιχείρηση;',
+    blurb: 'Τι καθορίζει την τιμή και τι πρέπει οπωσδήποτε να περιλαμβάνει.',
+  },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Οδηγοί — PISMA',
+  url: `${SITE.url}/odigoi/`,
+  inLanguage: 'el',
+  description:
+    'Πρακτικοί οδηγοί για ιδιοκτήτες μικρών επιχειρήσεων: Google, AI, κριτικές, site — με απλά λόγια.',
+  isPartOf: { '@type': 'WebSite', name: SITE.name, url: SITE.url },
+};
+---
+
+<Base
+  title="Οδηγοί για μικρές επιχειρήσεις — Google, AI, κριτικές, site | PISMA"
+  description="Πρακτικοί οδηγοί με απλά λόγια: πώς σε βρίσκουν σε Google και AI, πώς παίρνεις κριτικές, τι κοστίζει ένα site. Γραμμένοι για ιδιοκτήτες, όχι για τεχνικούς."
+  schema={schema}
+>
+  <PageHero
+    kicker="Οδηγοί"
+    sub="Ό,τι ρωτάνε οι ιδιοκτήτες μικρών επιχειρήσεων για Google, AI και ψηφιακή παρουσία — απαντημένο με απλά λόγια. Χωρίς τεχνικούς όρους, χωρίς πωλητικά κόλπα."
+  >
+    Απαντήσεις, όχι <span class="accent">ορολογία</span>.
+  </PageHero>
+
+  <section class="section--tight" aria-label="Λίστα οδηγών">
+    <div class="container">
+      <div class="grid-2 guides-grid">
+        {guides.map((g) => (
+          <a class="card card--link reveal" href={`/odigoi/${g.slug}/`}>
+            <h2 class="guide-q">{g.q}</h2>
+            <p>{g.blurb}</p>
+            <span class="card-arrow">Διάβασε τον οδηγό →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Προτιμάς να τα δούμε μαζί;"
+    sub="Ο Έλεγχος PISMA: 45 λεπτά, μετράμε πού στέκεσαι σε Google, AI και καθημερινή λειτουργία."
+    ctaText="Κλείσε τον δωρεάν Έλεγχο"
+    ctaHref="/elegxos/"
+    note="Δωρεάν · χωρίς καμία δέσμευση"
+  />
+</Base>
+
+<style>
+  .guides-grid { align-items: stretch; }
+  .guide-q { font-size: 1.25rem; margin-bottom: 8px; }
+</style>
