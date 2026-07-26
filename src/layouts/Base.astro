@@ -81,6 +81,9 @@ const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
           requestAnimationFrame(raf);
         };
         requestAnimationFrame(raf);
+        // Δημόσιο handle: τα per-page scripts κάνουν scroll ΜΕΣΩ Lenis,
+        // αλλιώς το native scrollIntoView ακυρώνεται από το raf loop του.
+        (window as any).lenis = lenis;
       }
     </script>
 

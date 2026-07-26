@@ -348,14 +348,27 @@ const presetView = PRESETS.map((p) => {
       applying = false;
       activePreset = preset.id;
       update();
-      document.getElementById('builder')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      scrollToEl(document.getElementById('builder'));
     });
   }
 
-  // «Στείλτε μου αυτή την προσφορά» → μετάβαση στη φόρμα
+  // Scroll μέσω Lenis όταν τρέχει (το native scrollIntoView ακυρώνεται
+  // από το raf loop του), αλλιώς native smooth.
+  const scrollToEl = (el: HTMLElement | null) => {
+    if (!el) return;
+    const lenis = (window as any).lenis;
+    if (lenis) lenis.scrollTo(el, { offset: -16 });
+    else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // «Στείλτε μου αυτή την προσφορά» → μετάβαση στη φόρμα.
+  // Το focus γίνεται ΜΕΤΑ την κύλιση — αλλιώς το πληκτρολόγιο (κινητό)
+  // διακόπτει το scroll και το πρώτο πάτημα μοιάζει νεκρό.
   document.getElementById('b-send')?.addEventListener('click', () => {
-    document.getElementById('offer')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    (document.querySelector('#offer-form input[name="name"]') as HTMLInputElement)?.focus({ preventScroll: true });
+    scrollToEl(document.getElementById('offer'));
+    setTimeout(() => {
+      (document.querySelector('#offer-form input[name="name"]') as HTMLInputElement)?.focus({ preventScroll: true });
+    }, 700);
   });
 
   // Φόρμα: αποθήκευση σε υπηρεσία φορμών αν έχει οριστεί endpoint, αλλιώς email
