@@ -7,139 +7,182 @@ import { SITE, ELEGXOS } from '../config';
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'Αποδείξεις — Νούμερα πριν και μετά',
+  name: 'Αποτελέσματα — Νούμερα, όχι λόγια',
   description:
-    'Ενδεικτικά σενάρια εφαρμογής με μετρήσιμο πριν και μετά, και τα ζωντανά συστήματα της PISMA.',
+    'Πώς μετράμε τα αποτελέσματα κάθε συνεργασίας: καταγραφή πριν ξεκινήσουμε, επαναμέτρηση στους 3 μήνες, και τα νούμερα που παρακολουθούμε.',
   url: `${SITE.url}/apodeixeis/`,
   inLanguage: 'el',
   isPartOf: { '@type': 'WebSite', name: SITE.name, url: SITE.url },
 };
 
-/** Ενδεικτικά σενάρια — δηλώνονται καθαρά ως σενάρια, όχι ως πελάτες. */
-const demoCases = [
+/** Οι μετρικές που παρακολουθούμε — trend: up = θέλουμε να ανέβει, down = να πέσει. */
+const metrics = [
+  { title: 'Τηλέφωνα από το Google', desc: 'Με site και σωστό προφίλ, σε βρίσκουν και σε παίρνουν.', trend: 'up' },
+  { title: 'Θέση στην αναζήτηση', desc: 'Στο Google και στις απαντήσεις των εργαλείων AI.', trend: 'up' },
+  { title: 'Κριτικές στο Google', desc: 'Συνεχώς νέες κριτικές, μήνα με τον μήνα.', trend: 'up' },
+  { title: 'Ώρες στο γραφείο', desc: 'Ό,τι γίνεται μηχανικά, το κάνει ο αυτοματισμός.', trend: 'down' },
+  { title: 'Επισκέψεις στο site', desc: 'Περισσότερος κόσμος βλέπει τη δουλειά σου.', trend: 'up' },
+  { title: 'Παρουσία στα social', desc: 'Σταθερά posts κάθε εβδομάδα, χωρίς δικό σου χρόνο.', trend: 'up' },
+] as const;
+
+const steps = [
   {
-    title: 'Εμπορική εταιρεία — περίπου 400 πληρωμές τον μήνα',
-    metric: 'Ταίριασμα πληρωμών με τιμολόγια',
-    before: '18 ώρες/μήνα',
-    after: '2',
-    setup:
-      'Στήθηκε αυτόματο ταίριασμα πληρωμών με τα τιμολόγιά τους — ο άνθρωπος μόνο εγκρίνει τις εξαιρέσεις.',
-    icon: 'doc',
+    num: '01',
+    title: 'Πριν ξεκινήσουμε',
+    desc: 'Στον Έλεγχο μετράμε πού είσαι σήμερα: τηλέφωνα, κριτικές, θέση στο Google, ώρες γραφείου.',
   },
   {
-    title: 'Τεχνική εταιρεία — έργα με πίστωση',
-    metric: 'Μέση είσπραξη',
-    before: '47 μέρες',
-    after: '31',
-    setup:
-      'Στήθηκαν αυτόματες υπενθυμίσεις είσπραξης σε 3 βήματα — ευγενικές στην αρχή, σταθερές μετά.',
-    icon: 'clock',
+    num: '02',
+    title: 'Στους 3 μήνες',
+    desc: 'Ξαναμετράμε τα ίδια νούμερα και τα βλέπεις δίπλα-δίπλα. Στις μηνιαίες υπηρεσίες, κάθε μήνα.',
+  },
+  {
+    num: '03',
+    title: 'Αν δεν ανέβηκαν',
+    desc: 'Σου το λέμε πρώτοι. Και δεν σε κρατάει κανένα συμβόλαιο.',
   },
 ] as const;
 ---
 
 <Base
-  title="Αποδείξεις: νούμερα πριν και μετά, μετρημένα | PISMA"
-  description="Πριν και μετά σε ώρες και μέρες: ενδεικτικά σενάρια εφαρμογής και τα ζωντανά συστήματα της PISMA — με δέσμευση για επώνυμες, ποτέ ανώνυμες μαρτυρίες."
+  title="Αποτελέσματα: μετρημένα πριν και μετά | PISMA"
+  description="Πώς ξέρεις ότι δουλεύει; Μετράμε πού είσαι σήμερα, ξαναμετράμε στους 3 μήνες, και σου δείχνουμε τι άλλαξε — τηλέφωνα, κριτικές, θέση στο Google, ώρες γραφείου."
   schema={schema}
 >
   <PageHero
-    kicker="Αποδείξεις"
+    kicker="Αποτελέσματα"
     sub="Κάθε έργο μετριέται πριν και μετά. Ό,τι δεν μετριέται, δεν το πουλάμε."
   >
     Νούμερα, <span class="accent">όχι λόγια</span>.
   </PageHero>
 
-  <!-- Πριν → Μετά -->
-  <section class="section section--tight" aria-labelledby="cases-title">
+  <!-- Πώς μετράμε -->
+  <section class="section section--tight" aria-labelledby="how-title">
     <div class="container">
-      <div class="sec-head">
-        <p class="kicker">Πριν → Μετά</p>
-        <h2 id="cases-title">Πριν και μετά, δίπλα-δίπλα.</h2>
-        <p>
-          Τα δύο πρώτα είναι σενάρια εφαρμογής με ρεαλιστικά μεγέθη — όχι πελάτες. Γι' αυτό και το
-          γράφουμε πάνω τους.
-        </p>
+      <div class="sec-head sec-head--center">
+        <p class="kicker">Πώς μετράμε</p>
+        <h2 id="how-title">Πώς ξέρεις ότι δουλεύει;</h2>
       </div>
-
       <div class="grid-3">
-        {demoCases.map((c) => (
-          <article class="card case reveal">
-            <div class="case-top">
-              <span class="icon-chip">
-                {c.icon === 'doc' ? (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
-                    <path d="M14 3v5h5" />
-                    <path d="M9 13h6M9 17h4" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="8.5" />
-                    <path d="M12 7.5V12l3 2" />
-                  </svg>
-                )}
-              </span>
-              <span class="tag tag--demo">Ενδεικτικό σενάριο εφαρμογής</span>
-            </div>
-            <h3>{c.title}</h3>
-            <p class="case-metric-label">{c.metric}</p>
-            <p class="case-nums">
-              <span class="strike num">{c.before}</span>
-              <span class="case-arrow" aria-hidden="true">→</span>
-              <span class="visually-hidden">έγινε</span>
-              <span class="after-num">{c.after}</span>
-            </p>
-            <p class="case-setup">{c.setup}</p>
+        {steps.map((s) => (
+          <article class="card reveal">
+            <p class="mstep-num">{s.num}</p>
+            <h3>{s.title}</h3>
+            <p>{s.desc}</p>
           </article>
         ))}
-
-        <article class="card case case--live reveal">
-          <div class="case-top">
-            <span class="icon-chip">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M3 12h4l2.5-6 5 12 2.5-6h4" />
-              </svg>
-            </span>
-            <span class="tag tag--live">Ζωντανό</span>
-          </div>
-          <h3>PISMA — τα δικά μας συστήματα</h3>
-          <p>
-            Εισπράξεις, καθημερινή αναφορά και παρακολούθηση ανταγωνισμού τρέχουν με ό,τι
-            ακριβώς πουλάμε. Δεν πουλάμε κάτι που δεν χρησιμοποιούμε.
-          </p>
-          <a class="card-arrow" href="/elegxos/">Ζήτα να τα δεις live στο ραντεβού →</a>
-        </article>
       </div>
     </div>
   </section>
 
-  <!-- Placeholder μελλοντικών μαρτυριών -->
-  <section class="section" aria-labelledby="testimonials-title">
+  <!-- Τι θα δεις να αλλάζει -->
+  <section class="section" aria-labelledby="metrics-title">
     <div class="container">
-      <div class="sec-head">
-        <p class="kicker">Μαρτυρίες</p>
-        <h2 id="testimonials-title">Εδώ θα μπουν τα δικά σου νούμερα</h2>
-        <p>Η σελίδα είναι καινούργια — και δεν τη στολίζουμε με δανεικά.</p>
+      <div class="sec-head sec-head--center">
+        <p class="kicker kicker--blue">Τι μετράμε</p>
+        <h2 id="metrics-title">Τι θα δεις να αλλάζει.</h2>
+        <p>Αυτά είναι τα νούμερα που παρακολουθούμε σε κάθε συνεργασία.</p>
       </div>
-      <div class="promise reveal">
-        <span class="icon-chip">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M17 3.5 20.5 7 8 19.5 4 20l.5-4z" />
-          </svg>
-        </span>
-        <h3>Κάθε μαρτυρία, επώνυμη.</h3>
-        <p>
-          Όταν μπει εδώ η πρώτη, θα έχει όνομα, επιχείρηση και περιοχή — ποτέ «ικανοποιημένος
-          πελάτης, Αθήνα».
+      <div class="grid-3">
+        {metrics.map((m) => (
+          <article class="card metric reveal">
+            <div class="metric-head">
+              <span class={`icon-chip metric-chip ${m.trend === 'up' ? 'metric-chip--up' : 'metric-chip--down'}`}>
+                {m.trend === 'up' ? (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 17l6-6 4 4 8-8" />
+                    <path d="M14 7h7v7" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 7l6 6 4-4 8 8" />
+                    <path d="M14 17h7v-7" />
+                  </svg>
+                )}
+              </span>
+              <h3>{m.title}</h3>
+            </div>
+            <p>{m.desc}</p>
+            <span class="visually-hidden">{m.trend === 'up' ? 'Ανεβαίνει' : 'Πέφτει'}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Τι κερδίζεις — η άνοδος -->
+  <section class="section section--tight" aria-labelledby="rise-title">
+    <div class="container">
+      <div class="sec-head sec-head--center">
+        <p class="kicker kicker--ok">Τι κερδίζεις</p>
+        <h2 id="rise-title">Η επιχείρησή σου, σε άνοδο.</h2>
+        <p>Και θα το βλέπεις να συμβαίνει, μήνα με τον μήνα.</p>
+      </div>
+
+      <div class="rise card reveal" id="rise-panel">
+        <svg id="rise-svg" viewBox="0 0 560 260" role="img" aria-labelledby="rise-svg-title rise-svg-desc">
+          <title id="rise-svg-title">Η πορεία της επιχείρησής σου</title>
+          <desc id="rise-svg-desc">
+            Ανοδικό γράφημα από το σήμερα προς τους 6 μήνες: ανεβαίνουν τα τηλέφωνα, οι κριτικές και
+            οι επισκέψεις, και πέφτουν οι ώρες στο γραφείο.
+          </desc>
+          <line x1="20" y1="218" x2="540" y2="218" class="rise-axis" />
+          <path
+            id="rise-area"
+            d="M30 208 C 120 204, 180 190, 250 164 C 320 138, 400 96, 460 60 L 512 34 L 512 218 L 30 218 Z"
+            fill="rgba(255,122,80,.10)"
+            opacity="0"
+          />
+          <path
+            id="rise-line"
+            d="M30 208 C 120 204, 180 190, 250 164 C 320 138, 400 96, 460 60 L 512 34"
+            fill="none"
+            stroke="var(--orange)"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+          <g class="rise-chip" id="rise-c1" transform="translate(150,193)">
+            <g class="rise-pop">
+              <circle r="8" class="rise-dot-bg" stroke="var(--ok)" />
+              <circle r="3.2" fill="var(--ok)" />
+              <rect x="-58" y="-52" width="116" height="34" rx="17" class="rise-pill rise-pill--ok" />
+              <text y="-30" text-anchor="middle" class="rise-txt rise-txt--ok">Τηλέφωνα ↑</text>
+            </g>
+          </g>
+          <g class="rise-chip" id="rise-c2" transform="translate(285,152)">
+            <g class="rise-pop">
+              <circle r="8" class="rise-dot-bg" stroke="var(--yellow-text)" />
+              <circle r="3.2" fill="var(--yellow-text)" />
+              <rect x="-52" y="-52" width="104" height="34" rx="17" class="rise-pill rise-pill--gold" />
+              <text y="-30" text-anchor="middle" class="rise-txt rise-txt--gold">Κριτικές ↑</text>
+            </g>
+          </g>
+          <g class="rise-chip" id="rise-c3" transform="translate(430,80)">
+            <g class="rise-pop">
+              <circle r="8" class="rise-dot-bg" stroke="var(--purple-text)" />
+              <circle r="3.2" fill="var(--purple-text)" />
+              <rect x="-58" y="-52" width="116" height="34" rx="17" class="rise-pill rise-pill--purple" />
+              <text y="-30" text-anchor="middle" class="rise-txt rise-txt--purple">Επισκέψεις ↑</text>
+            </g>
+          </g>
+          <g id="rise-summit" opacity="0" transform="translate(512,34)">
+            <circle r="9" fill="var(--orange)" />
+            <circle id="rise-ring" r="9" fill="none" stroke="var(--orange)" stroke-width="2" opacity="0" />
+          </g>
+          <g id="rise-conf"></g>
+          <text x="30" y="242" class="rise-label">σήμερα</text>
+          <text x="512" y="242" class="rise-label" text-anchor="end">σε 6 μήνες</text>
+        </svg>
+        <p class="rise-final" id="rise-final">
+          <span>Κι εσύ με λιγότερες ώρες στο γραφείο ✓</span>
         </p>
       </div>
     </div>
   </section>
 
   <CtaBand
-    title="Θες τέτοια νούμερα; Ξεκινάμε με μέτρηση."
-    sub="Ο Έλεγχος PISMA: φεύγεις με σκορ και ευρώ στο χαρτί."
+    title="Ξεκινάμε με μέτρηση."
+    sub="Στον Έλεγχο μετράμε πού είσαι σήμερα — και σου δείχνουμε ζωντανά τα συστήματα που τρέχουμε για εμάς."
     ctaText="Κλείσε τον Έλεγχο"
     ctaHref="/elegxos/"
     note={`${ELEGXOS.price} · ${ELEGXOS.minutes} λεπτά · χωρίς δέσμευση`}
@@ -147,46 +190,180 @@ const demoCases = [
 </Base>
 
 <style>
-  /* Κάρτες σεναρίων */
-  .case { display: flex; flex-direction: column; }
-  .case-top {
-    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  /* Βήματα «Πώς μετράμε» — αριθμός σε mono, πορτοκαλί */
+  .mstep-num {
+    font-family: var(--font-mono);
+    color: var(--orange);
+    font-weight: 700;
+    font-size: .95rem;
+    margin-bottom: 12px;
   }
-  .case-top .tag { margin-top: 4px; text-align: right; flex: none; max-width: 55%; white-space: normal; }
-  .case h3 { max-width: 26ch; }
 
-  .case-metric-label {
-    margin-top: 14px;
-    font-size: .8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-    color: var(--muted);
-  }
-  .case-nums {
-    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
-    margin-top: 4px; margin-bottom: 16px;
-  }
-  .case-nums .strike { font-size: 1.05rem; }
-  .case-arrow { color: var(--orange); font-weight: 700; font-size: 1.2rem; }
-  .after-num { font-size: clamp(2.1rem, 4vw, 2.7rem); line-height: 1; }
+  /* Κάρτες μετρικών */
+  .metric-head { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+  .metric-head h3 { margin-bottom: 0; }
+  .icon-chip.metric-chip { width: 40px; height: 40px; border-radius: 11px; margin-bottom: 0; flex: none; }
+  .icon-chip.metric-chip svg { width: 21px; height: 21px; }
+  .icon-chip.metric-chip--up { background: var(--ok-soft); color: var(--ok-text); }
+  .icon-chip.metric-chip--down { background: var(--orange-soft); color: var(--orange-text); }
 
-  .case-setup {
-    margin-top: auto; padding-top: 14px;
-    border-top: 1px dashed var(--line);
-    font-size: .92rem;
-  }
-  .case .card-arrow { margin-top: auto; padding-top: 14px; }
+  /* Πάνελ ανόδου */
+  .rise { max-width: 760px; margin-inline: auto; padding: clamp(18px, 3vw, 30px); }
+  .rise svg { width: 100%; height: auto; }
+  .rise-axis { stroke: var(--line-strong); stroke-width: 1.5; }
+  .rise-dot-bg { fill: var(--bg); stroke-width: 2.5; }
+  .rise-pill { fill: var(--bg-soft); stroke-width: 1; }
+  .rise-pill--ok { fill: var(--ok-soft); stroke: var(--ok); }
+  .rise-pill--gold { fill: var(--yellow-soft); stroke: var(--yellow-text); }
+  .rise-pill--purple { fill: var(--purple-soft); stroke: var(--purple-text); }
+  .rise-txt { font-family: var(--font-body); font-size: 12.5px; font-weight: 700; }
+  .rise-txt--ok { fill: var(--ok-text); }
+  .rise-txt--gold { fill: var(--yellow-text); }
+  .rise-txt--purple { fill: var(--purple-text); }
+  .rise-label { font-family: var(--font-body); font-size: 11px; fill: var(--muted); }
+  .rise-chip { opacity: 0; }
 
-  /* Ζωντανή κάρτα — ελαφρώς ξεχωριστή */
-  .case--live { border: 1.5px solid var(--ok); }
-  .case--live .icon-chip { background: var(--ok-soft); color: var(--ok); }
-
-  /* Πλαίσιο μελλοντικών μαρτυριών */
-  .promise {
-    max-width: 560px;
-    border: 2px dashed var(--line);
-    border-radius: var(--r);
-    padding: clamp(22px, 3vw, 30px);
-    background: transparent;
+  .rise-final { text-align: center; margin-top: 6px; opacity: 0; transform: translateY(8px); transition: opacity .6s ease, transform .6s cubic-bezier(.2, .9, .3, 1.4); }
+  .rise-final.is-on { opacity: 1; transform: none; }
+  .rise-final span {
+    display: inline-block;
+    background: var(--ok-soft);
+    border: 1px solid var(--ok);
+    color: var(--ok-text);
+    font-size: .9rem; font-weight: 700;
+    padding: 9px 20px; border-radius: 999px;
   }
-  .promise h3 { margin-bottom: 8px; }
-  .promise p { font-size: .97rem; color: var(--muted); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rise-final { opacity: 1; transform: none; }
+  }
 </style>
+
+<script>
+  // «Η επιχείρησή σου, σε άνοδο»: η γραμμή σχεδιάζεται όταν το πάνελ μπει στην οθόνη,
+  // οι δείκτες σκάνε διαδοχικά πάνω της και στην κορυφή σπάει κομφετί. Επαναλαμβάνεται
+  // όσο το πάνελ είναι ορατό· με prefers-reduced-motion δείχνουμε την τελική εικόνα στατικά.
+  const panel = document.getElementById('rise-panel');
+  const line = document.getElementById('rise-line') as unknown as SVGPathElement | null;
+  const area = document.getElementById('rise-area');
+  const summit = document.getElementById('rise-summit');
+  const ring = document.getElementById('rise-ring');
+  const conf = document.getElementById('rise-conf');
+  const finalMsg = document.getElementById('rise-final');
+  const chips = ['rise-c1', 'rise-c2', 'rise-c3']
+    .map((id) => document.getElementById(id))
+    .filter(Boolean) as HTMLElement[];
+
+  if (panel && line && area && summit && ring && conf && finalMsg) {
+    const len = line.getTotalLength();
+    line.style.strokeDasharray = String(len);
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const CONF_COLORS = ['#FF7A50', '#DDBE85', '#A5D6B8', '#C4B0FF', '#FF9B8A', '#55A874'];
+    let timers: ReturnType<typeof setTimeout>[] = [];
+    let running = false;
+
+    const later = (fn: () => void, ms: number) => timers.push(setTimeout(fn, ms));
+
+    function showFinalState() {
+      line!.style.strokeDashoffset = '0';
+      area!.style.opacity = '1';
+      summit!.style.opacity = '1';
+      chips.forEach((c) => (c.style.opacity = '1'));
+      finalMsg!.classList.add('is-on');
+    }
+
+    function burst() {
+      conf!.innerHTML = '';
+      for (let i = 0; i < 18; i++) {
+        const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        const ang = (Math.PI * 2 * i) / 18;
+        const dist = 40 + (i % 3) * 22;
+        c.setAttribute('cx', '512');
+        c.setAttribute('cy', '34');
+        c.setAttribute('r', i % 2 ? '3' : '4');
+        c.setAttribute('fill', CONF_COLORS[i % 6]);
+        c.style.opacity = '1';
+        c.style.transition = 'transform 1s cubic-bezier(.2,.7,.3,1), opacity 1s ease';
+        conf!.appendChild(c);
+        later(() => {
+          c.style.transform = `translate(${Math.cos(ang) * dist}px, ${Math.sin(ang) * dist * 0.9 - 14}px)`;
+          c.style.opacity = '0';
+        }, 40);
+      }
+      ring!.style.transition = 'none';
+      ring!.setAttribute('r', '9');
+      ring!.style.opacity = '0.9';
+      later(() => {
+        ring!.style.transition = 'all .9s ease-out';
+        ring!.setAttribute('r', '34');
+        ring!.style.opacity = '0';
+      }, 60);
+    }
+
+    function popIn(g: HTMLElement) {
+      g.style.opacity = '1';
+      const p = g.querySelector('.rise-pop') as SVGGElement | null;
+      if (!p) return;
+      p.style.transition = 'none';
+      p.style.transform = 'scale(.3)';
+      later(() => {
+        p.style.transition = 'transform .5s cubic-bezier(.2,1.2,.3,1.35)';
+        p.style.transform = 'scale(1)';
+      }, 30);
+    }
+
+    function reset() {
+      line!.style.transition = 'none';
+      line!.style.strokeDashoffset = String(len);
+      area!.style.transition = 'none';
+      area!.style.opacity = '0';
+      summit!.style.opacity = '0';
+      chips.forEach((c) => (c.style.opacity = '0'));
+      conf!.innerHTML = '';
+      finalMsg!.classList.remove('is-on');
+    }
+
+    function cycle() {
+      if (!running) return;
+      reset();
+      later(() => {
+        line!.style.transition = 'stroke-dashoffset 2.6s cubic-bezier(.5,.05,.4,1)';
+        line!.style.strokeDashoffset = '0';
+        later(() => popIn(chips[0]), 800);
+        later(() => popIn(chips[1]), 1450);
+        later(() => popIn(chips[2]), 2100);
+        later(() => {
+          summit!.style.opacity = '1';
+          burst();
+          area!.style.transition = 'opacity .7s';
+          area!.style.opacity = '1';
+          finalMsg!.classList.add('is-on');
+        }, 2650);
+      }, 400);
+      later(cycle, 10000);
+    }
+
+    if (reduced) {
+      showFinalState();
+    } else {
+      reset();
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting && !running) {
+              running = true;
+              cycle();
+            } else if (!e.isIntersecting && running) {
+              running = false;
+              timers.forEach(clearTimeout);
+              timers = [];
+            }
+          }
+        },
+        { threshold: 0.35 }
+      );
+      io.observe(panel);
+    }
+  }
+</script>
