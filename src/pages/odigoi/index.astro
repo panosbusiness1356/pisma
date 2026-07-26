@@ -3,34 +3,7 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { SITE } from '../../config';
-
-const guides = [
-  {
-    slug: 'seo-me-apla-logia',
-    q: 'Τι είναι το SEO — με απλά λόγια;',
-    blurb: 'Χωρίς τεχνικούς όρους: τι μετράει πραγματικά για μια μικρή επιχείρηση.',
-  },
-  {
-    slug: 'na-se-proteinei-to-chatgpt',
-    q: 'Πώς θα σε προτείνει το ChatGPT;',
-    blurb: 'Οι πελάτες ρωτάνε πλέον και το AI — να τι κοιτάζει για να απαντήσει.',
-  },
-  {
-    slug: 'profil-google-maps',
-    q: 'Πώς θα φαίνεσαι σωστά στο Google και στους Χάρτες;',
-    blurb: 'Το προφίλ Google της επιχείρησής σου, στημένο σωστά βήμα-βήμα.',
-  },
-  {
-    slug: 'perissoteres-kritikes-google',
-    q: 'Πώς θα πάρεις περισσότερες κριτικές στο Google;',
-    blurb: 'Πώς να ζητάς σωστά, πώς να απαντάς — και τι να μην κάνεις ποτέ.',
-  },
-  {
-    slug: 'poso-kostizei-ena-site',
-    q: 'Πόσο κοστίζει ένα site για μικρή επιχείρηση;',
-    blurb: 'Τι καθορίζει την τιμή και τι πρέπει οπωσδήποτε να περιλαμβάνει.',
-  },
-];
+import { GUIDES as guides } from '../../data/guides';
 
 const schema = {
   '@context': 'https://schema.org',
@@ -41,6 +14,15 @@ const schema = {
   description:
     'Πρακτικοί οδηγοί για ιδιοκτήτες μικρών επιχειρήσεων: Google, AI, κριτικές, site — με απλά λόγια.',
   isPartOf: { '@type': 'WebSite', name: SITE.name, url: SITE.url },
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: guides.map((g, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: g.q,
+      url: `${SITE.url}/odigoi/${g.slug}/`,
+    })),
+  },
 };
 ---
 

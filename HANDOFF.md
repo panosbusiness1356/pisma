@@ -20,6 +20,15 @@
 3. **sitemap.xml**: έφυγε το παρκαρισμένο `/timologisi-2026/` (έβγαζε 404),
    μπήκαν `/odigoi/` + οι 5 οδηγοί.
 4. **launch.json**: προστέθηκε `pisma-site-4323` (όταν 4321/4322 πιασμένες από άλλα chats).
+4β. **Αντιστάθμιση για το ανύπαρκτο (ακόμα) Google Business Profile** — το site έγινε
+   η πλήρης «ταυτότητα» της PISMA για Google & AI:
+   - index: ProfessionalService schema με @id, 9 περιοχές (δήμοι νοτίων), knowsAbout,
+     hasOfferCatalog με ΟΛΟ τον τιμοκατάλογο από pricing.ts (18 υπηρεσίες).
+   - Base: WebSite JSON-LD σε κάθε σελίδα. Guide: BreadcrumbList. /odigoi/: ItemList.
+   - **/llms.txt**: generated endpoint (src/pages/llms.txt.ts) από config+pricing+guides —
+     σύνοψη επιχείρησης/τιμών/οδηγών για AI crawlers, πάντα συγχρονισμένο.
+   - Η λίστα οδηγών πλέον στο **src/data/guides.ts** (μία πηγή για /odigoi/ + llms.txt).
+   - robots.txt: ρητά Allow για GPTBot/ClaudeBot/PerplexityBot/Google-Extended κ.ά.
 5. **Εκκρεμότητες χρήστριας (εκτός κώδικα):** δημιουργία Google Business Profile,
    Search Console (επαλήθευση DNS), εγγραφές σε καταλόγους με ίδια στοιχεία (NAP).
    Το ξεκλείδωμα = σβήσιμο middleware.ts + push (τότε: request indexing στο GSC).

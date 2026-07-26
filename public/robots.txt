@@ -1,4 +1,29 @@
+# Όλοι ευπρόσδεκτοι — μηχανές αναζήτησης και AI crawlers.
 User-agent: *
 Allow: /
 
+# Ρητά για τα AI (ChatGPT, Claude, Perplexity, Gemini) — ίδια πρόσβαση.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
 Sitemap: https://pisma.gr/sitemap.xml
+
+# Σύνοψη του site για AI: https://pisma.gr/llms.txt

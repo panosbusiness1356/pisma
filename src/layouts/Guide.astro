@@ -32,17 +32,28 @@ const updatedHuman = new Date(updated).toLocaleDateString('el-GR', {
   day: 'numeric', month: 'long', year: 'numeric',
 });
 
-const schema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: question,
-  description,
-  inLanguage: 'el',
-  dateModified: updated,
-  mainEntityOfPage: url,
-  author: { '@type': 'Organization', name: SITE.name, url: SITE.url },
-  publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
-};
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: question,
+    description,
+    inLanguage: 'el',
+    dateModified: updated,
+    mainEntityOfPage: url,
+    author: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+    publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Αρχική', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Οδηγοί', item: `${SITE.url}/odigoi/` },
+      { '@type': 'ListItem', position: 3, name: question, item: url },
+    ],
+  },
+];
 ---
 
 <Base title={title} description={description} schema={schema}>

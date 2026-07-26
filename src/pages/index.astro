@@ -1,11 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SITE, ELEGXOS, eur } from '../config';
-import { PRESETS } from '../data/pricing';
+import { PRESETS, CATEGORIES } from '../data/pricing';
 
+// Πλήρης «ταυτότητα» της PISMA για Google & AI — αναπληρώνει το (προσωρινά
+// ανύπαρκτο) Google Business Profile. Ο τιμοκατάλογος βγαίνει από το pricing.ts.
 const schema = {
   '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
+  '@type': 'ProfessionalService',
+  '@id': `${SITE.url}/#business`,
   name: SITE.name,
   slogan: SITE.tagline,
   email: SITE.email,
@@ -16,9 +19,46 @@ const schema = {
     addressRegion: 'Αττική',
     addressCountry: 'GR',
   },
-  areaServed: 'Νότια προάστια Αθήνας',
+  areaServed: [
+    'Νότια προάστια Αθήνας',
+    'Γλυφάδα',
+    'Βούλα',
+    'Βάρη-Βουλιαγμένη',
+    'Άλιμος',
+    'Ελληνικό-Αργυρούπολη',
+    'Παλαιό Φάληρο',
+    'Νέα Σμύρνη',
+    'Ελλάδα (online)',
+  ],
+  knowsAbout: [
+    'Κατασκευή ιστοσελίδων',
+    'SEO',
+    'Ορατότητα σε εργαλεία AI (GEO/AEO)',
+    'Google Business Profile',
+    'Κριτικές Google',
+    'Αυτοματοποίηση γραφείου',
+  ],
   description:
-    'Ψηφιακή παρουσία και αυτοματοποίηση διαδικασιών για ελληνικές μικρομεσαίες επιχειρήσεις.',
+    'Ψηφιακή παρουσία και αυτοματοποίηση διαδικασιών για ελληνικές μικρομεσαίες επιχειρήσεις. Site, ορατότητα σε Google και AI, κριτικές και αυτοματισμοί — με μέτρηση πριν και μετά, χωρίς δεσμεύσεις.',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Υπηρεσίες & τιμές PISMA',
+    itemListElement: CATEGORIES.map((c) => ({
+      '@type': 'OfferCatalog',
+      name: c.title,
+      itemListElement: c.options.map((o) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: o.label,
+          ...(o.detail ? { description: o.detail } : {}),
+        },
+        price: o.price,
+        priceCurrency: 'EUR',
+        description: o.type === 'monthly' ? `${eur(o.price)} τον μήνα` : `${eur(o.price)} εφάπαξ`,
+      })),
+    })),
+  },
 };
 
 const steps = [
