@@ -1,4 +1,5 @@
 ---
+import '../styles/fonts.css';
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -54,12 +55,10 @@ const schemas = [siteSchema, ...(schema ? (Array.isArray(schema) ? schema : [sch
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Commissioner:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
-    />
+    <!-- Γραμματοσειρές: self-hosted (src/styles/fonts.css) — κανένα εξωτερικό αίτημα.
+         Preload στα δύο κρίσιμα ελληνικά βάρη για άμεσο πρώτο render. -->
+    <link rel="preload" href="/fonts/commissioner-400-greek.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/commissioner-700-greek.woff2" as="font" type="font/woff2" crossorigin />
 
     {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
   </head>

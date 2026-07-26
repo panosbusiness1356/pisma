@@ -133,21 +133,6 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
         και μετρήσιμο αποτέλεσμα.</span>
       </p>
 
-      <div class="hero-reviews blur-in" style="--d:.40s" aria-label="Κριτικές: 4,5 στα 5 αστέρια, περισσότερες από 2.000">
-        <img class="hr-g" src="/logos/google-icon.svg" alt="" width="26" height="26" loading="lazy" />
-        <span class="hr-body" aria-hidden="true">
-          <span class="hr-label">Κριτικές</span>
-          <span class="hr-row">
-            <span class="hr-score num">4,5</span>
-            <span class="hero-stars">
-              <span class="stars-base">★★★★★</span>
-              <span class="stars-fill">★★★★★</span>
-            </span>
-            <span class="hr-count num">(<span id="rev-count">0</span>)</span>
-          </span>
-        </span>
-      </div>
-
       <div class="hero-ctas blur-in" style="--d:.46s">
         <span class="btn-frame">
           <a class="btn btn--orange" href="/tablo/">Μέτρησε την επιχείρησή σου — 2′</a>
@@ -167,9 +152,9 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
         <div class="card ba-before">
           <p class="ba-label">Πριν</p>
           <ul class="ba-list">
-            <li><strong>46</strong> κριτικές</li>
-            <li><strong>Σελίδα 3</strong> στη Google</li>
-            <li><strong>Χάσιμο</strong> χρόνου</li>
+            <li>Κριτικές <strong>με το σταγονόμετρο</strong></li>
+            <li><strong>Δύσκολα</strong> σε βρίσκουν στη Google</li>
+            <li>Η ρουτίνα <strong>με το χέρι</strong></li>
             <li><strong>Αόρατοι</strong> στο AI</li>
           </ul>
         </div>
@@ -177,14 +162,14 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
           <span class="ba-shine" aria-hidden="true"></span>
           <p class="ba-label ba-label--after">Με την PISMA</p>
           <ul class="ba-list ba-list--after">
-            <li><strong>210+</strong> κριτικές</li>
-            <li><strong>Πρώτοι</strong> στη Google</li>
-            <li><strong>Αυτοματισμοί</strong></li>
-            <li>Το AI <strong>σας προτείνει</strong></li>
+            <li><strong>Σταθερή ροή</strong> κριτικών</li>
+            <li>Θέση <strong>που ανεβαίνει</strong> σε Google & Χάρτες</li>
+            <li>Η ρουτίνα <strong>τρέχει μόνη της</strong></li>
+            <li>Το AI <strong>σας βρίσκει</strong></li>
           </ul>
         </div>
       </div>
-      <p class="ba-note">Ενδεικτικά μεγέθη — τα δικά σας τα μετράμε πριν ξεκινήσουμε.</p>
+      <p class="ba-note">Τα δικά σας μεγέθη τα μετράμε πριν ξεκινήσουμε — και ξανά στους 3 μήνες.</p>
     </div>
   </section>
 
@@ -376,32 +361,6 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
     }
   }
 
-  const revEl = document.getElementById('rev-count');
-  if (revEl) {
-    const REV_TARGET = 2000;
-    const fmt = (n: number) => Math.round(n).toLocaleString('el-GR');
-    if (reduceFx) {
-      revEl.textContent = fmt(REV_TARGET) + '+';
-    } else {
-      let started = false;
-      const run = () => {
-        if (started) return;
-        started = true;
-        const t0 = performance.now();
-        const dur = 2200;
-        const tick = (t: number) => {
-          const p = Math.min((t - t0) / dur, 1);
-          revEl.textContent = fmt(REV_TARGET * (1 - Math.pow(1 - p, 3))) + (p >= 1 ? '+' : '');
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      };
-      const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { run(); io.disconnect(); } });
-      io.observe(revEl);
-      window.setTimeout(run, 2500); // δίχτυ: αν το observer δεν πυροδοτήσει
-    }
-  }
-
   // Κινήσεις sections: οπλίζονται μόνο εδώ (.fx-armed) — χωρίς JS όλα ορατά.
   // Κάθε section πυροδοτεί (.fx-on) μία φορά, όταν μπει αρκετά στην οθόνη.
   const fxIds = ['svc-title', 'method-title', 'pricing-title', 'who-title', 'final-title'];
@@ -528,28 +487,6 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   }
   @media (prefers-reduced-motion: reduce) {
     .flogo img { animation: none; }
-  }
-
-  /* Κάρτα κριτικών με το G της Google */
-  .hero-reviews {
-    display: inline-flex; align-items: center; gap: 12px;
-    background: #fff; border-radius: 14px; padding: 10px 16px;
-    margin-top: 22px; text-align: left;
-    box-shadow: var(--shadow);
-  }
-  .hr-g { width: 26px; height: 26px; flex: none; }
-  .hr-body { display: block; line-height: 1.25; }
-  .hr-label { display: block; font-size: .72rem; color: #5F6368; }
-  .hr-row { display: flex; align-items: center; gap: 7px; }
-  .hr-score { font-size: 1.05rem; font-weight: 700; color: #1D1D1F; }
-  .hr-count { font-size: .78rem; color: #5F6368; }
-  .hero-stars { position: relative; display: inline-block; letter-spacing: 2px; font-size: .8rem; line-height: 1; }
-  .stars-base { color: #DADCE0; }
-  .stars-fill {
-    position: absolute; left: 0; top: 0;
-    width: 90%; /* 4,5 στα 5 */
-    overflow: hidden; white-space: nowrap;
-    color: #FBBC05;
   }
 
   /* Beams */
@@ -686,18 +623,11 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   /* ---------- Mobile: σύντομο, γρήγορο, χωρίς περιττό scroll ---------- */
   @media (max-width: 680px) {
     .hero { padding-top: 32px; }
-    /* Λογότυπα σε κινητό: 2+2 στα πλαϊνά κενά (σήμα κριτικών / σημείωση),
-       τα υπόλοιπα στη ζώνη του ταμπλό — ΤΙΠΟΤΑ μπροστά από κείμενο */
-    .flogo { --w: 26px !important; }
-    .flogo-ig { left: 4% !important; top: auto !important; bottom: 843px !important; --w: 30px !important; }
-    .flogo-go { right: 4% !important; top: auto !important; bottom: 843px !important; --w: 30px !important; }
-    /* Αγκύρωση από το κάτω άκρο του hero: σταθερή απόσταση πάνω από τις κάρτες Πριν/Μετά */
-    .flogo-ai { left: 4% !important; top: auto !important; bottom: 610px !important; --w: 26px !important; }
-    .flogo-xl { right: 4% !important; top: auto !important; bottom: 610px !important; --w: 26px !important; }
+    /* Κινητό: καθόλου αιωρούμενα λογότυπα στο hero — καθαρό, χωρίς φόρτωμα.
+       (Τα .sflogo των επόμενων sections μένουν — εκεί υπάρχει χώρος.) */
+    .float-logos { display: none; }
     .btn-note { width: fit-content; margin-inline: auto; max-width: 85%; }
-    .flogo-fb, .flogo-wa, .flogo-gm, .flogo-mp, .flogo-li, .flogo-tt, .flogo-vb { display: none; }
     .sflogo { display: block; }
-    .hero-reviews { margin-top: 16px; padding: 8px 14px; }
     .hero-kicker { margin-bottom: 16px; }
     .hero .sub { font-size: .98rem; margin-top: 18px; }
     .sub-more { display: none; }
