@@ -563,7 +563,7 @@ const presetView = PRESETS.map((p) => {
   .offer-card { position: relative; overflow: hidden; }
   .form-done { text-align: center; padding: 26px 0 10px; animation: fd-pop .45s cubic-bezier(.3, 1.4, .5, 1) both; }
   @keyframes fd-pop { from { transform: scale(.85); opacity: 0; } }
-  .fd-tick { width: 64px; height: 64px; }
+  .fd-tick { display: block; margin: 0 auto; width: 64px; height: 64px; }
   .fd-tick circle { stroke: var(--ok); stroke-width: 2.5; opacity: .55; }
   .fd-tick path {
     stroke: var(--ok-text); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round;
