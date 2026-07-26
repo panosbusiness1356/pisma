@@ -29,6 +29,13 @@
      σύνοψη επιχείρησης/τιμών/οδηγών για AI crawlers, πάντα συγχρονισμένο.
    - Η λίστα οδηγών πλέον στο **src/data/guides.ts** (μία πηγή για /odigoi/ + llms.txt).
    - robots.txt: ρητά Allow για GPTBot/ClaudeBot/PerplexityBot/Google-Extended κ.ά.
+4γ. **ΝΕΟΣ ΚΑΝΟΝΑΣ COPY (28/07, μνήμη no-small-business-wording):** ΠΟΤΕ
+   «μικρή/μικρομεσαία επιχείρηση», «ΜμΕ», «SMB» πουθενά στο site — γράφουμε
+   «επιχείρηση / η επιχείρησή σου / ιδιοκτήτες επιχειρήσεων». Καθαρίστηκαν 11 αρχεία.
+4δ. **+2 οδηγοί υπηρεσιών** (τι είναι, ΟΧΙ πώς γίνεται, απλά λόγια χωρίς εξυπνάδες):
+   `ti-einai-oi-aftomatismoi` (οι 6 αυτοματισμοί με μία πρόταση ο καθένας + τιμές
+   από pricing.ts) και `diaxeirisi-social-media` (επιλογές social + πίνακας τιμών).
+   Σύνολο οδηγών: 7, λίστα στο src/data/guides.ts.
 5. **Εκκρεμότητες χρήστριας (εκτός κώδικα):** δημιουργία Google Business Profile,
    Search Console (επαλήθευση DNS), εγγραφές σε καταλόγους με ίδια στοιχεία (NAP).
    Το ξεκλείδωμα = σβήσιμο middleware.ts + push (τότε: request indexing στο GSC).
