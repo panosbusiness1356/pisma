@@ -207,6 +207,9 @@ const presetView = PRESETS.map((p) => {
             <textarea name="summary" id="offer-summary" rows="6"></textarea>
           </label>
           <input type="text" name="website" tabindex="-1" autocomplete="off" class="f-hp" aria-hidden="true" />
+          <input type="hidden" name="_subject" value="Νέα προσφορά από τη σελίδα Τιμών — pisma.gr" />
+          <input type="hidden" name="_template" value="box" />
+          <input type="hidden" name="_captcha" value="false" />
           <button class="btn btn--orange" type="submit" id="offer-submit">Αποστολή προσφοράς</button>
           <p class="f-msg" id="offer-msg" hidden></p>
         </form>
@@ -385,7 +388,9 @@ const presetView = PRESETS.map((p) => {
           headers: { Accept: 'application/json' },
           body: data,
         });
-        if (!res.ok) throw new Error(String(res.status));
+        // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία — έλεγχος και του JSON.
+        const json = await res.json().catch(() => null);
+        if (!res.ok || !json || String(json.success) !== 'true') throw new Error('form failed');
         form.reset();
         update();
         showMsg('Η προσφορά στάλθηκε — θα επικοινωνήσουμε εντός 48 ωρών.', true);

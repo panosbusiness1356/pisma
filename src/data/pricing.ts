@@ -138,7 +138,9 @@ export const PRESETS: Preset[] = [
 ];
 
 /** Endpoint υπηρεσίας φορμών για αποθήκευση lead — κενό = fallback σε email. */
-export const FORM_ENDPOINT = '';
+// FormSubmit (χωρίς λογαριασμό): οι υποβολές πάνε στο info@pisma.gr.
+// Το /ajax/ endpoint επιστρέφει JSON — ταιριάζει με το fetch της φόρμας.
+export const FORM_ENDPOINT = 'https://formsubmit.co/ajax/info@pisma.gr';
 
 /** Βοηθητικά — κοινά για build και client. */
 export const ALL_OPTIONS: PricingOption[] = CATEGORIES.flatMap((c) => c.options);
