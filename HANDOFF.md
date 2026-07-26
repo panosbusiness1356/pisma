@@ -1,6 +1,41 @@
 # HANDOFF — PISMA site
 
-Κατάσταση έργου για συνέχιση σε νέο chat. Τελευταία ενημέρωση: 23/07/2026 (ξημερώματα).
+Κατάσταση έργου για συνέχιση σε νέο chat. Τελευταία ενημέρωση: **27/07/2026 (βράδυ)**.
+
+## ΤΙ ΕΓΙΝΕ ΣΤΟ ΤΕΛΕΥΤΑΙΟ SESSION (26–27/07) — διάβασε πρώτα αυτό
+
+1. **Νέο project: Εργαλείο κριτικών Google** (QR στο μαγαζί → τροχός δώρων → αίτημα
+   κριτικής → κουπόνι). Δύο demos ΧΩΡΙΣ backend, μέσα στο site:
+   - `/demo/pitsaria/` («La Nonna», μασκότ ο σερβιτόρος **Τζίνο** — SVG, ζωγραφισμένος custom)
+   - `/demo/kommotirio/` («Salon Mirella», μασκότ η κομμώτρια **Μιρέλλα**)
+   - Αισθητική: λιτά κείμενα, ΧΩΡΙΣ συννεφάκια-λόγια (οι μασκότ κάνουν τυχαίες κινήσεις:
+     βόλτες/σάλτα/στροφές). Οθόνη κριτικής = «εναλλακτική Β»: μεγάλη μασκότ σερβίρει
+     κλειδωμένο δώρο, τίτλος «Κάνε κριτική για να ξεκλειδώσεις το δώρο σου», κουμπί με
+     αυθεντικό G Google και ΜΟΝΟ «Άφησε κριτική», «Παράλειψη» μικρό κάτω κάτω.
+   - Η κριτική στο demo = mock φύλλο «Προσομοίωση» in-page. Ο **soft check** (άνοιγμα
+     πραγματικής Google + ξεκλείδωμα στην επιστροφή) ΥΛΟΠΟΙΗΘΗΚΕ και ΑΦΑΙΡΕΘΗΚΕ
+     (δεν δούλευε χωρίς πραγματικό link) — κώδικας στο commit **d5cb7d1**, επαναφορά όταν
+     υπάρξει πελάτης με writereview link (placeid). Δες memory: reviews-soft-check-parked.
+2. **Email site:** `info@pisma.gr` παντού (config.ts). Το domain λαμβάνει μέσω ImprovMX·
+   το info@ προωθείται σε «άλλο inbox» της χρήστριας (ΟΧΙ στο συνδεδεμένο gmail).
+3. **Φόρμες = ΛΕΙΤΟΥΡΓΙΚΕΣ (τέλος το mailto):** FormSubmit, ενεργοποιημένο από τη χρήστρια.
+   `FORM_ENDPOINT = 'https://formsubmit.co/ajax/info@pisma.gr'` (src/data/pricing.ts).
+   ΠΡΟΣΟΧΗ: το FormSubmit απαντά HTTP 200 και σε αποτυχία — ελέγχουμε `json.success`.
+   Και οι δύο φόρμες (times + epikoinonia) έχουν **εφέ επιτυχίας «Δ»**: spinner στο κουμπί →
+   οθόνη με πράσινο τικ που ζωγραφίζεται → κομφετί → ήχος → auto-επαναφορά φόρμας σε 6s.
+4. **Διορθώσεις bugs (μάθε από αυτά):**
+   - «Στείλτε μου αυτή την προσφορά» ήθελε 2 πατήματα: το native scrollIntoView ακυρώνεται
+     από το raf loop του Lenis → πλέον `window.lenis.scrollTo()` (το Base.astro εκθέτει
+     `window.lenis`) + focus με delay 700ms.
+   - Η οθόνη επιτυχίας «κολλούσε»: το author `#offer-form{display:grid}` υπερισχύει του
+     `hidden` → προστέθηκε `#offer-form[hidden]{display:none}`.
+   - Το τικ κόλλαγε αριστερά: global `svg{display:block}` → `.fd-tick{margin:0 auto}`.
+   - ΤΕΛΕΥΤΑΙΟ ΓΝΩΣΤΟ ΘΕΜΑ: η χρήστρια ανέφερε ότι «δεν φτιάχτηκε» το κεντράρισμα —
+     ελέγχθηκε ότι το live CSS + live μετρήσεις είναι ΣΩΣΤΑ (πιθανότατα cache της).
+     Αν το ξαναπεί: ζήτα σκληρό refresh/incognito, μετά έλεγξε ξανά οπτικά.
+5. **Google/SEO:** το site ΔΕΝ φαίνεται στην Google λόγω κλειδαριάς (όλα 401+noindex,
+   επιβεβαιωμένο και με site:pisma.gr = 0 αποτελέσματα). Απόφαση: μένει έτσι μέχρι να
+   «τελειώσει το χτίσιμο»· μετά υβριδικό (δημόσιο site, /demo/* με κωδικό) + Search Console.
 
 ## ΝΕΟΣ ΠΑΓΙΟΣ ΚΑΝΟΝΑΣ (23/07/2026): Ο τιμοκατάλογος = πηγή αλήθειας
 
@@ -93,7 +128,8 @@ underscore + link στο footer), «Τιμολόγια χωρίς πληκτρο
   εκπτώσεις ΠΡΟΣΩΡΙΝΕΣ (TODO οριστικοποίηση). Social τιμές = χαμηλό άκρο ζώνης.
 - Builder: ζωντανά σύνολα εφάπαξ/μηνιαίο, sticky δεξιά σε desktop, σταθερή μπάρα κάτω σε mobile.
   Preset click → φορτώνει επιλογές + δείχνει όφελος· χειροκίνητη αλλαγή → καθαρό άθροισμα.
-- Φόρμα: FORM_ENDPOINT κενό → fallback σε mailto. ΕΚΚΡΕΜΕΙ: λογαριασμός Formspree από τον ιδιοκτήτη.
+- Φόρμα: ΕΝΕΡΓΗ μέσω FormSubmit (`FORM_ENDPOINT` στο pricing.ts, βλ. κορυφή αρχείου).
+  Εφέ επιτυχίας «Δ» + auto-επαναφορά 6s. Έλεγχος πάντα του `json.success`, όχι μόνο res.ok.
 
 ## Ταμπλό (/tablo/) — Quiz
 
@@ -135,7 +171,7 @@ underscore + link στο footer), «Τιμολόγια χωρίς πληκτρο
   schema, config). Ο έλεγχος: `grep -rn "Γλυφάδα\|Πάνος" src/` πρέπει να βγάζει τίποτα.
 - Ύφος: επαγγελματικό, πληθυντικός στην αρχική (οι εσωτερικές μιλούν ακόμα ενικό — εκκρεμεί πέρασμα).
 - Τιμιότητα: ΜΗΝ επινοηθούν πελάτες/μαρτυρίες. (Το «2.000+ κριτικές» μπήκε με ρητή απόφαση χρήστη.)
-- Email/τηλέφωνο στο config είναι placeholders (hello@pisma.gr / +30 210 000 0000).
+- Email στο config: **info@pisma.gr (πραγματικό, ενεργό)**. Τηλέφωνο ακόμα placeholder (+30 210 000 0000).
 
 ## Ροή συνεργασίας με τον χρήστη (σημαντικό!)
 
@@ -154,8 +190,11 @@ underscore + link στο footer), «Τιμολόγια χωρίς πληκτρο
    ακόμα: tablo, elegxos, apodeixeis, epikoinonia (πέρασμα ενικός→πληθυντικός στα κείμενα).
 2. **Footer labels** — ΕΓΙΝΕ (23/07): «Ψηφιακή Προβολή / Αυτοματοποίηση / Αποτελέσματα».
 3. **Κάρτα κριτικών:** απόφαση 23/07 — μένει ΜΟΝΟ στο hero αρχικής προς το παρόν.
-4. **FORM_ENDPOINT** (Formspree) + **οριστικές εκπτώσεις πακέτων** στο pricing.ts.
-5. **Placeholders** email/τηλεφώνου.
+4. ~~FORM_ENDPOINT~~ ΕΓΙΝΕ (27/07, FormSubmit). ΕΚΚΡΕΜΟΥΝ: **οριστικές εκπτώσεις πακέτων** στο pricing.ts.
+5. **Placeholder τηλεφώνου** (το email ΕΓΙΝΕ — info@pisma.gr).
+5α. **Εργαλείο κριτικών — επόμενα:** εκτυπώσιμο QR-σταντάκι για τα demos, σελίδα
+    υπηρεσίας στο site + τιμή στο pricing.ts (θέλει απόφαση χρήστριας), backend
+    (μοναδικά κουπόνια, ρυθμίσεις ανά μαγαζί), επαναφορά soft check με πραγματικό link.
 6. **Git υγιεινή:** warnings για corrupt objects στο `.git/gc.log` (τα push δουλεύουν) — μη επείγον.
 
 ## Γνωστά τεχνικά quirks
@@ -164,3 +203,9 @@ underscore + link στο footer), «Τιμολόγια χωρίς πληκτρο
   screenshots μετά από scroll θέλουν το κόλπο `body.style.transform = translateY(...)` + `!important`
   (και ΔΕΝ πυροδοτεί IntersectionObserver — φυσιολογικό). Το Lenis μπλοκάρει προγραμματιστικό scroll.
 - Vercel deploy: επιβεβαίωση με grep στο σωστό CSS chunk (συχνά `apodeixeis.*.css`, όχι `index.*.css`).
+- Browser pane (27/07): σε αυτό το session τα rAF/frames πάγωναν τελείως (rafFired=false,
+  document.timeline κολλημένο στο 0) → CSS animations/Lenis δεν «κουνιούνται», screenshots
+  του /times μαύρα. Λύση: λειτουργικοί έλεγχοι με getComputedStyle + getBoundingClientRect
+  (σύγκριση κέντρων), ΟΧΙ οπτικοί. Για δοκιμή φορμών χωρίς αληθινά emails:
+  `window.fetch = async () => new Response(JSON.stringify({success:'true'}))` πριν το click.
+- Τεστ στο live μέσα από το pane: cookie `document.cookie='pisma_code=pisma2026...'` + reload.
