@@ -198,18 +198,43 @@ const title = 'Salon Mirella · Κέρδισε το δώρο σου!';
     }
     .g-badge svg { width: 19px; height: 19px; display: block; }
 
-    /* ---------- Soft check toast ---------- */
-    .soft-toast {
-      position: absolute; left: 50%; transform: translateX(-50%);
-      bottom: 96px; max-width: 90%;
-      background: var(--ink); color: #fff;
-      font-size: 13.5px; font-weight: 600; white-space: nowrap;
-      padding: 11px 18px; border-radius: 999px;
-      box-shadow: 0 8px 20px rgba(51,32,43,.3);
-      opacity: 0; pointer-events: none; transition: opacity .3s ease;
-      z-index: 12;
+    /* ---------- Mock φύλλο κριτικής ---------- */
+    .sheet-veil {
+      position: absolute; inset: 0; background: rgba(30,16,24,.45);
+      display: none; align-items: flex-end; z-index: 10;
+      animation: fadeUp .25s ease both;
     }
-    .soft-toast.show { opacity: 1; }
+    .sheet-veil.open { display: flex; }
+    .sheet {
+      background: #fff; width: 100%; border-radius: 22px 22px 0 0;
+      padding: 20px 22px 30px;
+      animation: slideUp .3s ease both;
+    }
+    @keyframes slideUp { from { transform: translateY(100%); } }
+    .sheet .demo-note {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+      color: var(--soft); text-align: center; margin-bottom: 12px;
+    }
+    .sheet .place { font-weight: 700; font-size: 17px; }
+    .sheet .place small { display: block; font-weight: 400; color: var(--soft); font-size: 12.5px; margin-top: 2px; }
+    .rate-stars { display: flex; gap: 10px; justify-content: center; margin: 18px 0 6px; }
+    .rate-stars button {
+      appearance: none; border: 0; background: none; cursor: pointer;
+      font-size: 38px; color: #ddd0d6; transition: transform .1s ease, color .1s ease;
+      line-height: 1;
+    }
+    .rate-stars button.lit { color: var(--gold); }
+    .rate-stars button:active { transform: scale(1.2); }
+    .sheet textarea {
+      width: 100%; border: 1px solid #e8dae1; border-radius: 12px;
+      padding: 12px; font: inherit; font-size: 14.5px; resize: none; height: 76px;
+      margin-top: 10px; color: var(--ink); background: #faf5f8;
+    }
+    .sheet textarea:focus { outline: 2px solid rgba(66,133,244,.4); }
+    .sheet .publish {
+      margin-top: 14px; width: 100%;
+      background: #1a73e8; box-shadow: 0 6px 16px rgba(26,115,232,.3);
+    }
 
     /* ---------- Στάδιο 4: Κουπόνι ---------- */
     .coupon {
@@ -491,8 +516,18 @@ const title = 'Salon Mirella · Κέρδισε το δώρο σου!';
       <div class="powered">Εργαλείο κριτικών από <b>PISMA</b> · σελίδα επίδειξης</div>
     </section>
 
-    <!-- Μήνυμα soft check: γύρισε πολύ γρήγορα από την Google -->
-    <div class="soft-toast" id="softToast">Μια κριτική θέλει λίγα δευτερόλεπτα 😉 Δοκίμασε ξανά!</div>
+    <!-- Mock φύλλο κριτικής Google (προσομοίωση για το demo) -->
+    <div class="sheet-veil" id="sheetVeil">
+      <div class="sheet">
+        <div class="demo-note">Προσομοίωση · έτσι φαίνεται στο Google</div>
+        <div class="place">Salon Mirella<small>Δημοσίευση κριτικής δημόσια</small></div>
+        <div class="rate-stars" id="rateStars">
+          <button data-v="1">★</button><button data-v="2">★</button><button data-v="3">★</button><button data-v="4">★</button><button data-v="5">★</button>
+        </div>
+        <textarea id="reviewText" placeholder="Πες μας για την εμπειρία σου (προαιρετικό)…"></textarea>
+        <button class="btn publish" id="publishBtn" disabled>Δημοσίευση</button>
+      </div>
+    </div>
 
     <!-- Η Μιρέλλα — η κομμώτρια-μασκότ -->
     <div class="waiter" id="waiter" aria-hidden="true">
@@ -638,41 +673,29 @@ const title = 'Salon Mirella · Κέρδισε το δώρο σου!';
       }, 4900);
     });
 
-    // ---------- Soft check κριτικής ----------
-    // Το κουμπί ανοίγει τη σελίδα κριτικής της Google. Όταν ο χρήστης γυρίσει
-    // στη σελίδα μας, αν έλειπε αρκετή ώρα (όσο θέλει μια κριτική) το κουπόνι
-    // ξεκλειδώνει μόνο του — αλλιώς του ζητάμε ευγενικά να ξαναδοκιμάσει.
-    // Σε πραγματική εγκατάσταση το REVIEW_URL γίνεται το writereview link του
-    // μαγαζιού: https://search.google.com/local/writereview?placeid=XXXX
-    const REVIEW_URL = 'https://www.google.com/maps/search/κομμωτήριο';
-    const MIN_REVIEW_SECONDS = 10;
-    let leftForReviewAt = null;
-    document.getElementById('reviewBtn').addEventListener('click', () => {
-      window.open(REVIEW_URL, '_blank');
-      leftForReviewAt = Date.now();
+    // ---------- Mock κριτική (προσομοίωση Google) ----------
+    // Όταν μπει πραγματικό writereview link μαγαζιού, εδώ επανέρχεται ο soft
+    // check (κώδικας στο commit d5cb7d1): άνοιγμα Google + ξεκλείδωμα στην
+    // επιστροφή αν πέρασαν αρκετά δευτερόλεπτα.
+    const veil = document.getElementById('sheetVeil');
+    let rating = 0;
+    document.getElementById('reviewBtn').addEventListener('click', () => veil.classList.add('open'));
+    veil.addEventListener('click', e => { if (e.target === veil) veil.classList.remove('open'); });
+    document.querySelectorAll('#rateStars button').forEach(btn =>
+      btn.addEventListener('click', () => {
+        rating = +btn.dataset.v;
+        document.querySelectorAll('#rateStars button').forEach(b =>
+          b.classList.toggle('lit', +b.dataset.v <= rating));
+        document.getElementById('publishBtn').disabled = rating === 0;
+      }));
+    document.getElementById('publishBtn').addEventListener('click', () => {
+      veil.classList.remove('open');
+      document.getElementById('thanksLine').textContent = 'Ευχαριστούμε πολύ! ❤️';
+      issueCoupon();
+      go('s-coupon');
+      confetti(60);
+      cheer(2800);
     });
-    function checkReturnFromReview() {
-      if (!leftForReviewAt) return;
-      const secs = (Date.now() - leftForReviewAt) / 1000;
-      if (secs < 1) return; // αγνόησε το αρχικό focus αμέσως μετά το κλικ
-      leftForReviewAt = null;
-      if (secs >= MIN_REVIEW_SECONDS) {
-        document.getElementById('thanksLine').textContent = 'Ευχαριστούμε πολύ! ❤️';
-        issueCoupon();
-        go('s-coupon');
-        confetti(60);
-        cheer(2800);
-      } else {
-        const t = document.getElementById('softToast');
-        t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 3200);
-      }
-    }
-    // Δύο σήματα επιστροφής, για κάλυψη όλων των browsers/κινητών:
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') checkReturnFromReview();
-    });
-    window.addEventListener('focus', checkReturnFromReview);
     document.getElementById('skipBtn').addEventListener('click', () => {
       issueCoupon();
       go('s-coupon');
