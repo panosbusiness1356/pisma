@@ -61,6 +61,8 @@ const path = norm(Astro.url.pathname);
     const open = burger.getAttribute('aria-expanded') === 'true';
     burger.setAttribute('aria-expanded', String(!open));
     nav.classList.toggle('is-open', !open);
+    // Το μενού ζει ΜΕΣΑ στην κάψουλα — όσο είναι ανοιχτό, η κάψουλα παίρνει φόντο
+    wrap.classList.toggle('menu-open', !open);
     (burger.querySelector('.i-open') as SVGElement).style.display = open ? '' : 'none';
     (burger.querySelector('.i-close') as SVGElement).style.display = open ? 'none' : '';
   });
@@ -105,14 +107,17 @@ const path = norm(Astro.url.pathname);
     border: 1px solid transparent; border-radius: 18px;
     transition: max-width .35s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
   }
-  .nav-wrap.is-scrolled .nav {
-    max-width: 1060px;
+  /* 1160px ώστε να χωρούν άνετα logo + 6 links + ήχος + CTA — στο 1060 το CTA ξεχείλωνε */
+  .nav-wrap.is-scrolled .nav,
+  .nav-wrap.menu-open .nav {
+    max-width: 1160px;
     background: rgba(13, 10, 20, .72);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border-color: var(--line-strong);
     box-shadow: var(--shadow);
   }
+  .nav-wrap.menu-open .nav { background: rgba(13, 10, 20, .92); }
   .logo {
     font-family: var(--font-display); font-weight: 800; font-size: 1.25rem;
     color: var(--navy); text-decoration: none; letter-spacing: .01em; margin-right: auto;
@@ -150,19 +155,22 @@ const path = norm(Astro.url.pathname);
   .burger { display: none; background: none; border: 0; cursor: pointer; color: var(--navy); padding: 8px; border-radius: 10px; }
   .burger svg { width: 26px; height: 26px; }
 
-  @media (max-width: 1080px) {
-    .nav { gap: 14px; }
+  /* 1200px (όχι 1080): με 6 links η σειρά δεν χωράει σε στενά desktop — νωρίτερα burger */
+  @media (max-width: 1200px) {
+    .nav { gap: 14px; flex-wrap: wrap; height: auto; min-height: 64px; }
     .nav-quiz { display: none; }
     .burger { display: inline-flex; }
     .sound-btn { display: none; }
     .burger svg { width: 30px; height: 30px; }
+    /* Το ανοιχτό μενού είναι ΜΕΡΟΣ της κάψουλας: static, σπάει σε νέα σειρά
+       μέσα στο ίδιο στρογγυλεμένο κουτί — κανένα ξεχωριστό πάνελ, κανένα κενό. */
     .nav-links {
       display: none;
-      position: absolute; top: 76px; left: 0; right: 0;
+      position: static; order: 10; width: 100%;
       flex-direction: column; align-items: stretch; gap: 4px;
-      background: var(--bg-soft); border-bottom: 1px solid var(--line);
-      padding: 12px clamp(20px, 4vw, 36px) 20px;
-      box-shadow: var(--shadow);
+      background: none; border: 0; box-shadow: none;
+      border-top: 1px solid var(--line);
+      margin-top: 2px; padding: 8px 4px 16px;
     }
     .nav-links.is-open { display: flex; }
     .nav-links a:not(.btn) { display: block; padding: 12px 4px; font-size: 1.05rem; }
