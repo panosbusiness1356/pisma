@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SITE, ELEGXOS, eur } from '../config';
-import { PRESETS, CATEGORIES } from '../data/pricing';
+import { CATEGORIES, optionById, sumOf } from '../data/pricing';
 
 // Πλήρης «ταυτότητα» της PISMA για Google & AI — αναπληρώνει το (προσωρινά
 // ανύπαρκτο) Google Business Profile. Ο τιμοκατάλογος βγαίνει από το pricing.ts.
@@ -69,8 +69,21 @@ const steps = [
 ];
 
 
-const plans = PRESETS;
-const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
+/* Μίνι-preview του builder (section Τιμολόγηση) — πραγματικές υπηρεσίες και
+   τιμές από το pricing.ts, ώστε το demo να μη δείχνει ποτέ ξεπερασμένα ποσά.
+   Τα labels των generic βαθμίδων («Standard», «Setup») παίρνουν το όνομα της
+   κατηγορίας τους για να στέκουν μόνα τους. */
+const bdDefs: { id: string; label?: string }[] = [
+  { id: 'web-standard', label: 'Ιστοσελίδα Standard' },
+  { id: 'gbp-setup', label: 'Προφίλ Google — Setup' },
+  { id: 'auto-reviews' },
+  { id: 'care-web' },
+];
+const bdItems = bdDefs.map(({ id, label }) => {
+  const o = optionById(id)!;
+  return { label: label ?? o.label, price: o.price, type: o.type };
+});
+const bdTotals = sumOf(bdDefs.map((d) => d.id));
 ---
 
 <Base
@@ -251,37 +264,72 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   <!-- 4. Ηλεκτρονική τιμολόγηση 2026: ΠΡΟΣΩΡΙΝΑ ΕΚΤΟΣ — φυλάσσεται στο
        components/Einvoice2026.astro, επαναφορά με <Einvoice2026 /> εδώ. -->
 
-  <!-- 6. Τιμολόγηση -->
+  <!-- 6. Τιμολόγηση — φτιάξτε το δικό σας πακέτο -->
   <section
     class="section section--tight"
     aria-labelledby="pricing-title"
     data-mascot-stop
     data-mascot-side="left"
-    data-mascot-say={`Όλες οι τιμές δημοσιεύονται αναλυτικά — πακέτα από ${eur(minSetup)} εφάπαξ.`}
+    data-mascot-say="Κανένα έτοιμο πακέτο — διαλέγετε ό,τι χρειάζεστε και βλέπετε το σύνολο ζωντανά."
   >
     <span class="flogo sflogo" aria-hidden="true" style="left:4%;top:2px;--w:22px;--dur:6.4s"><img src="/logos/linkedin-icon.svg" alt="" loading="lazy" /></span>
     <span class="flogo sflogo" aria-hidden="true" style="right:4%;top:42px;--w:26px;--dur:6.8s"><img src="/logos/facebook.svg" alt="" loading="lazy" /></span>
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">Τιμολόγηση</p>
-        <h2 id="pricing-title">Οι τιμές μας, δημόσιες — φτιάξτε το πακέτο σας</h2>
-        <p>Γνωρίζετε το κόστος πριν από την πρώτη επικοινωνία.</p>
+        <h2 id="pricing-title">Κανένα έτοιμο πακέτο — φτιάχνετε το δικό σας</h2>
+        <p>Όλες οι τιμές δημόσιες. Διαλέγετε μόνο ό,τι χρειάζεστε — και ξέρετε το κόστος πριν από την πρώτη επικοινωνία.</p>
       </div>
-      <div class="grid-3">
-        {plans.map((p) => (
-          <article class="card plan-mini reveal">
-            <h3>{p.name}</h3>
-            <p class="plan-mini-setup"><span class="num">{eur(p.bundleOnce)}</span> εφάπαξ</p>
-            <p class="plan-mini-monthly">
-              {p.bundleMonthly > 0
-                ? <>+ <span class="num">{eur(p.bundleMonthly)}</span> / μήνα</>
-                : <>χωρίς μηνιαίο κόστος</>}
-            </p>
-          </article>
-        ))}
-      </div>
-      <div class="cases-cta">
-        <a class="btn btn--navy" href="/times/">Δείτε αναλυτικά τις τιμές →</a>
+
+      <div class="card bd reveal" id="builder-demo">
+        <!-- Αριστερά: μίνι-preview του builder — δείγμα με πραγματικές τιμές -->
+        <div class="bd-mock" aria-hidden="true">
+          <p class="bd-mock-title">Η προσφορά σας <span class="tag tag--demo">Δείγμα</span></p>
+          <ul class="bd-list">
+            {bdItems.map((o) => (
+              <li class="bd-item is-on" data-price={o.price} data-ptype={o.type}>
+                <span class="bd-check">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.8 4.8L19.5 6.8" /></svg>
+                </span>
+                <span class="bd-label">{o.label}</span>
+                <span class="bd-price num">{eur(o.price)}{o.type === 'monthly' && <em>/μ</em>}</span>
+              </li>
+            ))}
+          </ul>
+          <div class="bd-totals">
+            <span>Εφάπαξ</span><b class="num" id="bd-once">{eur(bdTotals.once)}</b>
+            <span>Μηνιαία</span><b class="num bd-sm" id="bd-month">{eur(bdTotals.monthly)}</b>
+          </div>
+        </div>
+
+        <!-- Δεξιά: πώς δουλεύει -->
+        <div class="bd-text">
+          <ol class="bd-steps">
+            <li>
+              <span class="bd-n num">1</span>
+              <div>
+                <h3>Διαλέγετε υπηρεσίες</h3>
+                <p>Site, Google, ο Τροχός των Κριτικών, αυτοματισμοί — τικάρετε μόνο ό,τι σας χρειάζεται.</p>
+              </div>
+            </li>
+            <li>
+              <span class="bd-n num">2</span>
+              <div>
+                <h3>Βλέπετε το σύνολο ζωντανά</h3>
+                <p>Εφάπαξ και μηνιαία, χωρίς ψιλά γράμματα — το άθροισμα ενημερώνεται μπροστά σας.</p>
+              </div>
+            </li>
+            <li>
+              <span class="bd-n num">3</span>
+              <div>
+                <h3>Τη λαμβάνετε γραπτώς</h3>
+                <p>Καμία πληρωμή online — στέλνετε την προσφορά και τα λέμε.</p>
+              </div>
+            </li>
+          </ol>
+          <a class="btn btn--orange" href="/times/">Φτιάξτε το πακέτο σας →</a>
+          <p class="btn-note">2 λεπτά · όλες οι τιμές δημόσιες · χωρίς στοιχεία</p>
+        </div>
       </div>
     </div>
   </section>
@@ -381,6 +429,49 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
       { threshold: 0.25 }
     );
     fxSections.forEach((s) => fxIo.observe(s));
+  }
+
+  // Μίνι-preview builder (Τιμολόγηση): οι υπηρεσίες «τικάρονται» μία-μία και το
+  // σύνολο μεγαλώνει ζωντανά. Το HTML έχει το τελικό state — το JS απλώς το
+  // ξανα-παίζει στο πρώτο scroll. Χωρίς JS ή με reduced motion: τελικό state.
+  const bdDemo = document.getElementById('builder-demo');
+  if (bdDemo && !reduceFx && 'IntersectionObserver' in window) {
+    const items = Array.from(bdDemo.querySelectorAll<HTMLElement>('.bd-item'));
+    const onceEl = document.getElementById('bd-once')!;
+    const monthEl = document.getElementById('bd-month')!;
+    const finalOnce = onceEl.textContent!;
+    const finalMonth = monthEl.textContent!;
+    const eurFmt = (n: number) => n.toLocaleString('el-GR') + '€';
+
+    const bdIo = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        bdIo.disconnect();
+        // Μηδενισμός και σταδιακό «τικάρισμα»
+        let once = 0;
+        let month = 0;
+        items.forEach((li) => li.classList.remove('is-on'));
+        onceEl.textContent = eurFmt(0);
+        monthEl.textContent = eurFmt(0);
+        items.forEach((li, i) => {
+          window.setTimeout(() => {
+            li.classList.add('is-on');
+            const price = Number(li.dataset.price || 0);
+            if (li.dataset.ptype === 'once') once += price;
+            else month += price;
+            onceEl.textContent = eurFmt(once);
+            monthEl.textContent = eurFmt(month);
+            // Δίχτυ ασφαλείας: στο τέλος, τα ποσά που ήρθαν από το build.
+            if (i === items.length - 1) {
+              onceEl.textContent = finalOnce;
+              monthEl.textContent = finalMonth;
+            }
+          }, 500 + i * 550);
+        });
+      },
+      { threshold: 0.45 }
+    );
+    bdIo.observe(bdDemo);
   }
 </script>
 
@@ -586,15 +677,69 @@ const minSetup = Math.min(...PRESETS.map((p) => p.bundleOnce));
   .cases-note { text-align: center; margin-top: 14px; font-size: .8rem; color: var(--muted); }
   .cases-cta { text-align: center; margin-top: clamp(20px, 3vw, 32px); }
 
-  /* ---------- Τιμολόγηση ---------- */
-  .plan-mini { text-align: center; border-top: 3px solid var(--orange); }
-  .grid-3 .plan-mini:nth-child(2) { border-top-color: var(--blue); }
-  .grid-3 .plan-mini:nth-child(3) { border-top-color: var(--yellow); }
-  .plan-mini h3 { margin-bottom: 10px; }
-  .plan-mini-setup { font-size: 1.05rem; color: var(--muted); }
-  .plan-mini-setup .num { font-size: 1.9rem; font-weight: 700; color: var(--navy); margin-right: 6px; }
-  .plan-mini-monthly { margin-top: 4px; color: var(--muted); font-size: .95rem; }
-  .plan-mini-monthly .num { font-weight: 700; color: var(--orange-text); }
+  /* ---------- Τιμολόγηση: μίνι-preview του builder ---------- */
+  .bd {
+    display: grid;
+    grid-template-columns: minmax(min(300px, 100%), .95fr) minmax(min(300px, 100%), 1.05fr);
+    gap: clamp(26px, 5vw, 60px);
+    align-items: center;
+    padding: clamp(24px, 4vw, 48px);
+  }
+  @media (max-width: 760px) {
+    .bd { grid-template-columns: 1fr; }
+  }
+  .bd-mock {
+    background: var(--bg);
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    padding: 18px 20px 16px;
+  }
+  .bd-mock-title {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    font-size: .82rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  .bd-list { list-style: none; padding: 0; margin: 0; }
+  .bd-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .bd-item:last-child { border-bottom: 0; }
+  .bd-check {
+    flex: none; width: 22px; height: 22px; border-radius: 6px;
+    border: 1.5px solid var(--line-strong);
+    display: grid; place-items: center;
+    color: #fff;
+    transition: background .25s ease, border-color .25s ease;
+  }
+  .bd-check svg { width: 14px; height: 14px; opacity: 0; transform: scale(.6); transition: opacity .25s ease, transform .25s ease; }
+  .bd-item.is-on .bd-check { background: var(--orange-cta); border-color: var(--orange-cta); }
+  .bd-item.is-on .bd-check svg { opacity: 1; transform: none; }
+  .bd-label { flex: 1; font-size: .93rem; font-weight: 600; color: var(--muted); transition: color .25s ease; }
+  .bd-item.is-on .bd-label { color: var(--ink); }
+  .bd-price { font-size: .93rem; color: var(--muted); white-space: nowrap; transition: color .25s ease; }
+  .bd-price em { font-style: normal; font-size: .8em; }
+  .bd-item.is-on .bd-price { color: var(--navy); font-weight: 700; }
+  .bd-totals {
+    display: grid; grid-template-columns: 1fr auto; gap: 2px 14px; align-items: baseline;
+    border-top: 1px solid var(--line-strong);
+    margin-top: 12px; padding-top: 12px;
+  }
+  .bd-totals span { font-size: .88rem; color: var(--muted); font-weight: 600; }
+  .bd-totals b { font-size: 1.35rem; color: var(--navy); text-align: right; }
+  .bd-totals b.bd-sm { font-size: 1rem; color: var(--orange-text); }
+  .bd-steps { list-style: none; padding: 0; display: grid; gap: 16px; margin-bottom: 22px; }
+  .bd-steps li { display: flex; gap: 14px; align-items: flex-start; }
+  .bd-n {
+    flex: none;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 10px;
+    background: var(--orange-soft); color: var(--orange-text);
+    font-weight: 700;
+  }
+  .bd-steps h3 { font-size: 1rem; margin-bottom: 2px; }
+  .bd-steps p { font-size: .93rem; color: var(--muted); }
 
   /* ---------- Η εταιρία ---------- */
   .who {

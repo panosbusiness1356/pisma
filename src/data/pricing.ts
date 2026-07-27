@@ -3,7 +3,8 @@
  *
  * - Νέο automation/υπηρεσία = μία νέα γραμμή στο αντίστοιχο options[].
  * - Οι τιμές social είναι το ΧΑΜΗΛΟ άκρο των ζωνών (απόφαση 15/07/2026).
- * - Τα πακέτα (PRESETS) έχουν προσωρινές εκπτώσεις — TODO: οριστικοποίηση ποσών.
+ * - Έτοιμα πακέτα ΔΕΝ υπάρχουν (απόφαση 27/07/2026) — ο πελάτης φτιάχνει το
+ *   δικό του στον builder του /times/ και πληρώνει το άθροισμα των υπηρεσιών.
  * - FORM_ENDPOINT: βάλε εδώ το endpoint της υπηρεσίας φορμών (π.χ. Formspree
  *   «https://formspree.io/f/XXXXXXX») για αποθήκευση lead. Όσο είναι κενό,
  *   το κουμπί ανοίγει email με προσυμπληρωμένη την προσφορά.
@@ -94,46 +95,6 @@ export const CATEGORIES: PricingCategory[] = [
     options: [
       { id: 'care-web', label: 'Website care', detail: 'Ενημερώσεις, ασφάλεια, μικροαλλαγές', price: 29, type: 'monthly' },
     ],
-  },
-];
-
-export interface Preset {
-  id: string;
-  name: string;
-  tagline: string;
-  highlighted?: boolean;
-  /** ids επιλογών από τα CATEGORIES */
-  optionIds: string[];
-  /** Τιμές πακέτου — χαμηλότερες από το άθροισμα (TODO: οριστικοποίηση εκπτώσεων) */
-  bundleOnce: number;
-  bundleMonthly: number;
-}
-
-export const PRESETS: Preset[] = [
-  {
-    id: 'preset-start',
-    name: 'Ξεκίνημα',
-    tagline: 'Η πρώτη σοβαρή παρουσία στο internet',
-    optionIds: ['web-basic', 'gbp-setup'],
-    bundleOnce: 260,
-    bundleMonthly: 0,
-  },
-  {
-    id: 'preset-visible',
-    name: 'Ορατότητα',
-    tagline: 'Site — και να σας βρίσκουν σε Google και AI',
-    highlighted: true,
-    optionIds: ['web-standard', 'gbp-setup', 'ai-setup', 'ai-monthly', 'care-web'],
-    bundleOnce: 720,
-    bundleMonthly: 215,
-  },
-  {
-    id: 'preset-full',
-    name: 'Πλήρες',
-    tagline: 'Παρουσία, social και γραφείο στο αυτόματο',
-    optionIds: ['web-pro', 'gbp-setup', 'ai-setup', 'ai-monthly', 'soc-1p-pisma', 'auto-day', 'auto-debt', 'care-web'],
-    bundleOnce: 850,
-    bundleMonthly: 419,
   },
 ];
 

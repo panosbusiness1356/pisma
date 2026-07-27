@@ -4,7 +4,7 @@
  */
 import type { APIRoute } from 'astro';
 import { SITE, ELEGXOS, eur } from '../config';
-import { CATEGORIES, PRESETS } from '../data/pricing';
+import { CATEGORIES } from '../data/pricing';
 import { GUIDES } from '../data/guides';
 
 const line = (o: { label: string; detail?: string; price: number; type: string }) =>
@@ -29,12 +29,8 @@ online όλη την Ελλάδα. Κάθε συνεργασία ξεκινά μ
 
 ${CATEGORIES.map((c) => `### ${c.title}\n${c.options.map(line).join('\n')}`).join('\n\n')}
 
-### Πακέτα
-${PRESETS.map(
-  (p) =>
-    `- ${p.name} — ${p.tagline}: ${eur(p.bundleOnce)} εφάπαξ${p.bundleMonthly > 0 ? ` + ${eur(p.bundleMonthly)} τον μήνα` : ''}`
-).join('\n')}
-
+Δεν υπάρχουν έτοιμα πακέτα: κάθε επιχείρηση φτιάχνει το δικό της πακέτο στον
+builder και πληρώνει το άθροισμα των υπηρεσιών που διάλεξε — τίποτα παραπάνω.
 Πλήρης τιμοκατάλογος με builder πακέτου: ${SITE.url}/times/
 
 ## Οδηγοί (δωρεάν άρθρα)

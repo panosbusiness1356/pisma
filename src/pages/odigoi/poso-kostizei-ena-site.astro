@@ -1,13 +1,13 @@
 ---
 import Guide from '../../layouts/Guide.astro';
-import { optionById, PRESETS } from '../../data/pricing';
+import { optionById } from '../../data/pricing';
 import { eur, ELEGXOS } from '../../config';
 
 const basic = optionById('web-basic')!;
 const standard = optionById('web-standard')!;
 const pro = optionById('web-pro')!;
 const care = optionById('care-web')!;
-const start = PRESETS.find((p) => p.id === 'preset-start')!;
+const gbp = optionById('gbp-setup')!;
 
 const faq = [
   {
@@ -23,8 +23,8 @@ const faq = [
     a: 'Σε εσένα — πάντα. Αν το domain γραφτεί στο όνομα του κατασκευαστή, δεν ελέγχεις το ίδιο σου το site και δύσκολα φεύγεις αν κάτι πάει στραβά.',
   },
   {
-    q: 'Τι είναι το πακέτο «Ξεκίνημα»;',
-    a: `Site Basic μαζί με στήσιμο του προφίλ σου στο Google (Χάρτες και αναζήτηση), για ${eur(start.bundleOnce)} εφάπαξ — φθηνότερα από ό,τι αν τα έπαιρνες χωριστά.`,
+    q: 'Υπάρχουν έτοιμα πακέτα;',
+    a: `Όχι — φτιάχνεις το δικό σου: διαλέγεις μόνο τις υπηρεσίες που χρειάζεσαι στη σελίδα τιμών και πληρώνεις το άθροισμά τους. Συνηθισμένο πρώτο βήμα: Basic site (${eur(basic.price)}) μαζί με στήσιμο του προφίλ Google (${eur(gbp.price)}).`,
   },
   {
     q: 'Χρειάζομαι site αν έχω ήδη σελίδα στο Facebook;',
@@ -138,9 +138,9 @@ const faq = [
     </tbody>
   </table>
   <p>
-    Η προαιρετική συντήρηση ({care.label}) κοστίζει {eur(care.price)} τον μήνα. Υπάρχει και το
-    πακέτο <strong>«{start.name}»</strong>: site Basic μαζί με στήσιμο του προφίλ σου στο Google
-    (Χάρτες και αναζήτηση) για {eur(start.bundleOnce)} εφάπαξ — φθηνότερα από ό,τι χωριστά.
+    Η προαιρετική συντήρηση ({care.label}) κοστίζει {eur(care.price)} τον μήνα. Συχνά το site
+    συνδυάζεται με στήσιμο του προφίλ σου στο Google — Χάρτες και αναζήτηση ({eur(gbp.price)}
+    εφάπαξ), ώστε να σε βρίσκουν από την πρώτη μέρα.
   </p>
   <p>
     Στη <a href="/times/">σελίδα τιμών</a> φτιάχνεις τον δικό σου συνδυασμό και βλέπεις το
