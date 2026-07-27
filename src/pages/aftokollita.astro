@@ -56,7 +56,9 @@ button{font-family:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:6px}
 input{font-family:inherit}
 
-.app{min-height:100svh;display:flex;flex-direction:column}
+.app{min-height:100svh;display:flex;flex-direction:column;overflow-x:clip}
+/* ^ το clip κόβει το glow (.spot::before) που ξεχείλωνε οριζόντια σε κινητό —
+   η λωρίδα .strip σκρολάρει εσωτερικά, δεν επηρεάζεται */
 
 /* ================= top ================= */
 .top{display:flex;align-items:center;gap:18px;padding:16px 26px;border-bottom:1px solid var(--line)}
@@ -243,7 +245,8 @@ input{font-family:inherit}
   .whatlink{display:none}
   .stage{grid-template-columns:44px 1fr 44px;padding:4px 4px 0}
   .nav{width:40px;height:40px}
-  .art svg{max-height:34vh}
+  .art{width:100%}
+  .art svg{max-height:34vh;max-width:100%}
   .info{padding:4px 18px 10px}
   .price{font-size:21px}
   .badd{padding:12px 20px;font-size:13px}

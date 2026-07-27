@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+---
+
+<Base
+  title="Η σελίδα δεν βρέθηκε — PISMA"
+  description="Η διεύθυνση που άνοιξες δεν υπάρχει ή έχει μετακινηθεί. Δες τις βασικές σελίδες της PISMA ή γράψε μας."
+>
+  <PageHero
+    kicker="404"
+    sub="Η διεύθυνση που άνοιξες δεν υπάρχει ή έχει μετακινηθεί — συμβαίνει και στις καλύτερες οικογένειες."
+  >
+    Εδώ δεν υπάρχει <span class="accent">τίποτα</span>.
+  </PageHero>
+
+  <section class="section--tight" aria-label="Χρήσιμες διαδρομές">
+    <div class="container container--narrow nf-wrap">
+      <div class="nf-links">
+        <a class="btn btn--orange" href="/">Πίσω στην αρχική</a>
+        <a class="btn btn--ghost" href="/odigoi/">Οι Οδηγοί</a>
+        <a class="btn btn--ghost" href="/epikoinonia/">Επικοινωνία</a>
+      </div>
+      <p class="nf-note">
+        Αν έφτασες εδώ από link δικό μας, πες το μας στο
+        <a href="/epikoinonia/">φόρμα επικοινωνίας</a> — θα το φτιάξουμε.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf-wrap { text-align: center; padding-bottom: clamp(60px, 10vw, 120px); }
+  .nf-links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .nf-note { margin: 26px auto 0; color: var(--muted); font-size: .95rem; max-width: 46ch; }
+  .nf-note a { color: var(--orange-text); }
+</style>
