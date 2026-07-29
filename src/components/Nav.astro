@@ -192,6 +192,9 @@ const inServices = services.some((s) => path === norm(s.href));
     }
     .sound-btn { margin-left: auto; }
     .nav-quiz { margin-right: 0; }
+    /* Κορυφή σελίδας: πλήρες πλάτος — λογότυπο ΤΕΡΜΑ αριστερά, ήχος+CTA
+       ΤΕΡΜΑ δεξιά (απόφαση χρήστριας). Στο scroll όλα μαζεύουν στη μέση. */
+    .nav-wrap:not(.is-scrolled) .nav { max-width: 100%; }
     .nav-wrap.is-scrolled .nav,
     .nav-wrap.menu-open .nav { max-width: 1060px; }
   }
