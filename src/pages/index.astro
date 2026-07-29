@@ -531,8 +531,15 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
   .announce:hover .announce-arrow-track { transform: translateX(0); }
   .announce-arrow-track svg { width: 12px; height: 26px; margin-inline: auto; color: var(--orange-text); flex: none; padding-block: 7px; box-sizing: content-box; padding-inline: 7px; }
 
-  /* Αιωρούμενα λογότυπα */
-  .float-logos { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+  /* Αιωρούμενα λογότυπα — το στρώμα κλειδώνει στα 1440px κεντραρισμένο:
+     σε φαρδιές οθόνες τα λογότυπα μένουν κοντά στο κείμενο αντί να
+     τραβιούνται στις άκρες (τα % είναι πάνω στο στρώμα, όχι στο viewport).
+     Έως 1440px viewport = ταυτόσημο με πριν. */
+  .float-logos {
+    position: absolute; top: 0; bottom: 0; left: 50%;
+    width: min(100%, 1440px); transform: translateX(-50%);
+    pointer-events: none; z-index: 2;
+  }
   section { position: relative; }
   .sflogo { display: none; pointer-events: none; z-index: 2; }
 
