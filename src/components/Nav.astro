@@ -1,8 +1,12 @@
 ---
+// Οι 3 υπηρεσίες ζουν σε αναδιπλούμενο «Υπηρεσίες» (desktop dropdown)·
+// στο mobile μενού εμφανίζονται σκέτες, στην ίδια θέση, χωρίς trigger.
+const services = [
+  { href: '/se-vriskoun/', label: 'Google & ChatGPT', desc: 'Να σε βρίσκουν όσοι ψάχνουν' },
+  { href: '/doulevei-mono-tou/', label: 'Αυτοματισμοί γραφείου', desc: 'Λιγότερες ώρες σε μηχανικές δουλειές' },
+  { href: '/kritikes/', label: 'Κριτικές Google', desc: 'Περισσότερες κριτικές από τους πελάτες σου' },
+];
 const links = [
-  { href: '/se-vriskoun/', label: 'Google & ChatGPT' },
-  { href: '/doulevei-mono-tou/', label: 'Αυτοματισμοί γραφείου' },
-  { href: '/kritikes/', label: 'Κριτικές Google' },
   { href: '/times/', label: 'Τιμές' },
   { href: '/apotelesmata/', label: 'Αποτελέσματα' },
   { href: '/odigoi/', label: 'Οδηγοί' },
@@ -10,6 +14,7 @@ const links = [
 // Κανονικοποίηση χωρίς trailing slash και στις δύο πλευρές της σύγκρισης.
 const norm = (p: string) => p.replace(/\/$/, '') || '/';
 const path = norm(Astro.url.pathname);
+const inServices = services.some((s) => path === norm(s.href));
 ---
 
 <header class="nav-wrap">
@@ -17,6 +22,30 @@ const path = norm(Astro.url.pathname);
     <a class="logo" href="/">PISMA<span>.</span></a>
 
     <ul class="nav-links" id="nav-links">
+      <li class="nav-sub">
+        <button
+          type="button"
+          class:list={['sub-trigger', { 'is-active': inServices }]}
+          aria-expanded="false"
+          aria-haspopup="true"
+          aria-controls="sub-panel"
+        >
+          Υπηρεσίες
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </button>
+        <div class="sub-panel" id="sub-panel">
+          <div class="sub-card">
+            {services.map((s) => (
+              <a class="sub-item" href={s.href} aria-current={path === norm(s.href) ? 'page' : undefined}>
+                <span class="sub-label">{s.label}</span>
+                <span class="sub-desc">{s.desc}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </li>
       {links.map((l) => (
         <li>
           <a href={l.href} aria-current={path === norm(l.href) ? 'page' : undefined}>{l.label}</a>
@@ -67,6 +96,22 @@ const path = norm(Astro.url.pathname);
     (burger.querySelector('.i-close') as SVGElement).style.display = open ? 'none' : '';
   });
 
+  // Dropdown «Υπηρεσίες»: hover/focus το ανοίγουν με CSS· το κλικ (touch/desktop)
+  // εναλλάσσει την .open, κλείνει με κλικ έξω ή Escape. Στο mobile δεν υπάρχει trigger.
+  const sub = document.querySelector<HTMLElement>('.nav-sub');
+  const subTrigger = sub?.querySelector<HTMLButtonElement>('.sub-trigger');
+  const setSub = (open: boolean) => {
+    sub?.classList.toggle('open', open);
+    subTrigger?.setAttribute('aria-expanded', String(open));
+  };
+  subTrigger?.addEventListener('click', () => setSub(!sub!.classList.contains('open')));
+  document.addEventListener('click', (e) => {
+    if (sub && !sub.contains(e.target as Node)) setSub(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setSub(false);
+  });
+
   // Floating nav: μαζεύει σε «κάψουλα» με blur μετά από λίγο scroll.
   const wrap = document.querySelector<HTMLElement>('.nav-wrap')!;
   const onScroll = () => wrap.classList.toggle('is-scrolled', window.scrollY > 50);
@@ -107,11 +152,11 @@ const path = norm(Astro.url.pathname);
     border: 1px solid transparent; border-radius: 18px;
     transition: max-width .35s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
   }
-  /* 1200px + gap 16 ώστε να χωρούν logo + 6 links + ήχος + CTA — οι περιγραφικές
-     ετικέτες (Google & ChatGPT / Αυτοματισμοί γραφείου) δεν χωρούσαν στα 1160/gap 20 */
+  /* Με το dropdown «Υπηρεσίες» το περιεχόμενο θέλει ~775px — η κάψουλα
+     μαζεύει στα 1060px για το compact look. */
   .nav-wrap.is-scrolled .nav,
   .nav-wrap.menu-open .nav {
-    max-width: 1200px;
+    max-width: 1060px;
     background: rgba(13, 10, 20, .72);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -133,13 +178,62 @@ const path = norm(Astro.url.pathname);
     white-space: nowrap;
   }
   .nav-links a:not(.btn):hover { color: var(--navy); }
-  .nav-links a[aria-current='page'] {
+  .nav-links a[aria-current='page']:not(.sub-item) {
     color: var(--navy);
     text-decoration: underline;
     text-underline-offset: 6px;
     text-decoration-thickness: 2px;
     text-decoration-color: var(--orange);
   }
+  /* Dropdown «Υπηρεσίες» (desktop): hover/focus/click ανοίγουν το πάνελ. */
+  .nav-sub { position: relative; }
+  .sub-trigger {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: none; border: 0; cursor: pointer;
+    font: inherit; font-weight: 600; font-size: .95rem; color: var(--muted);
+    padding: 6px 2px; border-radius: 6px; white-space: nowrap;
+    transition: color .15s ease;
+  }
+  .sub-trigger:hover { color: var(--navy); }
+  .sub-trigger.is-active {
+    color: var(--navy);
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--orange);
+  }
+  .sub-trigger svg { flex: none; transition: transform .2s ease; }
+  .nav-sub:hover .sub-trigger svg,
+  .nav-sub:focus-within .sub-trigger svg,
+  .nav-sub.open .sub-trigger svg { transform: rotate(180deg); }
+  /* Το wrapper έχει διάφανο padding-top ώστε το hover να μη «σπάει» στο κενό
+     ανάμεσα σε trigger και κάρτα. */
+  .sub-panel {
+    display: none;
+    position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    padding-top: 14px; z-index: 10;
+  }
+  .nav-sub:hover .sub-panel,
+  .nav-sub:focus-within .sub-panel,
+  .nav-sub.open .sub-panel { display: block; }
+  .sub-card {
+    min-width: 320px;
+    background: var(--card); border: 1px solid var(--line-strong);
+    border-radius: 14px; padding: 8px; box-shadow: var(--shadow);
+  }
+  .nav-links a.sub-item {
+    display: block; padding: 10px 12px; border-radius: 10px; white-space: nowrap;
+  }
+  .nav-links a.sub-item:hover { background: rgba(255, 255, 255, .05); }
+  .sub-label { display: block; font-weight: 600; font-size: .95rem; color: var(--navy); }
+  .sub-desc { display: block; font-weight: 400; font-size: .85rem; color: var(--muted); margin-top: 2px; }
+  .nav-links a.sub-item[aria-current='page'] .sub-label {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--orange);
+  }
+
   .nav-cta-mobile { display: none; }
   .nav-sound-mobile { display: none; }
   .sound-btn {
@@ -156,8 +250,9 @@ const path = norm(Astro.url.pathname);
   .burger { display: none; background: none; border: 0; cursor: pointer; color: var(--navy); padding: 8px; border-radius: 10px; }
   .burger svg { width: 26px; height: 26px; }
 
-  /* 1200px: με 6 links η σειρά δεν χωράει σε στενά desktop — νωρίτερα burger */
-  @media (max-width: 1200px) {
+  /* 900px: με το dropdown το μενού θέλει μόλις ~775px — τα tablet landscape
+     βλέπουν πλέον το κανονικό μενού, burger μόνο κάτω από 900. */
+  @media (max-width: 900px) {
     .nav { gap: 14px; flex-wrap: wrap; height: auto; min-height: 64px; }
     .nav-quiz { display: none; }
     .burger { display: inline-flex; }
@@ -175,6 +270,17 @@ const path = norm(Astro.url.pathname);
     }
     .nav-links.is-open { display: flex; }
     .nav-links a:not(.btn) { display: block; padding: 12px 4px; font-size: 1.05rem; }
+    /* Mobile: χωρίς dropdown — οι 3 υπηρεσίες εμφανίζονται σκέτες στη λίστα,
+       σαν κανονικά links, στην ίδια θέση (πάνω πάνω). */
+    .nav-sub { position: static; }
+    .sub-trigger { display: none; }
+    .sub-panel { display: block; position: static; transform: none; padding: 0; }
+    .sub-card { min-width: 0; background: none; border: 0; border-radius: 0; padding: 0; box-shadow: none; }
+    .nav-links a.sub-item { padding: 12px 4px; border-radius: 6px; white-space: normal; }
+    .nav-links a.sub-item:hover { background: none; }
+    .sub-label { font-size: 1.05rem; color: var(--muted); }
+    .nav-links a.sub-item:hover .sub-label { color: var(--navy); }
+    .sub-desc { display: none; }
     .nav-sound-mobile { display: block; border-top: 1px solid var(--line); margin-top: 6px; }
     .nav-sound-mobile button {
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
