@@ -50,8 +50,8 @@ delivery). Ο πελάτης σκανάρει, γυρνάει έναν τροχ�
 
 ## Βασικές σελίδες
 
-- [Ψηφιακή Προβολή](${SITE.url}/se-vriskoun/): site, ορατότητα σε Google & AI, κριτικές
-- [Αυτοματοποίηση](${SITE.url}/doulevei-mono-tou/): πληρωμές, εισπράξεις, αναφορές στο αυτόματο
+- [Site & Google](${SITE.url}/se-vriskoun/): site, ορατότητα σε Google & AI, κριτικές
+- [Αυτοματισμοί γραφείου](${SITE.url}/doulevei-mono-tou/): πληρωμές, εισπράξεις, αναφορές στο αυτόματο
 - [Τιμές](${SITE.url}/times/): όλες οι τιμές δημόσια, builder πακέτου
 - [Αποτελέσματα](${SITE.url}/apotelesmata/): πώς μετριέται κάθε συνεργασία
 - [Ο Έλεγχος PISMA](${SITE.url}/elegxos/): δωρεάν αξιολόγηση ${ELEGXOS.minutes} λεπτών

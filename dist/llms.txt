@@ -72,8 +72,8 @@ delivery). Ο πελάτης σκανάρει, γυρνάει έναν τροχ�
 
 ## Βασικές σελίδες
 
-- [Ψηφιακή Προβολή](https://pisma.gr/se-vriskoun/): site, ορατότητα σε Google & AI, κριτικές
-- [Αυτοματοποίηση](https://pisma.gr/doulevei-mono-tou/): πληρωμές, εισπράξεις, αναφορές στο αυτόματο
+- [Site & Google](https://pisma.gr/se-vriskoun/): site, ορατότητα σε Google & AI, κριτικές
+- [Αυτοματισμοί γραφείου](https://pisma.gr/doulevei-mono-tou/): πληρωμές, εισπράξεις, αναφορές στο αυτόματο
 - [Τιμές](https://pisma.gr/times/): όλες οι τιμές δημόσια, builder πακέτου
 - [Αποτελέσματα](https://pisma.gr/apotelesmata/): πώς μετριέται κάθε συνεργασία
 - [Ο Έλεγχος PISMA](https://pisma.gr/elegxos/): δωρεάν αξιολόγηση 45 λεπτών

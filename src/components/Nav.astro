@@ -1,8 +1,8 @@
 ---
 const links = [
-  { href: '/se-vriskoun/', label: 'Ψηφιακή Προβολή' },
-  { href: '/doulevei-mono-tou/', label: 'Αυτοματοποίηση' },
-  { href: '/kritikes/', label: 'Κριτικές' },
+  { href: '/se-vriskoun/', label: 'Site & Google' },
+  { href: '/doulevei-mono-tou/', label: 'Αυτοματισμοί γραφείου' },
+  { href: '/kritikes/', label: 'Κριτικές Google' },
   { href: '/times/', label: 'Τιμές' },
   { href: '/apotelesmata/', label: 'Αποτελέσματα' },
   { href: '/odigoi/', label: 'Οδηγοί' },
@@ -107,10 +107,11 @@ const path = norm(Astro.url.pathname);
     border: 1px solid transparent; border-radius: 18px;
     transition: max-width .35s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
   }
-  /* 1160px ώστε να χωρούν άνετα logo + 6 links + ήχος + CTA — στο 1060 το CTA ξεχείλωνε */
+  /* 1180px ώστε να χωρούν άνετα logo + 6 links + ήχος + CTA — με τις
+     περιγραφικές ετικέτες (Site & Google, Αυτοματισμοί γραφείου) το 1160 ξεχείλωνε 6px */
   .nav-wrap.is-scrolled .nav,
   .nav-wrap.menu-open .nav {
-    max-width: 1160px;
+    max-width: 1180px;
     background: rgba(13, 10, 20, .72);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
