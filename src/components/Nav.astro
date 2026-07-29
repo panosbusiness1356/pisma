@@ -171,12 +171,13 @@ const inServices = services.some((s) => path === norm(s.href));
   }
   .logo span { color: var(--orange); }
   .nav-links { display: flex; align-items: center; gap: 16px; list-style: none; padding: 0; flex-wrap: nowrap; }
-  /* Desktop: το μενού κάθεται στο ΚΕΝΤΡΟ (λογότυπο αριστερά, ήχος+CTA δεξιά) —
-     αλλιώς, με τα λίγα πλέον στοιχεία του dropdown, όλα κολλούσαν δεξιά και
-     έμενε τεράστιο άδειο κενό μετά το λογότυπο σε φαρδιές οθόνες. */
+  /* Desktop: λινκ + ήχος + CTA = ΜΙΑ παρέα στο κέντρο (απόφαση χρήστριας) —
+     λογότυπο αριστερά, τίποτα κολλημένο στη δεξιά άκρη. Τα auto margins
+     μπαίνουν στις δύο άκρες της τριάδας ώστε να κεντράρεται ενιαία. */
   @media (min-width: 901px) {
     .logo { margin-right: 0; }
-    .nav-links { margin-inline: auto; }
+    .nav-links { margin-left: auto; }
+    .nav-quiz { margin-right: auto; }
   }
   .nav-links a:not(.btn) {
     text-decoration: none; font-weight: 600; font-size: .95rem; color: var(--muted);
