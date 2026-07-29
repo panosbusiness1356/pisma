@@ -171,13 +171,29 @@ const inServices = services.some((s) => path === norm(s.href));
   }
   .logo span { color: var(--orange); }
   .nav-links { display: flex; align-items: center; gap: 16px; list-style: none; padding: 0; flex-wrap: nowrap; }
-  /* Desktop: λινκ + ήχος + CTA = ΜΙΑ παρέα στο κέντρο (απόφαση χρήστριας) —
-     λογότυπο αριστερά, τίποτα κολλημένο στη δεξιά άκρη. Τα auto margins
-     μπαίνουν στις δύο άκρες της τριάδας ώστε να κεντράρεται ενιαία. */
+  /* Desktop (απόφαση χρήστριας):
+     - Κορυφή σελίδας: λινκ ΑΚΡΙΒΩΣ στο κέντρο, ήχος+CTA τέρμα δεξιά.
+     - Στο scroll (κάψουλα): όλα μαζεύονται σε ΜΙΑ παρέα στη μέση.
+     Στα 901-1079px το «ακριβώς κέντρο» δεν χωράει (τα λινκ θα έπεφταν
+     πάνω στο CTA) — εκεί ισχύει παντού η διάταξη-παρέα. */
   @media (min-width: 901px) {
     .logo { margin-right: 0; }
     .nav-links { margin-left: auto; }
     .nav-quiz { margin-right: auto; }
+  }
+  @media (min-width: 1080px) {
+    .nav { position: relative; }
+    /* Τα λινκ μένουν ΠΑΝΤΑ στο ακριβές κέντρο (και στην κάψουλα) — έτσι στη
+       μετάβαση τίποτα δεν «πηδάει»: μόνο ήχος+CTA γλιστράνε προς τη μέση
+       μαζί με το χείλος της κάψουλας. Κάψουλα 1060px για να χωράνε δίπλα
+       στα κεντραρισμένα λινκ (στα 960 ο ήχος έπεφτε πάνω στο «Οδηγοί»). */
+    .nav-links {
+      position: absolute; left: 50%; transform: translateX(-50%); margin-left: 0;
+    }
+    .sound-btn { margin-left: auto; }
+    .nav-quiz { margin-right: 0; }
+    .nav-wrap.is-scrolled .nav,
+    .nav-wrap.menu-open .nav { max-width: 1060px; }
   }
   .nav-links a:not(.btn) {
     text-decoration: none; font-weight: 600; font-size: .95rem; color: var(--muted);
