@@ -50,7 +50,7 @@ delivery). Ο πελάτης σκανάρει, γυρνάει έναν τροχ�
 
 ## Βασικές σελίδες
 
-- [Site, Google & ChatGPT](${SITE.url}/se-vriskoun/): site, ορατότητα σε Google & AI, κριτικές
+- [Google & ChatGPT](${SITE.url}/se-vriskoun/): site, ορατότητα σε Google & AI, κριτικές
 - [Αυτοματισμοί γραφείου](${SITE.url}/doulevei-mono-tou/): πληρωμές, εισπράξεις, αναφορές στο αυτόματο
 - [Τιμές](${SITE.url}/times/): όλες οι τιμές δημόσια, builder πακέτου
 - [Αποτελέσματα](${SITE.url}/apotelesmata/): πώς μετριέται κάθε συνεργασία
