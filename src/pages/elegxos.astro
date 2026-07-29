@@ -31,33 +31,33 @@ const steps = [
   },
   {
     t: 'Μέτρηση',
-    d: 'Τα δύο σκορ βγαίνουν μπροστά σου — όχι σε παρουσίαση μετά.',
+    d: 'Τα δύο σκορ βγαίνουν μπροστά σας — όχι σε παρουσίαση μετά.',
   },
   {
     t: 'Γραπτή αναφορά',
-    d: `Σε ${ELEGXOS.reportHours} ώρες στο inbox σου, με προτεραιότητες και ευρώ.`,
+    d: `Σε ${ELEGXOS.reportHours} ώρες στο inbox σας, με προτεραιότητες και ευρώ.`,
   },
 ];
 ---
 
 <Base
   title={`Ο Έλεγχος PISMA — Δωρεάν ραντεβού ${ELEGXOS.minutes} λεπτών`}
-  description={`Κλείσε τον δωρεάν Έλεγχο PISMA: ${ELEGXOS.minutes} λεπτά, από κοντά στα νότια προάστια ή online. Δύο σκορ, ανάλυση ανά τομέα και το κόστος αδράνειας σε ευρώ.`}
+  description={`Κλείστε τον δωρεάν Έλεγχο PISMA: ${ELEGXOS.minutes} λεπτά, από κοντά στα νότια προάστια ή online. Δύο σκορ, ανάλυση ανά τομέα και το κόστος αδράνειας σε ευρώ.`}
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
     kicker="Ο Έλεγχος PISMA"
-    sub="Από κοντά στα νότια προάστια ή online. Φεύγεις με γραπτή εικόνα του τι χάνεις — σε πελάτες και σε ευρώ."
+    sub="Από κοντά στα νότια προάστια ή online. Φεύγετε με γραπτή εικόνα του τι χάνετε — σε πελάτες και σε ευρώ."
   >
     {ELEGXOS.minutes} λεπτά. Δύο σκορ. <span class="accent">Μηδέν κόστος.</span>
   </PageHero>
 
-  <!-- 2. Με τι φεύγεις -->
+  <!-- 2. Με τι φεύγετε -->
   <section class="section section--tight" aria-labelledby="takeaway-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">Με τι φεύγεις</p>
+        <p class="kicker">Με τι φεύγετε</p>
         <h2 id="takeaway-title">Τρία πράγματα, όλα στο χαρτί.</h2>
       </div>
       <div class="grid-3">
@@ -77,7 +77,7 @@ const steps = [
             </svg>
           </span>
           <h3>Ανάλυση ανά τομέα</h3>
-          <p>Site, Google & AI, πληρωμές, εισπράξεις: πού χάνεις και πού είσαι ήδη εντάξει.</p>
+          <p>Site, Google & AI, πληρωμές, εισπράξεις: πού χάνετε και πού είστε ήδη εντάξει.</p>
         </div>
         <div class="card reveal">
           <span class="icon-chip">
@@ -86,7 +86,7 @@ const steps = [
             </svg>
           </span>
           <h3>Κόστος αδράνειας</h3>
-          <p>Πόσα σου κοστίζει κάθε μήνας που μένει όπως είναι — σε ευρώ, όχι σε ευχολόγια.</p>
+          <p>Πόσα σας κοστίζει κάθε μήνας που μένει όπως είναι — σε ευρώ, όχι σε ευχολόγια.</p>
         </div>
       </div>
     </div>
@@ -116,8 +116,8 @@ const steps = [
     <div class="container">
       <div class="sec-head sec-head--center">
         <p class="kicker">Κράτηση</p>
-        <h2 id="booking-title">Κλείσε τον Έλεγχό σου</h2>
-        <p>Συμπλήρωσε τα στοιχεία σου και θα σου προτείνουμε 2–3 ώρες μέσα στην εβδομάδα.</p>
+        <h2 id="booking-title">Κλείστε τον Έλεγχό σας</h2>
+        <p>Συμπληρώστε τα στοιχεία σας και θα σας προτείνουμε 2–3 ώρες μέσα στην εβδομάδα.</p>
       </div>
 
       <!-- TODO: Μελλοντικά, εδώ μπαίνει embed Cal.com / Calendly αντί για τη φόρμα. -->
@@ -140,7 +140,7 @@ const steps = [
         </div>
 
         <fieldset class="mode">
-          <legend>Πώς προτιμάς να γίνει;</legend>
+          <legend>Πώς προτιμάτε να γίνει;</legend>
           <div class="mode-options">
             <label class="mode-option">
               <input type="radio" name="mode" value={`Από κοντά — ${SITE.region}`} checked />
@@ -168,7 +168,7 @@ const steps = [
             <path d="M15 27 l8 8 l15 -16" fill="none" />
           </svg>
           <p class="fd-title">Η κράτηση στάλθηκε!</p>
-          <p class="fd-sub">Θα σου προτείνουμε 2–3 ώρες μέσα στην εβδομάδα.</p>
+          <p class="fd-sub">Θα σας προτείνουμε 2–3 ώρες μέσα στην εβδομάδα.</p>
         </div>
       </form>
     </div>
@@ -179,7 +179,7 @@ const steps = [
     <div class="container">
       <div class="why reveal">
         <h2 id="why-title">Γιατί δωρεάν;</h2>
-        <p>Γιατί όταν δεις τα νούμερα, δεν χρειάζεσαι πίεση από εμάς. Η αναφορά είναι δική σου, ό,τι κι αν αποφασίσεις.</p>
+        <p>Γιατί όταν δείτε τα νούμερα, δεν χρειάζεστε πίεση από εμάς. Η αναφορά είναι δική σας, ό,τι κι αν αποφασίσετε.</p>
       </div>
     </div>
   </section>
@@ -214,7 +214,7 @@ const steps = [
 
     if (!form.checkValidity()) {
       form.reportValidity();
-      msg.textContent = 'Κάτι λείπει ακόμα — έλεγξε τα πεδία που σημειώθηκαν.';
+      msg.textContent = 'Κάτι λείπει ακόμα — ελέγξτε τα πεδία που σημειώθηκαν.';
       msg.classList.remove('is-ok');
       msg.classList.add('is-error');
       return;
@@ -245,7 +245,7 @@ const steps = [
       btn.disabled = false;
       btn.textContent = 'Κλείσε τον Έλεγχο';
       msg.innerHTML =
-        'Κάτι πήγε στραβά. Δοκίμασε ξανά ή στείλε μας απευθείας στο ' +
+        'Κάτι πήγε στραβά. Δοκιμάστε ξανά ή στείλτε μας απευθείας στο ' +
         '<a href="mailto:' + form.dataset.email + '">' + form.dataset.email + '</a>.';
       msg.classList.remove('is-ok');
       msg.classList.add('is-error');

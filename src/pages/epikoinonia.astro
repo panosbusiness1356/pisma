@@ -26,12 +26,12 @@ const schema = {
 ---
 
 <Base
-  title="Επικοινωνία — Πες μας τι σε πνίγει | PISMA"
-  description="Στείλε μήνυμα ή πάρε τηλέφωνο — απαντάμε άνθρωπος προς άνθρωπο, συνήθως αυθημερόν. Ραντεβού από κοντά στα νότια προάστια της Αθήνας ή online."
+  title="Επικοινωνία — Πείτε μας τι σας πνίγει | PISMA"
+  description="Στείλτε μήνυμα ή πάρτε τηλέφωνο — απαντάμε άνθρωπος προς άνθρωπο, συνήθως αυθημερόν. Ραντεβού από κοντά στα νότια προάστια της Αθήνας ή online."
   schema={schema}
 >
   <PageHero kicker="Επικοινωνία" sub="Απαντάμε άνθρωπος προς άνθρωπο — συνήθως αυθημερόν.">
-    Πες μας τι σε <span class="accent">πνίγει</span>.
+    Πείτε μας τι σας <span class="accent">πνίγει</span>.
   </PageHero>
 
   <section class="section section--tight" aria-labelledby="contact-title">
@@ -88,14 +88,14 @@ const schema = {
             </li>
           </ul>
           <p class="alt-link">
-            Προτιμάς ραντεβού με μέτρηση;
+            Προτιμάτε ραντεβού με μέτρηση;
             <a class="card-arrow" href="/elegxos/">Ο Έλεγχος PISMA →</a>
           </p>
         </div>
 
         <!-- Φόρμα -->
         <form class="card reveal" id="contact-form" data-email={SITE.email}>
-          <h3>Γράψε μας</h3>
+          <h3>Γράψτε μας</h3>
           <div class="field">
             <label for="cf-name">Όνομα</label>
             <input type="text" id="cf-name" name="name" autocomplete="name" required />
@@ -120,7 +120,7 @@ const schema = {
               <path d="M15 27 l8 8 l15 -16" fill="none" />
             </svg>
             <p class="fd-title">Το μήνυμα στάλθηκε!</p>
-            <p class="fd-sub">Θα σου απαντήσουμε το συντομότερο.</p>
+            <p class="fd-sub">Θα σας απαντήσουμε το συντομότερο.</p>
           </div>
         </form>
       </div>
@@ -179,7 +179,7 @@ const schema = {
         btn.disabled = false;
         btn.textContent = 'Στείλε το';
         fb.innerHTML =
-          'Κάτι πήγε στραβά. Δοκίμασε ξανά ή στείλε μας απευθείας στο ' +
+          'Κάτι πήγε στραβά. Δοκιμάστε ξανά ή στείλτε μας απευθείας στο ' +
           '<a href="mailto:' + form.dataset.email + '">' + form.dataset.email + '</a>.';
       }
     });

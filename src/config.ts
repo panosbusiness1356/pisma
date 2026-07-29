@@ -8,7 +8,7 @@ export const SITE = {
   tagline: 'Με πείσμα, μέχρι να δουλεύει μόνο του.',
   region: 'Νότια προάστια Αθήνας',
   email: 'info@pisma.gr',
-  phone: '+30 210 000 0000', // placeholder — θα αντικατασταθεί
+  phone: '+30 694 727 1910',
   url: 'https://pisma.gr',
 } as const;
 
