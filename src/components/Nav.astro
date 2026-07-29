@@ -181,23 +181,6 @@ const inServices = services.some((s) => path === norm(s.href));
     .nav-links { margin-left: auto; }
     .nav-quiz { margin-right: auto; }
   }
-  @media (min-width: 1080px) {
-    .nav { position: relative; }
-    /* Τα λινκ μένουν ΠΑΝΤΑ στο ακριβές κέντρο (και στην κάψουλα) — έτσι στη
-       μετάβαση τίποτα δεν «πηδάει»: μόνο ήχος+CTA γλιστράνε προς τη μέση
-       μαζί με το χείλος της κάψουλας. Κάψουλα 1060px για να χωράνε δίπλα
-       στα κεντραρισμένα λινκ (στα 960 ο ήχος έπεφτε πάνω στο «Οδηγοί»). */
-    .nav-links {
-      position: absolute; left: 50%; transform: translateX(-50%); margin-left: 0;
-    }
-    .sound-btn { margin-left: auto; }
-    .nav-quiz { margin-right: 0; }
-    /* Κορυφή σελίδας: πλήρες πλάτος — λογότυπο ΤΕΡΜΑ αριστερά, ήχος+CTA
-       ΤΕΡΜΑ δεξιά (απόφαση χρήστριας). Στο scroll όλα μαζεύουν στη μέση. */
-    .nav-wrap:not(.is-scrolled) .nav { max-width: 100%; }
-    .nav-wrap.is-scrolled .nav,
-    .nav-wrap.menu-open .nav { max-width: 1060px; }
-  }
   .nav-links a:not(.btn) {
     text-decoration: none; font-weight: 600; font-size: .95rem; color: var(--muted);
     padding: 6px 2px; border-radius: 6px;
