@@ -1,6 +1,6 @@
 ---
 const links = [
-  { href: '/se-vriskoun/', label: 'Site & Google' },
+  { href: '/se-vriskoun/', label: 'Site, Google & ChatGPT' },
   { href: '/doulevei-mono-tou/', label: 'Αυτοματισμοί γραφείου' },
   { href: '/kritikes/', label: 'Κριτικές Google' },
   { href: '/times/', label: 'Τιμές' },
@@ -102,16 +102,16 @@ const path = norm(Astro.url.pathname);
     padding: 8px 10px 0;
   }
   .nav {
-    display: flex; align-items: center; gap: 20px; height: 64px;
+    display: flex; align-items: center; gap: 16px; height: 64px;
     max-width: 1280px; /* φαρδύτερο από το default container για να χωρούν τα CTAs */
     border: 1px solid transparent; border-radius: 18px;
     transition: max-width .35s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
   }
-  /* 1180px ώστε να χωρούν άνετα logo + 6 links + ήχος + CTA — με τις
-     περιγραφικές ετικέτες (Site & Google, Αυτοματισμοί γραφείου) το 1160 ξεχείλωνε 6px */
+  /* 1220px + gap 16 ώστε να χωρούν logo + 6 links + ήχος + CTA — οι περιγραφικές
+     ετικέτες (Site, Google & ChatGPT / Αυτοματισμοί γραφείου) δεν χωρούσαν στα 1160/gap 20 */
   .nav-wrap.is-scrolled .nav,
   .nav-wrap.menu-open .nav {
-    max-width: 1180px;
+    max-width: 1220px;
     background: rgba(13, 10, 20, .72);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -125,7 +125,7 @@ const path = norm(Astro.url.pathname);
     white-space: nowrap; flex: none;
   }
   .logo span { color: var(--orange); }
-  .nav-links { display: flex; align-items: center; gap: 20px; list-style: none; padding: 0; flex-wrap: nowrap; }
+  .nav-links { display: flex; align-items: center; gap: 16px; list-style: none; padding: 0; flex-wrap: nowrap; }
   .nav-links a:not(.btn) {
     text-decoration: none; font-weight: 600; font-size: .95rem; color: var(--muted);
     padding: 6px 2px; border-radius: 6px;
@@ -156,8 +156,8 @@ const path = norm(Astro.url.pathname);
   .burger { display: none; background: none; border: 0; cursor: pointer; color: var(--navy); padding: 8px; border-radius: 10px; }
   .burger svg { width: 26px; height: 26px; }
 
-  /* 1200px (όχι 1080): με 6 links η σειρά δεν χωράει σε στενά desktop — νωρίτερα burger */
-  @media (max-width: 1200px) {
+  /* 1240px: με τις μακρύτερες ετικέτες η σειρά δεν χωράει σε στενά desktop — νωρίτερα burger */
+  @media (max-width: 1240px) {
     .nav { gap: 14px; flex-wrap: wrap; height: auto; min-height: 64px; }
     .nav-quiz { display: none; }
     .burger { display: inline-flex; }
