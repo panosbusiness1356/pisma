@@ -148,15 +148,15 @@ const inServices = services.some((s) => path === norm(s.href));
   }
   .nav {
     display: flex; align-items: center; gap: 16px; height: 64px;
-    max-width: 1280px; /* φαρδύτερο από το default container για να χωρούν τα CTAs */
+    max-width: 1160px; /* λίγο φαρδύτερο από το .container (1120) — δένει με το περιεχόμενο */
     border: 1px solid transparent; border-radius: 18px;
     transition: max-width .35s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
   }
   /* Με το dropdown «Υπηρεσίες» το περιεχόμενο θέλει ~775px — η κάψουλα
-     μαζεύει στα 1060px για το compact look. */
+     μαζεύει στα 960px ώστε να «αγκαλιάζει» τα στοιχεία χωρίς άδεια κενά. */
   .nav-wrap.is-scrolled .nav,
   .nav-wrap.menu-open .nav {
-    max-width: 1060px;
+    max-width: 960px;
     background: rgba(13, 10, 20, .72);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
