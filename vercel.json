@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/apodeixeis", "destination": "/apotelesmata/", "permanent": true },
+    { "source": "/apodeixeis/", "destination": "/apotelesmata/", "permanent": true }
+  ]
+}
