@@ -39,6 +39,7 @@ export const CATEGORIES: PricingCategory[] = [
       { id: 'web-basic', label: 'Basic', detail: 'Καθαρή παρουσία: αρχική, υπηρεσίες, επικοινωνία', price: 220, type: 'once' },
       { id: 'web-standard', label: 'Standard', detail: 'Πλήρες site με περισσότερες σελίδες και φόρμες', price: 320, type: 'once' },
       { id: 'web-pro', label: 'Pro', detail: 'Μεγαλύτερο site με ειδικές λειτουργίες', price: 450, type: 'once' },
+      { id: 'web-bookings', label: 'Site με online κρατήσεις', detail: 'Οι πελάτες σας κλείνουν ραντεβού ή τραπέζι online και παίρνουν αυτόματη υπενθύμιση — τέλος τα «μου έστησε»', price: 450, type: 'once' },
     ],
   },
   {
@@ -85,6 +86,7 @@ export const CATEGORIES: PricingCategory[] = [
       { id: 'auto-debt', label: 'Αυτόματος Κυνηγός Οφειλών', price: 25, type: 'monthly' },
       { id: 'auto-spy', label: 'Ο Κατάσκοπός σου', price: 20, type: 'monthly' },
       { id: 'auto-reviews', label: 'Ο Τροχός των Κριτικών', detail: 'QR στο μαγαζί: ο πελάτης σκανάρει, κερδίζει δώρο, αφήνει κριτική στο Google', price: 39, type: 'monthly' },
+      { id: 'auto-loyalty', label: 'Κάρτα Πιστότητας', detail: 'QR στο ταμείο: ο πελάτης μαζεύει σφραγίδες σε κάθε επίσκεψη και κερδίζει δώρο — και ξανάρχεται', price: 19, type: 'monthly' },
     ],
   },
   {

@@ -2,6 +2,14 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "arxigeio",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "/Users/panospap/Downloads/pisma-arxigeio/server.js"
+      ],
+      "port": 4488
+    },
+    {
       "name": "pisma-site",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
