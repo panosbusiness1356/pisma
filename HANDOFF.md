@@ -1,6 +1,45 @@
 # HANDOFF — PISMA site
 
-Κατάσταση έργου για συνέχιση σε νέο chat. Τελευταία ενημέρωση: **29/07/2026**.
+Κατάσταση έργου για συνέχιση σε νέο chat. Τελευταία ενημέρωση: **05/08/2026**.
+
+## 🔴 ΕΠΕΙΓΟΝ — ΠΡΩΤΗ ΔΟΥΛΕΙΑ ΤΟΥ ΝΕΟΥ SESSION: το pisma.gr είναι ΠΑΓΩΜΕΝΟ στο Vercel
+
+**Το πρόβλημα:** Το ζωντανό pisma.gr (Vercel) σερβίρει ΠΑΛΙΑ έκδοση. Πολλά
+pushed commits ΔΕΝ είναι live — επιβεβαιωμένα λείπουν:
+- «Δύο νέες υπηρεσίες: Κάρτα Πιστότητας 19€/μ + Site με online κρατήσεις 450€»
+  (commit 764dc24, 04/08 — pricing.ts + doulevei-mono-tou.astro)
+- Το πραγματικό τηλέφωνο 694 727 1910 στην Επικοινωνία (commit 21d1da8)
+- Η μετονομασία «Ψηφιακή Προβολή» (commit 4923b7d)
+
+**Τι ΕΧΕΙ ελεγχθεί ήδη (μην το ξανακάνεις):**
+- Το GitHub repo `panosbusiness1356/pisma` ΕΙΝΑΙ συνδεμένο στο Vercel project
+  `pisma` (λογαριασμός panosbusiness1356, Hobby) από 14/07 — το είδαμε στο
+  Settings → Git. Άρα ΔΕΝ φταίει η σύνδεση Git.
+- `npm run build` τοπικά περνάει καθαρά (21 σελίδες).
+- Ο έλεγχος live θέλει `curl -sL https://www.pisma.gr/...` — το σκέτο
+  pisma.gr κάνει 308 στο www (χωρίς -L βλέπεις κενό και μπερδεύεσαι).
+
+**Πιθανές αιτίες (με αυτή τη σειρά):**
+1. Τα builds στο Vercel ΑΠΟΤΥΓΧΑΝΟΥΝ → Deployments λίστα: υπάρχει deployment
+   για το 764dc24; Είναι Error; → άνοιξε Build Logs, διόρθωσε, ξαναspρώξε.
+2. Λάθος production branch → Settings → Environments/General: πρέπει `main`.
+3. Τα domains pisma.gr/www.pisma.gr είναι σε ΑΛΛΟ (παλιό) Vercel project →
+   Settings → Domains του project `pisma`· αν λείπουν, ψάξε δεύτερο project.
+
+**Πώς κλείνει:** Ο χρήστης έχει το Vercel ανοιχτό στον browser του (δεν έχουμε
+δικό μας πρόσβαση/CLI auth — το `vercel` CLI ΔΕΝ είναι εγκατεστημένο και το
+login είναι διαδραστικό). Ζήτα screenshot από Deployments ή/και Domains, ή
+σύνδεση του Claude in Chrome extension για να τα δεις μόνος σου. Τελικός
+έλεγχος επιτυχίας:
+`curl -sL https://www.pisma.gr/times/ | grep -c "Κάρτα Πιστότητας"` → ≥1
+και το ίδιο για «online κρατήσεις», «694 727 1910» στο /epikoinonia/.
+
+**Σχετικό πλαίσιο:** Η «Κάρτα Πιστότητας» (19€/μ, Αυτοματισμοί) και το «Site
+με online κρατήσεις» (450€ εφάπαξ, Ιστοσελίδα — ΠΡΟΣΟΧΗ: η τιμή 450€ μπήκε
+από εμάς ως αγκύρωση στο Pro, ο χρήστης ΔΕΝ την έχει ορίσει ρητά) μπήκαν στο
+pricing.ts και στη σελίδα «Δουλεύει μόνο του» (έξι→εφτά κάρτες). Ο κατάλογος
+SERVICES στο Αρχηγείο (pisma-arxigeio/public/app.js) συγχρονίστηκε ήδη με τα
+ίδια ('site-bookings', 'loyalty-card') και έχει γίνει deploy στο app.pisma.gr.
 
 > **ΠΡΩΤΗ ΚΙΝΗΣΗ ΚΑΘΕ SESSION: `git pull origin main`.** Το repo υπάρχει σε ΔΥΟ
 > λογαριασμούς χρήστη στο ίδιο MacBook (Ariadni: `~/Desktop/pisma` · panospap:
