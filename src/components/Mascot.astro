@@ -200,7 +200,13 @@ const cloudB = dots.slice(half);
     el.style.transform = `translate(${px}px, ${py}px)`;
     el.classList.add('is-ready');
   } else {
-    const loop = () => {
+    /* Η κίνηση κανονικοποιείται στον πραγματικό χρόνο κάθε καρέ (delta time),
+       αλλιώς σε οθόνες 120/144Hz ο Ντοτ ταξιδεύει 2-3x πιο γρήγορα απ' ό,τι στα 60Hz. */
+    let lastT = performance.now();
+    const loop = (nowT: number) => {
+      const f = Math.min(3, (nowT - lastT) / 16.667);
+      lastT = nowT;
+      const smooth = (k: number) => 1 - Math.pow(1 - k, f);
       let t = targetPos();
 
       /* Φάσεις εισόδου: πάνω από το «μόνο του», τραβώντας τη γραμμή. */
@@ -266,7 +272,7 @@ const cloudB = dots.slice(half);
       const dx = t.x - px;
       const dy = t.y - py;
       if (!birthing) {
-        const k = phase === 'tour' ? 0.032 : 0.045;
+        const k = smooth(phase === 'tour' ? 0.032 : 0.045);
         px += dx * k;
         py += dy * k;
       }
@@ -275,8 +281,8 @@ const cloudB = dots.slice(half);
       const y = window.scrollY;
       const vel = y - lastY;
       lastY = y;
-      const lean = Math.max(-10, Math.min(10, dx * 0.028 + vel * 0.25));
-      rot += (lean - rot) * 0.06;
+      const lean = Math.max(-10, Math.min(10, dx * 0.028 + (vel / f) * 0.25));
+      rot += (lean - rot) * smooth(0.06);
 
       /* Τα μάτια κοιτούν τον κέρσορα — ή προς τα εκεί που ταξιδεύει. */
       const cx = px + W() / 2;
@@ -293,8 +299,9 @@ const cloudB = dots.slice(half);
       const len = Math.hypot(tx, ty) || 1;
       const max = 7;
       const k = Math.min(1, len / 160);
-      eyeX += ((tx / len) * max * k - eyeX) * 0.14;
-      eyeY += ((ty / len) * max * k - eyeY) * 0.14;
+      const ek = smooth(0.14);
+      eyeX += ((tx / len) * max * k - eyeX) * ek;
+      eyeY += ((ty / len) * max * k - eyeY) * ek;
       pupL.style.transform = `translate(${eyeX.toFixed(1)}px, ${eyeY.toFixed(1)}px)`;
       pupR.style.transform = `translate(${(eyeX * 0.85).toFixed(1)}px, ${(eyeY * 0.85).toFixed(1)}px)`;
 
