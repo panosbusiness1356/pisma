@@ -137,31 +137,38 @@ const faqItems = [
     </div>
   </section>
 
-  <!-- 3. Live ημέρα του συστήματος -->
+  <!-- 3. Η μέρα σε αριθμούς — οι τελικοί αριθμοί υπάρχουν στο HTML (fallback
+       χωρίς JS)· το JS τους μηδενίζει και τους «μετράει» μία φορά όταν το
+       section φανεί. Ίδια νούμερα με το παλιό τερματικό (14/1.230€/3). -->
   <section class="section" aria-labelledby="live-title">
     <div class="container">
       <div class="sec-head sec-head--center">
         <p class="kicker">Δείτε το ζωντανά</p>
-        <h2 id="live-title">Μία ημέρα του συστήματος, σε πέντε γραμμές.</h2>
+        <h2 id="live-title">Μία ημέρα του συστήματος, σε αριθμούς.</h2>
         <p>Έτσι μοιάζει η δουλειά που δεν έκανε κανείς με το χέρι.</p>
       </div>
 
-      <div class="card card--navy terminal reveal" id="live-day">
-        <div class="term-head">
-          <span class="term-title num" aria-hidden="true">pisma — ημέρα εργασίας</span>
-          <span class="tag tag--live term-live"><span class="live-dot" aria-hidden="true"></span>LIVE</span>
+      <div class="pd reveal" id="pd">
+        <p class="pd__eyebrow num" id="pd-date">χθες</p>
+        <div class="pd__row">
+          <div class="pd__cell">
+            <p class="pd__value num"><span class="pd__num" data-from="0" data-to="14">14</span></p>
+            <p class="pd__label">πληρωμές ταιριάστηκαν</p>
+          </div>
+          <div class="pd__cell">
+            <p class="pd__value num"><span class="pd__num" data-from="0" data-to="1230" data-suffix="€">1.230€</span></p>
+            <p class="pd__label">εισπράχθηκαν</p>
+          </div>
+          <div class="pd__cell">
+            <p class="pd__value num"><span class="pd__num" data-from="0" data-to="3">3</span></p>
+            <p class="pd__label">νέες κριτικές Google</p>
+          </div>
+          <div class="pd__cell pd__cell--accent">
+            <p class="pd__value num"><span class="pd__num" data-from="47" data-to="0">0</span></p>
+            <p class="pd__label">λεπτά δικά σας</p>
+          </div>
         </div>
-        <ol class="term-log num" aria-label="Καταγραφή ενεργειών μίας ημέρας">
-          <li class="log-line"><span class="log-time">09:12</span> Υπενθύμιση είσπραξης εστάλη — Καραγιάννης ΟΕ (ΤΔΑ-1042)</li>
-          <li class="log-line"><span class="log-time">10:05</span> 14 πληρωμές ταιριάστηκαν αυτόματα με τα τιμολόγιά τους</li>
-          <li class="log-line"><span class="log-time">12:31</span> Το Excel ενημερώθηκε — 31 νέες κινήσεις</li>
-          <li class="log-line"><span class="log-time">14:47</span> Εξόφληση 1.230€ — ΤΔΑ-1038 <span class="log-ok">✓</span></li>
-          <li class="log-line"><span class="log-time">16:20</span> Ο Τροχός των Κριτικών έφερε 3 νέες κριτικές Google</li>
-          <li class="log-line"><span class="log-time">18:00</span> Ημερήσια αναφορά στάλθηκε στον ιδιοκτήτη</li>
-        </ol>
-        <button class="term-replay" id="term-replay" type="button" hidden aria-label="Ξαναπαίξε την ημέρα από την αρχή">
-          <span aria-hidden="true">↺</span> Ξαναπαίξε
-        </button>
+        <p class="pd__closing">Τίποτα από αυτά δεν χρειάστηκε άνθρωπο.</p>
       </div>
     </div>
   </section>
@@ -207,41 +214,82 @@ const faqItems = [
 </Base>
 
 <script>
-  // «Live ημέρα»: οι γραμμές υπάρχουν ήδη στο HTML — το JS μόνο
-  // κρύβει/εμφανίζει με κλάσεις. Χωρίς JS, όλες ορατές από την αρχή.
-  const term = document.getElementById('live-day');
-  const log = term?.querySelector('.term-log');
-  const lines = term ? Array.from(term.querySelectorAll('.log-line')) : [];
-  const replay = document.getElementById('term-replay');
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let timers: ReturnType<typeof setTimeout>[] = [];
+  // «Η μέρα σε αριθμούς»: οι τελικοί αριθμοί υπάρχουν στο HTML (fallback χωρίς
+  // JS). Το JS τους μηδενίζει και, όταν το section μπει στην οθόνη, μετράει
+  // προς τα πάνω ΜΙΑ φορά — κλιμακωτά ανά στήλη. Οι ταχύτητες διαβάζονται από
+  // τα --pd-count-duration/--pd-stagger του CSS. Reduced motion: τελικοί
+  // αριθμοί αμέσως, καμία κίνηση.
+  const pd = document.getElementById('pd');
+  if (pd) {
+    const pdCells = Array.from(pd.querySelectorAll<HTMLElement>('.pd__cell'));
+    const pdNums = Array.from(pd.querySelectorAll<HTMLElement>('.pd__num'));
+    const pdReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function play() {
-    timers.forEach(clearTimeout);
-    timers = [];
-    lines.forEach((l) => l.classList.remove('is-on'));
-    lines.forEach((l, i) => {
-      timers.push(setTimeout(() => l.classList.add('is-on'), 350 + i * 700));
-    });
+    // «χθες · 28 Αυγούστου» — υπολογίζεται ζωντανά, δεν παγώνει στο build.
+    const dateEl = document.getElementById('pd-date');
+    if (dateEl) {
+      const d = new Date();
+      d.setDate(d.getDate() - 1);
+      dateEl.textContent = 'χθες · ' + d.toLocaleDateString('el-GR', { day: 'numeric', month: 'long' });
+    }
+
+    const pdCss = getComputedStyle(pd);
+    const cssMs = (name: string, fallback: number) => {
+      const v = parseFloat(pdCss.getPropertyValue(name));
+      return Number.isNaN(v) ? fallback : v;
+    };
+    const DURATION = cssMs('--pd-count-duration', 2600);
+    const STAGGER = cssMs('--pd-stagger', 220);
+
+    const fmt = (v: number, suffix?: string) => Math.round(v).toLocaleString('el-GR') + (suffix || '');
+    const setFinal = () =>
+      pdNums.forEach((n) => { n.textContent = fmt(Number(n.dataset.to), n.dataset.suffix); });
+
+    if (!pdReduce) {
+      pd.classList.add('pd--animate');
+      pdNums.forEach((n) => { n.textContent = fmt(Number(n.dataset.from), n.dataset.suffix); });
+
+      const count = () => {
+        let start: number | null = null;
+        const step = (ts: number) => {
+          if (start === null) start = ts;
+          const k = Math.min((ts - start) / DURATION, 1);
+          const eased = 1 - Math.pow(1 - k, 3);
+          pdNums.forEach((n, i) => {
+            const p = Math.max(0, Math.min(1, eased * 1.42 - i * 0.14));
+            const from = Number(n.dataset.from);
+            const to = Number(n.dataset.to);
+            n.textContent = fmt(from + (to - from) * p, n.dataset.suffix);
+          });
+          if (k < 1) requestAnimationFrame(step);
+          else setFinal();
+        };
+        requestAnimationFrame(step);
+      };
+
+      const play = () => {
+        pdCells.forEach((c, i) => { c.style.transitionDelay = `${i * STAGGER}ms`; });
+        pd.classList.add('pd--in');
+        window.setTimeout(count, STAGGER + 200);
+      };
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((e) => e.isIntersecting)) {
+              io.disconnect();
+              play();
+            }
+          },
+          { threshold: 0.35 }
+        );
+        io.observe(pd);
+      } else {
+        play();
+      }
+    }
+    // Με reduced motion: το HTML έχει ήδη τους τελικούς αριθμούς.
   }
-
-  if (term && log && lines.length && !reduce && 'IntersectionObserver' in window) {
-    log.classList.add('is-armed'); // μόνο τώρα κρύβονται οι γραμμές
-    replay?.removeAttribute('hidden');
-    replay?.addEventListener('click', play);
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          play();
-          io.disconnect();
-        }
-      },
-      { threshold: 0.35 }
-    );
-    io.observe(term);
-  }
-  // Με reduced-motion (ή χωρίς IO): καμία κλάση — τελικό state αμέσως.
 </script>
 
 <style>
@@ -249,63 +297,76 @@ const faqItems = [
   .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
   .card-top .tag { margin-top: 4px; }
 
-  /* ---- Terminal «Live ημέρα» ---- */
-  .terminal {
-    --orange-on-navy: #F5A356; /* AA πάνω σε navy για small text (5.36:1) */
-    max-width: 720px;
+  /* ---- «Η μέρα σε αριθμούς» ---- */
+  .pd {
+    /* timing — τα διαβάζει το JS */
+    --pd-count-duration: 2600;
+    --pd-stagger: 220;
+    max-width: 860px;
     margin-inline: auto;
-    padding: clamp(22px, 3.5vw, 34px);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    box-shadow: var(--shadow);
+    padding: clamp(24px, 4vw, 44px);
   }
-  .term-head {
-    display: flex; align-items: center; justify-content: space-between; gap: 14px;
-    padding-bottom: 14px; margin-bottom: 18px;
-    border-bottom: 1px solid rgba(255, 255, 255, .14);
+  .pd__eyebrow {
+    margin: 0 0 clamp(20px, 3vw, 32px);
+    font-size: .82rem;
+    letter-spacing: .06em;
+    color: var(--muted);
   }
-  .term-title { font-size: .85rem; color: rgba(255, 255, 255, .55); }
-  .term-live {
-    display: inline-flex; align-items: center; gap: 7px;
+  .pd__row { display: flex; align-items: flex-start; }
+  .pd__cell { flex: 1; min-width: 0; padding: 0 clamp(14px, 2vw, 24px); }
+  .pd__cell:first-child { padding-left: 0; }
+  .pd__cell:last-child { padding-right: 0; }
+  .pd__cell + .pd__cell { border-left: 1px solid var(--line-strong); }
+  .pd__value {
+    margin: 0;
+    max-width: none;
+    font-size: clamp(30px, 4.4vw, 46px);
+    font-weight: 500;
+    line-height: 1;
+    color: var(--navy);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
   }
-  .live-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--ok);
-    animation: livePulse 1.4s ease-in-out infinite;
+  .pd__cell--accent .pd__value { color: var(--orange); }
+  .pd__label {
+    margin: 12px 0 0;
+    font-size: clamp(.8rem, 1.2vw, .9rem);
+    line-height: 1.4;
+    color: var(--muted);
   }
-  @keyframes livePulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: .3; }
+  .pd__closing {
+    margin: clamp(26px, 3.5vw, 36px) 0 0;
+    padding-top: clamp(18px, 2.4vw, 26px);
+    border-top: 1px solid var(--line);
+    max-width: none;
+    font-size: clamp(.9rem, 1.4vw, 1.05rem);
+    color: var(--ink);
   }
 
-  .term-log {
-    list-style: none; padding: 0; margin: 0;
-    display: grid; gap: 12px;
-    font-size: clamp(.82rem, 1.6vw, .93rem);
+  /* είσοδος: κάθε στήλη ανεβαίνει λίγο και εμφανίζεται (μόνο με JS) */
+  .pd--animate .pd__cell {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .9s ease, transform .9s ease;
   }
-  .term-log li { color: rgba(255, 255, 255, .85); overflow-wrap: anywhere; }
-  .log-time { color: var(--orange-on-navy); font-weight: 700; margin-right: 4px; }
-  .log-ok {
-    display: inline-block; margin-left: 4px;
-    background: var(--ok-soft); color: var(--ok-text);
-    font-weight: 700; line-height: 1.3;
-    padding: 0 7px; border-radius: 7px;
+  .pd--animate.pd--in .pd__cell { opacity: 1; transform: none; }
+
+  /* mobile: 2x2 — οι κάθετες γραμμές φεύγουν */
+  @media (max-width: 719px) {
+    .pd__row { flex-wrap: wrap; }
+    .pd__cell { flex: 0 0 50%; padding: 20px 0 0; }
+    .pd__cell:nth-child(-n+2) { padding-top: 0; }
+    .pd__cell:nth-child(odd) { padding-right: 16px; }
+    .pd__cell + .pd__cell { border-left: 0; }
   }
 
-  /* Οι γραμμές κρύβονται ΜΟΝΟ όταν το JS «οπλίσει» το log */
-  .term-log.is-armed .log-line {
-    opacity: 0; transform: translateY(7px);
-    transition: opacity .4s ease, transform .4s ease;
+  @media (prefers-reduced-motion: reduce) {
+    .pd--animate .pd__cell { opacity: 1; transform: none; transition: none; }
   }
-  .term-log.is-armed .log-line.is-on { opacity: 1; transform: none; }
-
-  .term-replay {
-    margin-top: 20px; justify-self: start;
-    display: inline-flex; align-items: center; gap: 8px;
-    background: transparent; color: rgba(255, 255, 255, .85);
-    border: 1.5px solid rgba(255, 255, 255, .28); border-radius: 999px;
-    padding: 8px 18px; font-size: .87rem; font-weight: 600;
-    font-family: var(--font-body); cursor: pointer;
-    transition: border-color .18s ease, color .18s ease;
-  }
-  .term-replay:hover { border-color: rgba(255, 255, 255, .65); color: #fff; }
 
   /* ---- Δείκτης Αυτοματισμού ---- */
   .deiktis {
