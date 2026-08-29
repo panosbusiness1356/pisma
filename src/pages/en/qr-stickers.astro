@@ -82,6 +82,9 @@ input{font-family:inherit}
   font:700 15px var(--disp);letter-spacing:.06em;text-align:center;padding:6px 10px;width:min(240px,46vw);transition:border-color .15s;text-transform:uppercase}
 .biz:hover,.biz:focus{border-color:var(--acc)}
 .biz::placeholder{color:var(--dim)}
+.langlink{border:1.5px solid var(--line2);border-radius:100px;padding:9px 14px;font-size:12px;font-weight:800;
+  letter-spacing:.06em;color:var(--dim);text-decoration:none;transition:.15s;white-space:nowrap}
+.langlink:hover{border-color:var(--acc);color:var(--acc-text)}
 .cartbtn{position:relative;background:none;border:1.5px solid var(--line2);border-radius:100px;
   padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;display:flex;gap:9px;align-items:center;transition:.15s}
 .cartbtn:hover{border-color:var(--acc);color:var(--acc-text)}
@@ -272,6 +275,7 @@ input{font-family:inherit}
     <a class="logo" href="/en/"><b>PISMA<i>.</i></b><em>SHOWROOM</em></a>
     <a class="whatlink" href="/en/reviews/">What's the Wheel? →</a>
     <span class="bizwrap"><input class="biz" id="f-biz" value="CAFÉ KYMA" maxlength="22" placeholder="YOUR BUSINESS" aria-label="Business name"></span>
+    <a class="langlink" href="/aftokollita/" aria-label="Ελληνική έκδοση">ΕΛ</a>
     <button class="cartbtn" id="cartbtn"><span>Cart</span>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h13l-1.5 9h-10L6 7ZM6 7 5 4H3"/><circle cx="9.5" cy="20" r="1.4"/><circle cx="15.5" cy="20" r="1.4"/></svg>
       <i id="cartcount" style="display:none">0</i></button>
