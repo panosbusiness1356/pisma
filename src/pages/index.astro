@@ -707,7 +707,10 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
   @media (max-width: 480px) { .rev-stage { height: 400px; } }
 
   /* ---------- Hero ---------- */
-  .hero { padding-top: clamp(48px, 7vw, 100px); position: relative; overflow: clip; }
+  /* overflow-x μόνο: το κάθετο clip έκοβε τις δέσμες (beams) στο όριο του main
+     και άφηνε ορατή οριζόντια «γραμμή» κάτω από το μενού — τώρα η λάμψη
+     συνεχίζει ενιαία ως την κορυφή, πίσω από το sticky nav. */
+  .hero { padding-top: clamp(48px, 7vw, 100px); position: relative; overflow-x: clip; }
   .hero-inner { text-align: center; position: relative; z-index: 1; }
   .hero-kicker {
     margin-inline: auto; /* κεντράρισμα — το p έχει max-width από το global */
