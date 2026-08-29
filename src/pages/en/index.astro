@@ -583,6 +583,27 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
       cntEl.textContent = String(cv);
     };
 
+    // Αστέρια εν πτήσει: κρατιούνται σε set ώστε, όταν η σειρά αλλάζει θέση,
+    // να ΞΑΝΑΣΤΟΧΕΥΟΥΝ εν κινήσει την καινούργια της θέση — αλλιώς όσα είχαν
+    // ξεκινήσει πριν την άνοδο προσγειώνονταν εκεί που ήταν η σειρά πριν.
+    const starFlight = new Set<HTMLElement>();
+    const starTarget = (fx: number) => {
+      const sr = revStage.getBoundingClientRect();
+      const lr = rowY.parentElement!.getBoundingClientRect();
+      return {
+        x: Math.round(lr.left - sr.left + lr.width * fx),
+        y: Math.round(lr.top - sr.top + parseFloat(rowY.style.top || '0') + rowY.offsetHeight / 2),
+      };
+    };
+    const retargetStars = () => {
+      for (const s of starFlight) {
+        const p = starTarget(parseFloat(s.dataset.fx || '0.5'));
+        s.style.transitionDuration = '.45s'; // γρήγορο «σβούριγμα» προς τη νέα θέση
+        s.style.left = `${p.x}px`;
+        s.style.top = `${p.y}px`;
+      }
+    };
+
     const bump = () => {
       rv = Math.min(rv + 0.09, 4.9);
       // Ο μετρητής ξεπερνά στο φινάλε και τους 210 του πρώτου ανταγωνιστή
@@ -593,18 +614,17 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
         ringEl.style.transition = 'opacity .6s ease-out, transform .6s ease-out';
         ringEl.style.opacity = '0'; ringEl.style.transform = 'scale(1.12)';
       });
-      if (rv >= 4.45 && revStep < 1) { revStep = 1; setTops('66px', '0px', '132px'); }
-      if (rv >= 4.65 && revStep < 2) { revStep = 2; setTops('0px', '66px', '132px'); }
+      if (rv >= 4.45 && revStep < 1) { revStep = 1; setTops('66px', '0px', '132px'); retargetStars(); }
+      if (rv >= 4.65 && revStep < 2) { revStep = 2; setTops('0px', '66px', '132px'); retargetStars(); }
     };
 
     const starTo = () => {
-      // Στόχος: η ΤΕΛΙΚΗ θέση της σειράς «Your business» (style.top), όχι το
-      // rect της — μεσοδρομίς ανόδου το rect δείχνει την παλιά θέση και τα
-      // αστέρια προσγειώνονταν δίπλα αντί πάνω στη σειρά.
+      // Στόχος: η θέση της σειράς «Your business» από το style.top (όχι το
+      // rect μεσοδρομίς)· αν η σειρά ανέβει όσο το αστέρι πετάει, το
+      // retargetStars() το στρέφει στη νέα θέση.
       const sr = revStage.getBoundingClientRect();
-      const lr = rowY.parentElement!.getBoundingClientRect();
-      const tx = lr.left - sr.left + lr.width * (0.2 + Math.random() * 0.6);
-      const ty = lr.top - sr.top + parseFloat(rowY.style.top || '0') + rowY.offsetHeight / 2;
+      const fx = 0.2 + Math.random() * 0.6;
+      const t = starTarget(fx);
       const side = Math.random();
       let sx: number, sy: number;
       if (side < 0.35) { sx = -30; sy = Math.random() * sr.height * 0.8; }
@@ -612,15 +632,17 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
       else { sx = Math.random() * sr.width; sy = -30; }
       const s = document.createElement('span');
       s.textContent = '★';
+      s.dataset.fx = String(fx);
       s.style.cssText = `position:absolute;left:${sx}px;top:${sy}px;font-size:${Math.round(14 + Math.random() * 8)}px;color:#FBBC04;text-shadow:0 0 10px rgba(251,188,4,.9),0 0 22px rgba(251,188,4,.5);transition:all 1.1s cubic-bezier(.4,0,.6,1);z-index:3;opacity:0;line-height:1`;
       fxL.appendChild(s);
+      starFlight.add(s);
       raf2(() => {
         s.style.opacity = '1';
-        s.style.left = `${Math.round(tx)}px`;
-        s.style.top = `${Math.round(ty)}px`;
+        s.style.left = `${t.x}px`;
+        s.style.top = `${t.y}px`;
         s.style.transform = `scale(.4) rotate(${Math.round(Math.random() * 260 - 130)}deg)`;
       });
-      later(() => { s.remove(); bump(); }, 1120);
+      later(() => { starFlight.delete(s); s.remove(); bump(); }, 1120);
     };
 
     const burst = () => {
@@ -650,7 +672,7 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     };
 
     const cycle = () => {
-      revTimers.forEach(clearTimeout); revTimers = []; fxL.innerHTML = '';
+      revTimers.forEach(clearTimeout); revTimers = []; fxL.innerHTML = ''; starFlight.clear();
       rv = 3.9; cv = 24; revStep = 0; paint();
       setTops('132px', '0px', '66px');
       crownEl.style.transform = 'scale(0)';
@@ -670,7 +692,7 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
           if (e.isIntersecting && !revActive) { revActive = true; cycle(); }
           else if (!e.isIntersecting && revActive) {
             revActive = false;
-            revTimers.forEach(clearTimeout); revTimers = []; fxL.innerHTML = '';
+            revTimers.forEach(clearTimeout); revTimers = []; fxL.innerHTML = ''; starFlight.clear();
             revFinal();
           }
         }
