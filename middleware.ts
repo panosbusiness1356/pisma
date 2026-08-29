@@ -46,7 +46,7 @@ function lockPage(wrong: boolean): string {
       radial-gradient(46% 30% at 8% 0%, rgba(238, 79, 39, .10), transparent 60%),
       #0D0A14;
     color: #E6E1F0;
-    font-family: 'Commissioner', system-ui, sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
     padding: 20px;
   }
   .box {
