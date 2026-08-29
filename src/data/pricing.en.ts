@@ -34,6 +34,7 @@ const OPT: Record<string, { label: string; detail?: string }> = {
   'auto-spy': { label: 'Your Spy' },
   'auto-reviews': { label: 'The Review Wheel', detail: 'Our tool that makes Google reviews pile up on their own — shown only live' },
   'auto-loyalty': { label: 'Loyalty Card', detail: 'A QR code at the register: customers collect stamps on every visit and win a gift — and they come back' },
+  'auto-menu': { label: 'Digital Menu', detail: 'A QR code on the table: customers scan and see your menu on their phone — change prices and dishes anytime, no reprints' },
   'care-web': { label: 'Website care', detail: 'Updates, security, small changes' },
 };
 
