@@ -10,6 +10,20 @@
       "port": 4488
     },
     {
+      "name": "pisma-loudlink",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--prefix",
+        "C:\\PISMA\\pisma-loudlink",
+        "--",
+        "--port",
+        "4399"
+      ],
+      "port": 4399
+    },
+    {
       "name": "pisma-site",
       "runtimeExecutable": "npm",
       "runtimeArgs": [

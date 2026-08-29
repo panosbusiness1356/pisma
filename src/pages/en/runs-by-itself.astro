@@ -1,17 +1,17 @@
 ---
-import Base from '../layouts/Base.astro';
-import PageHero from '../components/PageHero.astro';
-import Faq from '../components/Faq.astro';
-import CtaBand from '../components/CtaBand.astro';
-import { SITE } from '../config';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../config';
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'Αυτοματοποίηση',
-  serviceType: 'Αυτοματισμοί γραφείου για επιχειρήσεις',
+  name: 'Automation',
+  serviceType: 'Office automations for businesses',
   description:
-    'Η ρουτίνα του γραφείου τρέχει μόνη της: ταίριασμα πληρωμών, εισπράξεις, οργανωμένο Excel, καθημερινή αναφορά.',
+    'Your office routine runs on its own: payment matching, collections, an organized Excel, a daily report.',
   provider: {
     '@type': 'LocalBusiness',
     name: SITE.name,
@@ -19,48 +19,48 @@ const schema = {
     telephone: SITE.phone,
     url: SITE.url,
   },
-  areaServed: SITE.region,
+  areaServed: SITE.regionEn,
 };
 
 const faqItems = [
   {
-    q: 'Θα αλλάξω πρόγραμμα;',
-    a: 'Όχι. Χτίζουμε πάνω σε ό,τι ήδη χρησιμοποιείτε — το τιμολογιακό σας, το email σας, το κινητό σας.',
+    q: 'Will I have to change software?',
+    a: 'No. We build on top of what you already use — your invoicing software, your email, your phone.',
   },
   {
-    q: 'Αν χαλάσει;',
-    a: 'Ειδοποιούμαστε εμείς πρώτοι, συνήθως πριν το προσέξετε. Η αποκατάσταση καλύπτεται από τη μηνιαία συντήρηση.',
+    q: 'What if it breaks?',
+    a: 'We get alerted first, usually before you even notice. The fix is covered by your monthly maintenance.',
   },
   {
-    q: 'Τα δεδομένα μου;',
-    a: 'Μένουν σε δικούς σας λογαριασμούς, σε servers εντός ΕΕ, με πλήρη συμμόρφωση GDPR.',
+    q: 'What about my data?',
+    a: 'It stays in your own accounts, on servers inside the EU, fully GDPR compliant.',
   },
   {
-    q: 'Θα χάσει τη δουλειά του ο υπάλληλός μου;',
-    a: 'Όχι — θα σταματήσει να πληκτρολογεί. Ο χρόνος που ελευθερώνεται πάει σε πελάτες, όχι σε καταχωρήσεις.',
+    q: 'Will my employee lose their job?',
+    a: 'No — they will stop typing. The hours freed up go to customers, not data entry.',
   },
 ];
 ---
 
 <Base
-  title="Αυτοματοποίηση — Το γραφείο δουλεύει μόνο του | PISMA"
-  description="Ταίριασμα πληρωμών, εισπράξεις, οργανωμένο Excel και καθημερινή αναφορά τρέχουν μόνα τους — εσείς βλέπετε μόνο το αποτέλεσμα."
+  title="Automation — The office runs by itself | PISMA"
+  description="Payment matching, collections, an organized Excel and a daily report all run on their own — you only see the result."
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
-    kicker="Πυλώνας Β'"
-    sub="Η βαρετή δουλειά ρουτίνας τρέχει μόνη της. Εσείς βλέπετε μόνο την αναφορά."
+    kicker="Pillar two"
+    sub="The boring routine work runs on its own. All you see is the report."
   >
-    Αυτοματο<span class="accent">ποίηση</span>
+    Auto<span class="accent">mation</span>
   </PageHero>
 
   <!-- 2. Υπηρεσίες -->
   <section class="section section--tight" aria-labelledby="services-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">Τι τρέχει μόνο του</p>
-        <h2 id="services-title">Εφτά δουλειές ρουτίνας που φεύγουν από το κεφάλι σας.</h2>
+        <p class="kicker">What runs by itself</p>
+        <h2 id="services-title">Seven routine chores, taken off your plate.</h2>
       </div>
       <div class="grid-3">
         <article class="card reveal">
@@ -69,8 +69,8 @@ const faqItems = [
               <path d="M13 2.5 4.5 13.5h6l-1 8L19.5 10.5h-6z" />
             </svg>
           </span>
-          <h3>Αυτόματο ταίριασμα πληρωμών</h3>
-          <p>Κάθε πληρωμή που μπαίνει βρίσκει μόνη της το τιμολόγιό της. Τέλος το ψάξιμο ένα-ένα με το χέρι.</p>
+          <h3>Automatic payment matching</h3>
+          <p>Every payment that comes in finds its own invoice. No more hunting them down one by one, by hand.</p>
         </article>
 
         <article class="card reveal">
@@ -79,8 +79,8 @@ const faqItems = [
               <path d="M7 3h7.5L19 7.5V21H7z" /><path d="M14.5 3v4.5H19" /><path d="M10.2 12.2h5.6M10.2 15.7h5.6" />
             </svg>
           </span>
-          <h3>Οργανωμένο Excel</h3>
-          <p>Οι κινήσεις σας σε ένα καθαρό Excel που ενημερώνεται μόνο του — η εικόνα της επιχείρησης πάντα φρέσκια.</p>
+          <h3>An organized Excel</h3>
+          <p>All your transactions in one clean Excel that updates itself — a picture of your business that is always fresh.</p>
         </article>
 
         <article class="card reveal">
@@ -89,8 +89,8 @@ const faqItems = [
               <path d="M6 9.5a6 6 0 0 1 12 0c0 5.2 1.8 6.5 1.8 6.5H4.2S6 14.7 6 9.5" /><path d="M10 19.7a2.2 2.2 0 0 0 4 0" />
             </svg>
           </span>
-          <h3>Αυτόματος Κυνηγός Οφειλών</h3>
-          <p>Ευγενικές υπενθυμίσεις στέλνονται αυτόματα, τη σωστή στιγμή. Εσείς βλέπετε μόνο ποιος πλήρωσε.</p>
+          <h3>Automatic Debt Chaser</h3>
+          <p>Polite reminders go out automatically, at just the right moment. All you see is who paid.</p>
         </article>
 
         <article class="card reveal">
@@ -99,8 +99,8 @@ const faqItems = [
               <path d="M21 11.7a8.3 8.3 0 0 1-12.1 7.4L3.5 20.5l1.4-5.2A8.3 8.3 0 1 1 21 11.7z" /><path d="M8.5 10.3h7M8.5 13.7h4.5" />
             </svg>
           </span>
-          <h3>Η Ημέρα σου σε Ένα Μήνυμα</h3>
-          <p>Κάθε απόγευμα, ένα μήνυμα: τι μπήκε, τι βγήκε, τι εκκρεμεί. Η επιχείρηση σε μία ματιά.</p>
+          <h3>Your Day in One Message</h3>
+          <p>Every afternoon, one message: what came in, what went out, what's pending. Your business at a glance.</p>
         </article>
 
         <article class="card reveal">
@@ -109,8 +109,8 @@ const faqItems = [
               <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" />
             </svg>
           </span>
-          <h3>Ο Κατάσκοπός σου</h3>
-          <p>Βλέπετε τι κάνει ο ανταγωνισμός — τιμές, προσφορές, παρουσία — σε μια τακτική αναφορά. Χωρίς να ψάχνετε.</p>
+          <h3>Your Spy</h3>
+          <p>See what your competitors are up to — prices, offers, presence — in a regular report. Without ever searching.</p>
         </article>
 
         <article class="card reveal">
@@ -119,9 +119,9 @@ const faqItems = [
               <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" />
             </svg>
           </span>
-          <h3>Ο Τροχός των Κριτικών</h3>
-          <p>QR στο τραπέζι: ο πελάτης σκανάρει, κερδίζει δώρο και αφήνει κριτική στο Google. Οι κριτικές μαζεύονται μόνες τους, κάθε μέρα.</p>
-          <a class="card-arrow" href="/kritikes/">Δες πώς δουλεύει →</a>
+          <h3>The Review Wheel</h3>
+          <p>A QR code on the table: your customer scans, wins a treat and leaves a Google review. Reviews pile up on their own, every day.</p>
+          <a class="card-arrow" href="/en/reviews/">See how it works →</a>
         </article>
 
         <article class="card reveal">
@@ -130,8 +130,8 @@ const faqItems = [
               <rect x="3" y="5.5" width="18" height="13.5" rx="2.5" /><path d="M12 9l1.1 2.2 2.4.4-1.7 1.7.4 2.4-2.2-1.1-2.2 1.1.4-2.4-1.7-1.7 2.4-.4z" />
             </svg>
           </span>
-          <h3>Κάρτα Πιστότητας</h3>
-          <p>QR στο ταμείο: ο πελάτης μαζεύει σφραγίδες σε κάθε επίσκεψη και κερδίζει δώρο. Οι καλοί πελάτες ξανάρχονται — μετρημένα.</p>
+          <h3>Loyalty Card</h3>
+          <p>A QR code at the register: customers collect stamps on every visit and win a reward. Your best customers come back — measurably.</p>
         </article>
       </div>
     </div>
@@ -143,32 +143,32 @@ const faqItems = [
   <section class="section" aria-labelledby="live-title">
     <div class="container">
       <div class="sec-head sec-head--center">
-        <p class="kicker">Δείτε το ζωντανά</p>
-        <h2 id="live-title">Μία ημέρα του συστήματος, σε αριθμούς.</h2>
-        <p>Έτσι μοιάζει η δουλειά που δεν έκανε κανείς με το χέρι.</p>
+        <p class="kicker">See it live</p>
+        <h2 id="live-title">One day on the system, in numbers.</h2>
+        <p>This is what the work nobody did by hand looks like.</p>
       </div>
 
       <div class="pd reveal" id="pd">
-        <p class="pd__eyebrow num" id="pd-date">χθες</p>
+        <p class="pd__eyebrow num" id="pd-date">yesterday</p>
         <div class="pd__row">
           <div class="pd__cell">
             <p class="pd__value num"><span class="pd__num" data-from="0" data-to="14">14</span></p>
-            <p class="pd__label">πληρωμές ταιριάστηκαν</p>
+            <p class="pd__label">payments matched</p>
           </div>
           <div class="pd__cell">
-            <p class="pd__value num"><span class="pd__num" data-from="0" data-to="1230" data-suffix="€">1.230€</span></p>
-            <p class="pd__label">εισπράχθηκαν</p>
+            <p class="pd__value num"><span class="pd__num" data-from="0" data-to="1230" data-prefix="€">€1,230</span></p>
+            <p class="pd__label">collected</p>
           </div>
           <div class="pd__cell">
             <p class="pd__value num"><span class="pd__num" data-from="0" data-to="3">3</span></p>
-            <p class="pd__label">νέες κριτικές Google</p>
+            <p class="pd__label">new Google reviews</p>
           </div>
           <div class="pd__cell pd__cell--accent">
             <p class="pd__value num"><span class="pd__num" data-from="47" data-to="0">0</span></p>
-            <p class="pd__label">λεπτά δικά σας</p>
+            <p class="pd__label">minutes of your time</p>
           </div>
         </div>
-        <p class="pd__closing">Τίποτα από αυτά δεν χρειάστηκε άνθρωπο.</p>
+        <p class="pd__closing">None of it needed a human.</p>
       </div>
     </div>
   </section>
@@ -178,15 +178,15 @@ const faqItems = [
     <div class="container">
       <div class="card deiktis reveal">
         <div class="deiktis-text">
-          <p class="kicker">Δείκτης Αυτοματισμού</p>
-          <h2 id="deiktis-title">Ένα νούμερο, από το <span class="num">0</span> έως το <span class="num">100</span>.</h2>
-          <p>Μετράει πόσες ώρες τον μήνα φεύγουν σε χειροκίνητη δουλειά, σε τρεις τομείς. Όσο λιγότερες οι ώρες, τόσο ψηλότερα το σκορ — στο 100 η ρουτίνα τρέχει χωρίς εσάς.</p>
-          <a class="card-arrow" href="/tablo/">Μέτρησέ τον στο Ταμπλό →</a>
+          <p class="kicker">Automation Score</p>
+          <h2 id="deiktis-title">One number, from <span class="num">0</span> to <span class="num">100</span>.</h2>
+          <p>It measures how many hours a month go to manual work, across three areas. The fewer the hours, the higher the score — at 100, the routine runs without you.</p>
+          <a class="card-arrow" href="/en/business-check/">Measure it on The Dashboard →</a>
         </div>
-        <ul class="deiktis-areas" aria-label="Τομείς που μετράει ο Δείκτης">
-          <li class="chip">Πληρωμές <span class="muted">ώρες/μήνα</span></li>
-          <li class="chip">Εισπράξεις <span class="muted">ώρες/μήνα</span></li>
-          <li class="chip">Οργάνωση <span class="muted">ώρες/μήνα</span></li>
+        <ul class="deiktis-areas" aria-label="Areas the Score measures">
+          <li class="chip">Payments <span class="muted">hours/month</span></li>
+          <li class="chip">Collections <span class="muted">hours/month</span></li>
+          <li class="chip">Organization <span class="muted">hours/month</span></li>
         </ul>
       </div>
     </div>
@@ -196,8 +196,8 @@ const faqItems = [
   <section class="section" aria-labelledby="faq-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">Συχνές ερωτήσεις</p>
-        <h2 id="faq-title">Αυτά που ρωτάνε όλοι πριν ξεκινήσουν.</h2>
+        <p class="kicker">FAQ</p>
+        <h2 id="faq-title">What everyone asks before getting started.</h2>
       </div>
       <Faq items={faqItems} withSchema />
     </div>
@@ -205,11 +205,11 @@ const faqItems = [
 
   <!-- 6. CTA -->
   <CtaBand
-    title="Πόσο «μόνο του» δουλεύει το δικό σας γραφείο;"
-    sub="Απαντήστε σε 5 ερωτήσεις και δείτε τον Δείκτη Αυτοματισμού σας."
-    ctaText="Μέτρησε τον Δείκτη σου"
-    ctaHref="/tablo/"
-    note="2 λεπτά · δωρεάν · χωρίς στοιχεία"
+    title="How much does your office run by itself?"
+    sub="Answer 5 questions and see your Automation Score."
+    ctaText="Measure your Score"
+    ctaHref="/en/business-check/"
+    note="2 minutes · free · no personal details"
   />
 </Base>
 
@@ -219,18 +219,19 @@ const faqItems = [
   // προς τα πάνω ΜΙΑ φορά — κλιμακωτά ανά στήλη. Οι ταχύτητες διαβάζονται από
   // τα --pd-count-duration/--pd-stagger του CSS. Reduced motion: τελικοί
   // αριθμοί αμέσως, καμία κίνηση.
+  // EN: το € μπαίνει ΜΠΡΟΣΤΑ (data-prefix) και οι αριθμοί μορφοποιούνται en-US.
   const pd = document.getElementById('pd');
   if (pd) {
     const pdCells = Array.from(pd.querySelectorAll<HTMLElement>('.pd__cell'));
     const pdNums = Array.from(pd.querySelectorAll<HTMLElement>('.pd__num'));
     const pdReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // «χθες · 28 Αυγούστου» — υπολογίζεται ζωντανά, δεν παγώνει στο build.
+    // «yesterday · August 28» — υπολογίζεται ζωντανά, δεν παγώνει στο build.
     const dateEl = document.getElementById('pd-date');
     if (dateEl) {
       const d = new Date();
       d.setDate(d.getDate() - 1);
-      dateEl.textContent = 'χθες · ' + d.toLocaleDateString('el-GR', { day: 'numeric', month: 'long' });
+      dateEl.textContent = 'yesterday · ' + d.toLocaleDateString('en-US', { day: 'numeric', month: 'long' });
     }
 
     const pdCss = getComputedStyle(pd);
@@ -241,13 +242,13 @@ const faqItems = [
     const DURATION = cssMs('--pd-count-duration', 2600);
     const STAGGER = cssMs('--pd-stagger', 220);
 
-    const fmt = (v: number, suffix?: string) => Math.round(v).toLocaleString('el-GR') + (suffix || '');
+    const fmt = (v: number, prefix?: string) => (prefix || '') + Math.round(v).toLocaleString('en-US');
     const setFinal = () =>
-      pdNums.forEach((n) => { n.textContent = fmt(Number(n.dataset.to), n.dataset.suffix); });
+      pdNums.forEach((n) => { n.textContent = fmt(Number(n.dataset.to), n.dataset.prefix); });
 
     if (!pdReduce) {
       pd.classList.add('pd--animate');
-      pdNums.forEach((n) => { n.textContent = fmt(Number(n.dataset.from), n.dataset.suffix); });
+      pdNums.forEach((n) => { n.textContent = fmt(Number(n.dataset.from), n.dataset.prefix); });
 
       const count = () => {
         let start: number | null = null;
@@ -259,7 +260,7 @@ const faqItems = [
             const p = Math.max(0, Math.min(1, eased * 1.42 - i * 0.14));
             const from = Number(n.dataset.from);
             const to = Number(n.dataset.to);
-            n.textContent = fmt(from + (to - from) * p, n.dataset.suffix);
+            n.textContent = fmt(from + (to - from) * p, n.dataset.prefix);
           });
           if (k < 1) requestAnimationFrame(step);
           else setFinal();

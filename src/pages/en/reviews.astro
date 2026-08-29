@@ -1,0 +1,292 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE, ELEGXOS, eurEn } from '../../config';
+import { optionById } from '../../data/pricing';
+
+// Το προϊόν κριτικών — μία πηγή αλήθειας: pricing.ts.
+// Τιμές αυτοκόλλητων: πίνακας F στο /aftokollita/ (εφάπαξ, από 18 € το πακέτο).
+const wheel = optionById('auto-reviews')!;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'The Review Wheel',
+  serviceType: 'Growing Google reviews with a QR code inside the business',
+  areaServed: SITE.regionEn,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: SITE.name,
+    email: SITE.email,
+    telephone: SITE.phone,
+    url: SITE.url,
+  },
+  offers: {
+    '@type': 'Offer',
+    price: wheel.price,
+    priceCurrency: 'EUR',
+    description: `${eurEn(wheel.price)} per month, no commitment — plus QR stickers as a one-off.`,
+  },
+  description:
+    'A QR sticker on the table or at the till: the customer scans it, spins the wheel, wins a prize — and leaves a Google review before walking out the door.',
+};
+
+const steps = [
+  {
+    t: 'They scan',
+    d: 'Your customer spots the sticker on the table, at the till or on the delivery bag. They scan it with their camera — nothing to download, nothing to type.',
+  },
+  {
+    t: 'They spin the wheel',
+    d: 'A wheel of prizes opens on their phone. They spin it and always win something — a discount, a treat on the house, a little gift. You decide the prizes.',
+  },
+  {
+    t: 'They get their coupon',
+    d: 'The coupon appears on their screen — they show it at the till now, or next time. It is theirs either way: one more reason to come back.',
+  },
+  {
+    t: 'They leave a review',
+    d: 'Right when they have just won, we ask for a few words on Google. One tap and the review form is open — the right moment, the easy way.',
+  },
+];
+
+const why = [
+  {
+    t: 'Your customer has a reason to scan',
+    d: 'A plain "please leave us a review" gets walked past. A wheel full of prizes does not.',
+  },
+  {
+    t: 'The right moment, every time',
+    d: 'The ask lands the second they have just won — not a week later, in some impersonal message.',
+  },
+  {
+    t: 'It works without you',
+    d: 'No need to remember to ask. The sticker is there every day, for every table.',
+  },
+];
+
+const faqItems = [
+  {
+    q: 'Is this within Google’s rules?',
+    a: 'Yes. Google forbids rewards in exchange for reviews — and there is no exchange here: the customer wins the prize by scanning, whether they write a review or not. We ask for the review afterwards, politely and with no strings attached. We never buy or fake reviews.',
+  },
+  {
+    q: 'What prizes does the customer win?',
+    a: 'Whatever you decide: a discount, a treat on the house, a small gift with their next visit. We settle the odds and prizes together over the phone — a 40% discount on a coffee is not the same as 40% off a haircut.',
+  },
+  {
+    q: 'What do I need to get started?',
+    a: 'A Google profile (if you do not have one, we set it up) and the QR stickers. Everything else — wheel, prizes, coupons — we set up for you. You just stick the stickers.',
+  },
+  {
+    q: 'How much does it cost?',
+    a: `${eurEn(wheel.price)} per month for the platform — wheel, prizes, coupons — with no contract and no commitment. The QR stickers are a one-off payment, from €18 per pack.`,
+  },
+  {
+    q: 'Does it work for delivery too?',
+    a: 'Yes — there are stickers for the bag and the receipt. The customer scans from home, and the coupon brings them back for the next order.',
+  },
+];
+---
+
+<Base
+  title="The Review Wheel — More Google reviews | PISMA"
+  description="A QR code on the table: the customer scans, spins the wheel, wins a prize — and leaves a Google review. Try the live demo. No commitment."
+  schema={schema}
+>
+  <!-- 1. Hero -->
+  <PageHero
+    kicker="The Review Wheel"
+    sub="One QR sticker on the table. Your customer scans it, wins a prize — and leaves a Google review before walking out the door."
+  >
+    Reviews that collect <span class="accent">themselves</span>
+  </PageHero>
+
+  <!-- 2. Πώς δουλεύει -->
+  <section class="section section--tight" aria-labelledby="how-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">How it works</p>
+        <h2 id="how-title">Four steps — all done by your customer.</h2>
+      </div>
+      <ol class="steps grid-4">
+        {steps.map((s, i) => (
+          <li class="card step reveal">
+            <span class="step-num num">{i + 1}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 3. Ζωντανό demo -->
+  <section class="section" aria-labelledby="demo-title">
+    <div class="container">
+      <div class="sec-head sec-head--center">
+        <p class="kicker">Try it now</p>
+        <h2 id="demo-title">This is what your customer sees</h2>
+        <p>A live demo for a fictional pizzeria — pretend you just scanned, and spin the wheel.</p>
+      </div>
+      <div class="demo-wrap reveal">
+        <div class="phone-frame">
+          <iframe
+            src="/demo/pitsaria/"
+            title="Live demo: the Review Wheel for a fictional pizzeria"
+            loading="lazy"
+          ></iframe>
+        </div>
+        <div class="demo-side">
+          <p>
+            What you see here is the real tool — with your own logo,
+            your own colors and your own prizes.
+          </p>
+          <a class="btn btn--orange" href="/demo/pitsaria/" target="_blank" rel="noopener">
+            Open it full screen
+          </a>
+          <a class="btn btn--ghost" href="/demo/kommotirio/" target="_blank" rel="noopener">
+            See the hair salon demo too
+          </a>
+          <p class="btn-note">It’s a demo — no real review is ever submitted.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Γιατί δουλεύει -->
+  <section class="section section--tight" aria-labelledby="why-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Why it works</p>
+        <h2 id="why-title">Reviews need a nudge — not begging.</h2>
+      </div>
+      <div class="grid-3">
+        {why.map((w) => (
+          <article class="card reveal">
+            <h3>{w.t}</h3>
+            <p>{w.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Τιμή -->
+  <section class="section" aria-labelledby="price-title">
+    <div class="container container--narrow">
+      <div class="card price-card reveal">
+        <div class="price-main">
+          <p class="kicker">Price — public, the same for everyone</p>
+          <h2 id="price-title">
+            <span class="price-num num">{eurEn(wheel.price)}</span> per month
+          </h2>
+          <p class="price-sub">
+            Wheel, prizes, coupons, stats — all included. No contract, no commitment:
+            stop whenever you want.
+          </p>
+          <p class="price-sub">
+            Plus the QR stickers, paid once — <strong>from €18 per pack</strong>,
+            with 16 designs for the table, the till, the shopfront and delivery.
+          </p>
+        </div>
+        <div class="price-cta">
+          <a class="btn btn--orange" href="/en/qr-stickers/">Pick your stickers →</a>
+          <a class="btn btn--ghost" href="/en/free-assessment/">Free {ELEGXOS.minutes}-minute assessment</a>
+          <span class="btn-note">No online payment — we sort it out over the phone.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FAQ -->
+  <section class="section section--tight" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">FAQ</p>
+        <h2 id="faq-title">The questions everyone asks.</h2>
+      </div>
+      <Faq items={faqItems} withSchema />
+    </div>
+  </section>
+
+  <!-- 7. CTA -->
+  <CtaBand
+    title="Put the Wheel to work for you."
+    sub="Pick your stickers, send us the cart — we'll call you the next business day."
+    ctaText="Start with the stickers"
+    ctaHref="/en/qr-stickers/"
+    note="No online payment · no commitment"
+  />
+</Base>
+
+<style>
+  /* ---- Βήματα ---- */
+  .steps {
+    list-style: none;
+    padding: 0;
+  }
+  .grid-4 {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
+  }
+  .step { position: relative; }
+  .step-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; border-radius: 10px;
+    background: var(--orange-soft); color: var(--orange-text);
+    font-weight: 700; margin-bottom: 14px;
+  }
+  .step h3 { margin-bottom: 6px; }
+  .step p { color: var(--muted); font-size: .95rem; }
+
+  /* ---- Demo ---- */
+  .demo-wrap {
+    display: flex; align-items: center; justify-content: center;
+    gap: clamp(28px, 5vw, 64px); flex-wrap: wrap;
+  }
+  .phone-frame {
+    flex: none;
+    width: min(375px, 92vw);
+    height: min(730px, 82svh);
+    border: 1px solid var(--line-strong);
+    border-radius: 34px;
+    padding: 10px;
+    background: var(--card);
+    box-shadow: var(--shadow);
+  }
+  .phone-frame iframe {
+    width: 100%; height: 100%;
+    border: 0; border-radius: 26px;
+    background: #fdf6ec; /* το cream του demo — να μη «τρεμοπαίξει» σκούρο στο load */
+  }
+  .demo-side {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
+    max-width: 34ch;
+  }
+  .demo-side > p:first-child { color: var(--muted); font-size: 1.05rem; }
+  .demo-side .btn { width: 100%; text-align: center; }
+  .demo-side .btn-note { align-self: center; }
+
+  /* ---- Τιμή ---- */
+  .price-card {
+    display: grid;
+    grid-template-columns: 1.2fr minmax(min(240px, 100%), .8fr);
+    gap: clamp(24px, 4vw, 48px);
+    align-items: center;
+    padding: clamp(26px, 4vw, 48px);
+  }
+  @media (max-width: 720px) {
+    .price-card { grid-template-columns: 1fr; }
+  }
+  .price-main .kicker { margin-bottom: 14px; }
+  .price-num { font-size: clamp(2rem, 5vw, 2.8rem); color: var(--orange-text); }
+  .price-sub { margin-top: 12px; color: var(--muted); }
+  .price-sub strong { color: var(--ink); }
+  .price-cta { display: flex; flex-direction: column; gap: 12px; }
+  .price-cta .btn { text-align: center; }
+  .price-cta .btn-note { text-align: center; }
+</style>

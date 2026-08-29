@@ -1,49 +1,50 @@
 ---
-import Base from '../layouts/Base.astro';
-import { SITE, ELEGXOS, eur } from '../config';
-import { CATEGORIES, optionById, sumOf } from '../data/pricing';
+import Base from '../../layouts/Base.astro';
+import { SITE, ELEGXOS, eurEn } from '../../config';
+import { sumOf } from '../../data/pricing';
+import { CATEGORIES_EN } from '../../data/pricing.en';
 
 // Πλήρης «ταυτότητα» της PISMA για Google & AI — αναπληρώνει το (προσωρινά
-// ανύπαρκτο) Google Business Profile. Ο τιμοκατάλογος βγαίνει από το pricing.ts.
+// ανύπαρκτο) Google Business Profile. Ο τιμοκατάλογος βγαίνει από το pricing.en.ts.
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
   '@id': `${SITE.url}/#business`,
   name: SITE.name,
-  slogan: SITE.tagline,
+  slogan: SITE.taglineEn,
   email: SITE.email,
   telephone: SITE.phone,
   url: SITE.url,
   address: {
     '@type': 'PostalAddress',
-    addressRegion: 'Αττική',
+    addressRegion: 'Attica',
     addressCountry: 'GR',
   },
   areaServed: [
-    'Νότια προάστια Αθήνας',
-    'Γλυφάδα',
-    'Βούλα',
-    'Βάρη-Βουλιαγμένη',
-    'Άλιμος',
-    'Ελληνικό-Αργυρούπολη',
-    'Παλαιό Φάληρο',
-    'Νέα Σμύρνη',
-    'Ελλάδα (online)',
+    'Southern suburbs of Athens',
+    'Glyfada',
+    'Voula',
+    'Vari-Vouliagmeni',
+    'Alimos',
+    'Elliniko-Argyroupoli',
+    'Palaio Faliro',
+    'Nea Smyrni',
+    'Greece (online)',
   ],
   knowsAbout: [
-    'Κατασκευή ιστοσελίδων',
+    'Website development',
     'SEO',
-    'Ορατότητα σε εργαλεία AI (GEO/AEO)',
+    'Visibility in AI tools (GEO/AEO)',
     'Google Business Profile',
-    'Κριτικές Google',
-    'Αυτοματοποίηση γραφείου',
+    'Google reviews',
+    'Office automation',
   ],
   description:
-    'Ψηφιακή παρουσία και αυτοματοποίηση διαδικασιών για ελληνικές επιχειρήσεις. Site, ορατότητα σε Google και AI, κριτικές και αυτοματισμοί — με μέτρηση πριν και μετά, χωρίς δεσμεύσεις.',
+    'Digital presence and process automation for Greek businesses. Website, visibility on Google and AI, reviews and automations — measured before and after, with no lock-in.',
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
-    name: 'Υπηρεσίες & τιμές PISMA',
-    itemListElement: CATEGORIES.map((c) => ({
+    name: 'PISMA services & prices',
+    itemListElement: CATEGORIES_EN.map((c) => ({
       '@type': 'OfferCatalog',
       name: c.title,
       itemListElement: c.options.map((o) => ({
@@ -55,40 +56,47 @@ const schema = {
         },
         price: o.price,
         priceCurrency: 'EUR',
-        description: o.type === 'monthly' ? `${eur(o.price)} τον μήνα` : `${eur(o.price)} εφάπαξ`,
+        description: o.type === 'monthly' ? `${eurEn(o.price)} per month` : `${eurEn(o.price)} one-off`,
       })),
     })),
   },
 };
 
 const steps = [
-  { t: 'Αξιολόγηση', d: `${ELEGXOS.minutes} λεπτά, χωρίς χρέωση. Καταγράφουμε τι χάνετε σε πελάτες και ώρες.` },
-  { t: 'Πρόταση', d: `Γραπτή, εντός ${ELEGXOS.reportHours} ωρών, με σταθερή τιμή.` },
-  { t: 'Υλοποίηση', d: 'Σε 2–4 εβδομάδες, στα εργαλεία που ήδη χρησιμοποιείτε.' },
-  { t: 'Υποστήριξη', d: 'Μηνιαία αναφορά αποτελεσμάτων σε ώρες και ευρώ.' },
+  { t: 'Assessment', d: `${ELEGXOS.minutes} minutes, completely free. We map where you're losing customers and hours.` },
+  { t: 'Proposal', d: `In writing, within ${ELEGXOS.reportHours} hours, at a fixed price.` },
+  { t: 'Build', d: 'In 2–4 weeks, on the tools you already use.' },
+  { t: 'Support', d: 'A monthly results report, in hours and euros.' },
 ];
 
 
 /* Μίνι-preview του builder (section Τιμολόγηση) — πραγματικές υπηρεσίες και
-   τιμές από το pricing.ts, ώστε το demo να μη δείχνει ποτέ ξεπερασμένα ποσά.
-   Τα labels των generic βαθμίδων («Standard», «Setup») παίρνουν το όνομα της
-   κατηγορίας τους για να στέκουν μόνα τους. */
+   τιμές από το pricing.ts (labels από pricing.en.ts), ώστε το demo να μη δείχνει
+   ποτέ ξεπερασμένα ποσά. Τα labels των generic βαθμίδων («Standard», «Setup»)
+   παίρνουν το όνομα της κατηγορίας τους για να στέκουν μόνα τους. */
+const optionByIdEn = (id: string) => {
+  for (const c of CATEGORIES_EN) {
+    const o = c.options.find((x) => x.id === id);
+    if (o) return o;
+  }
+  return undefined;
+};
 const bdDefs: { id: string; label?: string }[] = [
-  { id: 'web-standard', label: 'Ιστοσελίδα Standard' },
-  { id: 'gbp-setup', label: 'Προφίλ Google — Setup' },
+  { id: 'web-standard', label: 'Standard Website' },
+  { id: 'gbp-setup', label: 'Google Profile — Setup' },
   { id: 'auto-reviews' },
   { id: 'care-web' },
 ];
 const bdItems = bdDefs.map(({ id, label }) => {
-  const o = optionById(id)!;
+  const o = optionByIdEn(id)!;
   return { label: label ?? o.label, price: o.price, type: o.type };
 });
 const bdTotals = sumOf(bdDefs.map((d) => d.id));
 ---
 
 <Base
-  title="PISMA — Ψηφιακή παρουσία & αυτοματοποίηση για ελληνικές επιχειρήσεις"
-  description="Η PISMA σχεδιάζει την παρουσία της επιχείρησής σας σε ιστοσελίδα, Google και εφαρμογές AI, και αυτοματοποιεί πληρωμές, εισπράξεις και καθημερινή αναφορά. Σταθερές τιμές, μετρήσιμα αποτελέσματα."
+  title="PISMA — Digital presence & automation for Greek businesses"
+  description="PISMA designs your business's presence across your website, Google and AI tools, and automates payments, collections and your daily reporting. Fixed prices, measurable results."
   schema={schema}
 >
   <!-- 1. Hero -->
@@ -98,7 +106,7 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     data-mascot-stop
     data-mascot-side="right"
     data-mascot-anchor="#hero-title"
-    data-mascot-say="Καλώς ήρθατε στην PISMA. Συνεχίστε προς τα κάτω — θα σας δείξω τα βασικά."
+    data-mascot-say="Welcome to PISMA. Keep scrolling — I'll show you the essentials."
   >
     <div class="beams" aria-hidden="true">
       <span class="beam beam--a"></span>
@@ -122,11 +130,11 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     </div>
 
     <div class="container hero-inner">
-      <p class="hero-kicker blur-in" style="--d:.16s">Ψηφιακή παρουσία & αυτοματοποίηση</p>
+      <p class="hero-kicker blur-in" style="--d:.16s">Digital presence & automation</p>
 
       <h1 id="hero-title" class="blur-in" style="--d:.22s">
-        Η επιχείρησή σας, ορατή στους πελάτες.<br />
-        Η λειτουργία της, <span class="hero-hl">χωρίς χαμένες ώρες<svg class="hl-stroke" viewBox="0 0 320 30" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="hlGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF8A50" /><stop offset="1" stop-color="#D63E1B" /></linearGradient></defs><path d="M6 15 C 60 9, 130 21, 200 14 C 245 10, 285 12, 314 13 C 260 18, 200 22, 120 21 C 90 20.5, 72 19, 58 18" fill="none" stroke="url(#hlGrad)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" opacity=".95" /></svg></span>.
+        Your business, visible to customers.<br />
+        Your operations, <span class="hero-hl">with no wasted hours<svg class="hl-stroke" viewBox="0 0 320 30" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="hlGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF8A50" /><stop offset="1" stop-color="#D63E1B" /></linearGradient></defs><path d="M6 15 C 60 9, 130 21, 200 14 C 245 10, 285 12, 314 13 C 260 18, 200 22, 120 21 C 90 20.5, 72 19, 58 18" fill="none" stroke="url(#hlGrad)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" opacity=".95" /></svg></span>.
       </h1>
       <script is:inline>
         // Κρύβει την υπογράμμιση πριν το πρώτο paint — θα τη «ζωγραφίσει» ο Ντοτ.
@@ -140,48 +148,48 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
         })();
       </script>
       <p class="sub blur-in" style="--d:.34s">
-        Στην PISMA σχεδιάζουμε και αναπτύσσουμε την παρουσία της επιχείρησής σας σε
-        ιστοσελίδα, Google και AI, και αυτοματοποιούμε τις καθημερινές διαδικασίες σας.
-        <span class="sub-more">Με προκαθορισμένο κόστος και μετρήσιμο αποτέλεσμα.</span>
+        At PISMA we design and build your business's presence across your website,
+        Google and AI, and we automate your everyday processes.
+        <span class="sub-more">With a fixed, agreed cost and measurable results.</span>
       </p>
 
       <div class="hero-ctas blur-in" style="--d:.46s">
         <span class="btn-frame">
-          <a class="btn btn--orange" href="/tablo/">Μετρήστε την επιχείρησή σας — Quiz</a>
+          <a class="btn btn--orange" href="/en/business-check/">Measure your business — 2 min</a>
         </span>
-        <a class="btn btn--ghost" href="/elegxos/">Κλείστε δωρεάν αξιολόγηση</a>
+        <a class="btn btn--ghost" href="/en/free-assessment/">Free 45-minute assessment</a>
       </div>
-      <p class="btn-note blur-in" style="--d:.54s">Χωρίς email · χωρίς δέσμευση · 2 λεπτά και βλέπετε το σκορ</p>
+      <p class="btn-note blur-in" style="--d:.54s">No email · no commitment · your score appears instantly</p>
     </div>
 
     <!-- Πριν → Μετά -->
     <div class="hero-ba blur-in" style="--d:.62s">
       <div class="ba-head">
-        <p class="kicker">Πριν → Μετά</p>
-        <h2>Τι αλλάζει όταν συνεργαστούμε</h2>
+        <p class="kicker">Before → After</p>
+        <h2>What changes when we work together</h2>
       </div>
       <div class="ba-grid">
         <div class="card ba-before">
-          <p class="ba-label">Πριν</p>
+          <p class="ba-label">Before</p>
           <ul class="ba-list">
-            <li>Κριτικές <strong>με το σταγονόμετρο</strong></li>
-            <li><strong>Δύσκολα</strong> σε βρίσκουν στη Google</li>
-            <li>Η ρουτίνα <strong>με το χέρι</strong></li>
-            <li><strong>Αόρατοι</strong> στο AI</li>
+            <li>Reviews <strong>trickling in</strong></li>
+            <li><strong>Hard to find</strong> on Google</li>
+            <li>The daily routine <strong>done by hand</strong></li>
+            <li><strong>Invisible</strong> to AI</li>
           </ul>
         </div>
         <div class="card card--navy ba-after">
           <span class="ba-shine" aria-hidden="true"></span>
-          <p class="ba-label ba-label--after">Με την PISMA</p>
+          <p class="ba-label ba-label--after">With PISMA</p>
           <ul class="ba-list ba-list--after">
-            <li><strong>Σταθερή ροή</strong> κριτικών</li>
-            <li>Θέση <strong>που ανεβαίνει</strong> σε Google & Χάρτες</li>
-            <li>Η ρουτίνα <strong>τρέχει μόνη της</strong></li>
-            <li>Το AI <strong>σας βρίσκει</strong></li>
+            <li><strong>A steady flow</strong> of reviews</li>
+            <li>A ranking <strong>that climbs</strong> on Google & Maps</li>
+            <li>The routine <strong>runs on its own</strong></li>
+            <li>AI <strong>finds you</strong></li>
           </ul>
         </div>
       </div>
-      <p class="ba-note">Τα δικά σας μεγέθη τα μετράμε πριν ξεκινήσουμε — και ξανά στους 3 μήνες.</p>
+      <p class="ba-note">We measure your own numbers before we start — and again at 3 months.</p>
     </div>
   </section>
 
@@ -191,14 +199,14 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     aria-labelledby="svc-title"
     data-mascot-stop
     data-mascot-side="left"
-    data-mascot-say="Δύο υπηρεσίες: προβολή που φέρνει πελάτες, και διαδικασίες που τρέχουν αυτόματα."
+    data-mascot-say="Two services: visibility that brings customers, and processes that run automatically."
   >
     <span class="flogo sflogo" aria-hidden="true" style="right:4%;top:60px;--w:26px;--dur:6.2s"><img src="/logos/google-gmail.svg" alt="" loading="lazy" /></span>
     <span class="flogo sflogo" aria-hidden="true" style="left:4%;bottom:8px;--w:28px;--dur:5.6s"><img src="/logos/whatsapp-icon.svg" alt="" loading="lazy" /></span>
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">Υπηρεσίες</p>
-        <h2 id="svc-title">Τι αναλαμβάνουμε</h2>
+        <p class="kicker">Services</p>
+        <h2 id="svc-title">What we take on</h2>
         <span class="fx-uline" aria-hidden="true"></span>
       </div>
       <div class="grid-2">
@@ -208,13 +216,13 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
               <circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21" />
             </svg>
           </span>
-          <h3>Ψηφιακή προβολή</h3>
+          <h3>Digital Visibility</h3>
           <ul class="svc-list">
-            <li>Ιστοσελίδα σχεδιασμένη να μετατρέπει επισκέπτες σε πελάτες</li>
-            <li>Κατάταξη στην αναζήτηση και τους Χάρτες Google της περιοχής σας</li>
-            <li>Παρουσία στις απαντήσεις εργαλείων AI, όπως το ChatGPT</li>
+            <li>A website designed to turn visitors into customers</li>
+            <li>Rankings on Google Search and Google Maps in your area</li>
+            <li>Recommendations from AI tools like ChatGPT</li>
           </ul>
-          <a class="card-arrow" href="/se-vriskoun/">Αναλυτικά →</a>
+          <a class="card-arrow" href="/en/get-found/">Learn more →</a>
         </article>
         <article class="card svc svc--blue reveal">
           <span class="icon-chip icon-chip--blue">
@@ -222,13 +230,13 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
               <circle cx="12" cy="12" r="3.2" /><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1" />
             </svg>
           </span>
-          <h3>Αυτοματοποίηση διαδικασιών</h3>
+          <h3>Process automation</h3>
           <ul class="svc-list">
-            <li>Αυτόματο ταίριασμα πληρωμών με τα τιμολόγιά τους</li>
-            <li>Συστηματική παρακολούθηση και υπενθύμιση εισπράξεων</li>
-            <li>Καθημερινή εικόνα της επιχείρησης σε ένα μήνυμα</li>
+            <li>Payments matched to their invoices automatically</li>
+            <li>Collections tracked and chased with automatic reminders</li>
+            <li>A daily picture of your business in one message</li>
           </ul>
-          <a class="card-arrow" href="/doulevei-mono-tou/">Αναλυτικά →</a>
+          <a class="card-arrow" href="/en/runs-by-itself/">Learn more →</a>
         </article>
       </div>
     </div>
@@ -243,16 +251,16 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     aria-labelledby="rev-title"
     data-mascot-stop
     data-mascot-side="right"
-    data-mascot-say="Κάθε νέα κριτική ανεβάζει την επιχείρηση πιο ψηλά στα αποτελέσματα της Google."
+    data-mascot-say="Every new review lifts the business higher in Google's results."
   >
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">Κριτικές Google</p>
-        <h2 id="rev-title">Περισσότερες κριτικές, πιο ψηλά στη Google</h2>
+        <p class="kicker">Google reviews</p>
+        <h2 id="rev-title">More reviews, higher on Google</h2>
       </div>
       <p class="rev-sub">
-        Κάθε νέα κριτική μετράει: η βαθμολογία ανεβαίνει και η επιχείρησή σας
-        σκαρφαλώνει στα αποτελέσματα — εκεί που ψάχνουν οι πελάτες.
+        Every new review counts: your rating rises and your business climbs
+        the rankings — right where customers are searching.
       </p>
 
       <div class="rev-stage" id="rev-stage" aria-hidden="true">
@@ -260,29 +268,29 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
         <div class="rev-phone">
           <div class="rev-search">
             <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C41.4 34.9 44 29.9 44 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
-            <span>καφέ κοντά μου</span>
+            <span>coffee near me</span>
           </div>
           <div class="rev-list">
             <div class="rev-row" id="rev-a" style="top:66px">
-              <p>Καφέ Απέναντι</p>
-              <p class="rev-meta"><b>4,6</b> <span class="rev-stars">★★★★★</span> (210)</p>
+              <p>The Corner Cafe</p>
+              <p class="rev-meta"><b>4.6</b> <span class="rev-stars">★★★★★</span> (210)</p>
             </div>
             <div class="rev-row" id="rev-b" style="top:132px">
-              <p>Καφέ Δίπλα</p>
-              <p class="rev-meta"><b>4,4</b> <span class="rev-stars">★★★★★</span> (98)</p>
+              <p>Cafe Next Door</p>
+              <p class="rev-meta"><b>4.4</b> <span class="rev-stars">★★★★★</span> (98)</p>
             </div>
             <div class="rev-row rev-row--you" id="rev-y" style="top:0px">
-              <p>Η επιχείρησή σας<span class="rev-crown" id="rev-crown"><svg viewBox="0 0 24 24" fill="#e37400" aria-hidden="true"><path d="M2.6 18.2 1 7.6l6 3.9L12 4l5 7.5 6-3.9-1.6 10.6z"/><path d="M3.5 19.6h17v1.9h-17z"/></svg></span></p>
-              <p class="rev-meta"><b id="rev-rating">4,9</b> <span class="rev-stars">★★★★★</span> (<span id="rev-count" class="num">87</span>)</p>
+              <p>Your business<span class="rev-crown" id="rev-crown"><svg viewBox="0 0 24 24" fill="#e37400" aria-hidden="true"><path d="M2.6 18.2 1 7.6l6 3.9L12 4l5 7.5 6-3.9-1.6 10.6z"/><path d="M3.5 19.6h17v1.9h-17z"/></svg></span></p>
+              <p class="rev-meta"><b id="rev-rating">4.9</b> <span class="rev-stars">★★★★★</span> (<span id="rev-count" class="num">87</span>)</p>
               <span class="rev-ring" id="rev-ring"></span>
             </div>
           </div>
-          <p class="rev-win" id="rev-win">Πρώτη επιλογή της περιοχής ✓</p>
+          <p class="rev-win" id="rev-win">The area's first choice ✓</p>
         </div>
       </div>
-      <p class="rev-note">Ενδεικτική απεικόνιση.</p>
+      <p class="rev-note">Illustrative example.</p>
       <div class="rev-cta">
-        <a class="btn btn--ghost" href="/kritikes/">Δες πώς δουλεύει ο Τροχός των Κριτικών</a>
+        <a class="btn btn--ghost" href="/en/reviews/">See how the Review Wheel works</a>
       </div>
     </div>
   </section>
@@ -293,13 +301,13 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     aria-labelledby="method-title"
     data-mascot-stop
     data-mascot-side="right"
-    data-mascot-say="Κάθε συνεργασία ξεκινά με δωρεάν αξιολόγηση 45 λεπτών — παραλαμβάνετε τα ευρήματα γραπτώς."
+    data-mascot-say="Every project starts with a free 45-minute assessment — you get the findings in writing."
   >
     <span class="flogo sflogo" aria-hidden="true" style="right:4%;top:40px;--w:24px;--dur:5.9s"><img src="/logos/google-maps.svg" alt="" loading="lazy" /></span>
     <div class="container">
       <div class="sec-head">
-        <p class="kicker kicker--yellow">Μεθοδολογία</p>
-        <h2 id="method-title">Πώς δουλεύουμε — σε 4 βήματα</h2>
+        <p class="kicker kicker--yellow">Methodology</p>
+        <h2 id="method-title">How we work — in 4 steps</h2>
       </div>
       <ol class="steps">
         {steps.map((s, i) => (
@@ -322,21 +330,21 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     aria-labelledby="pricing-title"
     data-mascot-stop
     data-mascot-side="left"
-    data-mascot-say="Κανένα έτοιμο πακέτο — διαλέγετε ό,τι χρειάζεστε και βλέπετε το σύνολο ζωντανά."
+    data-mascot-say="No ready-made packages — you pick what you need and watch the total update live."
   >
     <span class="flogo sflogo" aria-hidden="true" style="left:4%;top:2px;--w:22px;--dur:6.4s"><img src="/logos/linkedin-icon.svg" alt="" loading="lazy" /></span>
     <span class="flogo sflogo" aria-hidden="true" style="right:4%;top:42px;--w:26px;--dur:6.8s"><img src="/logos/facebook.svg" alt="" loading="lazy" /></span>
     <div class="container">
       <div class="sec-head">
-        <p class="kicker kicker--blue">Τιμολόγηση</p>
-        <h2 id="pricing-title">Κανένα έτοιμο πακέτο — φτιάχνετε το δικό σας</h2>
-        <p>Όλες οι τιμές δημόσιες. Διαλέγετε μόνο ό,τι χρειάζεστε — και ξέρετε το κόστος πριν από την πρώτη επικοινωνία.</p>
+        <p class="kicker kicker--blue">Pricing</p>
+        <h2 id="pricing-title">No ready-made packages — you build your own</h2>
+        <p>Every price is public. You pick only what you need — and know the cost before we ever speak.</p>
       </div>
 
       <div class="card bd reveal" id="builder-demo">
         <!-- Αριστερά: μίνι-preview του builder — δείγμα με πραγματικές τιμές -->
         <div class="bd-mock" aria-hidden="true">
-          <p class="bd-mock-title">Η προσφορά σας <span class="tag tag--demo">Δείγμα</span></p>
+          <p class="bd-mock-title">Your quote <span class="tag tag--demo">Sample</span></p>
           <ul class="bd-list">
             {bdItems.map((o) => (
               <li class="bd-item is-on" data-price={o.price} data-ptype={o.type}>
@@ -344,13 +352,13 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.8 4.8L19.5 6.8" /></svg>
                 </span>
                 <span class="bd-label">{o.label}</span>
-                <span class="bd-price num">{eur(o.price)}{o.type === 'monthly' && <em>/μ</em>}</span>
+                <span class="bd-price num">{eurEn(o.price)}{o.type === 'monthly' && <em>/mo</em>}</span>
               </li>
             ))}
           </ul>
           <div class="bd-totals">
-            <span>Εφάπαξ</span><b class="num" id="bd-once">{eur(bdTotals.once)}</b>
-            <span>Μηνιαία</span><b class="num bd-sm" id="bd-month">{eur(bdTotals.monthly)}</b>
+            <span>One-off</span><b class="num" id="bd-once">{eurEn(bdTotals.once)}</b>
+            <span>Monthly</span><b class="num bd-sm" id="bd-month">{eurEn(bdTotals.monthly)}</b>
           </div>
         </div>
 
@@ -360,27 +368,27 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
             <li>
               <span class="bd-n num">1</span>
               <div>
-                <h3>Διαλέγετε υπηρεσίες</h3>
-                <p>Site, Google, ο Τροχός των Κριτικών, αυτοματισμοί — τικάρετε μόνο ό,τι σας χρειάζεται.</p>
+                <h3>Pick your services</h3>
+                <p>Website, Google, the Review Wheel, automations — tick only what your business needs.</p>
               </div>
             </li>
             <li>
               <span class="bd-n num">2</span>
               <div>
-                <h3>Βλέπετε το σύνολο ζωντανά</h3>
-                <p>Εφάπαξ και μηνιαία, χωρίς ψιλά γράμματα — το άθροισμα ενημερώνεται μπροστά σας.</p>
+                <h3>Watch the total update live</h3>
+                <p>One-off and monthly, no fine print — the sum updates right in front of you.</p>
               </div>
             </li>
             <li>
               <span class="bd-n num">3</span>
               <div>
-                <h3>Τη λαμβάνετε γραπτώς</h3>
-                <p>Καμία πληρωμή online — στέλνετε την προσφορά και τα λέμε.</p>
+                <h3>Get it in writing</h3>
+                <p>No online payment — you send the quote over and we talk.</p>
               </div>
             </li>
           </ol>
-          <a class="btn btn--orange" href="/times/">Φτιάξτε το πακέτο σας →</a>
-          <p class="btn-note">2 λεπτά · όλες οι τιμές δημόσιες · χωρίς στοιχεία</p>
+          <a class="btn btn--orange" href="/en/pricing/">Build your package →</a>
+          <p class="btn-note">2 minutes · all prices public · no personal details</p>
         </div>
       </div>
     </div>
@@ -392,14 +400,14 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     <div class="container">
       <div class="card who reveal">
         <div>
-          <p class="kicker">Η εταιρία</p>
-          <h2 id="who-title">Άμεση συνεργασία, χωρίς ενδιάμεσους</h2>
+          <p class="kicker">The company</p>
+          <h2 id="who-title">You talk to the person doing the work</h2>
           <p>
-            Συνεργάζεστε απευθείας με τον υπεύθυνο σχεδιασμού και υλοποίησης — χωρίς
-            τμήμα πωλήσεων. Ό,τι υλοποιείται, ανήκει στην επιχείρησή σας.
+            You work directly with the person who designs and builds your project — no
+            sales department. Everything we build belongs to your business.
           </p>
           <div class="who-bridge" aria-hidden="true">
-            <span class="wb-chip" id="bridge-you">Εσείς</span>
+            <span class="wb-chip" id="bridge-you">You</span>
             <span class="wb-line" id="bridge-line"><span class="wb-fill"></span></span>
             <span class="wb-chip" id="bridge-pisma">PISMA<span class="wb-dot">.</span></span>
           </div>
@@ -414,16 +422,16 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     aria-labelledby="final-title"
     data-mascot-stop
     data-mascot-side="right"
-    data-mascot-say="Ξεκινήστε με τη δωρεάν αξιολόγηση — 45 λεπτά, χωρίς δέσμευση."
+    data-mascot-say="Start with the free assessment — 45 minutes, no commitment."
   >
     <span class="flogo sflogo" aria-hidden="true" style="left:5%;top:12px;--w:24px;--dur:5.4s"><img src="/logos/viber.svg" alt="" loading="lazy" /></span>
     <div class="container">
-      <h2 id="final-title">Ξεκινήστε με μια δωρεάν<br /><span class="grad-text">αξιολόγηση 45 λεπτών</span></h2>
+      <h2 id="final-title">Start with a free<br /><span class="grad-text">45-minute assessment</span></h2>
       <p>
-        Καταγράφουμε τι χάνετε σε πελάτες και χρόνο — παραλαμβάνετε τα ευρήματα γραπτώς.
+        We map where you're losing customers and time — and you get the findings in writing.
       </p>
-      <a class="btn btn--orange" href="/elegxos/">Κλείστε τη δωρεάν αξιολόγηση</a>
-      <p class="btn-note">45 λεπτά · χωρίς χρέωση · χωρίς δέσμευση</p>
+      <a class="btn btn--orange" href="/en/free-assessment/">Book your free assessment</a>
+      <p class="btn-note">45 minutes · completely free · no commitment</p>
     </div>
   </section>
 </Base>
@@ -493,7 +501,7 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     const monthEl = document.getElementById('bd-month')!;
     const finalOnce = onceEl.textContent!;
     const finalMonth = monthEl.textContent!;
-    const eurFmt = (n: number) => n.toLocaleString('el-GR') + '€';
+    const eurFmt = (n: number) => '€' + n.toLocaleString('en-US');
 
     const bdIo = new IntersectionObserver(
       (entries) => {
@@ -527,7 +535,7 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
   }
 
   // «Η άνοδος στη Google» (Κριτικές): το HTML έχει το τελικό state (#1, κορώνα,
-  // 4,9/87). Με JS + ορατότητα: επαναφορά στην 3η θέση και ζωντανή άνοδος σε
+  // 4.9/87). Με JS + ορατότητα: επαναφορά στην 3η θέση και ζωντανή άνοδος σε
   // loop· όταν βγει από την οθόνη, σταματά και γυρνά στο τελικό state.
   // Τα δυναμικά στοιχεία (αστέρια/κομφετί) παίρνουν inline styles — τα scoped
   // styles του Astro δεν πιάνουν JS-created elements.
@@ -553,7 +561,8 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
       rowY.style.top = y; rowA.style.top = a; rowB.style.top = b;
     };
     const paint = () => {
-      ratEl.textContent = rv.toFixed(1).replace('.', ',');
+      // Αγγλική σελίδα: δεκαδικό με τελεία (4.9), όχι κόμμα.
+      ratEl.textContent = rv.toFixed(1);
       cntEl.textContent = String(cv);
     };
 

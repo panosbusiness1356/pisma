@@ -5,6 +5,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Mascot from '../components/Mascot.astro';
 import { SITE } from '../config';
+import { langOf, PAIRS } from '../i18n';
 
 interface Props {
   title: string;
@@ -19,26 +20,38 @@ const { title, description, schema, image = '/og.png' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).href;
 const ogImage = new URL(image, Astro.site ?? SITE.url).href;
 
+// Γλώσσα από το URL (/en/ = αγγλικά) + hreflang ζεύγος, όταν υπάρχει αντίστοιχη σελίδα.
+const lang = langOf(Astro.url.pathname);
+const pathNorm = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : Astro.url.pathname + '/';
+const pair = PAIRS.find(([el, en]) => pathNorm === el || pathNorm === en);
+
 // WebSite JSON-LD σε κάθε σελίδα — σταθερή «ταυτότητα» site για Google & AI.
 const siteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: SITE.name,
   url: SITE.url,
-  inLanguage: 'el',
+  inLanguage: lang,
   publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url, email: SITE.email },
 };
 const schemas = [siteSchema, ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])];
 ---
 
 <!doctype html>
-<html lang="el">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {pair && (
+      <>
+        <link rel="alternate" hreflang="el" href={new URL(pair[0], SITE.url).href} />
+        <link rel="alternate" hreflang="en" href={new URL(pair[1], SITE.url).href} />
+        <link rel="alternate" hreflang="x-default" href={new URL(pair[0], SITE.url).href} />
+      </>
+    )}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#0D0A14" />
 
@@ -47,23 +60,23 @@ const schemas = [siteSchema, ...(schema ? (Array.isArray(schema) ? schema : [sch
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content={SITE.name} />
-    <meta property="og:locale" content="el_GR" />
+    <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'el_GR'} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${SITE.name} — ${SITE.tagline}`} />
+    <meta property="og:image:alt" content={`${SITE.name} — ${lang === 'en' ? SITE.taglineEn : SITE.tagline}`} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
 
     <!-- Γραμματοσειρές: self-hosted (src/styles/fonts.css) — κανένα εξωτερικό αίτημα.
          Preload στα δύο κρίσιμα ελληνικά βάρη για άμεσο πρώτο render. -->
-    <link rel="preload" href="/fonts/commissioner-400-greek.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/commissioner-700-greek.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-var-greek.woff2" as="font" type="font/woff2" crossorigin />
 
     {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
   </head>
   <body>
-    <a class="skip-link" href="#main">Μετάβαση στο περιεχόμενο</a>
+    <a class="skip-link" href="#main">{lang === 'en' ? 'Skip to content' : 'Μετάβαση στο περιεχόμενο'}</a>
     <Nav />
     <main id="main" class="page-in">
       <slot />

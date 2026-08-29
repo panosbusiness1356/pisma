@@ -94,12 +94,48 @@ const cloudB = dots.slice(half);
     return el;
   };
   const spawnEl = resolveSpawn();
+
+  /* Το ορατό κέντρο του σημείου γέννησης. Για χαρακτήρα όπως η τελεία του logo
+     το getBoundingClientRect() δίνει όλο το κουτί γραμμής (line box) — η ορατή
+     κουκίδα όμως κάθεται στη γραμμή βάσης, κι έτσι το κέντρο του κουτιού πέφτει
+     πιο πάνω/δίπλα ανάλογα με γραμματοσειρά και οθόνη. Μετράμε το πραγματικό
+     «μελάνι» του γλυφικού με canvas TextMetrics για σημείο ακριβείας. */
+  const inkCenter = (e: HTMLElement) => {
+    const r = e.getBoundingClientRect();
+    const txt = (e.textContent || '').trim();
+    if (txt.length === 1 && !e.firstElementChild) {
+      try {
+        const cs = getComputedStyle(e);
+        const ctx = document.createElement('canvas').getContext('2d');
+        if (ctx) {
+          ctx.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+          const m = ctx.measureText(txt);
+          if (m.fontBoundingBoxDescent !== undefined) {
+            const baseline = r.bottom - m.fontBoundingBoxDescent;
+            return {
+              x: r.left + (m.actualBoundingBoxRight - m.actualBoundingBoxLeft) / 2,
+              y: baseline + (m.actualBoundingBoxDescent - m.actualBoundingBoxAscent) / 2,
+            };
+          }
+        }
+      } catch { /* πέφτουμε στο κέντρο του rect */ }
+    }
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+  };
+
+  /* Ο μικρός Ντοτ συρρικνώνεται γύρω από το transform-origin του .m-motion
+     (50% 60%) — άρα εκεί πρέπει να κάτσει το σημείο γέννησης, όχι στο 50% 50%. */
+  const ORIGIN_Y = 0.6;
+  const spawnPos = () => {
+    const p = inkCenter(spawnEl!);
+    return { x: p.x - W() / 2, y: p.y - H() * ORIGIN_Y };
+  };
+
   let px = window.innerWidth - W() - 20;
   let py = window.innerHeight - H() - 24;
   let dotPos: { x: number; y: number } | null = null;
   if (spawnEl) {
-    const r = spawnEl.getBoundingClientRect();
-    dotPos = { x: r.left + r.width / 2 - W() / 2, y: r.top + r.height / 2 - H() / 2 };
+    dotPos = spawnPos();
     px = dotPos.x;
     py = dotPos.y;
   }
@@ -200,7 +236,13 @@ const cloudB = dots.slice(half);
     el.style.transform = `translate(${px}px, ${py}px)`;
     el.classList.add('is-ready');
   } else {
-    const loop = () => {
+    /* Η κίνηση κανονικοποιείται στον πραγματικό χρόνο κάθε καρέ (delta time),
+       αλλιώς σε οθόνες 120/144Hz ο Ντοτ ταξιδεύει 2-3x πιο γρήγορα απ' ό,τι στα 60Hz. */
+    let lastT = performance.now();
+    const loop = (nowT: number) => {
+      const f = Math.min(3, (nowT - lastT) / 16.667);
+      lastT = nowT;
+      const smooth = (k: number) => 1 - Math.pow(1 - k, f);
       let t = targetPos();
 
       /* Φάσεις εισόδου: πάνω από το «μόνο του», τραβώντας τη γραμμή. */
@@ -238,8 +280,11 @@ const cloudB = dots.slice(half);
       const now = performance.now();
       const birthing = dotPos && now < birth.start + birth.dur;
       if (birthing) {
-        px = dotPos!.x;
-        py = dotPos!.y;
+        /* Ξαναμετράμε κάθε καρέ: αν φορτώσει αργά η γραμματοσειρά ή κουνηθεί
+           το layout, ο Ντοτ μένει καρφωμένος πάνω στην κουκίδα. */
+        dotPos = spawnPos();
+        px = dotPos.x;
+        py = dotPos.y;
         if (now >= birth.start) {
           if (!pulsed) {
             pulsed = true;
@@ -266,7 +311,7 @@ const cloudB = dots.slice(half);
       const dx = t.x - px;
       const dy = t.y - py;
       if (!birthing) {
-        const k = phase === 'tour' ? 0.032 : 0.045;
+        const k = smooth(phase === 'tour' ? 0.032 : 0.045);
         px += dx * k;
         py += dy * k;
       }
@@ -275,8 +320,8 @@ const cloudB = dots.slice(half);
       const y = window.scrollY;
       const vel = y - lastY;
       lastY = y;
-      const lean = Math.max(-10, Math.min(10, dx * 0.028 + vel * 0.25));
-      rot += (lean - rot) * 0.06;
+      const lean = Math.max(-10, Math.min(10, dx * 0.028 + (vel / f) * 0.25));
+      rot += (lean - rot) * smooth(0.06);
 
       /* Τα μάτια κοιτούν τον κέρσορα — ή προς τα εκεί που ταξιδεύει. */
       const cx = px + W() / 2;
@@ -293,8 +338,9 @@ const cloudB = dots.slice(half);
       const len = Math.hypot(tx, ty) || 1;
       const max = 7;
       const k = Math.min(1, len / 160);
-      eyeX += ((tx / len) * max * k - eyeX) * 0.14;
-      eyeY += ((ty / len) * max * k - eyeY) * 0.14;
+      const ek = smooth(0.14);
+      eyeX += ((tx / len) * max * k - eyeX) * ek;
+      eyeY += ((ty / len) * max * k - eyeY) * ek;
       pupL.style.transform = `translate(${eyeX.toFixed(1)}px, ${eyeY.toFixed(1)}px)`;
       pupR.style.transform = `translate(${(eyeX * 0.85).toFixed(1)}px, ${(eyeY * 0.85).toFixed(1)}px)`;
 

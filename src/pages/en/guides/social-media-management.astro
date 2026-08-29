@@ -1,0 +1,127 @@
+---
+import Guide from '../../../layouts/Guide.astro';
+import { CATEGORIES_EN } from '../../../data/pricing.en';
+import { eurEn, ELEGXOS } from '../../../config';
+
+// Αναζήτηση option με βάση id μέσα στον αγγλικό τιμοκατάλογο (ίδια ids/τιμές με pricing.ts)
+const optionByIdEn = (id: string) =>
+  CATEGORIES_EN.flatMap((c) => c.options).find((o) => o.id === id);
+
+const setup = optionByIdEn('soc-setup')!;
+const p1pisma = optionByIdEn('soc-1p-pisma')!;
+const p23pisma = optionByIdEn('soc-23p-pisma')!;
+const p1own = optionByIdEn('soc-1p-own')!;
+const p23own = optionByIdEn('soc-23p-own')!;
+
+const faq = [
+  {
+    q: 'Do I need social media if I already have a website?',
+    a: "Your website is your foundation and social is your day-to-day presence — one doesn't replace the other. Google and AI tools read both to understand your business.",
+  },
+  {
+    q: 'Who takes the photos and videos?',
+    a: 'Whatever suits you: either you provide the material and we prepare it for publishing, or PISMA takes care of all the content. The price differs accordingly.',
+  },
+  {
+    q: 'On which platforms?',
+    a: 'On the ones that make sense for your business — usually Instagram and Facebook, plus wherever else your customers are. You choose 1 or 2–3 platforms.',
+  },
+  {
+    q: 'Am I locked into a contract?',
+    a: 'No. The monthly management stops whenever you decide. There is also a standalone clean-up and setup, one-off, with no subscription at all.',
+  },
+];
+---
+
+<Guide
+  lang="en"
+  title="What is social media management? | PISMA"
+  description="Social media management means your Instagram and Facebook pages stay alive with regular posts — without you lifting a finger. See the options."
+  slug="social-media-management"
+  question="What is social media management?"
+  sub="What it includes, which options exist and what it costs — in plain words."
+  answer="Social media management means someone takes over your business pages on Instagram, Facebook and wherever else is needed: they prepare the posts and publish them regularly, so the pages look alive and well kept. You decide whether the content (photos, videos) comes from you or is produced by PISMA."
+  updated="2026-07-28"
+  faq={faq}
+>
+  <h2>What does the management include?</h2>
+  <p>
+    Two things: preparing the posts (copy, images, formatting) and publishing them regularly on
+    your pages. The pages stay active every week, with a consistent look and voice, without you
+    having to remember any of it.
+  </p>
+  <p>
+    Why it matters: a page whose last post is from months ago looks closed — and that is seen by
+    your customers, by Google and by AI tools like ChatGPT alike.
+  </p>
+
+  <h2>What options are there at PISMA?</h2>
+  <p>The key difference is who produces the content — you or us:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Option</th>
+        <th>What it includes</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>{setup.label}</strong></td>
+        <td>{setup.detail}</td>
+        <td>{eurEn(setup.price)} one-off</td>
+      </tr>
+      <tr>
+        <td><strong>{p1pisma.label}</strong></td>
+        <td>{p1pisma.detail}</td>
+        <td>{eurEn(p1pisma.price)} per month</td>
+      </tr>
+      <tr>
+        <td><strong>{p23pisma.label}</strong></td>
+        <td>{p23pisma.detail}</td>
+        <td>{eurEn(p23pisma.price)} per month</td>
+      </tr>
+      <tr>
+        <td><strong>{p1own.label}</strong></td>
+        <td>{p1own.detail}</td>
+        <td>{eurEn(p1own.price)} per month</td>
+      </tr>
+      <tr>
+        <td><strong>{p23own.label}</strong></td>
+        <td>{p23own.detail}</td>
+        <td>{eurEn(p23own.price)} per month</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    All prices are public — on the <a href="/en/pricing/">pricing page</a> you can combine them
+    with whatever else you need and see the total.
+  </p>
+
+  <h2>Which option fits you?</h2>
+  <p>
+    If you already take photos and videos of your work, the option with your own content is the
+    most economical — we take care of the preparation and the publishing. If you have no time or
+    appetite for producing content, PISMA takes it all on.
+  </p>
+  <p>
+    And if you simply want your pages set up properly so you can run them yourself, there is the
+    {setup.label.toLowerCase()} — one-off, with no monthly subscription at all.
+  </p>
+
+  <h2>How does it tie into the rest of your presence?</h2>
+  <p>
+    Social does not work in isolation — it ties into your website and your Google profile. When
+    everything shows the same details and stays up to date, Google and AI tools “understand” you
+    better and show you more readily. More in the guide
+    <a href="/en/guides/get-recommended-by-chatgpt/">on ChatGPT</a>.
+  </p>
+
+  <h2>How does PISMA help?</h2>
+  <p>
+    If you are not sure what you actually need, start with the free
+    <a href="/en/free-assessment/">PISMA Check</a>: in {ELEGXOS.minutes} minutes we look
+    together at how your presence stands today — website, Google, AI, social — and you leave
+    with a written picture, with no commitment whatsoever.
+  </p>
+</Guide>

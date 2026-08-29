@@ -1,0 +1,160 @@
+---
+import Guide from '../../../layouts/Guide.astro';
+import { CATEGORIES_EN } from '../../../data/pricing.en';
+import { eurEn, ELEGXOS } from '../../../config';
+
+// Αναζήτηση option με βάση id μέσα στον αγγλικό τιμοκατάλογο (ίδια ids/τιμές με pricing.ts)
+const optionByIdEn = (id: string) =>
+  CATEGORIES_EN.flatMap((c) => c.options).find((o) => o.id === id);
+
+const aiSetup = optionByIdEn('ai-setup')!;
+const aiMonthly = optionByIdEn('ai-monthly')!;
+
+const faq = [
+  {
+    q: 'Can I pay ChatGPT to recommend me?',
+    a: 'Not the way you buy ads on Google. The way in is making sure everything that exists publicly about your business is clean, consistent and up to date.',
+  },
+  {
+    q: 'Do I absolutely need a website for AI tools to find me?',
+    a: 'It helps a lot, because it is the only source you fully control. Without a website, AI relies solely on what third parties say about you.',
+  },
+  {
+    q: 'How soon will I see a difference?',
+    a: `There is no guaranteed timeline — and anyone who promises one is overselling. That is why at PISMA we measure where you stand before you start, in the free ${ELEGXOS.minutes}-minute Check, and measure again at 3 months.`,
+  },
+  {
+    q: 'Is the SEO I have already done wasted?',
+    a: 'No — whatever helps Google helps AI too. It is just that AI gives extra weight to clear answers and to details that match everywhere.',
+  },
+  {
+    q: 'What are GEO and AEO — these terms I keep hearing?',
+    a: 'They are the terms for optimizing so you appear in AI answers, the way SEO is for Google. In practice they stand on the same foundation: a clean website, correct details, good reviews.',
+  },
+];
+---
+
+<Guide
+  lang="en"
+  title="How do you get ChatGPT to recommend you? | PISMA"
+  description="AI recommends businesses with a clean website, an up-to-date Google profile, reviews and the same details everywhere. See what you can do starting today."
+  slug="get-recommended-by-chatgpt"
+  question="How do you get ChatGPT to recommend you?"
+  sub="For the business owner who wants to be found by people asking AI — not just Google."
+  answer="AI tools don’t “know” you — they read whatever exists publicly about you: your website, your Google profile, your reviews and mentions on other sites. For them to recommend you, all of it needs to be clean, up to date and saying the same thing everywhere. The easier it is for a machine to understand what you do, where and for whom, the easier you get into its answers."
+  updated="2026-07-28"
+  faq={faq}
+>
+  <h2>Do customers really ask ChatGPT?</h2>
+  <p>
+    Yes — more and more people ask an AI first and Google second (or not at all). They type
+    “where to eat near me”, “good plumber in Glyfada”, “hair salon for coloring in the southern
+    suburbs” — and get a few specific names straight away, not a list of links.
+  </p>
+  <p>
+    That changes the game: in an AI answer there is no “second page”. Either you are among the
+    names it recommends, or for that customer you do not exist. That is why it pays to take care
+    of what AI tools “see” when someone looks for a business like yours.
+  </p>
+
+  <h2>Where does ChatGPT learn about my business?</h2>
+  <p>
+    AI tools don’t keep their own business directory — they read what already exists publicly
+    on the internet and piece it together. The more numerous and consistent the sources talking
+    about you, the more “confident” the AI feels recommending you.
+  </p>
+  <ul>
+    <li>
+      <strong>Your website.</strong> The only source you fully control: what you do, where,
+      hours, prices, for whom.
+    </li>
+    <li>
+      <strong>Your Google profile.</strong> The box with the map, the hours and the photos —
+      see the guide on the
+      <a href="/en/guides/google-maps-profile/">Google Maps profile</a>.
+    </li>
+    <li>
+      <strong>Reviews.</strong> What your customers write and how you reply — more in the guide
+      on <a href="/en/guides/more-google-reviews/">Google reviews</a>.
+    </li>
+    <li>
+      <strong>Business directories.</strong> Industry and local listings where your details
+      appear.
+    </li>
+    <li>
+      <strong>Mentions on third-party sites.</strong> An article on a local site, a partner
+      page, a forum thread — anything that mentions you by name.
+    </li>
+  </ul>
+
+  <h2>What makes a business “visible” to AI?</h2>
+  <p>
+    Four things — and none of them is magic: clear answers, the same details everywhere,
+    structured data and freshness. Let’s take them one by one.
+  </p>
+  <ol>
+    <li>
+      <strong>Pages that answer questions.</strong> One clean page per service, written the way
+      you speak: what you do, where, what it includes, how to reach you. AI “picks up” text
+      that answers a question directly far more easily.
+    </li>
+    <li>
+      <strong>The same details everywhere.</strong> Name, address, phone number and hours
+      identical on your site, on Google and in directories. When the sources disagree, the
+      machine doesn’t know which one to trust — and often recommends no version of you at all.
+    </li>
+    <li>
+      <strong>Structured data</strong> (schema — a few “tags” in your site’s code that tell
+      machines what is what: this is the name, this is the opening hours, this is the area).
+      Visitors never see them; machines read them first.
+    </li>
+    <li>
+      <strong>Freshness.</strong> A site that gets updated looks like an open shop — an
+      abandoned one looks closed. You don’t need a blog post every week — it’s enough that the
+      basics (hours, services, photos) never fall behind.
+    </li>
+  </ol>
+
+  <h2>Is this something different from SEO?</h2>
+  <p>
+    Same foundation, new game. Whatever works for Google — a clean website, correct details,
+    good reviews — is exactly the raw material AI reads too.
+  </p>
+  <p>
+    The difference is in what you win: on Google you fight for a spot on a list and the user
+    chooses on their own. With AI, the answer has already chosen for them — which is why it
+    matters so much to be one of the businesses the machine understands and trusts. If the
+    jargon sounds like Greek to you, start with the guide
+    <a href="/en/guides/seo-in-plain-words/">SEO in plain words</a>.
+  </p>
+
+  <h2>What can I do on my own, starting today?</h2>
+  <p>Start with a quick self-check — it takes no technical skills, just a bit of time.</p>
+  <ol>
+    <li>
+      Ask ChatGPT itself what a customer of yours would ask (e.g. “good auto repair shop in my
+      area”) and see whether — and how — it mentions you.
+    </li>
+    <li>
+      Search for your business on Google and compare: does it show the same phone number and
+      hours as your website? As the directories?
+    </li>
+    <li>
+      Write answers on your website to the 3–4 questions people keep asking you on the phone.
+    </li>
+    <li>
+      Reply to your reviews — the good ones and the bad ones. It is public text that machines
+      read too.
+    </li>
+  </ol>
+
+  <h2>How does PISMA help?</h2>
+  <p>
+    PISMA sets up your visibility on Google and AI: the initial setup costs
+    {eurEn(aiSetup.price)} one-off and monthly management is {eurEn(aiMonthly.price)} per
+    month, with a monthly Proof of Value report (a report showing what was done and what was
+    measured) — no commitment or contract on the monthly plans. We measure where you stand
+    before we start and measure again at 3 months, so you can compare with your own eyes. See
+    the service on the <a href="/en/get-found/">Get found</a> page.
+  </p>
+</Guide>

@@ -14,7 +14,7 @@ interface Props {
   /** Πλήρης <title>, π.χ. «Πόσο κοστίζει ένα site; | PISMA» */
   title: string;
   description: string;
-  /** slug κάτω από το /odigoi/, χωρίς καθέτους */
+  /** slug κάτω από το /odigoi/ (ή /en/guides/ για lang="en"), χωρίς καθέτους */
   slug: string;
   /** Η ερώτηση-τίτλος της σελίδας (h1) */
   question: string;
@@ -24,11 +24,51 @@ interface Props {
   /** ISO ημερομηνία τελευταίας ενημέρωσης, π.χ. '2026-07-28' */
   updated: string;
   faq?: { q: string; a: string }[];
+  /** 'en' για τους αγγλικούς οδηγούς — αλλάζει chrome, URLs και schema. */
+  lang?: 'el' | 'en';
 }
-const { title, description, slug, question, sub, answer, updated, faq = [] } = Astro.props;
+const { title, description, slug, question, sub, answer, updated, faq = [], lang = 'el' } = Astro.props;
 
-const url = `${SITE.url}/odigoi/${slug}/`;
-const updatedHuman = new Date(updated).toLocaleDateString('el-GR', {
+const T = {
+  el: {
+    base: '/odigoi/',
+    kicker: 'Οδηγός',
+    shortAnswer: 'Η σύντομη απάντηση',
+    updatedLabel: 'Τελευταία ενημέρωση:',
+    allGuides: 'Όλοι οι οδηγοί',
+    faqKicker: 'Συχνές ερωτήσεις',
+    faqTitle: 'Ό,τι ρωτάνε πιο συχνά',
+    home: 'Αρχική',
+    guides: 'Οδηγοί',
+    locale: 'el-GR',
+    ctaTitle: 'Θες να τα δούμε μαζί, στη δική σου επιχείρηση;',
+    ctaSub: 'Ο Έλεγχος PISMA: μετράμε πού στέκεσαι σε Google, AI και καθημερινή λειτουργία — και φεύγεις με γραπτή εικόνα.',
+    ctaText: 'Κλείσε τον δωρεάν Έλεγχο',
+    ctaHref: '/elegxos/',
+    ctaNote: '45 λεπτά · χωρίς καμία δέσμευση',
+  },
+  en: {
+    base: '/en/guides/',
+    kicker: 'Guide',
+    shortAnswer: 'The short answer',
+    updatedLabel: 'Last updated:',
+    allGuides: 'All guides',
+    faqKicker: 'FAQ',
+    faqTitle: 'What people ask most often',
+    home: 'Home',
+    guides: 'Guides',
+    locale: 'en-US',
+    ctaTitle: 'Want to walk through this together, for your own business?',
+    ctaSub: 'The PISMA Check: we measure where you stand on Google, AI and day-to-day operations — and you leave with a written picture.',
+    ctaText: 'Book the free Check',
+    ctaHref: '/en/free-assessment/',
+    ctaNote: '45 minutes · no commitment',
+  },
+}[lang];
+
+const url = `${SITE.url}${T.base}${slug}/`;
+const homeUrl = lang === 'en' ? `${SITE.url}/en/` : `${SITE.url}/`;
+const updatedHuman = new Date(updated).toLocaleDateString(T.locale, {
   day: 'numeric', month: 'long', year: 'numeric',
 });
 
@@ -38,7 +78,7 @@ const schema = [
     '@type': 'Article',
     headline: question,
     description,
-    inLanguage: 'el',
+    inLanguage: lang,
     dateModified: updated,
     mainEntityOfPage: url,
     author: { '@type': 'Organization', name: SITE.name, url: SITE.url },
@@ -48,8 +88,8 @@ const schema = [
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Αρχική', item: `${SITE.url}/` },
-      { '@type': 'ListItem', position: 2, name: 'Οδηγοί', item: `${SITE.url}/odigoi/` },
+      { '@type': 'ListItem', position: 1, name: T.home, item: homeUrl },
+      { '@type': 'ListItem', position: 2, name: T.guides, item: `${SITE.url}${T.base}` },
       { '@type': 'ListItem', position: 3, name: question, item: url },
     ],
   },
@@ -57,13 +97,13 @@ const schema = [
 ---
 
 <Base title={title} description={description} schema={schema}>
-  <PageHero kicker="Οδηγός" sub={sub}>{question}</PageHero>
+  <PageHero kicker={T.kicker} sub={sub}>{question}</PageHero>
 
   <!-- Η σύντομη απάντηση — πάντα πρώτη, πριν από οτιδήποτε άλλο -->
-  <section class="section--tight" aria-label="Η σύντομη απάντηση">
+  <section class="section--tight" aria-label={T.shortAnswer}>
     <div class="container container--narrow">
       <div class="card answer reveal">
-        <p class="answer-kicker">Η σύντομη απάντηση</p>
+        <p class="answer-kicker">{T.shortAnswer}</p>
         <p class="answer-text">{answer}</p>
       </div>
     </div>
@@ -73,8 +113,8 @@ const schema = [
     <div class="container container--narrow guide-prose">
       <slot />
       <p class="guide-meta">
-        Τελευταία ενημέρωση: <time datetime={updated}>{updatedHuman}</time> ·
-        <a href="/odigoi/">Όλοι οι οδηγοί</a>
+        {T.updatedLabel} <time datetime={updated}>{updatedHuman}</time> ·
+        <a href={T.base}>{T.allGuides}</a>
       </p>
     </div>
   </article>
@@ -83,8 +123,8 @@ const schema = [
     <section class="section--tight" aria-labelledby="guide-faq-title">
       <div class="container container--narrow">
         <div class="sec-head">
-          <p class="kicker">Συχνές ερωτήσεις</p>
-          <h2 id="guide-faq-title">Ό,τι ρωτάνε πιο συχνά</h2>
+          <p class="kicker">{T.faqKicker}</p>
+          <h2 id="guide-faq-title">{T.faqTitle}</h2>
         </div>
         <Faq items={faq} withSchema />
       </div>
@@ -92,11 +132,11 @@ const schema = [
   )}
 
   <CtaBand
-    title="Θες να τα δούμε μαζί, στη δική σου επιχείρηση;"
-    sub="Ο Έλεγχος PISMA: μετράμε πού στέκεσαι σε Google, AI και καθημερινή λειτουργία — και φεύγεις με γραπτή εικόνα."
-    ctaText="Κλείσε τον δωρεάν Έλεγχο"
-    ctaHref="/elegxos/"
-    note="45 λεπτά · χωρίς καμία δέσμευση"
+    title={T.ctaTitle}
+    sub={T.ctaSub}
+    ctaText={T.ctaText}
+    ctaHref={T.ctaHref}
+    note={T.ctaNote}
   />
 </Base>
 

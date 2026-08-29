@@ -1,0 +1,125 @@
+---
+import Guide from '../../../layouts/Guide.astro';
+import { CATEGORIES_EN } from '../../../data/pricing.en';
+import { eurEn, ELEGXOS } from '../../../config';
+
+// Αναζήτηση option με βάση id μέσα στον αγγλικό τιμοκατάλογο (ίδια ids/τιμές με pricing.ts)
+const optionByIdEn = (id: string) =>
+  CATEGORIES_EN.flatMap((c) => c.options).find((o) => o.id === id);
+
+const match = optionByIdEn('auto-match')!;
+const excel = optionByIdEn('auto-excel')!;
+const day = optionByIdEn('auto-day')!;
+const debt = optionByIdEn('auto-debt')!;
+const spy = optionByIdEn('auto-spy')!;
+const reviews = optionByIdEn('auto-reviews')!;
+const care = optionByIdEn('care-web')!;
+
+const faq = [
+  {
+    q: 'Do I need to learn some new software?',
+    a: 'No. The automations work with the tools you already use — you only see the result, usually as a message or a file.',
+  },
+  {
+    q: 'Can I get just one automation?',
+    a: 'Yes. Each automation is separate — you pick the ones you need, one or several.',
+  },
+  {
+    q: 'Am I locked into a contract?',
+    a: 'No. The monthly automations have no commitment — you stop them whenever you want.',
+  },
+  {
+    q: 'What happens if something stops working?',
+    a: "We fix it. That's what the support included in the monthly services covers.",
+  },
+  {
+    q: 'How much does an automation cost?',
+    a: `The smaller monthly ones start at ${eurEn(day.price)} per month. The one-off ones, like Organized Excel, start at ${eurEn(excel.price)}.`,
+  },
+];
+---
+
+<Guide
+  lang="en"
+  title="What are office automations? | PISMA"
+  description="Automation means a routine office task gets done on its own — payment matching, debt reminders, reports. See what each one does."
+  slug="what-are-automations"
+  question="What are office automations?"
+  sub="What each one does, in plain words — for business owners, not for techies."
+  answer="An automation is a small system that takes over a routine office task and does it on its own, every time, without you thinking about it: it matches payments to invoices, sends reminders to people who owe you, updates the Excel, sends you a report. You only see the result."
+  updated="2026-07-28"
+  faq={faq}
+>
+  <h2>What does “automation” mean in practice?</h2>
+  <p>
+    It means a task you currently do by hand — again and again, every day or every week — is now
+    done by a system, always the same way and always on time.
+  </p>
+  <p>
+    You don’t need to learn anything new, and you don’t change how you work. The automation is
+    set up once, works with the tools you already have, and you only see the result: a message,
+    an updated file, a report.
+  </p>
+
+  <h2>Which automations does PISMA build?</h2>
+  <p>Six, each for one specific job. One sentence each:</p>
+  <ul>
+    <li>
+      <strong>{match.label}</strong> — every payment that lands in your account finds its own
+      invoice by itself. ({eurEn(match.price)} one-off)
+    </li>
+    <li>
+      <strong>{excel.label}</strong> — your transactions collect in one clean Excel that updates
+      itself. ({eurEn(excel.price)} one-off)
+    </li>
+    <li>
+      <strong>{day.label}</strong> — every afternoon you get one message: what came in, what
+      went out, what is pending. ({eurEn(day.price)} per month)
+    </li>
+    <li>
+      <strong>{debt.label}</strong> — everyone who owes you gets a polite reminder
+      automatically, at the right moment. You only see who paid. ({eurEn(debt.price)} per month)
+    </li>
+    <li>
+      <strong>{spy.label}</strong> — you get a regular report on what your competition is doing:
+      prices, offers, presence. ({eurEn(spy.price)} per month)
+    </li>
+    <li>
+      <strong>{reviews.label}</strong> — every happy customer gets the Google review link at the
+      right moment. ({eurEn(reviews.price)} per month)
+    </li>
+  </ul>
+  <p>
+    You will find more on how they all fit together on the
+    <a href="/en/runs-by-itself/">Automation</a> page. For reviews specifically, there is also a
+    separate guide: <a href="/en/guides/more-google-reviews/">how to get more reviews</a>.
+  </p>
+
+  <h2>Do you pay once, or every month?</h2>
+  <p>
+    It depends on the automation. The ones that are set up once and then simply exist
+    (like {excel.label}) are paid one-off. The ones that keep working for you
+    (reminders, reports, reviews) have a small monthly price — and you stop them whenever you
+    want, no contract.
+  </p>
+  <p>
+    All prices are public, on the <a href="/en/pricing/">pricing page</a> — that is where you
+    pick the ones you want and see the total.
+  </p>
+
+  <h2>Where do automations fit in your own work?</h2>
+  <p>
+    A simple way to think about it: which task do you do every week that is repetitive and
+    boring? Figuring out which payment goes with which invoice? Calling the people who are
+    late? Copying transactions into Excel? If any of these eats up your hours, there is an
+    automation for it.
+  </p>
+
+  <h2>How does PISMA help?</h2>
+  <p>
+    If you don’t know where to start, the free <a href="/en/free-assessment/">PISMA Check</a>
+    is the first step: in {ELEGXOS.minutes} minutes we map out together which routine tasks eat
+    your time and which automations make sense for you — in writing, with priorities, with no
+    commitment whatsoever.
+  </p>
+</Guide>

@@ -1,0 +1,44 @@
+/**
+ * Αγγλικός τιμοκατάλογος — ΜΟΝΟ μεταφράσεις λεκτικών.
+ * Οι τιμές, τα ids και η δομή έρχονται ΠΑΝΤΑ από το pricing.ts (μία πηγή αλήθειας):
+ * αλλαγή τιμής εκεί = αλλάζει αυτόματα και στα αγγλικά.
+ */
+import { CATEGORIES, type PricingCategory } from './pricing';
+
+const CAT: Record<string, { title: string; desc?: string }> = {
+  website: { title: 'Website', desc: 'Build or rebuild — pick one.' },
+  gbp: { title: 'Google Business Profile', desc: 'Your profile on Google Maps and Google Search.' },
+  ai: { title: 'Visibility on Google & AI', desc: 'SEO · GEO · AEO — show up in AI tools’ answers too.' },
+  social: { title: 'Social media', desc: 'Pick one — depending on who produces the content.' },
+  auto: { title: 'Automations', desc: 'Pick as many as you like — the list keeps growing.' },
+  care: { title: 'Care', desc: 'Everything keeps running, without you thinking about it.' },
+};
+
+const OPT: Record<string, { label: string; detail?: string }> = {
+  'web-basic': { label: 'Basic', detail: 'A clean presence: home, services, contact' },
+  'web-standard': { label: 'Standard', detail: 'A full site with more pages and forms' },
+  'web-pro': { label: 'Pro', detail: 'A larger site with custom features' },
+  'web-bookings': { label: 'Site with online bookings', detail: 'Customers book an appointment or a table online and get an automatic reminder — no more no-shows' },
+  'gbp-setup': { label: 'Setup', detail: 'Profile setup and optimization' },
+  'ai-setup': { label: 'Initial setup' },
+  'ai-monthly': { label: 'Monthly management', detail: 'With a monthly Proof of Value report' },
+  'soc-setup': { label: 'Clean-up and setup', detail: 'One-off, no monthly subscription' },
+  'soc-1p-pisma': { label: '1 platform — content by PISMA', detail: '8–12 posts per month' },
+  'soc-23p-pisma': { label: '2–3 platforms — content by PISMA', detail: '15–20 posts + stories per month' },
+  'soc-1p-own': { label: '1 platform — your own content', detail: '8–12 posts per month' },
+  'soc-23p-own': { label: '2–3 platforms — your own content', detail: '15–20 posts per month' },
+  'auto-match': { label: 'Automatic payment matching' },
+  'auto-excel': { label: 'Organized Excel' },
+  'auto-day': { label: 'Your Day in One Message' },
+  'auto-debt': { label: 'Automatic Debt Chaser' },
+  'auto-spy': { label: 'Your Spy' },
+  'auto-reviews': { label: 'The Review Wheel', detail: 'A QR code in your shop: the customer scans, wins a gift, leaves a Google review' },
+  'auto-loyalty': { label: 'Loyalty Card', detail: 'A QR code at the register: customers collect stamps on every visit and win a gift — and they come back' },
+  'care-web': { label: 'Website care', detail: 'Updates, security, small changes' },
+};
+
+export const CATEGORIES_EN: PricingCategory[] = CATEGORIES.map((c) => ({
+  ...c,
+  ...(CAT[c.id] ?? {}),
+  options: c.options.map((o) => ({ ...o, ...(OPT[o.id] ?? {}) })),
+}));

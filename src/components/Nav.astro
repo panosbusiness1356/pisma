@@ -1,25 +1,72 @@
 ---
 // Οι 3 υπηρεσίες ζουν σε αναδιπλούμενο «Υπηρεσίες» (desktop dropdown)·
 // στο mobile μενού εμφανίζονται σκέτες, στην ίδια θέση, χωρίς trigger.
-const services = [
-  { href: '/se-vriskoun/', label: 'Ψηφιακή Προβολή', desc: 'Να σε βρίσκουν όσοι ψάχνουν' },
-  { href: '/doulevei-mono-tou/', label: 'Αυτοματισμοί γραφείου', desc: 'Λιγότερες ώρες σε μηχανικές δουλειές' },
-  { href: '/kritikes/', label: 'Κριτικές Google', desc: 'Περισσότερες κριτικές από τους πελάτες σου' },
-];
-const links = [
-  { href: '/times/', label: 'Τιμές' },
-  { href: '/apotelesmata/', label: 'Αποτελέσματα' },
-  { href: '/odigoi/', label: 'Οδηγοί' },
-];
+// Δίγλωσσο: όλα τα λεκτικά/links του μενού ανά γλώσσα — η γλώσσα βγαίνει από το URL.
+import { langOf, altOf } from '../i18n';
+
+const lang = langOf(Astro.url.pathname);
+const altHref = altOf(Astro.url.pathname);
+
+const NAV = {
+  el: {
+    services: [
+      { href: '/se-vriskoun/', label: 'Ψηφιακή Προβολή', desc: 'Να σε βρίσκουν όσοι ψάχνουν' },
+      { href: '/doulevei-mono-tou/', label: 'Αυτοματισμοί γραφείου', desc: 'Λιγότερες ώρες σε μηχανικές δουλειές' },
+      { href: '/kritikes/', label: 'Κριτικές Google', desc: 'Περισσότερες κριτικές από τους πελάτες σου' },
+    ],
+    links: [
+      { href: '/times/', label: 'Τιμές' },
+      { href: '/apotelesmata/', label: 'Αποτελέσματα' },
+      { href: '/odigoi/', label: 'Οδηγοί' },
+    ],
+    servicesLabel: 'Υπηρεσίες',
+    home: '/',
+    cta: 'Μέτρησε την επιχείρησή σου',
+    ctaHref: '/tablo/',
+    cta2: 'Δωρεάν αξιολόγηση 45′',
+    cta2Href: '/elegxos/',
+    sounds: 'Ήχοι κλικ',
+    menuAria: 'Κύριο μενού',
+    burgerAria: 'Μενού',
+    langBtn: 'EN',
+    langAria: 'Switch to English',
+    langMobile: 'English',
+  },
+  en: {
+    services: [
+      { href: '/en/get-found/', label: 'Digital Visibility', desc: 'Get found by people searching' },
+      { href: '/en/runs-by-itself/', label: 'Office automations', desc: 'Fewer hours on mechanical work' },
+      { href: '/en/reviews/', label: 'Google Reviews', desc: 'More reviews from your customers' },
+    ],
+    links: [
+      { href: '/en/pricing/', label: 'Pricing' },
+      { href: '/en/results/', label: 'Results' },
+      { href: '/en/guides/', label: 'Guides' },
+    ],
+    servicesLabel: 'Services',
+    home: '/en/',
+    cta: 'Measure your business',
+    ctaHref: '/en/business-check/',
+    cta2: 'Free 45-minute assessment',
+    cta2Href: '/en/free-assessment/',
+    sounds: 'Click sounds',
+    menuAria: 'Main menu',
+    burgerAria: 'Menu',
+    langBtn: 'ΕΛ',
+    langAria: 'Αλλαγή σε ελληνικά',
+    langMobile: 'Ελληνικά',
+  },
+}[lang];
+
 // Κανονικοποίηση χωρίς trailing slash και στις δύο πλευρές της σύγκρισης.
 const norm = (p: string) => p.replace(/\/$/, '') || '/';
 const path = norm(Astro.url.pathname);
-const inServices = services.some((s) => path === norm(s.href));
+const inServices = NAV.services.some((s) => path === norm(s.href));
 ---
 
 <header class="nav-wrap">
-  <nav class="container nav" aria-label="Κύριο μενού">
-    <a class="logo" href="/">PISMA<span>.</span></a>
+  <nav class="container nav" aria-label={NAV.menuAria}>
+    <a class="logo" href={NAV.home}>PISMA<span>.</span></a>
 
     <ul class="nav-links" id="nav-links">
       <li class="nav-sub">
@@ -30,14 +77,14 @@ const inServices = services.some((s) => path === norm(s.href));
           aria-haspopup="true"
           aria-controls="sub-panel"
         >
-          Υπηρεσίες
+          {NAV.servicesLabel}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="m6 9 6 6 6-6" />
           </svg>
         </button>
         <div class="sub-panel" id="sub-panel">
           <div class="sub-card">
-            {services.map((s) => (
+            {NAV.services.map((s) => (
               <a class="sub-item" href={s.href} aria-current={path === norm(s.href) ? 'page' : undefined}>
                 <span class="sub-label">{s.label}</span>
                 <span class="sub-desc">{s.desc}</span>
@@ -46,22 +93,30 @@ const inServices = services.some((s) => path === norm(s.href));
           </div>
         </div>
       </li>
-      {links.map((l) => (
+      {NAV.links.map((l) => (
         <li>
           <a href={l.href} aria-current={path === norm(l.href) ? 'page' : undefined}>{l.label}</a>
         </li>
       ))}
+      <li class="nav-lang-mobile">
+        <a href={altHref} aria-label={NAV.langAria}>
+          {NAV.langMobile}
+          <span class="lang-badge" aria-hidden="true">{NAV.langBtn}</span>
+        </a>
+      </li>
       <li class="nav-sound-mobile">
         <button type="button" data-sound-toggle aria-pressed="true">
-          Ήχοι κλικ
+          {NAV.sounds}
           <span class="switch" aria-hidden="true"></span>
         </button>
       </li>
-      <li class="nav-cta-mobile"><a class="btn btn--orange btn--sm" href="/tablo/">Μέτρησε την επιχείρησή σου</a></li>
-      <li class="nav-cta-mobile nav-cta-mobile--second"><a class="btn btn--ghost btn--sm" href="/elegxos/">Δωρεάν αξιολόγηση 45′</a></li>
+      <li class="nav-cta-mobile"><a class="btn btn--orange btn--sm" href={NAV.ctaHref}>{NAV.cta}</a></li>
+      <li class="nav-cta-mobile nav-cta-mobile--second"><a class="btn btn--ghost btn--sm" href={NAV.cta2Href}>{NAV.cta2}</a></li>
     </ul>
 
-    <button class="sound-btn" type="button" data-sound-toggle aria-pressed="true" aria-label="Ήχοι κλικ" title="Ήχοι κλικ">
+    <a class="lang-btn" href={altHref} aria-label={NAV.langAria} title={NAV.langAria}>{NAV.langBtn}</a>
+
+    <button class="sound-btn" type="button" data-sound-toggle aria-pressed="true" aria-label={NAV.sounds} title={NAV.sounds}>
       <svg class="s-on" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor" stroke-width="2" />
         <path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a9 9 0 0 1 0 12" stroke-width="2.6" />
@@ -72,9 +127,9 @@ const inServices = services.some((s) => path === norm(s.href));
       </svg>
     </button>
 
-    <a class="btn btn--orange btn--sm nav-quiz" href="/tablo/">Μέτρησε την επιχείρησή σου</a>
+    <a class="btn btn--orange btn--sm nav-quiz" href={NAV.ctaHref}>{NAV.cta}</a>
 
-    <button class="burger" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Μενού">
+    <button class="burger" type="button" aria-expanded="false" aria-controls="nav-links" aria-label={NAV.burgerAria}>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
         <path class="i-open" d="M4 7h16M4 12h16M4 17h16" />
         <path class="i-close" d="M6 6l12 12M18 6L6 18" style="display:none" />
@@ -246,6 +301,17 @@ const inServices = services.some((s) => path === norm(s.href));
 
   .nav-cta-mobile { display: none; }
   .nav-sound-mobile { display: none; }
+  .nav-lang-mobile { display: none; }
+  /* Κουμπί γλώσσας (desktop): διακριτικό pill δίπλα στον ήχο. */
+  .lang-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 34px; padding: 0 12px; border-radius: 10px; flex: none;
+    border: 1px solid var(--line-strong);
+    font-weight: 700; font-size: .8rem; letter-spacing: .06em;
+    color: var(--muted); text-decoration: none;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .lang-btn:hover { color: var(--navy); border-color: var(--orange); }
   .sound-btn {
     display: inline-flex; align-items: center; justify-content: center;
     width: 44px; height: 44px; border-radius: 10px; flex: none;
@@ -267,6 +333,7 @@ const inServices = services.some((s) => path === norm(s.href));
     .nav-quiz { display: none; }
     .burger { display: inline-flex; }
     .sound-btn { display: none; }
+    .lang-btn { display: none; }
     .burger svg { width: 30px; height: 30px; }
     /* Το ανοιχτό μενού είναι ΜΕΡΟΣ της κάψουλας: static, σπάει σε νέα σειρά
        μέσα στο ίδιο στρογγυλεμένο κουτί — κανένα ξεχωριστό πάνελ, κανένα κενό. */
@@ -291,6 +358,18 @@ const inServices = services.some((s) => path === norm(s.href));
     .sub-label { font-size: 1.05rem; color: var(--muted); }
     .nav-links a.sub-item:hover .sub-label { color: var(--navy); }
     .sub-desc { display: none; }
+    /* Γλώσσα στο mobile μενού: σειρά σαν link, με badge της άλλης γλώσσας. */
+    .nav-lang-mobile { display: block; border-top: 1px solid var(--line); margin-top: 6px; }
+    .nav-lang-mobile a {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 14px 4px; text-decoration: none;
+      font-weight: 600; font-size: 1.05rem; color: var(--navy);
+    }
+    .nav-lang-mobile .lang-badge {
+      flex: none; padding: 4px 10px; border-radius: 8px;
+      border: 1px solid var(--line-strong);
+      font-size: .78rem; font-weight: 700; letter-spacing: .06em; color: var(--muted);
+    }
     .nav-sound-mobile { display: block; border-top: 1px solid var(--line); margin-top: 6px; }
     .nav-sound-mobile button {
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
