@@ -3,8 +3,8 @@
 // Σκόπιμα σκούρο και αυτόνομο (δεν χρησιμοποιεί το Base): λειτουργεί ως
 // showroom προϊόντος, τύπου car configurator. Η τιμή της πλατφόρμας έρχεται
 // από το pricing.ts (auto-reviews) — μία πηγή αλήθειας.
-// Οι τιμές των αυτοκόλλητων (πίνακας F στο script) είναι ο επίσημος
-// τιμοκατάλογός τους — ό,τι αλλάζει, αλλάζει εδώ.
+// Οι τιμές των αυτοκόλλητων και των έξτρα ζουν στο src/data/stickers.ts
+// (κοινές με το /aftokollita/) — εδώ μόνο τα αγγλικά λεκτικά.
 // ΠΡΟΣΟΧΗ: το κείμενο ΠΑΝΩ στα αυτοκόλλητα (WORDS, default όνομα μαγαζιού)
 // μένει ελληνικό — είναι το φυσικό προϊόν όπως τυπώνεται για ελληνικά μαγαζιά.
 import { SITE } from '../../config';
@@ -362,6 +362,7 @@ input{font-family:inherit}
 
 <script>
 import { FORM_ENDPOINT, optionById } from '../../data/pricing';
+import { STICKER_PRICES as SP, STICKER_EXTRA_PRICES as XP } from '../../data/stickers';
 
 /* Η πλατφόρμα του Τροχού τιμολογείται από το pricing.ts — μία πηγή αλήθειας. */
 const PLATFORM_PRICE = optionById('auto-reviews')?.price ?? 39;
@@ -380,31 +381,31 @@ function qrPath(x,y,s){const N=25,m=s/N;let d='';
  return d;}
 
 const F=[
-{id:'tameio', n:'At the till',        sz:'10 × 10 cm · 25 pcs',  pr:29, w:1000,h:1000, L:'stack',  cat:'in'},
-{id:'trapezi',n:'On the table',       sz:'A6 stand · 10 pcs',    pr:35, w:820, h:1180, L:'stack',  cat:'table'},
-{id:'pos',    n:'Next to the POS',    sz:'5 × 15 cm · 10 pcs',   pr:19, w:560, h:1400, L:'stack',  cat:'in'},
-{id:'vitrina',n:'On the shop window', sz:'20 × 20 cm · 2 pcs',   pr:22, w:1000,h:1000, L:'stack',  cat:'in'},
-{id:'tablet', n:'On the tablet',      sz:'Ø 7 cm · 50 pcs',      pr:25, w:1000,h:1000, L:'circle', cat:'in'},
-{id:'apod',   n:'On the receipt',     sz:'4 × 4 cm · 200 pcs',   pr:18, w:700, h:700,  L:'mini',   cat:'hand'},
-{id:'souver', n:'Coaster',            sz:'Ø 9 cm · 100 pcs',     pr:32, w:1000,h:1000, L:'circle', cat:'table'},
-{id:'menu',   n:'Menu corner',        sz:'16 × 4 cm · 20 pcs',   pr:24, w:1600,h:420,  L:'split',  cat:'table'},
-{id:'sakoula',n:'Delivery bag',       sz:'6 × 6 cm · 200 pcs',   pr:21, w:700, h:700,  L:'mini',   cat:'hand'},
-{id:'kathr',  n:'Mirror',             sz:'8 × 20 cm · 6 pcs',    pr:20, w:640, h:1500, L:'stack',  cat:'in'},
-{id:'bar',    n:'Bar counter',        sz:'10 × 10 cm · 25 pcs',  pr:29, w:1000,h:1000, L:'stack',  cat:'in', dark:true},
-{id:'koup',   n:'Hand-out coupon',    sz:'14 × 8 cm · 100 pcs',  pr:27, w:1400,h:800,  L:'ticket', cat:'hand'},
-{id:'psygeio',n:'Fridge / takeaway',  sz:'Ø 11 cm · 25 pcs',     pr:26, w:1000,h:1000, L:'wheel',  cat:'in'},
-{id:'rafi',   n:'Premium shelf',      sz:'8 × 8 cm · 40 pcs',    pr:23, w:800, h:800,  L:'mini',   cat:'in'},
-{id:'arith',  n:'Table number',       sz:'8 × 12 cm · 20 pcs',   pr:31, w:800, h:1200, L:'header', cat:'table'},
-{id:'paidi',  n:'Kids\' table',       sz:'10 × 10 cm · 25 pcs',  pr:29, w:1000,h:1000, L:'stack',  cat:'table'}
-];
+{id:'tameio', n:'At the till',        sz:'10 × 10 cm · 25 pcs',  w:1000,h:1000, L:'stack',  cat:'in'},
+{id:'trapezi',n:'On the table',       sz:'A6 stand · 10 pcs',    w:820, h:1180, L:'stack',  cat:'table'},
+{id:'pos',    n:'Next to the POS',    sz:'5 × 15 cm · 10 pcs',   w:560, h:1400, L:'stack',  cat:'in'},
+{id:'vitrina',n:'On the shop window', sz:'20 × 20 cm · 2 pcs',   w:1000,h:1000, L:'stack',  cat:'in'},
+{id:'tablet', n:'On the tablet',      sz:'Ø 7 cm · 50 pcs',      w:1000,h:1000, L:'circle', cat:'in'},
+{id:'apod',   n:'On the receipt',     sz:'4 × 4 cm · 200 pcs',   w:700, h:700,  L:'mini',   cat:'hand'},
+{id:'souver', n:'Coaster',            sz:'Ø 9 cm · 100 pcs',     w:1000,h:1000, L:'circle', cat:'table'},
+{id:'menu',   n:'Menu corner',        sz:'16 × 4 cm · 20 pcs',   w:1600,h:420,  L:'split',  cat:'table'},
+{id:'sakoula',n:'Delivery bag',       sz:'6 × 6 cm · 200 pcs',   w:700, h:700,  L:'mini',   cat:'hand'},
+{id:'kathr',  n:'Mirror',             sz:'8 × 20 cm · 6 pcs',    w:640, h:1500, L:'stack',  cat:'in'},
+{id:'bar',    n:'Bar counter',        sz:'10 × 10 cm · 25 pcs',  w:1000,h:1000, L:'stack',  cat:'in', dark:true},
+{id:'koup',   n:'Hand-out coupon',    sz:'14 × 8 cm · 100 pcs',  w:1400,h:800,  L:'ticket', cat:'hand'},
+{id:'psygeio',n:'Fridge / takeaway',  sz:'Ø 11 cm · 25 pcs',     w:1000,h:1000, L:'wheel',  cat:'in'},
+{id:'rafi',   n:'Premium shelf',      sz:'8 × 8 cm · 40 pcs',    w:800, h:800,  L:'mini',   cat:'in'},
+{id:'arith',  n:'Table number',       sz:'8 × 12 cm · 20 pcs',   w:800, h:1200, L:'header', cat:'table'},
+{id:'paidi',  n:'Kids\' table',       sz:'10 × 10 cm · 25 pcs',  w:1000,h:1000, L:'stack',  cat:'table'}
+].map(o=>({...o,pr:SP[o.id]}));
 const CATS=[['all','All'],['in','Inside'],['table','Table'],['hand','Handed out']];
 const X=[
 {id:'platform',n:'The Wheel platform',pr:PLATFORM_PRICE,per:'month',lock:true,d:'The tool behind the stickers.'},
-{id:'stand',   n:'Plexiglass stand',  pr:6,  per:'once', d:'A base for the table sticker.'},
-{id:'nfc',     n:'NFC stickers',      pr:45, per:'once', d:'Tap the phone instead of scanning. 10 pcs.'},
-{id:'logo',    n:'Logo design',       pr:120,per:'once', d:'If you don\'t have a print-ready file.'},
-{id:'shop2',   n:'Second location',   pr:19, per:'month',d:'Separate code and stats.'},
-{id:'express', n:'Express printing',  pr:25, per:'once', d:'3 business days instead of 7.'}
+{id:'stand',   n:'Plexiglass stand',  pr:XP.stand,  per:'once', d:'A base for the table sticker.'},
+{id:'nfc',     n:'NFC stickers',      pr:XP.nfc, per:'once', d:'Tap the phone instead of scanning. 10 pcs.'},
+{id:'logo',    n:'Logo design',       pr:XP.logo,per:'once', d:'If you don\'t have a print-ready file.'},
+{id:'shop2',   n:'Second location',   pr:XP.shop2, per:'month',d:'Separate code and stats.'},
+{id:'express', n:'Express printing',  pr:XP.express, per:'once', d:'3 business days instead of 7.'}
 ];
 const PALS=[
  {id:'pisma', n:'PISMA',        paper:'#F7E3D4',ink:'#141414',acc:'#F2542D',fr:'#1B3A5C'},
