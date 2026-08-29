@@ -331,20 +331,20 @@ input{font-family:inherit}
     </div>
     <input type="text" id="f-hp" class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
     <button class="send" id="send" disabled>Στείλ' το</button>
-    <p class="senderr" id="senderr">Δεν στάλθηκε — δοκίμασε ξανά ή γράψε μας στο info@pisma.gr</p>
+    <p class="senderr" id="senderr">Δεν στάλθηκε — δοκίμασε ξανά ή γράψε μας στο {SITE.email}</p>
     <p class="safe">Καμία πληρωμή τώρα · Σε παίρνουμε τηλέφωνο την επόμενη εργάσιμη</p>
   </div>
 </aside>
 
 <!-- ============ done ============ -->
-<div class="modal" id="done" role="dialog" aria-modal="true">
+<div class="modal" id="done" role="dialog" aria-modal="true" aria-labelledby="done-title">
   <div class="mcard">
     <div class="tk"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A5D6B8" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg></div>
-    <h2>Το λάβαμε.</h2>
+    <h2 id="done-title">Το λάβαμε.</h2>
     <p>Θα σε πάρουμε τηλέφωνο την επόμενη εργάσιμη.<br>Κράτα πρόχειρο το λογότυπό σου.</p>
     <div class="rec" id="rec"></div>
     <div class="code" id="code"></div>
-    <button class="ghostb" onclick="location.reload()">Κλείσιμο</button>
+    <button class="ghostb" id="done-close">Κλείσιμο</button>
   </div>
 </div>
 
@@ -639,6 +639,8 @@ $('send').onclick=async()=>{
     btn.textContent="Στείλ' το";btn.disabled=!items().length;
   }
 };
+
+$('done-close').addEventListener('click',()=>location.reload());
 
 draw();
 </script>

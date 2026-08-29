@@ -333,20 +333,20 @@ input{font-family:inherit}
     </div>
     <input type="text" id="f-hp" class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
     <button class="send" id="send" disabled>Send it</button>
-    <p class="senderr" id="senderr">It didn't go through — try again or email us at info@pisma.gr</p>
+    <p class="senderr" id="senderr">It didn't go through — try again or email us at {SITE.email}</p>
     <p class="safe">No payment now · We'll call you the next business day</p>
   </div>
 </aside>
 
 <!-- ============ done ============ -->
-<div class="modal" id="done" role="dialog" aria-modal="true">
+<div class="modal" id="done" role="dialog" aria-modal="true" aria-labelledby="done-title">
   <div class="mcard">
     <div class="tk"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A5D6B8" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg></div>
-    <h2>We got it.</h2>
+    <h2 id="done-title">We got it.</h2>
     <p>We'll call you the next business day.<br>Keep your logo handy.</p>
     <div class="rec" id="rec"></div>
     <div class="code" id="code"></div>
-    <button class="ghostb" onclick="location.reload()">Close</button>
+    <button class="ghostb" id="done-close">Close</button>
   </div>
 </div>
 
@@ -642,6 +642,8 @@ $('send').onclick=async()=>{
     btn.textContent='Send it';btn.disabled=!items().length;
   }
 };
+
+$('done-close').addEventListener('click',()=>location.reload());
 
 draw();
 </script>
