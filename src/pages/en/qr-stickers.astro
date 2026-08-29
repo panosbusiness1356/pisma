@@ -629,7 +629,9 @@ $('send').onclick=async()=>{
         'Design code (paste into Sticker Studio)':code,
       }),
     });
-    if(!res.ok)throw new Error('send failed');
+    // FormSubmit can answer 200 even on failure — check the JSON too.
+    const json=await res.json().catch(()=>null);
+    if(!res.ok||!json||String(json.success)!=='true')throw new Error('send failed');
     showDone(it,xt);
   }catch{
     err.classList.add('on');
