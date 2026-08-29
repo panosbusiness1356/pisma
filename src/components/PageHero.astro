@@ -10,7 +10,7 @@ const { kicker, sub } = Astro.props;
 ---
 
 <section class="section hero">
-  <div class="container container--narrow">
+  <div class="container">
     {kicker && <p class="kicker">{kicker}</p>}
     <h1><slot /></h1>
     {sub && <p class="sub">{sub}</p>}
@@ -19,7 +19,9 @@ const { kicker, sub } = Astro.props;
 </section>
 
 <style>
-  .hero { padding-bottom: clamp(28px, 4vw, 48px); text-align: center; }
+  /* Αριστερή στοίχιση, στο πλάτος του κανονικού container — όχι όλα στο κέντρο. */
+  .hero { padding-bottom: clamp(28px, 4vw, 48px); }
   .hero .kicker { margin-bottom: 18px; }
-  .hero .sub { margin: 18px auto 0; color: var(--muted); font-size: 1.15rem; max-width: 54ch; }
+  .hero h1 { max-width: 22ch; }
+  .hero .sub { margin: 18px 0 0; color: var(--muted); font-size: 1.15rem; max-width: 54ch; }
 </style>

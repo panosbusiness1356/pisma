@@ -121,7 +121,8 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
       <span class="flogo flogo--sm flogo-tt" data-speed="-0.08" style="right:5%;top:95%;--w:28px;--dur:5.4s"><img class="chip" src="/logos/tiktok-icon.svg" alt="" loading="lazy" /></span>
     </div>
 
-    <div class="container hero-inner">
+    <div class="container hero-grid">
+    <div class="hero-inner">
       <p class="hero-kicker blur-in" style="--d:.16s">Ψηφιακή παρουσία & αυτοματοποίηση</p>
 
       <h1 id="hero-title" class="blur-in" style="--d:.22s">
@@ -182,6 +183,7 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
         </div>
       </div>
       <p class="ba-note">Τα δικά σας μεγέθη τα μετράμε πριν ξεκινήσουμε — και ξανά στους 3 μήνες.</p>
+    </div>
     </div>
   </section>
 
@@ -245,16 +247,22 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     data-mascot-side="right"
     data-mascot-say="Κάθε νέα κριτική ανεβάζει την επιχείρηση πιο ψηλά στα αποτελέσματα της Google."
   >
-    <div class="container">
-      <div class="sec-head">
-        <p class="kicker">Κριτικές Google</p>
-        <h2 id="rev-title">Περισσότερες κριτικές, πιο ψηλά στη Google</h2>
+    <div class="container rev-grid">
+      <div class="rev-copy">
+        <div class="sec-head">
+          <p class="kicker">Κριτικές Google</p>
+          <h2 id="rev-title">Περισσότερες κριτικές, πιο ψηλά στη Google</h2>
+        </div>
+        <p class="rev-sub">
+          Κάθε νέα κριτική μετράει: η βαθμολογία ανεβαίνει και η επιχείρησή σας
+          σκαρφαλώνει στα αποτελέσματα — εκεί που ψάχνουν οι πελάτες.
+        </p>
+        <div class="rev-cta">
+          <a class="btn btn--ghost" href="/kritikes/">Δες πώς δουλεύει ο Τροχός των Κριτικών</a>
+        </div>
       </div>
-      <p class="rev-sub">
-        Κάθε νέα κριτική μετράει: η βαθμολογία ανεβαίνει και η επιχείρησή σας
-        σκαρφαλώνει στα αποτελέσματα — εκεί που ψάχνουν οι πελάτες.
-      </p>
 
+      <div class="rev-visual">
       <div class="rev-stage" id="rev-stage" aria-hidden="true">
         <div class="rev-fx" id="rev-fx"></div>
         <div class="rev-phone">
@@ -281,8 +289,6 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
         </div>
       </div>
       <p class="rev-note">Ενδεικτική απεικόνιση.</p>
-      <div class="rev-cta">
-        <a class="btn btn--ghost" href="/kritikes/">Δες πώς δουλεύει ο Τροχός των Κριτικών</a>
       </div>
     </div>
   </section>
@@ -398,11 +404,11 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
             Συνεργάζεστε απευθείας με τον υπεύθυνο σχεδιασμού και υλοποίησης — χωρίς
             τμήμα πωλήσεων. Ό,τι υλοποιείται, ανήκει στην επιχείρησή σας.
           </p>
-          <div class="who-bridge" aria-hidden="true">
-            <span class="wb-chip" id="bridge-you">Εσείς</span>
-            <span class="wb-line" id="bridge-line"><span class="wb-fill"></span></span>
-            <span class="wb-chip" id="bridge-pisma">PISMA<span class="wb-dot">.</span></span>
-          </div>
+        </div>
+        <div class="who-bridge" aria-hidden="true">
+          <span class="wb-chip" id="bridge-you">Εσείς</span>
+          <span class="wb-line" id="bridge-line"><span class="wb-fill"></span></span>
+          <span class="wb-chip" id="bridge-pisma">PISMA<span class="wb-dot">.</span></span>
         </div>
       </div>
     </div>
@@ -417,13 +423,17 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     data-mascot-say="Ξεκινήστε με τη δωρεάν αξιολόγηση — 45 λεπτά, χωρίς δέσμευση."
   >
     <span class="flogo sflogo" aria-hidden="true" style="left:5%;top:12px;--w:24px;--dur:5.4s"><img src="/logos/viber.svg" alt="" loading="lazy" /></span>
-    <div class="container">
-      <h2 id="final-title">Ξεκινήστε με μια δωρεάν<br /><span class="grad-text">αξιολόγηση 45 λεπτών</span></h2>
-      <p>
-        Καταγράφουμε τι χάνετε σε πελάτες και χρόνο — παραλαμβάνετε τα ευρήματα γραπτώς.
-      </p>
-      <a class="btn btn--orange" href="/elegxos/">Κλείστε τη δωρεάν αξιολόγηση</a>
-      <p class="btn-note">45 λεπτά · χωρίς χρέωση · χωρίς δέσμευση</p>
+    <div class="container final-grid">
+      <div class="final-text">
+        <h2 id="final-title">Ξεκινήστε με μια δωρεάν<br /><span class="grad-text">αξιολόγηση 45 λεπτών</span></h2>
+        <p>
+          Καταγράφουμε τι χάνετε σε πελάτες και χρόνο — παραλαμβάνετε τα ευρήματα γραπτώς.
+        </p>
+      </div>
+      <div class="final-action">
+        <a class="btn btn--orange" href="/elegxos/">Κλείστε τη δωρεάν αξιολόγηση</a>
+        <p class="btn-note">45 λεπτά · χωρίς χρέωση · χωρίς δέσμευση</p>
+      </div>
     </div>
   </section>
 </Base>
@@ -653,9 +663,19 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
 
 <style>
   /* ---------- Κριτικές: «Η άνοδος στη Google» ---------- */
+  /* Δίστηλη διάταξη σε desktop: κείμενο αριστερά, το «τηλέφωνο» δεξιά. */
+  .rev-grid { display: grid; gap: 28px; }
+  @media (min-width: 1024px) {
+    .rev-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      gap: clamp(32px, 5vw, 80px);
+      align-items: center;
+    }
+  }
+  .rev-copy .sec-head { margin-bottom: 0; }
   .rev-sub {
-    text-align: center; color: var(--muted);
-    max-width: 52ch; margin: -6px auto 28px;
+    color: var(--muted);
+    max-width: 52ch; margin: 14px 0 24px;
   }
   .rev-stage {
     position: relative; height: 430px; max-width: 560px; margin-inline: auto;
@@ -703,7 +723,7 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     transition: opacity .5s, transform .5s;
   }
   .rev-note { text-align: center; color: var(--muted); font-size: .78rem; margin: 12px auto 0; }
-  .rev-cta { display: flex; justify-content: center; margin-top: 18px; }
+  .rev-cta { display: flex; justify-content: flex-start; }
   @media (max-width: 480px) { .rev-stage { height: 400px; } }
 
   /* ---------- Hero ---------- */
@@ -712,6 +732,7 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
      συνεχίζει ενιαία ως την κορυφή, πίσω από το sticky nav. */
   .hero { padding-top: clamp(48px, 7vw, 100px); position: relative; overflow-x: clip; }
   .hero-inner { text-align: center; position: relative; z-index: 1; }
+  .hero-grid { position: relative; z-index: 1; }
   .hero-kicker {
     margin-inline: auto; /* κεντράρισμα — το p έχει max-width από το global */
     margin-bottom: clamp(18px, 3vw, 28px);
@@ -982,12 +1003,17 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
   .bd-steps p { font-size: .93rem; color: var(--muted); }
 
   /* ---------- Η εταιρία ---------- */
+  /* Απλωμένη σε όλο το πλάτος: κείμενο αριστερά, «γέφυρα» δεξιά (desktop). */
   .who {
-    max-width: 760px; margin-inline: auto;
     border-color: rgba(91, 127, 166, .35);
     background:
       radial-gradient(90% 120% at 85% 0%, rgba(91, 127, 166, .12), transparent 60%),
       var(--card);
+    display: grid; gap: clamp(20px, 4vw, 56px); align-items: center;
+  }
+  @media (min-width: 900px) {
+    .who { grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); }
+    .who .who-bridge { margin-top: 0; }
   }
   .who .kicker { margin-bottom: 14px; }
   .who h2 { font-size: 1.4rem; margin-bottom: 10px; }
@@ -1004,6 +1030,17 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
   .final-cta h2 { font-size: clamp(1.9rem, 4.6vw, 3.2rem); max-width: 24ch; margin-inline: auto; }
   .final-cta p { margin: 18px auto 28px; color: var(--muted); max-width: 58ch; }
   .final-cta .btn-note { margin-inline: auto; }
+  /* Desktop: απλωμένο σε όλο το πλάτος — κείμενο αριστερά, κουμπί δεξιά. */
+  @media (min-width: 900px) {
+    .final-grid {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: clamp(32px, 5vw, 72px); text-align: left;
+      position: relative; z-index: 1;
+    }
+    .final-cta h2 { margin-inline: 0; }
+    .final-cta p { margin: 18px 0 0; }
+    .final-action { flex: none; text-align: center; }
+  }
 
   /* ---------- Mobile: σύντομο, γρήγορο, χωρίς περιττό scroll ---------- */
   @media (max-width: 680px) {
@@ -1078,6 +1115,35 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
   .ba-note {
     text-align: center; font-size: .85rem; color: var(--muted);
     margin: 14px auto 0; width: fit-content; max-width: 34ch;
+  }
+
+  /* Desktop: το hero απλώνεται σε δύο στήλες — κείμενο αριστερά, «Πριν → Μετά»
+     δεξιά — αντί για όλα στοιβαγμένα στο κέντρο (αίτημα χρήστριας).
+     Το block ζει ΜΕΤΑ από όλους τους κανόνες που παρακάμπτει (ίδια specificity). */
+  @media (min-width: 1024px) {
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
+      gap: clamp(40px, 6vw, 90px);
+      align-items: center;
+    }
+    .hero-inner { text-align: left; }
+    .hero-kicker { margin-inline: 0; }
+    .hero h1 { margin-inline: 0; font-size: clamp(2rem, 2.9vw, 2.9rem); }
+    .hero .sub { margin-inline: 0; }
+    .hero-ctas { justify-content: flex-start; }
+    .hero .btn-note { margin-inline: 0; }
+    .hero-ba { max-width: none; margin: 0; }
+    .ba-head { text-align: left; }
+    .ba-grid { grid-template-columns: 1fr; }
+    .ba-note { margin-inline: 0; max-width: none; width: auto; text-align: left; }
+    /* Στη δίστηλη διάταξη τα «εσωτερικά» αιωρούμενα λογότυπα πέφτουν πάνω στο
+       περιεχόμενο — μένουν μόνο όσα ζουν στις άκρες. */
+    .flogo-fb, .flogo-ai, .flogo-wa, .flogo-xl { display: none; }
+  }
+  /* 1024–1279px: δεν υπάρχουν πλευρικά κενά — ούτε τα ακριανά λογότυπα χωράνε. */
+  @media (min-width: 1024px) and (max-width: 1279px) {
+    .float-logos { display: none; }
   }
 
   /* Εταιρία: «Εσείς ——— PISMA.» — τη γραμμή τη σχηματίζει ο Ντοτ σε desktop,
