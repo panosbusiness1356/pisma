@@ -1,34 +1,75 @@
 ---
 import { SITE } from '../config';
+import { langOf } from '../i18n';
 
-const solutions = [
-  { href: '/se-vriskoun/', label: 'Ψηφιακή Προβολή' },
-  { href: '/doulevei-mono-tou/', label: 'Αυτοματισμοί γραφείου' },
-  { href: '/kritikes/', label: 'Ο Τροχός των Κριτικών' },
-  { href: '/aftokollita/', label: 'Αυτοκόλλητα QR' },
-];
-const tools = [
-  { href: '/tablo/', label: 'Το Ταμπλό' },
-  { href: '/elegxos/', label: 'Ο Έλεγχος PISMA' },
-  { href: '/apotelesmata/', label: 'Αποτελέσματα' },
-  { href: '/odigoi/', label: 'Οδηγοί' },
-];
-const company = [
-  { href: '/times/', label: 'Τιμές' },
-  { href: '/epikoinonia/', label: 'Επικοινωνία' },
-];
+const lang = langOf(Astro.url.pathname);
+
+const T = {
+  el: {
+    tagline: SITE.tagline,
+    cta: 'Κλείστε δωρεάν αξιολόγηση',
+    ctaHref: '/elegxos/',
+    solutionsTitle: 'Λύσεις',
+    toolsTitle: 'Εργαλεία',
+    contactTitle: 'Επικοινωνία',
+    note: 'Με πείσμα, μέχρι να δουλεύει μόνο του.',
+    solutions: [
+      { href: '/se-vriskoun/', label: 'Ψηφιακή Προβολή' },
+      { href: '/doulevei-mono-tou/', label: 'Αυτοματισμοί γραφείου' },
+      { href: '/kritikes/', label: 'Ο Τροχός των Κριτικών' },
+      { href: '/aftokollita/', label: 'Αυτοκόλλητα QR' },
+    ],
+    tools: [
+      { href: '/tablo/', label: 'Το Ταμπλό' },
+      { href: '/elegxos/', label: 'Ο Έλεγχος PISMA' },
+      { href: '/apotelesmata/', label: 'Αποτελέσματα' },
+      { href: '/odigoi/', label: 'Οδηγοί' },
+    ],
+    company: [
+      { href: '/times/', label: 'Τιμές' },
+      { href: '/epikoinonia/', label: 'Επικοινωνία' },
+    ],
+  },
+  en: {
+    tagline: SITE.taglineEn,
+    cta: 'Book a free assessment',
+    ctaHref: '/en/free-assessment/',
+    solutionsTitle: 'Solutions',
+    toolsTitle: 'Tools',
+    contactTitle: 'Contact',
+    note: 'Relentlessly, until it runs on its own.',
+    solutions: [
+      { href: '/en/get-found/', label: 'Digital Visibility' },
+      { href: '/en/runs-by-itself/', label: 'Office automations' },
+      { href: '/en/reviews/', label: 'The Review Wheel' },
+      { href: '/en/qr-stickers/', label: 'QR Stickers' },
+    ],
+    tools: [
+      { href: '/en/business-check/', label: 'The Dashboard' },
+      { href: '/en/free-assessment/', label: 'The PISMA Check' },
+      { href: '/en/results/', label: 'Results' },
+      { href: '/en/guides/', label: 'Guides' },
+    ],
+    company: [
+      { href: '/en/pricing/', label: 'Pricing' },
+      { href: '/en/contact/', label: 'Contact' },
+    ],
+  },
+}[lang];
+
+const { solutions, tools, company } = T;
 ---
 
 <footer class="footer">
   <div class="container cols">
     <div class="brand">
       <p class="logo">PISMA<span>.</span></p>
-      <p class="tagline">{SITE.tagline}</p>
-      <a class="btn btn--orange btn--sm cta" href="/elegxos/">Κλείστε δωρεάν αξιολόγηση</a>
+      <p class="tagline">{T.tagline}</p>
+      <a class="btn btn--orange btn--sm cta" href={T.ctaHref}>{T.cta}</a>
     </div>
 
-    <nav aria-label="Λύσεις">
-      <h2 class="col-title">Λύσεις</h2>
+    <nav aria-label={T.solutionsTitle}>
+      <h2 class="col-title">{T.solutionsTitle}</h2>
       <ul>
         {solutions.map((p) => (
           <li><a href={p.href}>{p.label}</a></li>
@@ -36,8 +77,8 @@ const company = [
       </ul>
     </nav>
 
-    <nav aria-label="Εργαλεία">
-      <h2 class="col-title">Εργαλεία</h2>
+    <nav aria-label={T.toolsTitle}>
+      <h2 class="col-title">{T.toolsTitle}</h2>
       <ul>
         {tools.map((p) => (
           <li><a href={p.href}>{p.label}</a></li>
@@ -46,7 +87,7 @@ const company = [
     </nav>
 
     <div>
-      <h2 class="col-title">Επικοινωνία</h2>
+      <h2 class="col-title">{T.contactTitle}</h2>
       <ul>
         {company.map((p) => (
           <li><a href={p.href}>{p.label}</a></li>
@@ -58,7 +99,7 @@ const company = [
   </div>
   <div class="container bottom">
     <p>© {new Date().getFullYear()} PISMA</p>
-    <p class="bottom-note">Με πείσμα, μέχρι να δουλεύει μόνο του.</p>
+    <p class="bottom-note">{T.note}</p>
   </div>
 </footer>
 

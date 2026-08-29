@@ -1,0 +1,369 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE, ELEGXOS } from '../../config';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Results — Numbers, not words',
+  description:
+    'How we measure the results of every collaboration: a baseline before we start, a re-measurement at 3 months, and the numbers we track.',
+  url: `${SITE.url}/en/results/`,
+  inLanguage: 'en',
+  isPartOf: { '@type': 'WebSite', name: SITE.name, url: SITE.url },
+};
+
+/** Οι μετρικές που παρακολουθούμε — trend: up = θέλουμε να ανέβει, down = να πέσει. */
+const metrics = [
+  { title: 'Customers from Google & AI', desc: "They find you in search and in ChatGPT's answers — and they call you.", trend: 'up' },
+  { title: 'Search ranking', desc: 'On Google and in the answers of AI tools.', trend: 'up' },
+  { title: 'Google reviews', desc: 'New reviews coming in, month after month.', trend: 'up' },
+  { title: 'Hours at the office', desc: 'Whatever runs mechanically, automation takes over.', trend: 'down' },
+  { title: 'Website visits', desc: 'More people see your work.', trend: 'up' },
+  { title: 'Social media presence', desc: 'Steady posts every week, without your time.', trend: 'up' },
+] as const;
+
+const steps = [
+  {
+    num: '01',
+    title: 'Before we start',
+    desc: 'In the Check we measure where you stand today: calls, reviews, position on Google and AI, office hours.',
+  },
+  {
+    num: '02',
+    title: 'At 3 months',
+    desc: 'We measure again and compare: where you were, where you are.',
+  },
+  {
+    num: '03',
+    title: "If the numbers didn't climb",
+    desc: "We're the first to tell you. And no contract is holding you.",
+  },
+] as const;
+---
+
+<Base
+  title="Results: measured before and after | PISMA"
+  description="How do you know it's working? We measure where you are today, measure again at 3 months, and show you what changed — calls, reviews, Google ranking, office hours."
+  schema={schema}
+>
+  <PageHero
+    kicker="Results"
+    sub="Every project has a before and an after. If it can't be measured, we don't sell it."
+  >
+    Results <span class="accent">you can measure</span>.
+  </PageHero>
+
+  <!-- Πώς μετράμε -->
+  <section class="section section--tight" aria-labelledby="how-title">
+    <div class="container">
+      <div class="sec-head sec-head--center">
+        <p class="kicker">How we measure</p>
+        <h2 id="how-title">How do you know it's working?</h2>
+      </div>
+      <div class="grid-3">
+        {steps.map((s) => (
+          <article class="card reveal">
+            <p class="mstep-num">{s.num}</p>
+            <h3>{s.title}</h3>
+            <p>{s.desc}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Τι θα δεις να αλλάζει -->
+  <section class="section" aria-labelledby="metrics-title">
+    <div class="container">
+      <div class="sec-head sec-head--center">
+        <p class="kicker kicker--blue">What we measure</p>
+        <h2 id="metrics-title">What you'll see change.</h2>
+        <p>These are the numbers we track in every collaboration.</p>
+      </div>
+      <div class="grid-3">
+        {metrics.map((m) => (
+          <article class="card metric reveal">
+            <div class="metric-head">
+              <span class={`icon-chip metric-chip ${m.trend === 'up' ? 'metric-chip--up' : 'metric-chip--down'}`}>
+                {m.trend === 'up' ? (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 17l6-6 4 4 8-8" />
+                    <path d="M14 7h7v7" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 7l6 6 4-4 8 8" />
+                    <path d="M14 17h7v-7" />
+                  </svg>
+                )}
+              </span>
+              <h3>{m.title}</h3>
+            </div>
+            <p>{m.desc}</p>
+            <span class="visually-hidden">{m.trend === 'up' ? 'Going up' : 'Going down'}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Τι κερδίζεις — η άνοδος -->
+  <section class="section section--tight" aria-labelledby="rise-title">
+    <div class="container">
+      <div class="sec-head sec-head--center">
+        <p class="kicker kicker--ok">What you gain</p>
+        <h2 id="rise-title">Your business, on the rise.</h2>
+        <p>And you'll watch it happen, month after month.</p>
+      </div>
+
+      <div class="rise card reveal" id="rise-panel">
+        <svg id="rise-svg" viewBox="0 0 560 260" role="img" aria-labelledby="rise-svg-title rise-svg-desc">
+          <title id="rise-svg-title">Your business's trajectory</title>
+          <desc id="rise-svg-desc">
+            An upward chart from today to 6 months out: calls, reviews and visits go up,
+            and hours at the office go down.
+          </desc>
+          <line x1="20" y1="218" x2="540" y2="218" class="rise-axis" />
+          <path
+            id="rise-area"
+            d="M30 208 C 120 204, 180 190, 250 164 C 320 138, 400 96, 460 60 L 512 34 L 512 218 L 30 218 Z"
+            fill="rgba(255,122,80,.10)"
+            opacity="0"
+          />
+          <path
+            id="rise-line"
+            d="M30 208 C 120 204, 180 190, 250 164 C 320 138, 400 96, 460 60 L 512 34"
+            fill="none"
+            stroke="var(--orange)"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+          <g class="rise-chip" id="rise-c1" transform="translate(150,193)">
+            <g class="rise-pop">
+              <circle r="8" class="rise-dot-bg" stroke="var(--ok)" />
+              <circle r="3.2" fill="var(--ok)" />
+              <rect x="-46" y="-52" width="92" height="34" rx="17" class="rise-pill rise-pill--ok" />
+              <text y="-30" text-anchor="middle" class="rise-txt rise-txt--ok">Calls ↑</text>
+            </g>
+          </g>
+          <g class="rise-chip" id="rise-c2" transform="translate(285,152)">
+            <g class="rise-pop">
+              <circle r="8" class="rise-dot-bg" stroke="var(--yellow-text)" />
+              <circle r="3.2" fill="var(--yellow-text)" />
+              <rect x="-52" y="-52" width="104" height="34" rx="17" class="rise-pill rise-pill--gold" />
+              <text y="-30" text-anchor="middle" class="rise-txt rise-txt--gold">Reviews ↑</text>
+            </g>
+          </g>
+          <g class="rise-chip" id="rise-c3" transform="translate(430,80)">
+            <g class="rise-pop">
+              <circle r="8" class="rise-dot-bg" stroke="var(--purple-text)" />
+              <circle r="3.2" fill="var(--purple-text)" />
+              <rect x="-48" y="-52" width="96" height="34" rx="17" class="rise-pill rise-pill--purple" />
+              <text y="-30" text-anchor="middle" class="rise-txt rise-txt--purple">Visits ↑</text>
+            </g>
+          </g>
+          <g id="rise-summit" opacity="0" transform="translate(512,34)">
+            <circle r="9" fill="var(--orange)" />
+            <circle id="rise-ring" r="9" fill="none" stroke="var(--orange)" stroke-width="2" opacity="0" />
+          </g>
+          <g id="rise-conf"></g>
+          <text x="30" y="242" class="rise-label">today</text>
+          <text x="512" y="242" class="rise-label" text-anchor="end">in 6 months</text>
+        </svg>
+        <p class="rise-final" id="rise-final">
+          <span>And you, with fewer hours at the office ✓</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="We start by measuring."
+    sub="In the Check we measure where you stand today — and show you, live, the systems we run for ourselves."
+    ctaText="Book the Check"
+    ctaHref="/en/free-assessment/"
+    note={`Free · ${ELEGXOS.minutes} minutes · no commitment`}
+  />
+</Base>
+
+<style>
+  /* Βήματα «Πώς μετράμε» — αριθμός σε mono, πορτοκαλί */
+  .mstep-num {
+    font-family: var(--font-mono);
+    color: var(--orange);
+    font-weight: 700;
+    font-size: .95rem;
+    margin-bottom: 12px;
+  }
+
+  /* Κάρτες μετρικών */
+  .metric-head { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+  .metric-head h3 { margin-bottom: 0; }
+  .icon-chip.metric-chip { width: 40px; height: 40px; border-radius: 11px; margin-bottom: 0; flex: none; }
+  .icon-chip.metric-chip svg { width: 21px; height: 21px; }
+  .icon-chip.metric-chip--up { background: var(--ok-soft); color: var(--ok-text); }
+  .icon-chip.metric-chip--down { background: var(--orange-soft); color: var(--orange-text); }
+
+  /* Πάνελ ανόδου */
+  .rise { max-width: 760px; margin-inline: auto; padding: clamp(18px, 3vw, 30px); }
+  .rise svg { width: 100%; height: auto; }
+  .rise-axis { stroke: var(--line-strong); stroke-width: 1.5; }
+  .rise-dot-bg { fill: var(--bg); stroke-width: 2.5; }
+  .rise-pill { fill: var(--bg-soft); stroke-width: 1; }
+  .rise-pill--ok { fill: var(--ok-soft); stroke: var(--ok); }
+  .rise-pill--gold { fill: var(--yellow-soft); stroke: var(--yellow-text); }
+  .rise-pill--purple { fill: var(--purple-soft); stroke: var(--purple-text); }
+  .rise-txt { font-family: var(--font-body); font-size: 12.5px; font-weight: 700; }
+  .rise-txt--ok { fill: var(--ok-text); }
+  .rise-txt--gold { fill: var(--yellow-text); }
+  .rise-txt--purple { fill: var(--purple-text); }
+  .rise-label { font-family: var(--font-body); font-size: 11px; fill: var(--muted); }
+  .rise-chip { opacity: 0; }
+
+  .rise-final { text-align: center; margin-top: 6px; opacity: 0; transform: translateY(8px); transition: opacity .6s ease, transform .6s cubic-bezier(.2, .9, .3, 1.4); }
+  .rise-final.is-on { opacity: 1; transform: none; }
+  .rise-final span {
+    display: inline-block;
+    background: var(--ok-soft);
+    border: 1px solid var(--ok);
+    color: var(--ok-text);
+    font-size: .9rem; font-weight: 700;
+    padding: 9px 20px; border-radius: 999px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rise-final { opacity: 1; transform: none; }
+  }
+</style>
+
+<script>
+  // «Η επιχείρησή σου, σε άνοδο»: η γραμμή σχεδιάζεται όταν το πάνελ μπει στην οθόνη,
+  // οι δείκτες σκάνε διαδοχικά πάνω της και στην κορυφή σπάει κομφετί. Επαναλαμβάνεται
+  // όσο το πάνελ είναι ορατό· με prefers-reduced-motion δείχνουμε την τελική εικόνα στατικά.
+  const panel = document.getElementById('rise-panel');
+  const line = document.getElementById('rise-line') as unknown as SVGPathElement | null;
+  const area = document.getElementById('rise-area');
+  const summit = document.getElementById('rise-summit');
+  const ring = document.getElementById('rise-ring');
+  const conf = document.getElementById('rise-conf');
+  const finalMsg = document.getElementById('rise-final');
+  const chips = ['rise-c1', 'rise-c2', 'rise-c3']
+    .map((id) => document.getElementById(id))
+    .filter(Boolean) as HTMLElement[];
+
+  if (panel && line && area && summit && ring && conf && finalMsg) {
+    const len = line.getTotalLength();
+    line.style.strokeDasharray = String(len);
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const CONF_COLORS = ['#FF7A50', '#DDBE85', '#A5D6B8', '#C4B0FF', '#FF9B8A', '#55A874'];
+    let timers: ReturnType<typeof setTimeout>[] = [];
+    let running = false;
+
+    const later = (fn: () => void, ms: number) => timers.push(setTimeout(fn, ms));
+
+    function showFinalState() {
+      line!.style.strokeDashoffset = '0';
+      area!.style.opacity = '1';
+      summit!.style.opacity = '1';
+      chips.forEach((c) => (c.style.opacity = '1'));
+      finalMsg!.classList.add('is-on');
+    }
+
+    function burst() {
+      conf!.innerHTML = '';
+      for (let i = 0; i < 18; i++) {
+        const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        const ang = (Math.PI * 2 * i) / 18;
+        const dist = 40 + (i % 3) * 22;
+        c.setAttribute('cx', '512');
+        c.setAttribute('cy', '34');
+        c.setAttribute('r', i % 2 ? '3' : '4');
+        c.setAttribute('fill', CONF_COLORS[i % 6]);
+        c.style.opacity = '1';
+        c.style.transition = 'transform 1s cubic-bezier(.2,.7,.3,1), opacity 1s ease';
+        conf!.appendChild(c);
+        later(() => {
+          c.style.transform = `translate(${Math.cos(ang) * dist}px, ${Math.sin(ang) * dist * 0.9 - 14}px)`;
+          c.style.opacity = '0';
+        }, 40);
+      }
+      ring!.style.transition = 'none';
+      ring!.setAttribute('r', '9');
+      ring!.style.opacity = '0.9';
+      later(() => {
+        ring!.style.transition = 'all .9s ease-out';
+        ring!.setAttribute('r', '34');
+        ring!.style.opacity = '0';
+      }, 60);
+    }
+
+    function popIn(g: HTMLElement) {
+      g.style.opacity = '1';
+      const p = g.querySelector('.rise-pop') as SVGGElement | null;
+      if (!p) return;
+      p.style.transition = 'none';
+      p.style.transform = 'scale(.3)';
+      later(() => {
+        p.style.transition = 'transform .5s cubic-bezier(.2,1.2,.3,1.35)';
+        p.style.transform = 'scale(1)';
+      }, 30);
+    }
+
+    function reset() {
+      line!.style.transition = 'none';
+      line!.style.strokeDashoffset = String(len);
+      area!.style.transition = 'none';
+      area!.style.opacity = '0';
+      summit!.style.opacity = '0';
+      chips.forEach((c) => (c.style.opacity = '0'));
+      conf!.innerHTML = '';
+      finalMsg!.classList.remove('is-on');
+    }
+
+    function cycle() {
+      if (!running) return;
+      reset();
+      later(() => {
+        line!.style.transition = 'stroke-dashoffset 2.6s cubic-bezier(.5,.05,.4,1)';
+        line!.style.strokeDashoffset = '0';
+        later(() => popIn(chips[0]), 800);
+        later(() => popIn(chips[1]), 1450);
+        later(() => popIn(chips[2]), 2100);
+        later(() => {
+          summit!.style.opacity = '1';
+          burst();
+          area!.style.transition = 'opacity .7s';
+          area!.style.opacity = '1';
+          finalMsg!.classList.add('is-on');
+        }, 2650);
+      }, 400);
+      later(cycle, 10000);
+    }
+
+    if (reduced) {
+      showFinalState();
+    } else {
+      reset();
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting && !running) {
+              running = true;
+              cycle();
+            } else if (!e.isIntersecting && running) {
+              running = false;
+              timers.forEach(clearTimeout);
+              timers = [];
+            }
+          }
+        },
+        { threshold: 0.35 }
+      );
+      io.observe(panel);
+    }
+  }
+</script>

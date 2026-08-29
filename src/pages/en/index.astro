@@ -1,0 +1,1173 @@
+---
+import Base from '../../layouts/Base.astro';
+import { SITE, ELEGXOS, eurEn } from '../../config';
+import { sumOf } from '../../data/pricing';
+import { CATEGORIES_EN } from '../../data/pricing.en';
+
+// Πλήρης «ταυτότητα» της PISMA για Google & AI — αναπληρώνει το (προσωρινά
+// ανύπαρκτο) Google Business Profile. Ο τιμοκατάλογος βγαίνει από το pricing.en.ts.
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${SITE.url}/#business`,
+  name: SITE.name,
+  slogan: SITE.taglineEn,
+  email: SITE.email,
+  telephone: SITE.phone,
+  url: SITE.url,
+  address: {
+    '@type': 'PostalAddress',
+    addressRegion: 'Attica',
+    addressCountry: 'GR',
+  },
+  areaServed: [
+    'Southern suburbs of Athens',
+    'Glyfada',
+    'Voula',
+    'Vari-Vouliagmeni',
+    'Alimos',
+    'Elliniko-Argyroupoli',
+    'Palaio Faliro',
+    'Nea Smyrni',
+    'Greece (online)',
+  ],
+  knowsAbout: [
+    'Website development',
+    'SEO',
+    'Visibility in AI tools (GEO/AEO)',
+    'Google Business Profile',
+    'Google reviews',
+    'Office automation',
+  ],
+  description:
+    'Digital presence and process automation for Greek businesses. Website, visibility on Google and AI, reviews and automations — measured before and after, with no lock-in.',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'PISMA services & prices',
+    itemListElement: CATEGORIES_EN.map((c) => ({
+      '@type': 'OfferCatalog',
+      name: c.title,
+      itemListElement: c.options.map((o) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: o.label,
+          ...(o.detail ? { description: o.detail } : {}),
+        },
+        price: o.price,
+        priceCurrency: 'EUR',
+        description: o.type === 'monthly' ? `${eurEn(o.price)} per month` : `${eurEn(o.price)} one-off`,
+      })),
+    })),
+  },
+};
+
+const steps = [
+  { t: 'Assessment', d: `${ELEGXOS.minutes} minutes, free of charge. We map what you're losing in customers and hours.` },
+  { t: 'Proposal', d: `In writing, within ${ELEGXOS.reportHours} hours, at a fixed price.` },
+  { t: 'Build', d: 'In 2–4 weeks, on the tools you already use.' },
+  { t: 'Support', d: 'A monthly results report, in hours and euros.' },
+];
+
+
+/* Μίνι-preview του builder (section Τιμολόγηση) — πραγματικές υπηρεσίες και
+   τιμές από το pricing.ts (labels από pricing.en.ts), ώστε το demo να μη δείχνει
+   ποτέ ξεπερασμένα ποσά. Τα labels των generic βαθμίδων («Standard», «Setup»)
+   παίρνουν το όνομα της κατηγορίας τους για να στέκουν μόνα τους. */
+const optionByIdEn = (id: string) => {
+  for (const c of CATEGORIES_EN) {
+    const o = c.options.find((x) => x.id === id);
+    if (o) return o;
+  }
+  return undefined;
+};
+const bdDefs: { id: string; label?: string }[] = [
+  { id: 'web-standard', label: 'Standard Website' },
+  { id: 'gbp-setup', label: 'Google Profile — Setup' },
+  { id: 'auto-reviews' },
+  { id: 'care-web' },
+];
+const bdItems = bdDefs.map(({ id, label }) => {
+  const o = optionByIdEn(id)!;
+  return { label: label ?? o.label, price: o.price, type: o.type };
+});
+const bdTotals = sumOf(bdDefs.map((d) => d.id));
+---
+
+<Base
+  title="PISMA — Digital presence & automation for Greek businesses"
+  description="PISMA designs your business's presence across your website, Google and AI tools, and automates payments, collections and your daily reporting. Fixed prices, measurable results."
+  schema={schema}
+>
+  <!-- 1. Hero -->
+  <section
+    class="hero"
+    aria-labelledby="hero-title"
+    data-mascot-stop
+    data-mascot-side="right"
+    data-mascot-anchor="#hero-title"
+    data-mascot-say="Welcome to PISMA. Keep scrolling — I'll show you the essentials."
+  >
+    <div class="beams" aria-hidden="true">
+      <span class="beam beam--a"></span>
+      <span class="beam beam--b"></span>
+      <span class="beam beam--c"></span>
+    </div>
+
+    <!-- Αιωρούμενα λογότυπα πλατφορμών — αυθεντικά SVG στο /public/logos -->
+    <div class="float-logos" aria-hidden="true">
+      <span class="flogo flogo-ig" data-speed="0.10" style="left:5%;top:13%;--w:44px;--dur:5.2s"><img src="/logos/instagram-icon.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo-fb" data-speed="-0.07" style="left:12%;top:38%;--w:38px;--dur:6.4s"><img src="/logos/facebook.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo-gm" data-speed="0.13" style="left:4%;top:64%;--w:38px;--dur:7.1s"><img src="/logos/google-gmail.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo--sm flogo-ai" data-speed="-0.05" style="left:19%;top:22%;--w:28px;--dur:6s"><img class="inv" src="/logos/openai-icon.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo--sm flogo-vb" data-speed="0.08" style="left:3.5%;top:98%;--w:30px;--dur:5.8s"><img src="/logos/viber.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo--sm flogo-li" data-speed="-0.1" style="left:4%;top:94%;--w:28px;--dur:6.6s"><img src="/logos/linkedin-icon.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo-go" data-speed="0.08" style="right:5%;top:12%;--w:42px;--dur:5.6s"><img src="/logos/google-icon.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo-wa" data-speed="-0.11" style="right:12%;top:38%;--w:40px;--dur:6.8s"><img src="/logos/whatsapp-icon.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo-mp" data-speed="0.06" style="right:4%;top:64%;--w:30px;--dur:7.4s"><img src="/logos/google-maps.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo--sm flogo-xl" data-speed="0.12" style="right:19%;top:22%;--w:30px;--dur:6.2s"><img src="/logos/excel.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo--sm flogo-tt" data-speed="-0.08" style="right:5%;top:95%;--w:28px;--dur:5.4s"><img class="chip" src="/logos/tiktok-icon.svg" alt="" loading="lazy" /></span>
+    </div>
+
+    <div class="container hero-inner">
+      <p class="hero-kicker blur-in" style="--d:.16s">Digital presence & automation</p>
+
+      <h1 id="hero-title" class="blur-in" style="--d:.22s">
+        Your business, visible to customers.<br />
+        Your operations, <span class="hero-hl">with no wasted hours<svg class="hl-stroke" viewBox="0 0 320 30" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="hlGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF8A50" /><stop offset="1" stop-color="#D63E1B" /></linearGradient></defs><path d="M6 15 C 60 9, 130 21, 200 14 C 245 10, 285 12, 314 13 C 260 18, 200 22, 120 21 C 90 20.5, 72 19, 58 18" fill="none" stroke="url(#hlGrad)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" opacity=".95" /></svg></span>.
+      </h1>
+      <script is:inline>
+        // Κρύβει την υπογράμμιση πριν το πρώτο paint — θα τη «ζωγραφίσει» ο Ντοτ.
+        (function () {
+          var p = document.querySelector('.hl-stroke path');
+          if (p && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            var L = p.getTotalLength();
+            p.style.strokeDasharray = String(L);
+            p.style.strokeDashoffset = String(L);
+          }
+        })();
+      </script>
+      <p class="sub blur-in" style="--d:.34s">
+        At PISMA we design and build your business's presence across your website,
+        Google and AI, and we automate your everyday processes.
+        <span class="sub-more">With a fixed, agreed cost and measurable results.</span>
+      </p>
+
+      <div class="hero-ctas blur-in" style="--d:.46s">
+        <span class="btn-frame">
+          <a class="btn btn--orange" href="/en/business-check/">Measure your business — 2′</a>
+        </span>
+        <a class="btn btn--ghost" href="/en/free-assessment/">Free 45′ assessment</a>
+      </div>
+      <p class="btn-note blur-in" style="--d:.54s">No email · no commitment · your score appears instantly</p>
+    </div>
+
+    <!-- Πριν → Μετά -->
+    <div class="hero-ba blur-in" style="--d:.62s">
+      <div class="ba-head">
+        <p class="kicker">Before → After</p>
+        <h2>What changes when we work together</h2>
+      </div>
+      <div class="ba-grid">
+        <div class="card ba-before">
+          <p class="ba-label">Before</p>
+          <ul class="ba-list">
+            <li>Reviews <strong>trickling in</strong></li>
+            <li><strong>Hard to find</strong> on Google</li>
+            <li>The daily routine <strong>done by hand</strong></li>
+            <li><strong>Invisible</strong> to AI</li>
+          </ul>
+        </div>
+        <div class="card card--navy ba-after">
+          <span class="ba-shine" aria-hidden="true"></span>
+          <p class="ba-label ba-label--after">With PISMA</p>
+          <ul class="ba-list ba-list--after">
+            <li><strong>A steady flow</strong> of reviews</li>
+            <li>A ranking <strong>that climbs</strong> on Google & Maps</li>
+            <li>The routine <strong>runs on its own</strong></li>
+            <li>AI <strong>finds you</strong></li>
+          </ul>
+        </div>
+      </div>
+      <p class="ba-note">We measure your own numbers before we start — and again at 3 months.</p>
+    </div>
+  </section>
+
+  <!-- 2. Υπηρεσίες -->
+  <section
+    class="section"
+    aria-labelledby="svc-title"
+    data-mascot-stop
+    data-mascot-side="left"
+    data-mascot-say="Two services: visibility that brings customers, and processes that run automatically."
+  >
+    <span class="flogo sflogo" aria-hidden="true" style="right:4%;top:60px;--w:26px;--dur:6.2s"><img src="/logos/google-gmail.svg" alt="" loading="lazy" /></span>
+    <span class="flogo sflogo" aria-hidden="true" style="left:4%;bottom:8px;--w:28px;--dur:5.6s"><img src="/logos/whatsapp-icon.svg" alt="" loading="lazy" /></span>
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Services</p>
+        <h2 id="svc-title">What we take on</h2>
+        <span class="fx-uline" aria-hidden="true"></span>
+      </div>
+      <div class="grid-2">
+        <article class="card svc reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21" />
+            </svg>
+          </span>
+          <h3>Digital Visibility</h3>
+          <ul class="svc-list">
+            <li>A website designed to turn visitors into customers</li>
+            <li>Ranking in Google Search and Google Maps for your area</li>
+            <li>Presence in the answers of AI tools like ChatGPT</li>
+          </ul>
+          <a class="card-arrow" href="/en/get-found/">Learn more →</a>
+        </article>
+        <article class="card svc svc--blue reveal">
+          <span class="icon-chip icon-chip--blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3.2" /><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1" />
+            </svg>
+          </span>
+          <h3>Process automation</h3>
+          <ul class="svc-list">
+            <li>Payments matched to their invoices automatically</li>
+            <li>Systematic tracking and reminders for collections</li>
+            <li>A daily picture of your business in one message</li>
+          </ul>
+          <a class="card-arrow" href="/en/runs-by-itself/">Learn more →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2β. Κριτικές Google — «Η άνοδος στη Google»: όσο πέφτουν αστέρια-κριτικές,
+       η επιχείρηση σκαρφαλώνει από την 3η στην 1η θέση των αποτελεσμάτων.
+       Το HTML έχει το τελικό state (#1, κορώνα) — χωρίς JS ή με reduced motion
+       μένει στατικό· το JS το «ξαναπαίζει» σε loop όσο το section είναι ορατό. -->
+  <section
+    class="section section--tight"
+    aria-labelledby="rev-title"
+    data-mascot-stop
+    data-mascot-side="right"
+    data-mascot-say="Every new review lifts the business higher in Google's results."
+  >
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Google reviews</p>
+        <h2 id="rev-title">More reviews, higher on Google</h2>
+      </div>
+      <p class="rev-sub">
+        Every new review counts: your rating rises and your business climbs
+        the results — right where customers are searching.
+      </p>
+
+      <div class="rev-stage" id="rev-stage" aria-hidden="true">
+        <div class="rev-fx" id="rev-fx"></div>
+        <div class="rev-phone">
+          <div class="rev-search">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C41.4 34.9 44 29.9 44 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
+            <span>coffee near me</span>
+          </div>
+          <div class="rev-list">
+            <div class="rev-row" id="rev-a" style="top:66px">
+              <p>The Corner Cafe</p>
+              <p class="rev-meta"><b>4.6</b> <span class="rev-stars">★★★★★</span> (210)</p>
+            </div>
+            <div class="rev-row" id="rev-b" style="top:132px">
+              <p>Cafe Next Door</p>
+              <p class="rev-meta"><b>4.4</b> <span class="rev-stars">★★★★★</span> (98)</p>
+            </div>
+            <div class="rev-row rev-row--you" id="rev-y" style="top:0px">
+              <p>Your business<span class="rev-crown" id="rev-crown"><svg viewBox="0 0 24 24" fill="#e37400" aria-hidden="true"><path d="M2.6 18.2 1 7.6l6 3.9L12 4l5 7.5 6-3.9-1.6 10.6z"/><path d="M3.5 19.6h17v1.9h-17z"/></svg></span></p>
+              <p class="rev-meta"><b id="rev-rating">4.9</b> <span class="rev-stars">★★★★★</span> (<span id="rev-count" class="num">87</span>)</p>
+              <span class="rev-ring" id="rev-ring"></span>
+            </div>
+          </div>
+          <p class="rev-win" id="rev-win">The area's first choice ✓</p>
+        </div>
+      </div>
+      <p class="rev-note">Illustrative example.</p>
+      <div class="rev-cta">
+        <a class="btn btn--ghost" href="/en/reviews/">See how the Review Wheel works</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Μεθοδολογία -->
+  <section
+    class="section section--tight"
+    aria-labelledby="method-title"
+    data-mascot-stop
+    data-mascot-side="right"
+    data-mascot-say="Every collaboration starts with a free 45-minute assessment — you receive the findings in writing."
+  >
+    <span class="flogo sflogo" aria-hidden="true" style="right:4%;top:40px;--w:24px;--dur:5.9s"><img src="/logos/google-maps.svg" alt="" loading="lazy" /></span>
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker kicker--yellow">Methodology</p>
+        <h2 id="method-title">How we work — in 4 steps</h2>
+      </div>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="step reveal">
+            <span class="step-num num">{i + 1}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4. Ηλεκτρονική τιμολόγηση 2026: ΠΡΟΣΩΡΙΝΑ ΕΚΤΟΣ — φυλάσσεται στο
+       components/Einvoice2026.astro, επαναφορά με <Einvoice2026 /> εδώ. -->
+
+  <!-- 6. Τιμολόγηση — φτιάξτε το δικό σας πακέτο -->
+  <section
+    class="section section--tight"
+    aria-labelledby="pricing-title"
+    data-mascot-stop
+    data-mascot-side="left"
+    data-mascot-say="No ready-made packages — you pick what you need and watch the total update live."
+  >
+    <span class="flogo sflogo" aria-hidden="true" style="left:4%;top:2px;--w:22px;--dur:6.4s"><img src="/logos/linkedin-icon.svg" alt="" loading="lazy" /></span>
+    <span class="flogo sflogo" aria-hidden="true" style="right:4%;top:42px;--w:26px;--dur:6.8s"><img src="/logos/facebook.svg" alt="" loading="lazy" /></span>
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker kicker--blue">Pricing</p>
+        <h2 id="pricing-title">No ready-made packages — you build your own</h2>
+        <p>Every price is public. You pick only what you need — and know the cost before we ever speak.</p>
+      </div>
+
+      <div class="card bd reveal" id="builder-demo">
+        <!-- Αριστερά: μίνι-preview του builder — δείγμα με πραγματικές τιμές -->
+        <div class="bd-mock" aria-hidden="true">
+          <p class="bd-mock-title">Your quote <span class="tag tag--demo">Sample</span></p>
+          <ul class="bd-list">
+            {bdItems.map((o) => (
+              <li class="bd-item is-on" data-price={o.price} data-ptype={o.type}>
+                <span class="bd-check">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.8 4.8L19.5 6.8" /></svg>
+                </span>
+                <span class="bd-label">{o.label}</span>
+                <span class="bd-price num">{eurEn(o.price)}{o.type === 'monthly' && <em>/mo</em>}</span>
+              </li>
+            ))}
+          </ul>
+          <div class="bd-totals">
+            <span>One-off</span><b class="num" id="bd-once">{eurEn(bdTotals.once)}</b>
+            <span>Monthly</span><b class="num bd-sm" id="bd-month">{eurEn(bdTotals.monthly)}</b>
+          </div>
+        </div>
+
+        <!-- Δεξιά: πώς δουλεύει -->
+        <div class="bd-text">
+          <ol class="bd-steps">
+            <li>
+              <span class="bd-n num">1</span>
+              <div>
+                <h3>Pick your services</h3>
+                <p>Website, Google, the Review Wheel, automations — tick only what your business needs.</p>
+              </div>
+            </li>
+            <li>
+              <span class="bd-n num">2</span>
+              <div>
+                <h3>Watch the total update live</h3>
+                <p>One-off and monthly, no fine print — the sum updates right in front of you.</p>
+              </div>
+            </li>
+            <li>
+              <span class="bd-n num">3</span>
+              <div>
+                <h3>Receive it in writing</h3>
+                <p>No online payment — you send the quote over and we talk.</p>
+              </div>
+            </li>
+          </ol>
+          <a class="btn btn--orange" href="/en/pricing/">Build your package →</a>
+          <p class="btn-note">2 minutes · all prices public · no personal details</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Η εταιρία -->
+  <section class="section section--tight" aria-labelledby="who-title">
+    <span class="flogo sflogo" aria-hidden="true" style="right:5%;top:4px;--w:22px;--dur:6.6s"><img class="chip" src="/logos/tiktok-icon.svg" alt="" loading="lazy" /></span>
+    <div class="container">
+      <div class="card who reveal">
+        <div>
+          <p class="kicker">The company</p>
+          <h2 id="who-title">Direct collaboration, no middlemen</h2>
+          <p>
+            You work directly with the person who designs and builds your project — no
+            sales department. Everything we build belongs to your business.
+          </p>
+          <div class="who-bridge" aria-hidden="true">
+            <span class="wb-chip" id="bridge-you">You</span>
+            <span class="wb-line" id="bridge-line"><span class="wb-fill"></span></span>
+            <span class="wb-chip" id="bridge-pisma">PISMA<span class="wb-dot">.</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Τελικό κάλεσμα -->
+  <section
+    class="section final-cta"
+    aria-labelledby="final-title"
+    data-mascot-stop
+    data-mascot-side="right"
+    data-mascot-say="Start with the free assessment — 45 minutes, no commitment."
+  >
+    <span class="flogo sflogo" aria-hidden="true" style="left:5%;top:12px;--w:24px;--dur:5.4s"><img src="/logos/viber.svg" alt="" loading="lazy" /></span>
+    <div class="container">
+      <h2 id="final-title">Start with a free<br /><span class="grad-text">45-minute assessment</span></h2>
+      <p>
+        We map what you're losing in customers and time — and you receive the findings in writing.
+      </p>
+      <a class="btn btn--orange" href="/en/free-assessment/">Book your free assessment</a>
+      <p class="btn-note">45 minutes · free of charge · no commitment</p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Parallax λογοτύπων στο scroll + μετρητής κριτικών — σέβονται το reduced motion.
+  const reduceFx = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const flogos = Array.from(document.querySelectorAll<HTMLElement>('.float-logos .flogo'));
+  if (!reduceFx && flogos.length) {
+    let raf = 0;
+    const apply = () => {
+      raf = 0;
+      const y = window.scrollY;
+      for (const el of flogos) {
+        el.style.transform = `translateY(${(y * parseFloat(el.dataset.speed || '0')).toFixed(1)}px)`;
+      }
+    };
+    window.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(apply); }, { passive: true });
+    apply();
+  }
+
+  // Τα σκόρπια λογότυπα αναδύονται όταν μπουν στην οθόνη
+  const sflogos = Array.from(document.querySelectorAll('.sflogo'));
+  if (sflogos.length) {
+    if (reduceFx || !('IntersectionObserver' in window)) {
+      sflogos.forEach((el) => el.classList.add('in'));
+    } else {
+      const sIo = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) { e.target.classList.add('in'); sIo.unobserve(e.target); }
+        }
+      }, { rootMargin: '0px 0px -8% 0px' });
+      sflogos.forEach((el) => sIo.observe(el));
+    }
+  }
+
+  // Κινήσεις sections: οπλίζονται μόνο εδώ (.fx-armed) — χωρίς JS όλα ορατά.
+  // Κάθε section πυροδοτεί (.fx-on) μία φορά, όταν μπει αρκετά στην οθόνη.
+  const fxIds = ['svc-title', 'method-title', 'pricing-title', 'who-title', 'final-title'];
+  const fxSections = fxIds
+    .map((id) => document.getElementById(id)?.closest('section'))
+    .filter((s): s is HTMLElement => !!s);
+  if (!reduceFx && 'IntersectionObserver' in window && fxSections.length) {
+    fxSections.forEach((s) => s.classList.add('fx-armed'));
+    const fxIo = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add('fx-on');
+            fxIo.unobserve(e.target);
+          }
+        }
+      },
+      { threshold: 0.25 }
+    );
+    fxSections.forEach((s) => fxIo.observe(s));
+  }
+
+  // Μίνι-preview builder (Τιμολόγηση): οι υπηρεσίες «τικάρονται» μία-μία και το
+  // σύνολο μεγαλώνει ζωντανά. Το HTML έχει το τελικό state — το JS απλώς το
+  // ξανα-παίζει στο πρώτο scroll. Χωρίς JS ή με reduced motion: τελικό state.
+  const bdDemo = document.getElementById('builder-demo');
+  if (bdDemo && !reduceFx && 'IntersectionObserver' in window) {
+    const items = Array.from(bdDemo.querySelectorAll<HTMLElement>('.bd-item'));
+    const onceEl = document.getElementById('bd-once')!;
+    const monthEl = document.getElementById('bd-month')!;
+    const finalOnce = onceEl.textContent!;
+    const finalMonth = monthEl.textContent!;
+    const eurFmt = (n: number) => '€' + n.toLocaleString('en-US');
+
+    const bdIo = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        bdIo.disconnect();
+        // Μηδενισμός και σταδιακό «τικάρισμα»
+        let once = 0;
+        let month = 0;
+        items.forEach((li) => li.classList.remove('is-on'));
+        onceEl.textContent = eurFmt(0);
+        monthEl.textContent = eurFmt(0);
+        items.forEach((li, i) => {
+          window.setTimeout(() => {
+            li.classList.add('is-on');
+            const price = Number(li.dataset.price || 0);
+            if (li.dataset.ptype === 'once') once += price;
+            else month += price;
+            onceEl.textContent = eurFmt(once);
+            monthEl.textContent = eurFmt(month);
+            // Δίχτυ ασφαλείας: στο τέλος, τα ποσά που ήρθαν από το build.
+            if (i === items.length - 1) {
+              onceEl.textContent = finalOnce;
+              monthEl.textContent = finalMonth;
+            }
+          }, 500 + i * 550);
+        });
+      },
+      { threshold: 0.45 }
+    );
+    bdIo.observe(bdDemo);
+  }
+
+  // «Η άνοδος στη Google» (Κριτικές): το HTML έχει το τελικό state (#1, κορώνα,
+  // 4.9/87). Με JS + ορατότητα: επαναφορά στην 3η θέση και ζωντανή άνοδος σε
+  // loop· όταν βγει από την οθόνη, σταματά και γυρνά στο τελικό state.
+  // Τα δυναμικά στοιχεία (αστέρια/κομφετί) παίρνουν inline styles — τα scoped
+  // styles του Astro δεν πιάνουν JS-created elements.
+  const revStage = document.getElementById('rev-stage');
+  if (revStage && !reduceFx && 'IntersectionObserver' in window) {
+    const fxL = document.getElementById('rev-fx')!;
+    const rowA = document.getElementById('rev-a')!;
+    const rowB = document.getElementById('rev-b')!;
+    const rowY = document.getElementById('rev-y')!;
+    const ratEl = document.getElementById('rev-rating')!;
+    const cntEl = document.getElementById('rev-count')!;
+    const crownEl = document.getElementById('rev-crown')!;
+    const ringEl = document.getElementById('rev-ring')!;
+    const winEl = document.getElementById('rev-win')!;
+    let revTimers: number[] = [];
+    let rv = 4.9;
+    let cv = 87;
+    let revStep = 2;
+    let revActive = false;
+    const later = (fn: () => void, ms: number) => revTimers.push(window.setTimeout(fn, ms));
+    const raf2 = (fn: () => void) => requestAnimationFrame(() => requestAnimationFrame(fn));
+    const setTops = (y: string, a: string, b: string) => {
+      rowY.style.top = y; rowA.style.top = a; rowB.style.top = b;
+    };
+    const paint = () => {
+      // Αγγλική σελίδα: δεκαδικό με τελεία (4.9), όχι κόμμα.
+      ratEl.textContent = rv.toFixed(1);
+      cntEl.textContent = String(cv);
+    };
+
+    const bump = () => {
+      rv = Math.min(rv + 0.09, 4.9);
+      cv += 4 + Math.round(Math.random() * 3);
+      paint();
+      ringEl.style.transition = 'none'; ringEl.style.opacity = '.9'; ringEl.style.transform = 'scale(1)';
+      raf2(() => {
+        ringEl.style.transition = 'opacity .6s ease-out, transform .6s ease-out';
+        ringEl.style.opacity = '0'; ringEl.style.transform = 'scale(1.12)';
+      });
+      if (rv >= 4.45 && revStep < 1) { revStep = 1; setTops('66px', '0px', '132px'); }
+      if (rv >= 4.65 && revStep < 2) { revStep = 2; setTops('0px', '66px', '132px'); }
+    };
+
+    const starTo = () => {
+      const sr = revStage.getBoundingClientRect();
+      const tr = rowY.getBoundingClientRect();
+      const tx = tr.left - sr.left + tr.width * (0.2 + Math.random() * 0.6);
+      const ty = tr.top - sr.top + tr.height / 2;
+      const side = Math.random();
+      let sx: number, sy: number;
+      if (side < 0.35) { sx = -30; sy = Math.random() * sr.height * 0.8; }
+      else if (side < 0.7) { sx = sr.width + 30; sy = Math.random() * sr.height * 0.8; }
+      else { sx = Math.random() * sr.width; sy = -30; }
+      const s = document.createElement('span');
+      s.textContent = '★';
+      s.style.cssText = `position:absolute;left:${sx}px;top:${sy}px;font-size:${Math.round(14 + Math.random() * 8)}px;color:#FBBC04;text-shadow:0 0 10px rgba(251,188,4,.9),0 0 22px rgba(251,188,4,.5);transition:all 1.1s cubic-bezier(.4,0,.6,1);z-index:3;opacity:0;line-height:1`;
+      fxL.appendChild(s);
+      raf2(() => {
+        s.style.opacity = '1';
+        s.style.left = `${Math.round(tx)}px`;
+        s.style.top = `${Math.round(ty)}px`;
+        s.style.transform = `scale(.4) rotate(${Math.round(Math.random() * 260 - 130)}deg)`;
+      });
+      later(() => { s.remove(); bump(); }, 1120);
+    };
+
+    const burst = () => {
+      const sr = revStage.getBoundingClientRect();
+      const cols = ['#FF7A50', '#FBBC04', '#8B5CF6', '#55A874', '#4CAF50'];
+      const cx = sr.width / 2;
+      const cy = sr.height / 2 - 70;
+      for (let i = 0; i < 28; i++) {
+        const p = document.createElement('span');
+        const a = Math.random() * Math.PI * 2;
+        const d = 70 + Math.random() * 130;
+        p.style.cssText = `position:absolute;left:${cx}px;top:${cy}px;width:7px;height:11px;border-radius:2px;background:${cols[i % 5]};transition:transform 1.2s cubic-bezier(.1,.8,.3,1),opacity 1.2s;z-index:4`;
+        fxL.appendChild(p);
+        raf2(() => {
+          p.style.transform = `translate(${Math.round(Math.cos(a) * d)}px,${Math.round(Math.sin(a) * d + 80)}px) rotate(${Math.round(Math.random() * 540 - 270)}deg)`;
+          p.style.opacity = '0';
+        });
+        later(() => p.remove(), 1400);
+      }
+    };
+
+    const revFinal = () => {
+      rv = 4.9; cv = 87; revStep = 2; paint();
+      setTops('0px', '66px', '132px');
+      crownEl.style.transform = 'scale(1)';
+      winEl.style.opacity = '1'; winEl.style.transform = 'none';
+    };
+
+    const cycle = () => {
+      revTimers.forEach(clearTimeout); revTimers = []; fxL.innerHTML = '';
+      rv = 3.9; cv = 24; revStep = 0; paint();
+      setTops('132px', '0px', '66px');
+      crownEl.style.transform = 'scale(0)';
+      winEl.style.opacity = '0'; winEl.style.transform = 'translateY(6px)';
+      for (let i = 0; i < 11; i++) later(starTo, 1100 + i * 430);
+      later(() => {
+        // Δίχτυ ασφαλείας: το φινάλε κλειδώνει στα ποσά του στατικού state.
+        revFinal();
+        burst();
+      }, 7100);
+      later(cycle, 10600);
+    };
+
+    const revIo = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting && !revActive) { revActive = true; cycle(); }
+          else if (!e.isIntersecting && revActive) {
+            revActive = false;
+            revTimers.forEach(clearTimeout); revTimers = []; fxL.innerHTML = '';
+            revFinal();
+          }
+        }
+      },
+      { threshold: 0.35 }
+    );
+    revIo.observe(revStage);
+  }
+</script>
+
+<style>
+  /* ---------- Κριτικές: «Η άνοδος στη Google» ---------- */
+  .rev-sub {
+    text-align: center; color: var(--muted);
+    max-width: 52ch; margin: -6px auto 28px;
+  }
+  .rev-stage {
+    position: relative; height: 430px; max-width: 560px; margin-inline: auto;
+    border-radius: var(--r); border: 1px solid var(--line); overflow: hidden;
+    background: radial-gradient(420px 300px at 50% 34%, var(--purple-soft), transparent 70%) var(--bg-soft);
+  }
+  .rev-fx { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
+  .rev-phone {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: 264px; background: #fff; border-radius: 24px;
+    padding: 14px 12px; box-shadow: 0 24px 70px rgba(0, 0, 0, .6);
+  }
+  .rev-search {
+    display: flex; align-items: center; gap: 8px;
+    background: #f1f3f4; border-radius: 999px; padding: 8px 14px; margin-bottom: 12px;
+  }
+  .rev-search svg { width: 16px; height: 16px; flex: none; }
+  .rev-search span { color: #5f6368; font-size: .78rem; }
+  .rev-list { position: relative; height: 196px; }
+  .rev-row {
+    position: absolute; left: 0; right: 0;
+    transition: top .9s cubic-bezier(.3, 1.3, .4, 1);
+    background: #fff; border: 1px solid #e8eaed; border-radius: 12px; padding: 9px 12px;
+  }
+  .rev-row p { margin: 0; color: #202124; font-size: .8rem; font-weight: 600; max-width: none; }
+  .rev-row p.rev-meta { margin-top: 2px; color: #5f6368; font-size: .74rem; font-weight: 400; }
+  .rev-meta b { color: #e37400; font-weight: 600; }
+  .rev-meta .num { font-size: .72rem; color: #5f6368; }
+  .rev-stars { color: #FBBC04; letter-spacing: 1px; }
+  .rev-row--you { background: #FFF4EF; border: 1.5px solid var(--orange); z-index: 2; }
+  .rev-crown {
+    display: inline-flex; width: 15px; height: 15px;
+    vertical-align: -2px; margin-left: 5px;
+    transition: transform .5s cubic-bezier(.3, 1.8, .4, 1);
+  }
+  .rev-crown svg { width: 100%; height: 100%; }
+  .rev-ring {
+    position: absolute; inset: -3px; border: 2px solid var(--orange);
+    border-radius: 14px; opacity: 0; pointer-events: none;
+  }
+  .rev-win {
+    margin: 12px auto 0; width: max-content; max-width: 100%;
+    color: #0F6E56; background: #E1F5EE; border-radius: 999px;
+    padding: 5px 12px; font-size: .74rem; font-weight: 600;
+    transition: opacity .5s, transform .5s;
+  }
+  .rev-note { text-align: center; color: var(--muted); font-size: .78rem; margin: 12px auto 0; }
+  .rev-cta { display: flex; justify-content: center; margin-top: 18px; }
+  @media (max-width: 480px) { .rev-stage { height: 400px; } }
+
+  /* ---------- Hero ---------- */
+  /* overflow-x μόνο: το κάθετο clip έκοβε τις δέσμες (beams) στο όριο του main
+     και άφηνε ορατή οριζόντια «γραμμή» κάτω από το μενού — τώρα η λάμψη
+     συνεχίζει ενιαία ως την κορυφή, πίσω από το sticky nav. */
+  .hero { padding-top: clamp(48px, 7vw, 100px); position: relative; overflow-x: clip; }
+  .hero-inner { text-align: center; position: relative; z-index: 1; }
+  .hero-kicker {
+    margin-inline: auto; /* κεντράρισμα — το p έχει max-width από το global */
+    margin-bottom: clamp(18px, 3vw, 28px);
+    font-size: .76rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--orange-text);
+    text-wrap: balance;
+  }
+  .hero h1 { max-width: 24ch; margin-inline: auto; font-size: clamp(2rem, 5vw, 3.9rem); }
+  .hero-hl { position: relative; white-space: nowrap; }
+  .hl-stroke {
+    position: absolute; left: -.06em; bottom: -.16em;
+    width: calc(100% + .12em); height: .34em;
+    overflow: visible; pointer-events: none;
+  }
+  .hero .sub { margin: 24px auto 0; font-size: 1.1rem; color: var(--muted); max-width: 62ch; }
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 36px; }
+  .hero .btn-note { margin-top: 14px; margin-inline: auto; }
+  .btn-frame {
+    display: inline-flex; padding: 3px; border-radius: 14px;
+    background: rgba(255, 255, 255, .08); border: 1px solid var(--line);
+  }
+
+  /* Announcement pill */
+  .announce {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--card-2); border: 1px solid var(--line-strong);
+    border-radius: 999px; padding: 5px 5px 5px 16px;
+    font-size: .85rem; color: var(--ink); text-decoration: none;
+    box-shadow: var(--shadow);
+    transition: border-color .25s ease, background-color .25s ease;
+    margin-bottom: clamp(22px, 3.5vw, 36px);
+    max-width: min(94%, 560px);
+  }
+  .announce-text {
+    min-width: 0; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
+  }
+  .announce:hover { border-color: rgba(255, 255, 255, .28); background: var(--bg-soft); }
+  .announce-sep { width: 1px; height: 16px; background: var(--line-strong); flex: none; }
+  .announce-arrow {
+    width: 26px; height: 26px; border-radius: 50%; overflow: hidden; flex: none;
+    background: var(--bg); display: block;
+  }
+  .announce-arrow-track {
+    display: flex; width: 52px; height: 26px;
+    transform: translateX(-50%);
+    transition: transform .5s ease;
+  }
+  .announce:hover .announce-arrow-track { transform: translateX(0); }
+  .announce-arrow-track svg { width: 12px; height: 26px; margin-inline: auto; color: var(--orange-text); flex: none; padding-block: 7px; box-sizing: content-box; padding-inline: 7px; }
+
+  /* Αιωρούμενα λογότυπα — το στρώμα κλειδώνει στα 1440px κεντραρισμένο:
+     σε φαρδιές οθόνες τα λογότυπα μένουν κοντά στο κείμενο αντί να
+     τραβιούνται στις άκρες (τα % είναι πάνω στο στρώμα, όχι στο viewport).
+     Έως 1440px viewport = ταυτόσημο με πριν. */
+  .float-logos {
+    position: absolute; top: 0; bottom: 0; left: 50%;
+    width: min(100%, 1440px); transform: translateX(-50%);
+    pointer-events: none; z-index: 2;
+  }
+  section { position: relative; }
+  .sflogo { display: none; pointer-events: none; z-index: 2; }
+
+  /* Είσοδος: απαλή ανάδυση με ξεθόλωμα (επιλογή χρήστη).
+     Παίζει στο span — το λίκνισμα (translate/rotate στο img) και το parallax
+     (inline transform από JS) δεν συγκρούονται μαζί της. */
+  @keyframes flogoIn {
+    from { opacity: 0; translate: 0 22px; filter: blur(8px); }
+    to { opacity: 1; translate: 0 0; filter: blur(0); }
+  }
+  .float-logos .flogo { animation: flogoIn .7s cubic-bezier(.22, 1, .36, 1) both; }
+  .float-logos .flogo:nth-child(1) { animation-delay: .15s; }
+  .float-logos .flogo:nth-child(2) { animation-delay: .45s; }
+  .float-logos .flogo:nth-child(3) { animation-delay: .3s; }
+  .float-logos .flogo:nth-child(4) { animation-delay: .7s; }
+  .float-logos .flogo:nth-child(5) { animation-delay: .55s; }
+  .float-logos .flogo:nth-child(6) { animation-delay: .25s; }
+  .float-logos .flogo:nth-child(7) { animation-delay: .5s; }
+  .float-logos .flogo:nth-child(8) { animation-delay: .35s; }
+  .float-logos .flogo:nth-child(9) { animation-delay: .65s; }
+  .float-logos .flogo:nth-child(10) { animation-delay: .8s; }
+  .float-logos .flogo:nth-child(11) { animation-delay: .6s; }
+  /* Τα σκόρπια στα sections: αναδύονται όταν πρωτοφανούν στην οθόνη */
+  .sflogo { opacity: 0; }
+  .sflogo.in { animation: flogoIn .8s cubic-bezier(.22, 1, .36, 1) both; }
+  @media (prefers-reduced-motion: reduce) {
+    .float-logos .flogo { animation: none; }
+    .sflogo { opacity: 1; }
+    .sflogo.in { animation: none; }
+  }
+  .flogo { position: absolute; will-change: transform; }
+  .flogo img {
+    display: block; width: var(--w, 40px); height: auto;
+    animation: flogoFloat var(--dur, 6s) ease-in-out infinite alternate;
+    filter: drop-shadow(0 8px 22px rgba(0, 0, 0, .5));
+    opacity: .92;
+  }
+  .flogo img.inv { filter: invert(1) drop-shadow(0 8px 22px rgba(0, 0, 0, .5)); opacity: .8; }
+  .flogo img.chip { background: #fff; border-radius: 9px; padding: 4px; }
+  @keyframes flogoFloat {
+    from { translate: 0 -9px; rotate: -2.5deg; }
+    to { translate: 0 9px; rotate: 2.5deg; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flogo img { animation: none; }
+  }
+
+  /* Beams */
+  .beams { position: absolute; inset: 0; pointer-events: none; opacity: .5; display: none; }
+  @media (min-width: 1024px) { .beams { display: block; } }
+  .beam { position: absolute; left: 0; top: 0; rotate: -45deg; border-radius: 999px; }
+  .beam--a {
+    width: 35rem; height: 80rem; translate: 0 -350px;
+    background: radial-gradient(68.54% 68.72% at 55.02% 31.46%, rgba(255, 235, 225, .08) 0, rgba(180, 160, 150, .02) 50%, transparent 80%);
+  }
+  .beam--b {
+    width: 14rem; height: 80rem; translate: 5% -50%;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(255, 235, 225, .06) 0, rgba(180, 160, 150, .02) 80%, transparent 100%);
+  }
+  .beam--c {
+    width: 14rem; height: 80rem; translate: 0 -350px;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(255, 235, 225, .04) 0, rgba(180, 160, 150, .02) 80%, transparent 100%);
+  }
+
+  /* Πριν → Μετά (στη θέση του mockup) */
+  .hero-ba { max-width: 880px; margin: clamp(36px, 6vw, 64px) auto 0; }
+  .ba-head { text-align: center; margin-bottom: clamp(18px, 3vw, 26px); }
+  .ba-head h2 {
+    font-size: clamp(1.35rem, 2.8vw, 1.8rem);
+    margin-top: 14px;
+    letter-spacing: -.01em;
+  }
+
+  /* ---------- Υπηρεσίες ---------- */
+  .svc { display: flex; flex-direction: column; }
+  .svc-list { list-style: none; padding: 0; margin: 4px 0 8px; display: grid; gap: 10px; }
+  .svc-list li {
+    position: relative; padding-left: 22px;
+    font-size: .97rem; color: var(--muted); line-height: 1.55;
+  }
+  .svc-list li::before {
+    content: ''; position: absolute; left: 2px; top: .52em;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--orange);
+  }
+  .svc .card-arrow { margin-top: auto; padding-top: 12px; }
+  .svc--blue .svc-list li::before { background: var(--blue); }
+  .svc--blue .card-arrow { color: var(--blue-text); }
+
+  /* Μεθοδολογία: κλιμάκωση αποχρώσεων πορτοκαλί, από ανοιχτό στο βαθύ (1→4) */
+  .steps li:nth-child(1) .step-num { background: #FFB27A; color: #4A1B0C; }
+  .steps li:nth-child(2) .step-num { background: #FF9159; color: #3A1408; }
+  .steps li:nth-child(3) .step-num { background: #EE4F27; color: #fff; }
+  .steps li:nth-child(4) .step-num { background: #C13A20; color: #fff; }
+
+  /* ---------- Πορτοκαλί panel ---------- */
+  .einv {
+    border-radius: calc(var(--r) + 6px); overflow: hidden;
+    background:
+      radial-gradient(120% 160% at 90% 110%, rgba(255, 210, 150, .35), transparent 55%),
+      linear-gradient(115deg, #D63E1B 0%, #EE4F27 45%, #FF8A3D 100%);
+    padding: clamp(28px, 5vw, 56px);
+    display: grid; gap: clamp(26px, 5vw, 56px);
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    align-items: center;
+    box-shadow: var(--shadow), var(--glow-orange);
+  }
+  .einv h2, .einv p, .einv li { color: #fff; }
+  .einv p { opacity: .93; margin-top: 12px; max-width: 56ch; }
+  .einv-checks { list-style: none; padding: 0; margin: 20px 0 26px; display: grid; gap: 10px; font-weight: 600; font-size: .97rem; }
+  .einv-checks span { margin-right: 8px; font-weight: 800; }
+  .btn--light { background: #fff; color: #C13A20; }
+  .btn--light:hover { background: #FFF3E9; }
+  .einv-panel {
+    background: rgba(13, 10, 20, .85); border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: var(--r); padding: clamp(22px, 3vw, 34px);
+    display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;
+    backdrop-filter: blur(4px);
+  }
+  .einv-node {
+    background: var(--card-2); border: 1px solid var(--line-strong); border-radius: 12px;
+    padding: 12px 18px; font-weight: 700; font-size: .92rem; color: var(--navy);
+  }
+  .einv-node--ok { border-color: rgba(62, 207, 142, .5); color: var(--ok-text); }
+  .einv-arrow { color: rgba(255, 255, 255, .8); font-weight: 700; }
+  @media (max-width: 780px) { .einv { grid-template-columns: 1fr; } }
+
+  /* ---------- Αποτελέσματα: συμπαγείς σειρές πριν→μετά ---------- */
+  .case-rows { display: grid; gap: 14px; max-width: 860px; margin-inline: auto; }
+  .case-row {
+    display: flex; align-items: center; gap: clamp(14px, 3vw, 28px); flex-wrap: wrap;
+    padding: clamp(16px, 2.5vw, 22px) clamp(18px, 3vw, 28px);
+    border-left: 3px solid var(--ok); border-radius: 0 var(--r) var(--r) 0;
+  }
+  .case-row-info { flex: 1 1 240px; min-width: 0; }
+  .case-row-info h3 { margin: 0 0 4px; font-size: 1.05rem; }
+  .case-row-info p { font-size: .9rem; }
+  .case-nums { display: flex; align-items: baseline; gap: 10px; margin: 0; flex-wrap: wrap; }
+  .case-arrow { color: var(--ok); font-weight: 700; font-size: 1.1rem; }
+  .after-num { font-size: clamp(1.4rem, 3vw, 1.8rem); line-height: 1; }
+  .case-delta { flex: none; }
+  .cases-note { text-align: center; margin-top: 14px; font-size: .8rem; color: var(--muted); }
+  .cases-cta { text-align: center; margin-top: clamp(20px, 3vw, 32px); }
+
+  /* ---------- Τιμολόγηση: μίνι-preview του builder ---------- */
+  .bd {
+    display: grid;
+    grid-template-columns: minmax(min(300px, 100%), .95fr) minmax(min(300px, 100%), 1.05fr);
+    gap: clamp(26px, 5vw, 60px);
+    align-items: center;
+    padding: clamp(24px, 4vw, 48px);
+  }
+  @media (max-width: 760px) {
+    .bd { grid-template-columns: 1fr; }
+  }
+  .bd-mock {
+    background: var(--bg);
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    padding: 18px 20px 16px;
+  }
+  .bd-mock-title {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    font-size: .82rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  .bd-list { list-style: none; padding: 0; margin: 0; }
+  .bd-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .bd-item:last-child { border-bottom: 0; }
+  .bd-check {
+    flex: none; width: 22px; height: 22px; border-radius: 6px;
+    border: 1.5px solid var(--line-strong);
+    display: grid; place-items: center;
+    color: #fff;
+    transition: background .25s ease, border-color .25s ease;
+  }
+  .bd-check svg { width: 14px; height: 14px; opacity: 0; transform: scale(.6); transition: opacity .25s ease, transform .25s ease; }
+  .bd-item.is-on .bd-check { background: var(--orange-cta); border-color: var(--orange-cta); }
+  .bd-item.is-on .bd-check svg { opacity: 1; transform: none; }
+  .bd-label { flex: 1; font-size: .93rem; font-weight: 600; color: var(--muted); transition: color .25s ease; }
+  .bd-item.is-on .bd-label { color: var(--ink); }
+  .bd-price { font-size: .93rem; color: var(--muted); white-space: nowrap; transition: color .25s ease; }
+  .bd-price em { font-style: normal; font-size: .8em; }
+  .bd-item.is-on .bd-price { color: var(--navy); font-weight: 700; }
+  .bd-totals {
+    display: grid; grid-template-columns: 1fr auto; gap: 2px 14px; align-items: baseline;
+    border-top: 1px solid var(--line-strong);
+    margin-top: 12px; padding-top: 12px;
+  }
+  .bd-totals span { font-size: .88rem; color: var(--muted); font-weight: 600; }
+  .bd-totals b { font-size: 1.35rem; color: var(--navy); text-align: right; }
+  .bd-totals b.bd-sm { font-size: 1rem; color: var(--orange-text); }
+  .bd-steps { list-style: none; padding: 0; display: grid; gap: 16px; margin-bottom: 22px; }
+  .bd-steps li { display: flex; gap: 14px; align-items: flex-start; }
+  .bd-n {
+    flex: none;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 10px;
+    background: var(--orange-soft); color: var(--orange-text);
+    font-weight: 700;
+  }
+  .bd-steps h3 { font-size: 1rem; margin-bottom: 2px; }
+  .bd-steps p { font-size: .93rem; color: var(--muted); }
+
+  /* ---------- Η εταιρία ---------- */
+  .who {
+    max-width: 760px; margin-inline: auto;
+    border-color: rgba(91, 127, 166, .35);
+    background:
+      radial-gradient(90% 120% at 85% 0%, rgba(91, 127, 166, .12), transparent 60%),
+      var(--card);
+  }
+  .who .kicker { margin-bottom: 14px; }
+  .who h2 { font-size: 1.4rem; margin-bottom: 10px; }
+  .who p { color: var(--muted); }
+  .who-sig { margin-top: 14px; font-weight: 700; color: var(--navy); }
+
+  /* ---------- Τελικό κάλεσμα ---------- */
+  .final-cta { text-align: center; position: relative; }
+  .final-cta::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    /* Το φωτοστέφανο σβήνει ΜΕΣΑ στο section — όχι κομμένο στο όριο με το footer */
+    background: radial-gradient(46% 52% at 50% 60%, rgba(238, 79, 39, .13), transparent 72%);
+  }
+  .final-cta h2 { font-size: clamp(1.9rem, 4.6vw, 3.2rem); max-width: 24ch; margin-inline: auto; }
+  .final-cta p { margin: 18px auto 28px; color: var(--muted); max-width: 58ch; }
+  .final-cta .btn-note { margin-inline: auto; }
+
+  /* ---------- Mobile: σύντομο, γρήγορο, χωρίς περιττό scroll ---------- */
+  @media (max-width: 680px) {
+    .hero { padding-top: 40px; }
+    /* Κινητό: καθόλου αιωρούμενα λογότυπα στο hero — καθαρό, χωρίς φόρτωμα.
+       (Τα .sflogo των επόμενων sections μένουν — εκεί υπάρχει χώρος.) */
+    .float-logos { display: none; }
+    .btn-note { width: fit-content; margin-inline: auto; max-width: 85%; }
+    .sflogo { display: block; }
+    .hero-kicker { margin-bottom: 16px; }
+    /* Πιο «άδεια» κορυφή (απόφαση χρήστριας): στην πρώτη οθόνη μένουν τίτλος +
+       ένα κουμπί. Η περιγραφή ΔΕΝ κόβεται — κατεβαίνει κάτω από τα κουμπιά,
+       μικρότερη και πιο αχνή, και το δεύτερο κουμπί γίνεται απλό link. */
+    .hero-inner { display: flex; flex-direction: column; align-items: center; }
+    .hero-kicker { order: 1; }
+    .hero h1 { order: 2; }
+    .hero-ctas { order: 3; }
+    .hero .btn-note { order: 4; }
+    .hero .sub { order: 5; }
+    /* Το animation ακολουθεί τη νέα οπτική σειρά — η περιγραφή εμφανίζεται τελευταία. */
+    .hero .sub { font-size: .92rem; margin-top: 26px; max-width: 40ch; animation-delay: .56s; }
+    .sub-more { display: none; }
+    .hero-ctas { margin-top: 30px; }
+    .hero-ctas, .btn-frame, .hero-ctas .btn { width: 100%; }
+    .hero-ctas .btn--ghost {
+      box-shadow: none; padding: 10px; font-size: .98rem;
+      color: var(--muted); font-weight: 600;
+      text-decoration: underline; text-underline-offset: 5px;
+      text-decoration-color: var(--orange);
+    }
+    .announce { font-size: .8rem; margin-bottom: 20px; }
+    .hero-ba { margin-top: 44px; }
+    .einv-panel { display: none; }
+    .cases-cta { margin-top: 18px; }
+    .plan-mini {
+      display: flex; align-items: baseline; justify-content: space-between;
+      flex-wrap: wrap; gap: 4px 12px; text-align: left;
+    }
+    .plan-mini h3 { margin: 0; }
+    .plan-mini-setup, .plan-mini-monthly { margin: 0; font-size: .9rem; }
+    .plan-mini-setup .num { font-size: 1.25rem; margin-right: 4px; }
+  }
+
+  /* ---------- Blur-in ---------- */
+  .blur-in {
+    opacity: 0; filter: blur(12px); transform: translateY(12px);
+    animation: blurIn 1.1s cubic-bezier(.2, .8, .25, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+  @keyframes blurIn {
+    to { opacity: 1; filter: blur(0); transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .blur-in { animation: none; opacity: 1; filter: none; transform: none; }
+  }
+
+  /* ---------- Πριν → Μετά ---------- */
+  .ba-grid {
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+    align-items: stretch;
+  }
+  .ba-before { opacity: .75; }
+  .ba-after { position: relative; overflow: hidden; }
+  .ba-label {
+    font-size: .78rem; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
+  }
+  .ba-label--after { color: var(--purple-text); }
+  .ba-list { list-style: none; padding: 0; display: grid; gap: 11px; }
+  .ba-list li { font-size: 1rem; color: var(--muted); }
+  .ba-list li strong { color: var(--ink); font-weight: 700; }
+  .ba-list--after li { color: rgba(255, 255, 255, .82); }
+  .ba-list--after li strong { color: var(--orange-text); }
+  .ba-list--after li::before {
+    content: '✓'; color: var(--ok-text); font-weight: 700; margin-right: 9px;
+  }
+  .ba-shine {
+    position: absolute; top: 0; bottom: 0; left: -70%; width: 45%;
+    background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, .07) 50%, transparent 100%);
+    animation: baShine 3.2s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes baShine {
+    0% { left: -70%; }
+    55%, 100% { left: 120%; }
+  }
+  .ba-note {
+    text-align: center; font-size: .85rem; color: var(--muted);
+    margin: 14px auto 0; width: fit-content; max-width: 34ch;
+  }
+
+  /* Εταιρία: «Εσείς ——— PISMA.» — τη γραμμή τη σχηματίζει ο Ντοτ σε desktop,
+     αλλιώς μένει η στατική. */
+  .who-bridge { display: flex; align-items: center; gap: 14px; margin-top: 24px; max-width: 560px; }
+  .wb-chip {
+    background: var(--bg); border: 1px solid var(--line-strong); border-radius: 999px;
+    padding: 8px 18px; font-weight: 700; font-size: .92rem; color: var(--navy); white-space: nowrap;
+  }
+  .wb-dot { color: var(--orange); }
+  .wb-line { flex: 1; height: 2px; border-radius: 99px; background: var(--line-strong); transition: opacity .3s ease; }
+  @media (prefers-reduced-motion: reduce) {
+    .ba-shine { display: none; }
+  }
+
+  /* ---------- Κινήσεις sections (εγκρίσεις 25/07/2026) ----------
+     Οπλίζονται ΜΟΝΟ όταν το JS βάλει .fx-armed — χωρίς JS όλα ορατά. */
+  .fx-uline {
+    display: block; height: 4px; width: clamp(140px, 30%, 230px);
+    margin-top: 12px; border-radius: 999px;
+    background: var(--grad);
+  }
+  .fx-armed .fx-uline { transform: scaleX(0); transform-origin: left; }
+  .fx-on .fx-uline { animation: fxDraw .9s cubic-bezier(.22, 1, .36, 1) .2s forwards; }
+  @keyframes fxDraw { to { transform: scaleX(1); } }
+
+  .fx-armed .step-num { transform: scale(0); }
+  .fx-on .step-num { animation: fxPop .9s cubic-bezier(.34, 1.4, .64, 1) forwards; }
+  .fx-on .steps li:nth-child(2) .step-num { animation-delay: .4s; }
+  .fx-on .steps li:nth-child(3) .step-num { animation-delay: .8s; }
+  .fx-on .steps li:nth-child(4) .step-num { animation-delay: 1.2s; }
+  @keyframes fxPop { 60% { transform: scale(1.18); } 100% { transform: scale(1); } }
+
+  .fx-on .grid-3 .plan-mini:nth-child(2) { animation: fxPulse 2.2s ease-in-out .7s; }
+  @keyframes fxPulse {
+    40% {
+      box-shadow: var(--shadow), 0 0 0 3px rgba(255, 122, 80, .4), 0 0 46px rgba(238, 79, 39, .42);
+      transform: translateY(-3px);
+    }
+  }
+
+  .wb-fill {
+    display: block; height: 100%; width: 100%; border-radius: 99px;
+    background: var(--grad);
+    transform: scaleX(0); transform-origin: left;
+  }
+  .fx-on .wb-fill { animation: fxDraw 1.4s cubic-bezier(.4, 0, .2, 1) .3s forwards; }
+  .fx-on #bridge-pisma { display: inline-block; animation: fxChip .5s cubic-bezier(.34, 1.56, .64, 1) 1.6s; }
+  @keyframes fxChip { 50% { transform: scale(1.09); } }
+
+  .fx-armed .grad-text {
+    background: linear-gradient(92deg, #FF9159 0%, #FF5C2E 42%, #FFD9A8 50%, #FF5C2E 58%, #FF9159 100%);
+    background-size: 280% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  .fx-on .grad-text { animation: fxSweep 1.6s ease .4s forwards; }
+  @keyframes fxSweep { to { background-position: 0% 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fx-uline, .step-num, .wb-fill, .grad-text,
+    .grid-3 .plan-mini:nth-child(2), #bridge-pisma {
+      animation: none !important;
+      transform: none !important;
+    }
+  }
+</style>

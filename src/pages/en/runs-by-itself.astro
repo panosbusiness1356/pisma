@@ -1,0 +1,388 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../config';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Automation',
+  serviceType: 'Office automations for businesses',
+  description:
+    'Your office routine runs on its own: payment matching, collections, an organized Excel, a daily report.',
+  provider: {
+    '@type': 'LocalBusiness',
+    name: SITE.name,
+    email: SITE.email,
+    telephone: SITE.phone,
+    url: SITE.url,
+  },
+  areaServed: SITE.regionEn,
+};
+
+const faqItems = [
+  {
+    q: 'Will I have to change software?',
+    a: 'No. We build on top of what you already use — your invoicing software, your email, your phone.',
+  },
+  {
+    q: 'What if it breaks?',
+    a: 'We get alerted first, usually before you even notice. The fix is covered by your monthly maintenance.',
+  },
+  {
+    q: 'What about my data?',
+    a: 'It stays in your own accounts, on servers inside the EU, fully GDPR compliant.',
+  },
+  {
+    q: 'Will my employee lose their job?',
+    a: 'No — they will stop typing. The hours freed up go to customers, not data entry.',
+  },
+];
+---
+
+<Base
+  title="Automation — The office runs by itself | PISMA"
+  description="Payment matching, collections, an organized Excel and a daily report all run on their own — you only see the result."
+  schema={schema}
+>
+  <!-- 1. Hero -->
+  <PageHero
+    kicker="Pillar B"
+    sub="The boring routine work runs on its own. All you see is the report."
+  >
+    Auto<span class="accent">mation</span>
+  </PageHero>
+
+  <!-- 2. Υπηρεσίες -->
+  <section class="section section--tight" aria-labelledby="services-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">What runs by itself</p>
+        <h2 id="services-title">Seven routine chores that get off your mind.</h2>
+      </div>
+      <div class="grid-3">
+        <article class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M13 2.5 4.5 13.5h6l-1 8L19.5 10.5h-6z" />
+            </svg>
+          </span>
+          <h3>Automatic payment matching</h3>
+          <p>Every payment that comes in finds its own invoice. No more hunting them down one by one, by hand.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 3h7.5L19 7.5V21H7z" /><path d="M14.5 3v4.5H19" /><path d="M10.2 12.2h5.6M10.2 15.7h5.6" />
+            </svg>
+          </span>
+          <h3>An organized Excel</h3>
+          <p>All your transactions in one clean Excel that updates itself — a picture of your business that is always fresh.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 9.5a6 6 0 0 1 12 0c0 5.2 1.8 6.5 1.8 6.5H4.2S6 14.7 6 9.5" /><path d="M10 19.7a2.2 2.2 0 0 0 4 0" />
+            </svg>
+          </span>
+          <h3>Automatic Debt Chaser</h3>
+          <p>Polite reminders go out automatically, at just the right moment. All you see is who paid.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 11.7a8.3 8.3 0 0 1-12.1 7.4L3.5 20.5l1.4-5.2A8.3 8.3 0 1 1 21 11.7z" /><path d="M8.5 10.3h7M8.5 13.7h4.5" />
+            </svg>
+          </span>
+          <h3>Your Day in One Message</h3>
+          <p>Every afternoon, one message: what came in, what went out, what's pending. Your business at a glance.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" />
+            </svg>
+          </span>
+          <h3>Your Spy</h3>
+          <p>See what your competitors are up to — prices, offers, presence — in a regular report. Without ever searching.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" />
+            </svg>
+          </span>
+          <h3>The Review Wheel</h3>
+          <p>A QR code on the table: your customer scans, wins a treat and leaves a Google review. Reviews pile up on their own, every day.</p>
+          <a class="card-arrow" href="/en/reviews/">See how it works →</a>
+        </article>
+
+        <article class="card reveal">
+          <span class="icon-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="5.5" width="18" height="13.5" rx="2.5" /><path d="M12 9l1.1 2.2 2.4.4-1.7 1.7.4 2.4-2.2-1.1-2.2 1.1.4-2.4-1.7-1.7 2.4-.4z" />
+            </svg>
+          </span>
+          <h3>Loyalty Card</h3>
+          <p>A QR code at the register: customers collect stamps on every visit and win a reward. Your best customers come back — measurably.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Η μέρα σε αριθμούς — οι τελικοί αριθμοί υπάρχουν στο HTML (fallback
+       χωρίς JS)· το JS τους μηδενίζει και τους «μετράει» μία φορά όταν το
+       section φανεί. Ίδια νούμερα με το παλιό τερματικό (14/1.230€/3). -->
+  <section class="section" aria-labelledby="live-title">
+    <div class="container">
+      <div class="sec-head sec-head--center">
+        <p class="kicker">See it live</p>
+        <h2 id="live-title">One day of the system, in numbers.</h2>
+        <p>This is what the work nobody did by hand looks like.</p>
+      </div>
+
+      <div class="pd reveal" id="pd">
+        <p class="pd__eyebrow num" id="pd-date">yesterday</p>
+        <div class="pd__row">
+          <div class="pd__cell">
+            <p class="pd__value num"><span class="pd__num" data-from="0" data-to="14">14</span></p>
+            <p class="pd__label">payments matched</p>
+          </div>
+          <div class="pd__cell">
+            <p class="pd__value num"><span class="pd__num" data-from="0" data-to="1230" data-prefix="€">€1,230</span></p>
+            <p class="pd__label">collected</p>
+          </div>
+          <div class="pd__cell">
+            <p class="pd__value num"><span class="pd__num" data-from="0" data-to="3">3</span></p>
+            <p class="pd__label">new Google reviews</p>
+          </div>
+          <div class="pd__cell pd__cell--accent">
+            <p class="pd__value num"><span class="pd__num" data-from="47" data-to="0">0</span></p>
+            <p class="pd__label">minutes of your time</p>
+          </div>
+        </div>
+        <p class="pd__closing">None of it needed a human.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Δείκτης Αυτοματισμού -->
+  <section class="section section--tight" aria-labelledby="deiktis-title">
+    <div class="container">
+      <div class="card deiktis reveal">
+        <div class="deiktis-text">
+          <p class="kicker">Automation Score</p>
+          <h2 id="deiktis-title">One number, from <span class="num">0</span> to <span class="num">100</span>.</h2>
+          <p>It measures how many hours a month go to manual work, across three areas. The fewer the hours, the higher the score — at 100, the routine runs without you.</p>
+          <a class="card-arrow" href="/en/business-check/">Measure it on The Dashboard →</a>
+        </div>
+        <ul class="deiktis-areas" aria-label="Areas the Score measures">
+          <li class="chip">Payments <span class="muted">hours/month</span></li>
+          <li class="chip">Collections <span class="muted">hours/month</span></li>
+          <li class="chip">Organization <span class="muted">hours/month</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">FAQ</p>
+        <h2 id="faq-title">What everyone asks before getting started.</h2>
+      </div>
+      <Faq items={faqItems} withSchema />
+    </div>
+  </section>
+
+  <!-- 6. CTA -->
+  <CtaBand
+    title="How much does your office run by itself?"
+    sub="Answer 5 questions and see your Automation Score."
+    ctaText="Measure your Score"
+    ctaHref="/en/business-check/"
+    note="2 minutes · free · no personal details"
+  />
+</Base>
+
+<script>
+  // «Η μέρα σε αριθμούς»: οι τελικοί αριθμοί υπάρχουν στο HTML (fallback χωρίς
+  // JS). Το JS τους μηδενίζει και, όταν το section μπει στην οθόνη, μετράει
+  // προς τα πάνω ΜΙΑ φορά — κλιμακωτά ανά στήλη. Οι ταχύτητες διαβάζονται από
+  // τα --pd-count-duration/--pd-stagger του CSS. Reduced motion: τελικοί
+  // αριθμοί αμέσως, καμία κίνηση.
+  // EN: το € μπαίνει ΜΠΡΟΣΤΑ (data-prefix) και οι αριθμοί μορφοποιούνται en-US.
+  const pd = document.getElementById('pd');
+  if (pd) {
+    const pdCells = Array.from(pd.querySelectorAll<HTMLElement>('.pd__cell'));
+    const pdNums = Array.from(pd.querySelectorAll<HTMLElement>('.pd__num'));
+    const pdReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // «yesterday · August 28» — υπολογίζεται ζωντανά, δεν παγώνει στο build.
+    const dateEl = document.getElementById('pd-date');
+    if (dateEl) {
+      const d = new Date();
+      d.setDate(d.getDate() - 1);
+      dateEl.textContent = 'yesterday · ' + d.toLocaleDateString('en-US', { day: 'numeric', month: 'long' });
+    }
+
+    const pdCss = getComputedStyle(pd);
+    const cssMs = (name: string, fallback: number) => {
+      const v = parseFloat(pdCss.getPropertyValue(name));
+      return Number.isNaN(v) ? fallback : v;
+    };
+    const DURATION = cssMs('--pd-count-duration', 2600);
+    const STAGGER = cssMs('--pd-stagger', 220);
+
+    const fmt = (v: number, prefix?: string) => (prefix || '') + Math.round(v).toLocaleString('en-US');
+    const setFinal = () =>
+      pdNums.forEach((n) => { n.textContent = fmt(Number(n.dataset.to), n.dataset.prefix); });
+
+    if (!pdReduce) {
+      pd.classList.add('pd--animate');
+      pdNums.forEach((n) => { n.textContent = fmt(Number(n.dataset.from), n.dataset.prefix); });
+
+      const count = () => {
+        let start: number | null = null;
+        const step = (ts: number) => {
+          if (start === null) start = ts;
+          const k = Math.min((ts - start) / DURATION, 1);
+          const eased = 1 - Math.pow(1 - k, 3);
+          pdNums.forEach((n, i) => {
+            const p = Math.max(0, Math.min(1, eased * 1.42 - i * 0.14));
+            const from = Number(n.dataset.from);
+            const to = Number(n.dataset.to);
+            n.textContent = fmt(from + (to - from) * p, n.dataset.prefix);
+          });
+          if (k < 1) requestAnimationFrame(step);
+          else setFinal();
+        };
+        requestAnimationFrame(step);
+      };
+
+      const play = () => {
+        pdCells.forEach((c, i) => { c.style.transitionDelay = `${i * STAGGER}ms`; });
+        pd.classList.add('pd--in');
+        window.setTimeout(count, STAGGER + 200);
+      };
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((e) => e.isIntersecting)) {
+              io.disconnect();
+              play();
+            }
+          },
+          { threshold: 0.35 }
+        );
+        io.observe(pd);
+      } else {
+        play();
+      }
+    }
+    // Με reduced motion: το HTML έχει ήδη τους τελικούς αριθμούς.
+  }
+</script>
+
+<style>
+  /* Κάρτα με tag δίπλα στο εικονίδιο */
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .card-top .tag { margin-top: 4px; }
+
+  /* ---- «Η μέρα σε αριθμούς» ---- */
+  .pd {
+    /* timing — τα διαβάζει το JS */
+    --pd-count-duration: 2600;
+    --pd-stagger: 220;
+    max-width: 860px;
+    margin-inline: auto;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    box-shadow: var(--shadow);
+    padding: clamp(24px, 4vw, 44px);
+  }
+  .pd__eyebrow {
+    margin: 0 0 clamp(20px, 3vw, 32px);
+    font-size: .82rem;
+    letter-spacing: .06em;
+    color: var(--muted);
+  }
+  .pd__row { display: flex; align-items: flex-start; }
+  .pd__cell { flex: 1; min-width: 0; padding: 0 clamp(14px, 2vw, 24px); }
+  .pd__cell:first-child { padding-left: 0; }
+  .pd__cell:last-child { padding-right: 0; }
+  .pd__cell + .pd__cell { border-left: 1px solid var(--line-strong); }
+  .pd__value {
+    margin: 0;
+    max-width: none;
+    font-size: clamp(30px, 4.4vw, 46px);
+    font-weight: 500;
+    line-height: 1;
+    color: var(--navy);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .pd__cell--accent .pd__value { color: var(--orange); }
+  .pd__label {
+    margin: 12px 0 0;
+    font-size: clamp(.8rem, 1.2vw, .9rem);
+    line-height: 1.4;
+    color: var(--muted);
+  }
+  .pd__closing {
+    margin: clamp(26px, 3.5vw, 36px) 0 0;
+    padding-top: clamp(18px, 2.4vw, 26px);
+    border-top: 1px solid var(--line);
+    max-width: none;
+    font-size: clamp(.9rem, 1.4vw, 1.05rem);
+    color: var(--ink);
+  }
+
+  /* είσοδος: κάθε στήλη ανεβαίνει λίγο και εμφανίζεται (μόνο με JS) */
+  .pd--animate .pd__cell {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .9s ease, transform .9s ease;
+  }
+  .pd--animate.pd--in .pd__cell { opacity: 1; transform: none; }
+
+  /* mobile: 2x2 — οι κάθετες γραμμές φεύγουν */
+  @media (max-width: 719px) {
+    .pd__row { flex-wrap: wrap; }
+    .pd__cell { flex: 0 0 50%; padding: 20px 0 0; }
+    .pd__cell:nth-child(-n+2) { padding-top: 0; }
+    .pd__cell:nth-child(odd) { padding-right: 16px; }
+    .pd__cell + .pd__cell { border-left: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pd--animate .pd__cell { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* ---- Δείκτης Αυτοματισμού ---- */
+  .deiktis {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: clamp(24px, 4vw, 48px); flex-wrap: wrap;
+    padding: clamp(26px, 4vw, 44px);
+  }
+  .deiktis-text { max-width: 52ch; }
+  .deiktis-text .kicker { margin-bottom: 14px; }
+  .deiktis-text h2 { margin-bottom: 12px; }
+  .deiktis-text p { color: var(--muted); }
+  .deiktis-areas {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; gap: 10px;
+  }
+  .deiktis-areas .chip { justify-content: space-between; }
+  .deiktis-areas .muted { font-weight: 400; font-size: .82rem; }
+</style>

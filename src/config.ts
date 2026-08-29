@@ -6,7 +6,9 @@
 export const SITE = {
   name: 'PISMA',
   tagline: 'Με πείσμα, μέχρι να δουλεύει μόνο του.',
+  taglineEn: 'Relentlessly, until it runs on its own.',
   region: 'Νότια προάστια Αθήνας',
+  regionEn: 'Southern suburbs of Athens',
   email: 'info@pisma.gr',
   phone: '+30 694 727 1910',
   url: 'https://pisma.gr',
@@ -40,3 +42,7 @@ export const QUIZ = {
 /** Μορφοποίηση ποσών: 1400 → «1.400€» */
 export const eur = (n: number): string =>
   n.toLocaleString('el-GR') + '€';
+
+/** Μορφοποίηση ποσών για τις αγγλικές σελίδες: 1400 → "€1,400" */
+export const eurEn = (n: number): string =>
+  '€' + n.toLocaleString('en-US');

@@ -1,0 +1,477 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE, ELEGXOS, eurEn } from '../../config';
+import { CATEGORIES_EN } from '../../data/pricing.en';
+
+const ALL_OPTIONS_EN = CATEGORIES_EN.flatMap((c) => c.options);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'PISMA services & pricing',
+  provider: { '@type': 'LocalBusiness', name: SITE.name, url: SITE.url },
+  areaServed: SITE.regionEn,
+  offers: ALL_OPTIONS_EN.map((o) => ({
+    '@type': 'Offer',
+    name: o.label,
+    price: o.price,
+    priceCurrency: 'EUR',
+    description: o.type === 'monthly' ? `${eurEn(o.price)} per month` : `${eurEn(o.price)} one-off`,
+  })),
+};
+
+const faqItems = [
+  {
+    q: 'What does care include?',
+    a: 'We keep an eye on everything, fix anything that breaks and make small improvements along the way. Wherever there is monthly management, you also get a monthly Proof of Value report — what the system saved you, in hours and euros.',
+  },
+  {
+    q: 'I need something that is not on the list.',
+    a: `No problem. You get a written proposal within ${ELEGXOS.reportHours} hours, at a fixed price — no surprises on the bill.`,
+  },
+  {
+    q: 'Is there a lock-in?',
+    a: 'No, there is no annual commitment. You stay as long as the numbers keep convincing you.',
+  },
+];
+
+---
+
+<Base
+  title="PISMA Pricing — Transparent price list: build your own package"
+  description="Every price published: website, Google, visibility in AI, social media, automations. Build your own package and watch the cost add up live."
+  schema={schema}
+>
+  <PageHero kicker="Pricing" sub="No “request a quote”. Every price is published — you pick and see the total before you ever call us.">
+    Pricing, <span class="accent">out in the open</span>.
+  </PageHero>
+
+  <!-- Custom builder -->
+  <section
+    class="section"
+    id="builder"
+    aria-labelledby="builder-title"
+    data-mascot-stop
+    data-mascot-side="right"
+  >
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Build your package</p>
+        <h2 id="builder-title">Pick what you need — and watch the cost live</h2>
+        <p>Everything you select adds up instantly, split into one-off and monthly. Nothing is mandatory.</p>
+      </div>
+
+      <div class="builder">
+        <div class="b-cats">
+          {CATEGORIES_EN.map((cat) => (
+            <fieldset class="card b-cat reveal" data-cat={cat.id}>
+              <legend class="b-cat-head">
+                <span class="b-cat-title">{cat.title}</span>
+                {cat.desc && <span class="b-cat-desc">{cat.desc}</span>}
+              </legend>
+              {cat.mode === 'radio' && (
+                <label class="b-opt">
+                  <input type="radio" name={cat.id} value="" checked />
+                  <span class="b-opt-text"><span class="b-opt-label">None</span></span>
+                  <span class="b-price b-price--none">—</span>
+                </label>
+              )}
+              {cat.options.map((o) => (
+                <label class="b-opt">
+                  <input
+                    type={cat.mode}
+                    name={cat.mode === 'radio' ? cat.id : o.id}
+                    value={o.id}
+                    data-opt={o.id}
+                    data-price={o.price}
+                    data-ptype={o.type}
+                    data-label={`${cat.title}: ${o.label}`}
+                  />
+                  <span class="b-opt-text">
+                    <span class="b-opt-label">{o.label}</span>
+                    {o.detail && <span class="b-opt-detail">{o.detail}</span>}
+                  </span>
+                  <span class="b-price"><span class="num">{eurEn(o.price)}</span><em>{o.type === 'once' ? 'one-off' : '/month'}</em></span>
+                </label>
+              ))}
+            </fieldset>
+          ))}
+        </div>
+
+        <aside class="card b-total" id="b-total" aria-live="polite">
+          <p class="b-total-title">Your quote</p>
+          <div class="b-sums">
+            <div class="b-sum">
+              <span class="b-sum-label">One-off</span>
+              <span class="b-sum-val num" id="sum-once">€0</span>
+            </div>
+            <div class="b-sum">
+              <span class="b-sum-label">Monthly</span>
+              <span class="b-sum-val num" id="sum-monthly">€0</span>
+            </div>
+          </div>
+          <button class="btn btn--orange b-send" id="b-send" type="button">Send me this quote</button>
+          <p class="btn-note">No commitment — you get it in writing.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Φόρμα αποστολής προσφοράς -->
+  <section class="section section--tight" id="offer" aria-labelledby="offer-title">
+    <div class="container container--narrow">
+      <div class="card offer-card reveal">
+        <h2 id="offer-title">Get your quote in writing</h2>
+        <p class="offer-sub">We reply within {ELEGXOS.reportHours} hours — with zero commitment.</p>
+        <form id="offer-form" novalidate>
+          <label class="f-field">
+            <span>Full name or business name</span>
+            <input type="text" name="name" required autocomplete="name" />
+          </label>
+          <label class="f-field">
+            <span>Email or phone</span>
+            <input type="text" name="contact" required autocomplete="email" inputmode="email" />
+          </label>
+          <label class="f-field">
+            <span>Your selection <em>(filled in automatically — feel free to add a comment)</em></span>
+            <textarea name="summary" id="offer-summary" rows="6"></textarea>
+          </label>
+          <input type="text" name="website" tabindex="-1" autocomplete="off" class="f-hp" aria-hidden="true" />
+          <input type="hidden" name="_subject" value="New quote from the Pricing page (EN) — pisma.gr" />
+          <input type="hidden" name="_template" value="box" />
+          <input type="hidden" name="_captcha" value="false" />
+          <button class="btn btn--orange" type="submit" id="offer-submit">Send my quote</button>
+          <p class="f-msg" id="offer-msg" hidden></p>
+        </form>
+        <!-- Εφέ επιτυχίας: παίρνει τη θέση της φόρμας όταν σταλεί -->
+        <div class="form-done" id="offer-done" hidden>
+          <svg class="fd-tick" viewBox="0 0 52 52" aria-hidden="true">
+            <circle cx="26" cy="26" r="24" fill="none" />
+            <path d="M15 27 l8 8 l15 -16" fill="none" />
+          </svg>
+          <p class="fd-title">Your quote is on its way!</p>
+          <p class="fd-sub">We will get back to you within 48 hours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Εγγύηση -->
+  <section class="section section--tight" aria-labelledby="guarantee-title">
+    <div class="container">
+      <div class="card card--ok guarantee reveal">
+        <span class="icon-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3l7.5 2.8v5.4c0 4.6-3.1 7.8-7.5 9.3-4.4-1.5-7.5-4.7-7.5-9.3V5.8L12 3z" />
+            <path d="M8.8 12.2l2.3 2.3 4.4-4.8" />
+          </svg>
+        </span>
+        <div>
+          <h2 id="guarantee-title">Our guarantee</h2>
+          <p>If in 30 days the system isn't saving you measurable hours, the first month of care is free.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mini FAQ -->
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">FAQ</p>
+        <h2 id="faq-title">What people ask before they start</h2>
+      </div>
+      <Faq items={faqItems} withSchema={true} />
+    </div>
+  </section>
+
+  <!-- Τελικό CTA -->
+  <CtaBand
+    title="Not sure what you need?"
+    sub="The free 45′ assessment shows you what's actually worth getting — with numbers, not guesses."
+    ctaText="Book your free assessment"
+    ctaHref="/en/free-assessment/"
+    note={`Free · ${ELEGXOS.minutes} minutes · you leave with written findings`}
+  />
+</Base>
+
+<script>
+  import { FORM_ENDPOINT } from '../../data/pricing';
+  import { SITE } from '../../config';
+
+  const eur = (n: number): string => '€' + n.toLocaleString('en-US');
+
+  const inputs = Array.from(document.querySelectorAll<HTMLInputElement>('#builder input[data-opt]'));
+  const sumOnceEl = document.getElementById('sum-once')!;
+  const sumMonthlyEl = document.getElementById('sum-monthly')!;
+  const summaryEl = document.getElementById('offer-summary') as HTMLTextAreaElement;
+
+  const selected = () => inputs.filter((i) => i.checked);
+
+  const sums = () => {
+    let once = 0;
+    let monthly = 0;
+    for (const i of selected()) {
+      const price = Number(i.dataset.price);
+      if (i.dataset.ptype === 'once') once += price;
+      else monthly += price;
+    }
+    return { once, monthly };
+  };
+
+  const update = () => {
+    const { once, monthly } = sums();
+    sumOnceEl.textContent = eur(once);
+    sumMonthlyEl.textContent = monthly > 0 ? eur(monthly) + '/month' : '€0';
+    fillSummary(once, monthly);
+  };
+
+  const fillSummary = (once: number, monthly: number) => {
+    const lines = selected().map((i) => {
+      const price = Number(i.dataset.price);
+      return `• ${i.dataset.label} — ${eur(price)}${i.dataset.ptype === 'monthly' ? '/month' : ' one-off'}`;
+    });
+    summaryEl.value = [
+      ...(lines.length ? lines : ['(nothing selected yet)']),
+      '',
+      `Total one-off: ${eur(once)}`,
+      `Total monthly: ${eur(monthly)}/month`,
+    ].join('\n');
+  };
+
+  for (const i of inputs) i.addEventListener('change', update);
+  // Και τα radio «Καμία» (χωρίς data-opt) πρέπει να ενημερώνουν το σύνολο
+  for (const none of document.querySelectorAll<HTMLInputElement>('#builder input[type="radio"]:not([data-opt])')) {
+    none.addEventListener('change', update);
+  }
+
+  // Scroll μέσω Lenis όταν τρέχει (το native scrollIntoView ακυρώνεται
+  // από το raf loop του), αλλιώς native smooth.
+  const scrollToEl = (el: HTMLElement | null) => {
+    if (!el) return;
+    const lenis = (window as any).lenis;
+    if (lenis) lenis.scrollTo(el, { offset: -16 });
+    else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // «Στείλτε μου αυτή την προσφορά» → μετάβαση στη φόρμα.
+  // Το focus γίνεται ΜΕΤΑ την κύλιση — αλλιώς το πληκτρολόγιο (κινητό)
+  // διακόπτει το scroll και το πρώτο πάτημα μοιάζει νεκρό.
+  document.getElementById('b-send')?.addEventListener('click', () => {
+    scrollToEl(document.getElementById('offer'));
+    setTimeout(() => {
+      (document.querySelector('#offer-form input[name="name"]') as HTMLInputElement)?.focus({ preventScroll: true });
+    }, 700);
+  });
+
+  // Φόρμα: αποθήκευση σε υπηρεσία φορμών αν έχει οριστεί endpoint, αλλιώς email
+  const form = document.getElementById('offer-form') as HTMLFormElement;
+  const msg = document.getElementById('offer-msg')!;
+  const showMsg = (text: string, ok: boolean) => {
+    msg.textContent = text;
+    msg.hidden = false;
+    msg.classList.toggle('f-msg--ok', ok);
+  };
+
+  // Εφέ επιτυχίας «Δ»: spinner στο κουμπί → οθόνη με τικ → κομφετί.
+  const submitBtn = document.getElementById('offer-submit') as HTMLButtonElement;
+  const doneEl = document.getElementById('offer-done')!;
+  const offerCard = document.querySelector('.offer-card') as HTMLElement;
+
+  const confettiIn = (host: HTMLElement, n = 34) => {
+    const colors = ['#FF7A50', '#8B5CF6', '#55A874', '#F5F2FB'];
+    const fall = host.getBoundingClientRect().height + 30;
+    for (let i = 0; i < n; i++) {
+      const c = document.createElement('i');
+      c.className = 'fd-confetti';
+      c.style.left = 4 + Math.random() * 92 + '%';
+      c.style.background = colors[i % colors.length];
+      c.style.setProperty('--fall', fall + 'px');
+      c.style.animationDuration = 1.1 + Math.random() * 1.2 + 's';
+      c.style.animationDelay = Math.random() * 0.35 + 's';
+      host.appendChild(c);
+      setTimeout(() => c.remove(), 3200);
+    }
+  };
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    if ((data.get('website') as string)?.length) return; // honeypot — bot
+    const name = (data.get('name') as string || '').trim();
+    const contact = (data.get('contact') as string || '').trim();
+    if (!name || !contact) {
+      showMsg('Please fill in your name and an email or phone number.', false);
+      return;
+    }
+
+    const body =
+      `Name: ${name}\nContact: ${contact}\n\n${summaryEl.value}`;
+
+    if (FORM_ENDPOINT) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span>Sending…';
+      try {
+        const res = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: data,
+        });
+        // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία — έλεγχος και του JSON.
+        const json = await res.json().catch(() => null);
+        if (!res.ok || !json || String(json.success) !== 'true') throw new Error('form failed');
+        form.hidden = true;
+        msg.hidden = true;
+        // Επαναφορά κουμπιού & πεδίων ώστε η φόρμα να είναι έτοιμη για νέα αποστολή
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send my quote';
+        form.reset();
+        update();
+        doneEl.hidden = false;
+        confettiIn(offerCard);
+        (window as any).pismaSound?.play?.('on');
+        // Μετά από λίγο η οθόνη επιτυχίας δίνει ξανά τη θέση της στη φόρμα
+        setTimeout(() => {
+          doneEl.hidden = true;
+          form.hidden = false;
+        }, 6000);
+      } catch {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send my quote';
+        showMsg('Something went wrong. Please try again, or email us at ' + SITE.email + '.', false);
+      }
+    } else {
+      // Χωρίς endpoint ακόμα: άνοιγμα email με έτοιμη την προσφορά
+      const url =
+        'mailto:' + SITE.email +
+        '?subject=' + encodeURIComponent('Quote from the Pricing page — ' + name) +
+        '&body=' + encodeURIComponent(body);
+      window.location.href = url;
+      showMsg('We opened your email app with the quote ready — just hit send.', true);
+    }
+  });
+
+  update();
+</script>
+
+<style>
+  /* Builder */
+  .builder {
+    display: grid; gap: 22px;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: start;
+  }
+  .b-cats { display: grid; gap: 18px; min-width: 0; }
+  .b-cat { padding: clamp(18px, 2.5vw, 24px); border: 1px solid var(--line); margin: 0; }
+  .b-cat-head { float: left; width: 100%; padding: 0; margin-bottom: 12px; }
+  .b-cat-title { display: block; font-weight: 700; font-size: 1.05rem; color: var(--navy); }
+  .b-cat-desc { display: block; margin-top: 2px; font-size: .85rem; color: var(--muted); }
+  .b-opt {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px; border-radius: 10px; cursor: pointer;
+    transition: background-color .12s ease;
+  }
+  .b-opt:hover { background: rgba(255, 255, 255, .04); }
+  .b-opt input {
+    width: 18px; height: 18px; flex: none;
+    accent-color: var(--orange-cta); cursor: pointer;
+  }
+  .b-opt-text { min-width: 0; }
+  .b-opt-label { display: block; font-weight: 600; font-size: .95rem; color: var(--ink); }
+  .b-opt-detail { display: block; font-size: .82rem; color: var(--muted); }
+  .b-price { margin-left: auto; flex: none; text-align: right; font-weight: 700; color: var(--navy); font-size: .95rem; }
+  .b-price em { display: block; font-style: normal; font-weight: 500; font-size: .72rem; color: var(--muted); }
+  .b-price--none { color: var(--muted); font-weight: 500; }
+  .b-opt:has(input:checked) { background: var(--orange-soft); }
+
+  /* Σύνολο */
+  .b-total { position: sticky; top: 92px; padding: clamp(20px, 2.5vw, 26px); }
+  .b-total-title { font-weight: 700; color: var(--navy); margin-bottom: 14px; }
+  .b-sums { display: grid; gap: 10px; margin-bottom: 12px; }
+  .b-sum { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .b-sum-label { font-size: .9rem; color: var(--muted); }
+  .b-sum-val { font-size: 1.45rem; font-weight: 700; color: var(--navy); }
+  .b-send { width: 100%; }
+  .b-total .btn-note { text-align: center; }
+
+  /* Φόρμα */
+  .offer-card h2 { font-size: 1.35rem; margin-bottom: 6px; }
+  .offer-sub { color: var(--muted); margin-bottom: 20px; }
+  #offer-form { display: grid; gap: 14px; }
+  /* Το author display:grid υπερισχύει του hidden — ρητό override */
+  #offer-form[hidden] { display: none; }
+  .f-field span { display: block; font-size: .88rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .f-field em { font-style: normal; font-weight: 400; color: var(--muted); }
+  .f-field input, .f-field textarea {
+    width: 100%; padding: 12px 14px;
+    background: var(--bg-soft); color: var(--ink);
+    border: 1px solid var(--line-strong); border-radius: 10px; outline: none;
+  }
+  .f-field input:focus, .f-field textarea:focus { border-color: var(--orange); }
+  .f-field textarea { resize: vertical; font-family: var(--font-mono); font-size: .85rem; line-height: 1.6; }
+  .f-hp { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
+  #offer-form .btn { justify-self: start; }
+
+  /* Εφέ επιτυχίας φόρμας (Δ): τικ που ζωγραφίζεται + κομφετί μέσα στην κάρτα */
+  .offer-card { position: relative; overflow: hidden; }
+  .form-done { text-align: center; padding: 26px 0 10px; animation: fd-pop .45s cubic-bezier(.3, 1.4, .5, 1) both; }
+  @keyframes fd-pop { from { transform: scale(.85); opacity: 0; } }
+  .fd-tick { display: block; margin: 0 auto; width: 64px; height: 64px; }
+  .fd-tick circle { stroke: var(--ok); stroke-width: 2.5; opacity: .55; }
+  .fd-tick path {
+    stroke: var(--ok-text); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 34; stroke-dashoffset: 34;
+    animation: fd-draw .55s ease .25s forwards;
+  }
+  @keyframes fd-draw { to { stroke-dashoffset: 0; } }
+  .fd-title { font-size: 1.3rem; font-weight: 800; margin-top: 12px; }
+  .fd-sub { color: var(--muted); margin-top: 4px; }
+  :global(.fd-confetti) {
+    position: absolute; top: -12px; width: 8px; height: 13px; border-radius: 2px;
+    pointer-events: none; animation: fd-fall linear both;
+  }
+  @keyframes fd-fall { to { transform: translateY(var(--fall, 380px)) rotate(680deg); opacity: .15; } }
+  :global(.btn-spinner) {
+    display: inline-block; width: 15px; height: 15px;
+    border: 2px solid rgba(255, 255, 255, .35); border-top-color: #fff; border-radius: 50%;
+    vertical-align: -2px; margin-right: 8px;
+    animation: fd-spin .7s linear infinite;
+  }
+  @keyframes fd-spin { to { transform: rotate(360deg); } }
+  .f-msg { font-size: .92rem; color: var(--red-text); }
+  .f-msg--ok { color: var(--ok-text); }
+
+  /* Εγγύηση */
+  .guarantee { display: flex; align-items: flex-start; gap: clamp(16px, 3vw, 24px); }
+  .guarantee .icon-chip { flex: none; }
+  .guarantee h2 { font-size: 1.25rem; margin-bottom: 8px; }
+  .guarantee p { max-width: 60ch; }
+
+  /* Mobile: το σύνολο γίνεται σταθερή μπάρα στο κάτω μέρος */
+  @media (max-width: 880px) {
+    .builder { grid-template-columns: 1fr; }
+    .b-total {
+      position: fixed; left: 10px; right: 10px; bottom: 10px; top: auto; z-index: 95;
+      display: flex; align-items: center; flex-wrap: wrap; gap: 6px 16px;
+      padding: 12px 16px;
+      background: var(--card-2); border-color: var(--line-strong);
+      box-shadow: var(--shadow-hover);
+    }
+    .b-total-title { display: none; }
+    .b-sums { display: contents; }
+    .b-sum { flex: none; gap: 8px; }
+    .b-sum-val { font-size: 1.1rem; }
+    .b-send { width: auto; margin-left: auto; padding: 10px 16px; font-size: .9rem; }
+    .b-total .btn-note { display: none; }
+  }
+  @media (max-width: 880px) {
+    :global(body) { padding-bottom: 92px; }
+  }
+  @media (max-width: 480px) {
+    .guarantee { flex-direction: column; }
+    .b-send { width: 100%; margin-left: 0; }
+  }
+</style>

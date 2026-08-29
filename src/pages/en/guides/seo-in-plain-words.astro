@@ -1,0 +1,141 @@
+---
+import Guide from '../../../layouts/Guide.astro';
+import { CATEGORIES_EN } from '../../../data/pricing.en';
+import { eurEn, ELEGXOS } from '../../../config';
+
+// Αναζήτηση option με βάση id μέσα στον αγγλικό τιμοκατάλογο (ίδια ids/τιμές με pricing.ts)
+const optionByIdEn = (id: string) =>
+  CATEGORIES_EN.flatMap((c) => c.options).find((o) => o.id === id);
+
+const aiSetup = optionByIdEn('ai-setup')!;
+const aiMonthly = optionByIdEn('ai-monthly')!;
+
+const faq = [
+  {
+    q: 'How long does SEO take to show results?',
+    a: 'SEO takes time — we are talking months, not days. That is why at PISMA we measure where you start and re-measure at 3 months, so you can see the difference in numbers.',
+  },
+  {
+    q: 'Do I absolutely need a website to do SEO?',
+    a: 'For local searches, a well-kept Google profile helps even on its own. A website, though, gives you room to answer your customers’ questions — and that is where most of the game is decided.',
+  },
+  {
+    q: 'Is SEO a one-and-done job?',
+    a: 'No. There is an initial setup, but after that it needs care: Google changes, your competitors keep moving, and your customers’ questions evolve.',
+  },
+  {
+    q: 'Is SEO the same as AEO and GEO?',
+    a: 'The logic is the same — being found when people need you. AEO/GEO makes sure AI tools like ChatGPT recommend you too, not just Google.',
+  },
+  {
+    q: 'How much does SEO cost at PISMA?',
+    a: `The “Visibility on Google & AI” service has an initial setup of ${eurEn(aiSetup.price)} one-off and monthly management of ${eurEn(aiMonthly.price)} per month — no commitment, no contract.`,
+  },
+];
+---
+
+<Guide
+  lang="en"
+  title="What is SEO — in plain words? | PISMA"
+  description="SEO means being found on Google by the people who need you, without paying for ads. See what matters for your business and what changes with AI."
+  slug="seo-in-plain-words"
+  question="What is SEO — in plain words?"
+  sub="For business owners who keep hearing “SEO” and finally want to understand what it is — no tech talk."
+  answer="SEO (Search Engine Optimization) means shaping your website and your profile so that Google shows you when someone searches for what you offer — without paying for advertising. Google recommends the pages that answer the user’s question best and most reliably; SEO’s job is to make you that answer. The same now goes for AI tools like ChatGPT, which recommend businesses using similar logic."
+  updated="2026-07-28"
+  faq={faq}
+>
+  <h2>What does SEO mean, and how is it different from advertising?</h2>
+  <p>
+    SEO stands for Search Engine Optimization. In plain words: setting up your presence on the
+    internet so that when someone searches “electrician near me” or “where to eat pizza”, you are
+    the one who shows up.
+  </p>
+  <p>
+    The difference from advertising is simple: with ads you pay for every appearance, and the
+    moment you stop paying, you disappear. SEO is work that builds up — pages, profiles,
+    reviews — and keeps bringing people in without a meter running. It takes longer than
+    advertising, but what you build stays yours.
+  </p>
+
+  <h2>How does Google “think”?</h2>
+  <p>
+    Google is, at its core, a machine that answers questions. Every search is a question — even
+    when there is no question mark — and Google wants to show first the page that gives the most
+    useful and trustworthy answer.
+  </p>
+  <p>To decide that, it looks at things like:</p>
+  <ul>
+    <li><strong>What your page answers</strong> — does it speak clearly to what the user is looking for, or is it vague?</li>
+    <li><strong>How easy it is to read</strong> — does it load fast, does it work properly on mobile?</li>
+    <li><strong>Whether others trust you</strong> — reviews, mentions, an up-to-date profile.</li>
+  </ul>
+  <p>
+    You do not need to “trick” Google — that does not work anymore anyway. You need to genuinely
+    be the best answer for the customers in your area.
+  </p>
+
+  <h2>What actually matters for your business?</h2>
+  <p>
+    You do not need everything the big companies do. For your business, the essentials are
+    four:
+  </p>
+  <ul>
+    <li>
+      <strong>Pages that answer questions.</strong> One page for each key question your customers
+      ask — what you offer, where, how you work. Not a shop-window site that only says
+      “welcome”.
+    </li>
+    <li>
+      <strong>Speed and mobile.</strong> Most customers look you up on their phone. If the site
+      is slow or hard to read there, they leave before they even see what you do.
+    </li>
+    <li>
+      <strong>Google profile and reviews.</strong> For local searches, your
+      <a href="/en/guides/google-maps-profile/">profile on Google and Maps</a> is often the
+      first thing a customer sees — before the website itself.
+    </li>
+    <li>
+      <strong>Consistent details.</strong> Same name, same address, same phone number
+      everywhere — on the site, on the Google profile, on social. Search engines get confused by
+      mismatches, and customers even more so.
+    </li>
+  </ul>
+
+  <h2>What changes with AI — what are AEO and GEO?</h2>
+  <p>
+    The new chapter is that customers no longer search only on Google — they also ask AI tools
+    like ChatGPT: “where can I get my brakes done in Glyfada?”. And AI does not return a long
+    list of links — it gives one answer, with a few specific business recommendations.
+  </p>
+  <p>
+    This is where two new terms come in: AEO (Answer Engine Optimization) and GEO (Generative
+    Engine Optimization) — in other words, being inside the answers AI gives. The good news:
+    whatever you do right for SEO helps here too, because AI learns from the same sources — your
+    website, your profile, your reviews. We wrote a separate guide on
+    <a href="/en/guides/get-recommended-by-chatgpt/">how to get recommended by ChatGPT</a>.
+  </p>
+
+  <h2>What can you do on your own, today?</h2>
+  <p>Before you pay for anything, do these — they are free and only take a little time:</p>
+  <ol>
+    <li>Search Google for your service and your area, the way a customer would type it. Do you show up? Where?</li>
+    <li>Ask ChatGPT the same thing. Does it mention you? Who does it recommend?</li>
+    <li>Fill in your Google profile completely: hours, photos, services, description.</li>
+    <li>Check that your name, address and phone number are identical on your site, Google and social.</li>
+    <li>Open your website on a phone. Is it easy to read? Can you find the phone number in one move?</li>
+    <li>Write one page or post that answers your customers’ most frequent question.</li>
+  </ol>
+
+  <h2>How does PISMA help?</h2>
+  <p>
+    The <strong>Visibility on Google & AI</strong> service covers exactly this: SEO, AEO and GEO
+    together. The initial setup costs {eurEn(aiSetup.price)} one-off and monthly management is
+    {eurEn(aiMonthly.price)} per month, with a monthly report on what was done and what was
+    measured — no commitment, no contract. We measure where you stand before we start and
+    re-measure at 3 months, so you can judge with numbers, not promises. If you first just want
+    to see where you are, book the free <a href="/en/free-assessment/">PISMA Check</a>:
+    {ELEGXOS.minutes} minutes, and you leave with a written picture of your Google, AI and
+    day-to-day operations.
+  </p>
+</Guide>

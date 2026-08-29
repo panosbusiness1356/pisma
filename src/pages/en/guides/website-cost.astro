@@ -1,0 +1,190 @@
+---
+import Guide from '../../../layouts/Guide.astro';
+import { CATEGORIES_EN } from '../../../data/pricing.en';
+import { eurEn as eur, ELEGXOS } from '../../../config';
+
+// Ίδια ids με pricing.ts — labels/details από CATEGORIES_EN
+const optionById = (id: string) =>
+  CATEGORIES_EN.flatMap((c) => c.options).find((o) => o.id === id);
+
+const basic = optionById('web-basic')!;
+const standard = optionById('web-standard')!;
+const pro = optionById('web-pro')!;
+const care = optionById('care-web')!;
+const gbp = optionById('gbp-setup')!;
+
+const faq = [
+  {
+    q: 'How much does a simple website cost?',
+    a: `At PISMA, a Basic site (home, services, contact) costs ${eur(basic.price)} one-off. Larger sites with more pages and features go up to ${eur(pro.price)}.`,
+  },
+  {
+    q: 'Is there a monthly cost after the build?',
+    a: `Only if you want it: Website care maintenance costs ${eur(care.price)} per month, with no contract or commitment. Separately, there is a small yearly fee for the domain and hosting.`,
+  },
+  {
+    q: 'Who should the domain belong to?',
+    a: 'You — always. If the domain is registered in the builder’s name, you don’t control your own website, and leaving is hard if something goes wrong.',
+  },
+  {
+    q: 'Are there ready-made packages?',
+    a: `No — you build your own: on the pricing page you pick only the services you need and pay their total. A common first step: a Basic site (${eur(basic.price)}) together with a Google profile setup (${eur(gbp.price)}).`,
+  },
+  {
+    q: 'Do I need a website if I already have a Facebook page?',
+    a: 'A Facebook page helps, but it isn’t yours — the rules change whenever the platform decides. Your website is the only space you fully control, and it’s what Google and AI tools read best.',
+  },
+];
+---
+
+<Guide
+  title="How much does a business website cost? | PISMA"
+  description={`What drives the price of a website, what a proper build must include, and PISMA’s prices — from ${eur(basic.price)} to ${eur(pro.price)} one-off, in plain words.`}
+  slug="website-cost"
+  lang="en"
+  question="How much does a website for a business cost?"
+  sub="For business owners who want a straight answer on pricing, without technical confusion."
+  answer={`At PISMA, a website for your business costs from ${eur(basic.price)} to ${eur(pro.price)} one-off, depending on how many pages and which features you need. If you want us to look after it afterwards, maintenance costs ${eur(care.price)} per month — no contract and no commitment. The final price is mainly determined by the size, the features and who writes the copy.`}
+  updated="2026-07-28"
+  faq={faq}
+>
+  <h2>What determines how much a website will cost?</h2>
+  <p>
+    Three things, mainly: the size, the features and who prepares the copy.
+    The more you need of all three, the more work it takes — and the higher the price.
+  </p>
+  <ul>
+    <li>
+      <strong>Size.</strong> A site with 3–4 pages (home, services, contact) costs one thing;
+      a site with many pages, a catalogue or a separate page for every service costs another.
+    </li>
+    <li>
+      <strong>Features.</strong> A contact form, bookings, a menu or price list,
+      a second language — every extra feature needs setup and testing.
+    </li>
+    <li>
+      <strong>Copy and photos.</strong> If you hand them over ready, the cost stays low.
+      If they need to be written and organized from scratch, that adds work.
+    </li>
+  </ul>
+  <p>
+    That’s why two quotes for “a website” can be miles apart: they often don’t describe
+    the same work. Before you compare prices, make sure you’re comparing the same things.
+  </p>
+
+  <h2>What must a proper build include?</h2>
+  <p>
+    Whatever you pay, the site must work flawlessly on mobile, load fast, and be built so
+    that Google and AI tools like ChatGPT can understand it.
+    These aren’t “extras” — they’re the basics.
+  </p>
+  <ul>
+    <li><strong>Mobile.</strong> Your customers open it mostly on their phone — that’s where it has to look and work perfectly.</li>
+    <li><strong>Speed.</strong> A slow site wears people out; whoever has to wait, leaves.</li>
+    <li>
+      <strong>Basic SEO</strong> — meaning it’s written so Google can find you.
+      We explain it in detail in the guide <a href="/en/guides/seo-in-plain-words/">“SEO in plain words”</a>.
+    </li>
+    <li>
+      <strong>AI-ready.</strong> Customers now search by asking ChatGPT too. Your site
+      needs clear, complete information (what you do, where, how to reach you), so AI tools
+      can recommend you — see the guide
+      <a href="/en/guides/get-recommended-by-chatgpt/">on ChatGPT</a>.
+    </li>
+    <li><strong>Easy contact.</strong> A call button and a form, so a customer reaches you in one tap.</li>
+  </ul>
+  <p>If a quote mentions none of these, ask before you pay — don’t assume they’re implied.</p>
+
+  <h2>Do you pay once or every month?</h2>
+  <p>
+    The build is paid once — one-off. After that, two things remain: a small yearly fee
+    for the domain (your site’s name, e.g. yourname.gr) and the hosting (the “space” where
+    the site lives), and optionally the maintenance.
+  </p>
+  <p>
+    Maintenance means updates, security and small changes — everything keeps running without
+    you thinking about it. At PISMA it’s called Website care and costs {eur(care.price)} per month,
+    with no contract: you stop it whenever you like.
+  </p>
+  <p>
+    Watch out for the “free website with a mandatory monthly subscription” model: it looks
+    cheap at first, but it often ties you into a commitment — and the site may not even be yours.
+  </p>
+
+  <h2>How much does a website cost at PISMA?</h2>
+  <p>
+    From {eur(basic.price)} to {eur(pro.price)}, one-off — depending on size and features.
+    The prices are public and the same for everyone:
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Option</th>
+        <th>What it is</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>{basic.label}</strong></td>
+        <td>{basic.detail}</td>
+        <td>{eur(basic.price)} one-off</td>
+      </tr>
+      <tr>
+        <td><strong>{standard.label}</strong></td>
+        <td>{standard.detail}</td>
+        <td>{eur(standard.price)} one-off</td>
+      </tr>
+      <tr>
+        <td><strong>{pro.label}</strong></td>
+        <td>{pro.detail}</td>
+        <td>{eur(pro.price)} one-off</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    The optional maintenance ({care.label}) costs {eur(care.price)} per month. A website is
+    often combined with a Google profile setup — Maps and Search ({eur(gbp.price)}
+    one-off), so customers find you from day one.
+  </p>
+  <p>
+    On the <a href="/en/pricing/">pricing page</a> you build your own combination and see the
+    total on the spot — before we even talk.
+  </p>
+
+  <h2>What should you check before paying — anywhere?</h2>
+  <p>
+    Two things above all: the domain must be registered in your name, and you must know in
+    writing exactly what’s being delivered. Before you close a deal with anyone — including us — ask for these:
+  </p>
+  <ol>
+    <li>
+      <strong>Domain in your name.</strong> The site’s name should be bought in your name or
+      your business’s. Otherwise, if the collaboration breaks down, you lose your address.
+    </li>
+    <li>
+      <strong>Passwords and access.</strong> You should receive the credentials for the domain,
+      the hosting and the site’s admin — they’re yours.
+    </li>
+    <li>
+      <strong>A written breakdown.</strong> Which pages, which features, who writes the copy,
+      how many rounds of revisions are included.
+    </li>
+    <li>
+      <strong>What the monthly covers.</strong> If there’s a subscription, exactly what it
+      includes and whether it has a lock-in period.
+    </li>
+    <li>
+      <strong>What happens if you leave.</strong> Can you take your site and continue
+      elsewhere? The right answer is “yes”.
+    </li>
+  </ol>
+
+  <h2>How does PISMA help?</h2>
+  <p>
+    If you’re not sure what site you need — or whether the one you have covers you — start with the
+    <a href="/en/free-assessment/">free Check</a>: a {ELEGXOS.minutes}-minute appointment where we
+    measure together where you stand on Google, AI and day-to-day operations, and you leave with
+    a written picture. Then you decide with the paper in front of you — with no commitment whatsoever.
+  </p>
+</Guide>

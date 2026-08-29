@@ -55,6 +55,12 @@ delivery). Ο πελάτης σκανάρει, γυρνάει έναν τροχ�
 - [Τιμές](${SITE.url}/times/): όλες οι τιμές δημόσια, builder πακέτου
 - [Αποτελέσματα](${SITE.url}/apotelesmata/): πώς μετριέται κάθε συνεργασία
 - [Ο Έλεγχος PISMA](${SITE.url}/elegxos/): δωρεάν αξιολόγηση ${ELEGXOS.minutes} λεπτών
+
+## English version
+
+Το site διατίθεται και στα αγγλικά, με πλήρη αντιστοιχία σελίδων:
+- [Home](${SITE.url}/en/) · [Pricing](${SITE.url}/en/pricing/) · [The Review Wheel](${SITE.url}/en/reviews/) · [Guides](${SITE.url}/en/guides/) · [Contact](${SITE.url}/en/contact/)
+- Free 45-minute assessment: [The PISMA Check](${SITE.url}/en/free-assessment/)
 `;
 
 export const GET: APIRoute = () =>
