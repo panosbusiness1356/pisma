@@ -8,13 +8,15 @@ import { optionById } from '../../data/pricing';
 
 // Το προϊόν κριτικών — μία πηγή αλήθειας: pricing.ts.
 // Τιμές αυτοκόλλητων: πίνακας F στο /aftokollita/ (εφάπαξ, από 18 € το πακέτο).
+// ΣΚΟΠΙΜΑ teaser: ο μηχανισμός του Τροχού δεν περιγράφεται πουθενά δημόσια —
+// ούτε βήματα, ούτε demo link. Παρουσιάζεται μόνο ζωντανά, σε ραντεβού.
 const wheel = optionById('auto-reviews')!;
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   name: 'The Review Wheel',
-  serviceType: 'Growing Google reviews with a QR code inside the business',
+  serviceType: 'Growing Google reviews for local businesses',
   areaServed: SITE.regionEn,
   provider: {
     '@type': 'LocalBusiness',
@@ -30,141 +32,74 @@ const schema = {
     description: `${eurEn(wheel.price)} per month, no commitment — plus QR stickers as a one-off.`,
   },
   description:
-    'A QR sticker on the table or at the till: the customer scans it, spins the wheel, wins a prize — and leaves a Google review before walking out the door.',
+    "PISMA's tool that makes Google reviews pile up on their own. It starts with a QR sticker inside the business — and it is only ever shown live, at a meeting.",
 };
 
-const steps = [
+const what = [
   {
-    t: 'They scan',
-    d: 'Your customer spots the sticker on the table, at the till or on the delivery bag. They scan it with their camera — nothing to download, nothing to type.',
-  },
-  {
-    t: 'They spin the wheel',
-    d: 'A wheel of prizes opens on their phone. They spin it and always win something — a discount, a treat on the house, a little gift. You decide the prizes.',
-  },
-  {
-    t: 'They get their coupon',
-    d: 'The coupon appears on their screen — they show it at the till now, or next time. It is theirs either way: one more reason to come back.',
-  },
-  {
-    t: 'They leave a review',
-    d: 'Right when they have just won, we ask for a few words on Google. One tap and the review form is open — the right moment, the easy way.',
-  },
-];
-
-const why = [
-  {
-    t: 'Your customer has a reason to scan',
-    d: 'A plain "please leave us a review" gets walked past. A wheel full of prizes does not.',
-  },
-  {
-    t: 'The right moment, every time',
-    d: 'The ask lands the second they have just won — not a week later, in some impersonal message.',
+    t: 'Your customers enjoy it',
+    d: 'It is not another "please leave us a review" that gets walked past. It starts with a sticker on the table — and turns into something your customer does with a smile.',
   },
   {
     t: 'It works without you',
-    d: 'No need to remember to ask. The sticker is there every day, for every table.',
+    d: 'No need to remember to ask. It is set up once and works every day, at every table — you just watch the reviews come in.',
+  },
+  {
+    t: "Within Google's rules",
+    d: 'No bought reviews, no staged ones, no reward in exchange. That was the very first requirement when we designed it — and at the meeting you will see exactly how it is respected.',
   },
 ];
 
 const faqItems = [
   {
-    q: 'Is this within Google’s rules?',
-    a: 'Yes. Google forbids rewards in exchange for reviews — and there is no exchange here: the customer wins the prize by scanning, whether they write a review or not. We ask for the review afterwards, politely and with no strings attached. We never buy or fake reviews.',
+    q: 'What is the Review Wheel?',
+    a: "PISMA's tool for Google reviews: it starts with a QR sticker in your shop and makes reviews pile up on their own — in a way your customers actually enjoy. Exactly how it works is not described publicly; you see it live.",
   },
   {
-    q: 'What prizes does the customer win?',
-    a: 'Whatever you decide: a discount, a treat on the house, a small gift with their next visit. We settle the odds and prizes together over the phone — a 40% discount on a coffee is not the same as 40% off a haircut.',
+    q: "Why don't you show how it works?",
+    a: 'Because whatever works gets copied. We only show the Wheel live — to you, for your own shop, with your colours and your prizes. A 15-minute video call is enough to know if it is right for you.',
+  },
+  {
+    q: "Is this within Google's rules?",
+    a: 'Yes, fully. Google forbids bought reviews, rewards in exchange for reviews and review gating — the Wheel does none of the three. At the live meeting you will see exactly how we achieve that.',
   },
   {
     q: 'What do I need to get started?',
-    a: 'A Google profile (if you do not have one, we set it up) and the QR stickers. Everything else — wheel, prizes, coupons — we set up for you. You just stick the stickers.',
+    a: 'A Google profile (if you do not have one, we set it up) and the QR stickers. Everything else we set up for you — you just stick the stickers.',
   },
   {
     q: 'How much does it cost?',
-    a: `${eurEn(wheel.price)} per month for the platform — wheel, prizes, coupons — with no contract and no commitment. The QR stickers are a one-off payment, from €18 per pack.`,
+    a: `${eurEn(wheel.price)} per month for the platform — with no contract and no commitment. The QR stickers are a one-off payment, from €18 per pack.`,
   },
   {
     q: 'Does it work for delivery too?',
-    a: 'Yes — there are stickers for the bag and the receipt. The customer scans from home, and the coupon brings them back for the next order.',
+    a: 'Yes — there are stickers for the bag and the receipt, and the Wheel works just as well from your customer’s home.',
   },
 ];
 ---
 
 <Base
   title="The Review Wheel — More Google reviews | PISMA"
-  description="A QR code on the table: the customer scans, spins the wheel, wins a prize — and leaves a Google review. Try the live demo. No commitment."
+  description="PISMA's tool that makes Google reviews pile up on their own. We don't show it publicly — book a meeting to see it live. No commitment."
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
     kicker="The Review Wheel"
-    sub="One QR sticker on the table. Your customer scans it, wins a prize — and leaves a Google review before walking out the door."
+    sub="The tool that makes your customers want to leave a Google review — and enjoy doing it. How? That part we don't show publicly."
   >
-    Reviews that collect <span class="accent">themselves</span>
+    Reviews that pile up <span class="accent">on their own</span>
   </PageHero>
 
-  <!-- 2. Πώς δουλεύει -->
-  <section class="section section--tight" aria-labelledby="how-title">
+  <!-- 2. What it does (outcome, not mechanism) -->
+  <section class="section section--tight" aria-labelledby="what-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">How it works</p>
-        <h2 id="how-title">Four steps — all done by your customer.</h2>
-      </div>
-      <ol class="steps grid-4">
-        {steps.map((s, i) => (
-          <li class="card step reveal">
-            <span class="step-num num">{i + 1}</span>
-            <h3>{s.t}</h3>
-            <p>{s.d}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!-- 3. Ζωντανό demo -->
-  <section class="section" aria-labelledby="demo-title">
-    <div class="container">
-      <div class="sec-head sec-head--center">
-        <p class="kicker">Try it now</p>
-        <h2 id="demo-title">This is what your customer sees</h2>
-        <p>A live demo for a fictional pizzeria — pretend you just scanned, and spin the wheel.</p>
-      </div>
-      <div class="demo-wrap reveal">
-        <div class="phone-frame">
-          <iframe
-            src="/demo/pitsaria/"
-            title="Live demo: the Review Wheel for a fictional pizzeria"
-            loading="lazy"
-          ></iframe>
-        </div>
-        <div class="demo-side">
-          <p>
-            What you see here is the real tool — with your own logo,
-            your own colors and your own prizes.
-          </p>
-          <a class="btn btn--orange" href="/demo/pitsaria/" target="_blank" rel="noopener">
-            Open it full screen
-          </a>
-          <a class="btn btn--ghost" href="/demo/kommotirio/" target="_blank" rel="noopener">
-            See the hair salon demo too
-          </a>
-          <p class="btn-note">It’s a demo — no real review is ever submitted.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 4. Γιατί δουλεύει -->
-  <section class="section section--tight" aria-labelledby="why-title">
-    <div class="container">
-      <div class="sec-head">
-        <p class="kicker">Why it works</p>
-        <h2 id="why-title">Reviews need a nudge — not begging.</h2>
+        <p class="kicker">What it does</p>
+        <h2 id="what-title">The result you can see. The mechanism, only in person.</h2>
       </div>
       <div class="grid-3">
-        {why.map((w) => (
+        {what.map((w) => (
           <article class="card reveal">
             <h3>{w.t}</h3>
             <p>{w.d}</p>
@@ -174,8 +109,28 @@ const faqItems = [
     </div>
   </section>
 
-  <!-- 5. Τιμή -->
-  <section class="section" aria-labelledby="price-title">
+  <!-- 3. Why we keep it private -->
+  <section class="section" aria-labelledby="secret-title">
+    <div class="container container--narrow">
+      <div class="card secret-card reveal">
+        <p class="kicker">Why the secrecy?</p>
+        <h2 id="secret-title">Whatever works gets copied.</h2>
+        <p class="secret-sub">
+          That is why the Wheel is not explained on any page — it is only shown live.
+          On a 15-minute video call or in person at your shop, you see it the way your
+          customer will: with your name, your colours and your own prizes.
+        </p>
+        <div class="secret-cta">
+          <a class="btn btn--orange" href="/en/contact/">Book to see it live</a>
+          <a class="btn btn--ghost" href="/en/free-assessment/">Free {ELEGXOS.minutes}′ assessment</a>
+        </div>
+        <p class="btn-note">15 minutes is enough to know if it is right for you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Price -->
+  <section class="section section--tight" aria-labelledby="price-title">
     <div class="container container--narrow">
       <div class="card price-card reveal">
         <div class="price-main">
@@ -184,94 +139,63 @@ const faqItems = [
             <span class="price-num num">{eurEn(wheel.price)}</span> per month
           </h2>
           <p class="price-sub">
-            Wheel, prizes, coupons, stats — all included. No contract, no commitment:
+            Everything included — platform, setup, stats. No contract, no commitment:
             stop whenever you want.
           </p>
           <p class="price-sub">
-            Plus the QR stickers, paid once — <strong>from €18 per pack</strong>,
-            with 16 designs for the table, the till, the shopfront and delivery.
+            Plus the QR stickers, one-off — <strong>from €18 per pack</strong>,
+            with 16 designs for tables, tills, windows and delivery.
           </p>
         </div>
         <div class="price-cta">
           <a class="btn btn--orange" href="/en/qr-stickers/">Pick your stickers →</a>
-          <a class="btn btn--ghost" href="/en/free-assessment/">Free {ELEGXOS.minutes}-minute assessment</a>
-          <span class="btn-note">No online payment — we sort it out over the phone.</span>
+          <a class="btn btn--ghost" href="/en/contact/">Ask us anything</a>
+          <span class="btn-note">No online payment — we settle it over the phone.</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 6. FAQ -->
+  <!-- 5. FAQ -->
   <section class="section section--tight" aria-labelledby="faq-title">
     <div class="container">
       <div class="sec-head">
         <p class="kicker">FAQ</p>
-        <h2 id="faq-title">The questions everyone asks.</h2>
+        <h2 id="faq-title">Before you ask, others asked.</h2>
       </div>
       <Faq items={faqItems} withSchema />
     </div>
   </section>
 
-  <!-- 7. CTA -->
+  <!-- 6. CTA -->
   <CtaBand
-    title="Put the Wheel to work for you."
-    sub="Pick your stickers, send us the cart — we'll call you the next business day."
-    ctaText="Start with the stickers"
-    ctaHref="/en/qr-stickers/"
+    title="See the Wheel live."
+    sub="A 15-minute video call or in person at your shop — and you will instantly understand why we don't show it publicly."
+    ctaText="Book the meeting"
+    ctaHref="/en/contact/"
     note="No online payment · no commitment"
   />
 </Base>
 
 <style>
-  /* ---- Βήματα ---- */
-  .steps {
-    list-style: none;
-    padding: 0;
+  /* ---- Secret ---- */
+  .secret-card {
+    text-align: center;
+    padding: clamp(28px, 4.5vw, 52px);
   }
-  .grid-4 {
-    display: grid;
-    gap: 18px;
-    grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
+  .secret-card .kicker { margin-bottom: 14px; }
+  .secret-sub {
+    color: var(--muted);
+    max-width: 52ch;
+    margin: 14px auto 22px;
   }
-  .step { position: relative; }
-  .step-num {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 34px; height: 34px; border-radius: 10px;
-    background: var(--orange-soft); color: var(--orange-text);
-    font-weight: 700; margin-bottom: 14px;
+  .secret-cta {
+    display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+    margin-bottom: 12px;
   }
-  .step h3 { margin-bottom: 6px; }
-  .step p { color: var(--muted); font-size: .95rem; }
+  .secret-card .btn-note { margin: 0; }
 
-  /* ---- Demo ---- */
-  .demo-wrap {
-    display: flex; align-items: center; justify-content: center;
-    gap: clamp(28px, 5vw, 64px); flex-wrap: wrap;
-  }
-  .phone-frame {
-    flex: none;
-    width: min(375px, 92vw);
-    height: min(730px, 82svh);
-    border: 1px solid var(--line-strong);
-    border-radius: 34px;
-    padding: 10px;
-    background: var(--card);
-    box-shadow: var(--shadow);
-  }
-  .phone-frame iframe {
-    width: 100%; height: 100%;
-    border: 0; border-radius: 26px;
-    background: #fdf6ec; /* το cream του demo — να μη «τρεμοπαίξει» σκούρο στο load */
-  }
-  .demo-side {
-    display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
-    max-width: 34ch;
-  }
-  .demo-side > p:first-child { color: var(--muted); font-size: 1.05rem; }
-  .demo-side .btn { width: 100%; text-align: center; }
-  .demo-side .btn-note { align-self: center; }
-
-  /* ---- Τιμή ---- */
+  /* ---- Price ---- */
   .price-card {
     display: grid;
     grid-template-columns: 1.2fr minmax(min(240px, 100%), .8fr);

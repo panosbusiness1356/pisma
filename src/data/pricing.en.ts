@@ -32,7 +32,7 @@ const OPT: Record<string, { label: string; detail?: string }> = {
   'auto-day': { label: 'Your Day in One Message' },
   'auto-debt': { label: 'Automatic Debt Chaser' },
   'auto-spy': { label: 'Your Spy' },
-  'auto-reviews': { label: 'The Review Wheel', detail: 'A QR code in your shop: the customer scans, wins a gift, leaves a Google review' },
+  'auto-reviews': { label: 'The Review Wheel', detail: 'Our tool that makes Google reviews pile up on their own — shown only live' },
   'auto-loyalty': { label: 'Loyalty Card', detail: 'A QR code at the register: customers collect stamps on every visit and win a gift — and they come back' },
   'care-web': { label: 'Website care', detail: 'Updates, security, small changes' },
 };

@@ -85,7 +85,7 @@ export const CATEGORIES: PricingCategory[] = [
       { id: 'auto-day', label: 'Η Ημέρα σου σε Ένα Μήνυμα', price: 10, type: 'monthly' },
       { id: 'auto-debt', label: 'Αυτόματος Κυνηγός Οφειλών', price: 25, type: 'monthly' },
       { id: 'auto-spy', label: 'Ο Κατάσκοπός σου', price: 20, type: 'monthly' },
-      { id: 'auto-reviews', label: 'Ο Τροχός των Κριτικών', detail: 'QR στο μαγαζί: ο πελάτης σκανάρει, κερδίζει δώρο, αφήνει κριτική στο Google', price: 39, type: 'monthly' },
+      { id: 'auto-reviews', label: 'Ο Τροχός των Κριτικών', detail: 'Το εργαλείο μας που κάνει τις κριτικές Google να μαζεύονται μόνες τους — το δείχνουμε μόνο ζωντανά', price: 39, type: 'monthly' },
       { id: 'auto-loyalty', label: 'Κάρτα Πιστότητας', detail: 'QR στο ταμείο: ο πελάτης μαζεύει σφραγίδες σε κάθε επίσκεψη και κερδίζει δώρο — και ξανάρχεται', price: 19, type: 'monthly' },
     ],
   },
