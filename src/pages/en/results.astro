@@ -18,11 +18,11 @@ const schema = {
 /** Οι μετρικές που παρακολουθούμε — trend: up = θέλουμε να ανέβει, down = να πέσει. */
 const metrics = [
   { title: 'Customers from Google & AI', desc: "They find you in search and in ChatGPT's answers — and they call you.", trend: 'up' },
-  { title: 'Search ranking', desc: 'On Google and in the answers of AI tools.', trend: 'up' },
+  { title: 'Search ranking', desc: 'On Google and in AI answers.', trend: 'up' },
   { title: 'Google reviews', desc: 'New reviews coming in, month after month.', trend: 'up' },
-  { title: 'Hours at the office', desc: 'Whatever runs mechanically, automation takes over.', trend: 'down' },
+  { title: 'Hours at the office', desc: 'Anything mechanical gets handed over to automation.', trend: 'down' },
   { title: 'Website visits', desc: 'More people see your work.', trend: 'up' },
-  { title: 'Social media presence', desc: 'Steady posts every week, without your time.', trend: 'up' },
+  { title: 'Social media presence', desc: 'Steady posts every week — none of your time spent.', trend: 'up' },
 ] as const;
 
 const steps = [
@@ -39,7 +39,7 @@ const steps = [
   {
     num: '03',
     title: "If the numbers didn't climb",
-    desc: "We're the first to tell you. And no contract is holding you.",
+    desc: "We'll be the first to tell you — and no contract is keeping you here.",
   },
 ] as const;
 ---
@@ -174,7 +174,7 @@ const steps = [
           <text x="512" y="242" class="rise-label" text-anchor="end">in 6 months</text>
         </svg>
         <p class="rise-final" id="rise-final">
-          <span>And you, with fewer hours at the office ✓</span>
+          <span>And you? Fewer hours at the office ✓</span>
         </p>
       </div>
     </div>

@@ -29,7 +29,7 @@ const questions = [
     opts: [
       { label: 'Nothing of my own', v: '0' },
       { label: 'Only Facebook or Instagram', v: '0.5' },
-      { label: 'A website that has aged', v: '1' },
+      { label: 'An outdated website', v: '1' },
       { label: 'An up-to-date site, great on mobile too', v: '2' },
     ],
   },
@@ -73,8 +73,8 @@ const questions = [
     opts: [
       { label: 'No idea', v: '0' },
       { label: 'I tried it — nothing', v: '0.5' },
-      { label: 'It finds me, with mistakes', v: '1' },
-      { label: 'It recommends me, correctly', v: '2' },
+      { label: 'It finds me, but gets things wrong', v: '1' },
+      { label: 'It recommends me — and gets it right', v: '2' },
     ],
   },
   /* — Αυτοματοποίηση: πώς δουλεύει το γραφείο — */
@@ -119,7 +119,7 @@ const questions = [
       { label: 'No', v: '0' },
       { label: 'Roughly', v: '0.5' },
       { label: 'Yes — I go through it myself every night', v: '1' },
-      { label: 'Yes — a ready-made picture comes to me', v: '2' },
+      { label: 'Yes — a ready-made summary reaches me', v: '2' },
     ],
   },
   {
@@ -209,10 +209,10 @@ const questions = [
                 Build your package →
               </a>
               <a class="btn btn--ghost" href="/en/free-assessment/">
-                Free {ELEGXOS.minutes}′ assessment with us
+                Free {ELEGXOS.minutes}-minute assessment with us
               </a>
             </div>
-            <p class="btn-note result-note">In the assessment we judge together what you really need — no commitment.</p>
+            <p class="btn-note result-note">In the assessment we work out together what you actually need — no commitment.</p>
             <div class="result-actions">
               <button type="button" class="btn btn--ghost btn--sm" id="quiz-copy" aria-live="polite">
                 Copy your results
@@ -344,7 +344,7 @@ const questions = [
         ? 'Most things are still done by hand — or not done at all. Good news: everything you just measured can be fixed.'
         : avg < 70
           ? 'Some things already work — but plenty is still held together by hand and by memory.'
-          : 'Good numbers. The steps you are missing are few and specific.';
+          : "Good numbers. What's missing comes down to a few specific steps.";
     const gap = visibility - automation;
     const focus =
       Math.abs(gap) < 15
@@ -366,7 +366,7 @@ const questions = [
       copyBtn.textContent = 'Copied ✓';
       window.setTimeout(() => { copyBtn.textContent = copyLabel; }, 2000);
     } catch {
-      copyBtn.textContent = 'Copying was not allowed';
+      copyBtn.textContent = "Couldn't copy";
       window.setTimeout(() => { copyBtn.textContent = copyLabel; }, 2000);
     }
   });

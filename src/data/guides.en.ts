@@ -13,7 +13,7 @@ export const GUIDES_EN: GuideMeta[] = [
   {
     slug: 'get-recommended-by-chatgpt',
     q: 'How do you get ChatGPT to recommend you?',
-    blurb: 'Customers now ask AI too — here is what it looks at before it answers.',
+    blurb: "Customers now ask AI too — here's what it looks at before it answers.",
   },
   {
     slug: 'google-maps-profile',
