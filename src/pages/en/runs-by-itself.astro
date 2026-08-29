@@ -137,19 +137,70 @@ const faqItems = [
     </div>
   </section>
 
+  <!-- 2β. «Το ταίριασμα, ζωντανά» — σκηνή σε loop όπως «Η άνοδος στη Google»
+       στην αρχική: το HTML έχει το τελικό state (όλα ταιριασμένα) — χωρίς JS
+       ή με reduced motion μένει στατικό· το JS το «ξαναπαίζει» όσο φαίνεται. -->
+  <section class="section" aria-labelledby="match-title">
+    <div class="container">
+      <div class="sec-head sec-head--center">
+        <p class="kicker kicker--ok">See it live</p>
+        <h2 id="match-title">Every payment finds its invoice</h2>
+        <p>Three payments land in the bank — and match themselves, one by one.</p>
+      </div>
+
+      <div class="mt-stage" id="mt-stage" aria-hidden="true">
+        <div class="mt-fx" id="mt-fx"></div>
+        <div class="mt-panel">
+          <div class="mt-top">
+            <span class="mt-title">Payment matching</span>
+            <span class="mt-left num" id="mt-left">Pending: 0</span>
+          </div>
+          <div class="mt-grid">
+            <div class="mt-col">
+              <p class="mt-col-label">Bank</p>
+              <div class="mt-pay is-done" id="mt-p1"><span>Payment <b class="num">€240</b></span><span class="mt-pay-check">✓</span></div>
+              <div class="mt-pay is-done" id="mt-p2"><span>Payment <b class="num">€85</b></span><span class="mt-pay-check">✓</span></div>
+              <div class="mt-pay is-done" id="mt-p3"><span>Payment <b class="num">€1,020</b></span><span class="mt-pay-check">✓</span></div>
+            </div>
+            <div class="mt-col">
+              <p class="mt-col-label">Invoices</p>
+              <div class="mt-inv is-hit" id="mt-i1">
+                <span>INV-0412 <b class="num">€240</b></span>
+                <span class="mt-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12.5l4.8 4.8L19.5 6.8" /></svg></span>
+                <span class="mt-ring"></span>
+              </div>
+              <div class="mt-inv is-hit" id="mt-i2">
+                <span>INV-0415 <b class="num">€85</b></span>
+                <span class="mt-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12.5l4.8 4.8L19.5 6.8" /></svg></span>
+                <span class="mt-ring"></span>
+              </div>
+              <div class="mt-inv is-hit" id="mt-i3">
+                <span>INV-0418 <b class="num">€1,020</b></span>
+                <span class="mt-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12.5l4.8 4.8L19.5 6.8" /></svg></span>
+                <span class="mt-ring"></span>
+              </div>
+            </div>
+          </div>
+          <p class="mt-win" id="mt-win">All matched — without a single click ✓</p>
+        </div>
+      </div>
+      <p class="mt-note">Illustrative.</p>
+    </div>
+  </section>
+
   <!-- 3. Η μέρα σε αριθμούς — οι τελικοί αριθμοί υπάρχουν στο HTML (fallback
        χωρίς JS)· το JS τους μηδενίζει και τους «μετράει» μία φορά όταν το
        section φανεί. Ίδια νούμερα με το παλιό τερματικό (14/1.230€/3). -->
-  <section class="section" aria-labelledby="live-title">
+  <section class="section section--tight" aria-labelledby="live-title">
     <div class="container">
       <div class="sec-head sec-head--center">
-        <p class="kicker">See it live</p>
+        <p class="kicker">A worked example</p>
         <h2 id="live-title">One day on the system, in numbers.</h2>
         <p>This is what the work nobody did by hand looks like.</p>
       </div>
 
       <div class="pd reveal" id="pd">
-        <p class="pd__eyebrow num" id="pd-date">yesterday</p>
+        <p class="pd__eyebrow num" id="pd-date">a typical day</p>
         <div class="pd__row">
           <div class="pd__cell">
             <p class="pd__value num"><span class="pd__num" data-from="0" data-to="14">14</span></p>
@@ -225,14 +276,6 @@ const faqItems = [
     const pdCells = Array.from(pd.querySelectorAll<HTMLElement>('.pd__cell'));
     const pdNums = Array.from(pd.querySelectorAll<HTMLElement>('.pd__num'));
     const pdReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // «yesterday · August 28» — υπολογίζεται ζωντανά, δεν παγώνει στο build.
-    const dateEl = document.getElementById('pd-date');
-    if (dateEl) {
-      const d = new Date();
-      d.setDate(d.getDate() - 1);
-      dateEl.textContent = 'yesterday · ' + d.toLocaleDateString('en-US', { day: 'numeric', month: 'long' });
-    }
 
     const pdCss = getComputedStyle(pd);
     const cssMs = (name: string, fallback: number) => {

@@ -35,7 +35,8 @@
   --red-deep: #C13A20;
   --red-soft: rgba(255, 92, 65, .13);
   --red-text: #FF9B8A;
-  --grad: linear-gradient(92deg, #FF6A3D 0%, #EE4F27 55%, #D63E1B 100%);
+  /* Στοπ ≥4.5:1 με λευκό κείμενο (WCAG AA) — μην τα ανοίξεις χωρίς νέο έλεγχο αντίθεσης */
+  --grad: linear-gradient(92deg, #CC431C 0%, #BE3A17 55%, #AC3213 100%);
   --grad-text: linear-gradient(92deg, #FF9159 0%, #FF5C2E 100%);
   --r: 16px;
 
