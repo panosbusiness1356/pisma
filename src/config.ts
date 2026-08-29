@@ -34,11 +34,6 @@ export const ELEGXOS = {
 
 /** Οι τιμές ζουν πλέον στο src/data/pricing.ts (κατηγορίες, πακέτα, builder). */
 
-/** Παράμετροι υπολογισμών στο Ταμπλό (quiz) */
-export const QUIZ = {
-  hourRate: 15, // €/ώρα γραφείου
-} as const;
-
 /** Μορφοποίηση ποσών: 1400 → «1.400€» */
 export const eur = (n: number): string =>
   n.toLocaleString('el-GR') + '€';
