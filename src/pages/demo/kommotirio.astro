@@ -2,7 +2,7 @@
 // Demo εργαλείου «Google Reviews στο Αυτόματο» — εικονικό κομμωτήριο «Salon Mirella».
 // Αυτόνομη σελίδα (δεν χρησιμοποιεί το Base layout): προσομοιώνει αυτό που
 // βλέπει ο πελάτης του μαγαζιού όταν σκανάρει το QR στον καθρέφτη/ρεσεψιόν.
-const title = 'Salon Mirella · Κέρδισε το δώρο σου!';
+const title = 'Salon Mirella · Κερδίστε το δώρο σας!';
 ---
 <!doctype html>
 <html lang="el">
@@ -392,8 +392,8 @@ const title = 'Salon Mirella · Κέρδισε το δώρο σου!';
           <rect x="28" y="54" width="10" height="40" rx="5" fill="#fff" opacity=".18"/>
         </svg>
       </div>
-      <h1>Κέρδισε <span class="accent">δώρο</span></h1>
-      <button class="btn" data-next="s-wheel">Παίξε τώρα</button>
+      <h1>Κερδίστε <span class="accent">δώρο</span></h1>
+      <button class="btn" data-next="s-wheel">Παίξτε τώρα</button>
       <div class="steps"><i class="dot on"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
       <div class="powered">Εργαλείο κριτικών από <b>PISMA</b> · σελίδα επίδειξης</div>
     </section>
@@ -409,7 +409,7 @@ const title = 'Salon Mirella · Κέρδισε το δώρο σου!';
         <svg class="wheel" id="wheelSvg" viewBox="0 0 200 200"></svg>
         <div class="hub">✂️</div>
       </div>
-      <button class="btn" id="spinBtn">Γύρνα</button>
+      <button class="btn" id="spinBtn">Γυρίστε τον</button>
       <div class="steps"><i class="dot"></i><i class="dot on"></i><i class="dot"></i><i class="dot"></i></div>
       <div class="powered">Εργαλείο κριτικών από <b>PISMA</b> · σελίδα επίδειξης</div>
     </section>
@@ -420,7 +420,7 @@ const title = 'Salon Mirella · Κέρδισε το δώρο σου!';
         <div class="logo">💇‍♀️</div>
         <div class="name">Salon Mirella</div>
       </div>
-      <h1>Κάνε κριτική για να ξεκλειδώσεις <span class="accent">το δώρο σου</span></h1>
+      <h1>Κάντε κριτική για να ξεκλειδώσετε <span class="accent">το δώρο σας</span></h1>
       <!-- Η Μιρέλλα σερβίρει το κλειδωμένο δώρο μπροστά -->
       <div class="serve-scene" aria-hidden="true">
         <div class="serve-gino"><svg viewBox="0 0 130 175">
@@ -485,7 +485,7 @@ const title = 'Salon Mirella · Κέρδισε το δώρο σου!';
       </div>
       <button class="btn" id="reviewBtn">
         <span class="g-badge"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
-        Άφησε κριτική
+        Αφήστε κριτική
       </button>
       <div class="steps"><i class="dot"></i><i class="dot"></i><i class="dot on"></i><i class="dot"></i></div>
       <button class="skip-link" id="skipBtn">Παράλειψη</button>
@@ -498,7 +498,7 @@ const title = 'Salon Mirella · Κέρδισε το δώρο σου!';
         <div class="logo">💇‍♀️</div>
         <div class="name">Salon Mirella</div>
       </div>
-      <h1>Το δώρο σου είναι <span class="accent">έτοιμο</span>!</h1>
+      <h1>Το δώρο σας είναι <span class="accent">έτοιμο</span>!</h1>
       <div class="coupon">
         <div class="top">
           <div class="c-emoji" id="couponEmoji">💆‍♀️</div>
@@ -507,11 +507,11 @@ const title = 'Salon Mirella · Κέρδισε το δώρο σου!';
         <div class="divider"></div>
         <div class="bottom">
           <div class="code" id="couponCode">SM-XXXXX</div>
-          <div class="hint">Δείξε την οθόνη <b class="mark">στη ρεσεψιόν</b> 👆</div>
+          <div class="hint">Δείξτε την οθόνη <b class="mark">στη ρεσεψιόν</b> 👆</div>
           <div class="expiry" id="couponExpiry"></div>
         </div>
       </div>
-      <p class="sub" style="margin-top:20px" id="thanksLine">Να λάμπεις! ✨</p>
+      <p class="sub" style="margin-top:20px" id="thanksLine">Να λάμπετε! ✨</p>
       <div class="steps"><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot on"></i></div>
       <div class="powered">Εργαλείο κριτικών από <b>PISMA</b> · σελίδα επίδειξης</div>
     </section>
@@ -524,7 +524,7 @@ const title = 'Salon Mirella · Κέρδισε το δώρο σου!';
         <div class="rate-stars" id="rateStars">
           <button data-v="1">★</button><button data-v="2">★</button><button data-v="3">★</button><button data-v="4">★</button><button data-v="5">★</button>
         </div>
-        <textarea id="reviewText" placeholder="Πες μας για την εμπειρία σου (προαιρετικό)…"></textarea>
+        <textarea id="reviewText" placeholder="Πείτε μας για την εμπειρία σας (προαιρετικό)…"></textarea>
         <button class="btn publish" id="publishBtn" disabled>Δημοσίευση</button>
       </div>
     </div>

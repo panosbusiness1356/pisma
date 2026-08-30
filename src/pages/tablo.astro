@@ -6,7 +6,7 @@ import { SITE, ELEGXOS } from '../config';
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'Το Ταμπλό — Μέτρησε την επιχείρησή σου',
+  name: 'Το Ταμπλό — Μετρήστε την επιχείρησή σας',
   url: `${SITE.url}/tablo/`,
   inLanguage: 'el',
   description:
@@ -25,7 +25,7 @@ const questions = [
   {
     key: 'site',
     /* Εργαλείο: Ιστοσελίδα (web-basic/standard/pro) */
-    q: 'Τι βρίσκει όποιος σε ψάξει στο Google;',
+    q: 'Τι βρίσκει όποιος σας ψάξει στο Google;',
     opts: [
       { label: 'Τίποτα δικό μου', v: '0' },
       { label: 'Μόνο Facebook ή Instagram', v: '0.5' },
@@ -47,7 +47,7 @@ const questions = [
   {
     key: 'reviews',
     /* Εργαλείο: Ο Τροχός των Κριτικών (auto-reviews) */
-    q: 'Πόσες κριτικές πήρες τον τελευταίο μήνα;',
+    q: 'Πόσες κριτικές πήρατε τον τελευταίο μήνα;',
     opts: [
       { label: 'Καμία', v: '0' },
       { label: 'Μία-δύο, τυχαία', v: '0.5' },
@@ -58,7 +58,7 @@ const questions = [
   {
     key: 'social',
     /* Εργαλείο: Social media (soc-*) */
-    q: 'Πότε ανέβασες τελευταία φορά στα social;',
+    q: 'Πότε ανεβάσατε τελευταία φορά στα social;',
     opts: [
       { label: 'Δεν έχω λογαριασμούς', v: '0' },
       { label: 'Πάνε μήνες', v: '0.5' },
@@ -69,7 +69,7 @@ const questions = [
   {
     key: 'ai',
     /* Εργαλείο: Ορατότητα σε Google & AI (ai-setup/ai-monthly) */
-    q: 'Το ChatGPT σε προτείνει;',
+    q: 'Το ChatGPT σας προτείνει;',
     opts: [
       { label: 'Δεν έχω ιδέα', v: '0' },
       { label: 'Το δοκίμασα — τίποτα', v: '0.5' },
@@ -92,7 +92,7 @@ const questions = [
   {
     key: 'excel',
     /* Εργαλείο: Οργανωμένο Excel (auto-excel) */
-    q: 'Τον τζίρο του προηγούμενου μήνα — πόσο εύκολα τον βρίσκεις;',
+    q: 'Τον τζίρο του προηγούμενου μήνα — πόσο εύκολα τον βρίσκετε;',
     opts: [
       { label: 'Δύσκολα, θέλει ψάξιμο', v: '0' },
       { label: 'Από σκόρπια αρχεία και χαρτιά', v: '0.5' },
@@ -125,7 +125,7 @@ const questions = [
   {
     key: 'spy',
     /* Εργαλείο: Ο Κατάσκοπός σου (auto-spy) */
-    q: 'Ο ανταγωνισμός έβγαλε προσφορά. Πότε το μαθαίνεις;',
+    q: 'Ο ανταγωνισμός έβγαλε προσφορά. Πότε το μαθαίνετε;',
     opts: [
       { label: 'Μάλλον ποτέ', v: '0' },
       { label: 'Τυχαία, από τρίτους', v: '0.5' },
@@ -137,7 +137,7 @@ const questions = [
 ---
 
 <Base
-  title="Το Ταμπλό — Μέτρησε ορατότητα και αυτοματισμό | PISMA"
+  title="Το Ταμπλό — Μετρήστε ορατότητα και αυτοματισμό | PISMA"
   description="10 γρήγορες ερωτήσεις, χωρίς email: δείτε πόσο εύκολα σας βρίσκουν οι πελάτες και πόσο μόνο του δουλεύει το γραφείο σας — με σκορ στα 100."
   schema={schema}
 >
@@ -206,7 +206,7 @@ const questions = [
             <p class="result-next">Το επόμενο βήμα, όπως το θέλετε εσείς:</p>
             <div class="result-cta result-cta--two">
               <a class="btn btn--orange" href="/times/">
-                Φτιάξε το πακέτο σου →
+                Φτιάξτε το πακέτο σας →
               </a>
               <a class="btn btn--ghost" href="/elegxos/">
                 Δωρεάν αξιολόγηση {ELEGXOS.minutes}′ μαζί μας
@@ -215,10 +215,10 @@ const questions = [
             <p class="btn-note result-note">Στην αξιολόγηση κρίνουμε μαζί τι πραγματικά χρειάζεστε — χωρίς δέσμευση.</p>
             <div class="result-actions">
               <button type="button" class="btn btn--ghost btn--sm" id="quiz-copy" aria-live="polite">
-                Αντίγραψε τα αποτελέσματα
+                Αντιγράψτε τα αποτελέσματα
               </button>
               <button type="button" class="btn btn--ghost btn--sm" id="quiz-restart">
-                ↺ Ξαναπάρε το τεστ
+                ↺ Ξαναπάρτε το τεστ
               </button>
             </div>
             <!-- TODO: μελλοντικό email opt-in («στείλε μου το σκορ») — μπαίνει εδώ, με ρητή συγκατάθεση. -->

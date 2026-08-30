@@ -40,7 +40,7 @@ const schema = {
       <div class="grid-2 contact-grid">
         <!-- Στοιχεία -->
         <div class="card reveal">
-          <h3>Πού θα μας βρεις</h3>
+          <h3>Πού θα μας βρείτε</h3>
           <ul class="c-list">
             <li class="c-item">
               <span class="icon-chip">
@@ -111,7 +111,7 @@ const schema = {
           <input type="hidden" name="_subject" value="Νέο μήνυμα από τη σελίδα Επικοινωνίας — pisma.gr" />
           <input type="hidden" name="_template" value="box" />
           <input type="hidden" name="_captcha" value="false" />
-          <button type="submit" class="btn btn--orange" id="cf-submit">Στείλε το</button>
+          <button type="submit" class="btn btn--orange" id="cf-submit">Στείλτε το</button>
           <p class="feedback" data-feedback role="status" aria-live="polite"></p>
           <!-- Εφέ επιτυχίας: παίρνει τη θέση των πεδίων όταν σταλεί -->
           <div class="form-done">
@@ -168,7 +168,7 @@ const schema = {
         form.classList.add('is-done');
         // Επαναφορά κουμπιού & πεδίων ώστε η φόρμα να είναι έτοιμη για νέα αποστολή
         btn.disabled = false;
-        btn.textContent = 'Στείλε το';
+        btn.textContent = 'Στείλτε το';
         form.reset();
         fb.textContent = '';
         confettiIn(form);
@@ -177,7 +177,7 @@ const schema = {
         setTimeout(() => form.classList.remove('is-done'), 6000);
       } catch {
         btn.disabled = false;
-        btn.textContent = 'Στείλε το';
+        btn.textContent = 'Στείλτε το';
         fb.innerHTML =
           'Κάτι πήγε στραβά. Δοκιμάστε ξανά ή στείλτε μας απευθείας στο ' +
           '<a href="mailto:' + form.dataset.email + '">' + form.dataset.email + '</a>.';

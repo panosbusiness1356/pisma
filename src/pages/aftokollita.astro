@@ -10,7 +10,7 @@ import '../styles/fonts.css'; // self-hosted Commissioner/Unbounded/JetBrains Mo
 
 const title = 'Αυτοκόλλητα QR — Ο Τροχός των Κριτικών | PISMA';
 const description =
-  'Διάλεξε από 16 αυτοκόλλητα QR για τραπέζι, ταμείο, βιτρίνα και delivery — με τα χρώματα και το όνομα του μαγαζιού σου. Καμία πληρωμή online: στέλνεις το καλάθι, σε παίρνουμε τηλέφωνο.';
+  'Διαλέξτε από 16 αυτοκόλλητα QR για τραπέζι, ταμείο, βιτρίνα και delivery — με τα χρώματα και το όνομα του μαγαζιού σας. Καμία πληρωμή online: στέλνετε το καλάθι, σας παίρνουμε τηλέφωνο.';
 const canonical = `${SITE.url}/aftokollita/`;
 ---
 
@@ -266,7 +266,7 @@ input{font-family:inherit}
   <div class="top">
     <a class="logo" href="/"><b>PISMA<i>.</i></b><em>SHOWROOM</em></a>
     <a class="whatlink" href="/kritikes/">Τι είναι ο Τροχός; →</a>
-    <span class="bizwrap"><input class="biz" id="f-biz" value="CAFÉ KYMA" maxlength="22" placeholder="ΤΟ ΜΑΓΑΖΙ ΣΟΥ" aria-label="Όνομα μαγαζιού"></span>
+    <span class="bizwrap"><input class="biz" id="f-biz" value="CAFÉ KYMA" maxlength="22" placeholder="ΤΟ ΜΑΓΑΖΙ ΣΑΣ" aria-label="Όνομα μαγαζιού"></span>
     <button class="cartbtn" id="cartbtn"><span>Καλάθι</span>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h13l-1.5 9h-10L6 7ZM6 7 5 4H3"/><circle cx="9.5" cy="20" r="1.4"/><circle cx="15.5" cy="20" r="1.4"/></svg>
       <i id="cartcount" style="display:none">0</i></button>
@@ -309,11 +309,11 @@ input{font-family:inherit}
 <!-- ============ cart ============ -->
 <div class="ovl" id="ovl"></div>
 <aside class="cart" id="cart" aria-label="Καλάθι">
-  <div class="chead"><h2>Το καλάθι σου</h2><button id="cartclose" aria-label="Κλείσιμο">×</button></div>
+  <div class="chead"><h2>Το καλάθι σας</h2><button id="cartclose" aria-label="Κλείσιμο">×</button></div>
   <div class="cbody">
     <div class="csec"><div id="lines"></div></div>
-    <div class="csec"><h3>Πρόσθεσε</h3><div id="extras"></div>
-      <button class="more" id="showmore">Δες όλα τα έξτρα</button></div>
+    <div class="csec"><h3>Προσθέστε</h3><div id="extras"></div>
+      <button class="more" id="showmore">Δείτε όλα τα έξτρα</button></div>
     <div class="csec">
       <div class="tot"><span>Μία φορά</span><b id="t-once">0 €</b></div>
       <div class="tot sm"><span>Κάθε μήνα</span><b id="t-month">0 €</b></div>
@@ -327,9 +327,9 @@ input{font-family:inherit}
       <input type="email" id="f-mail" placeholder="Email" autocomplete="email">
     </div>
     <input type="text" id="f-hp" class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
-    <button class="send" id="send" disabled>Στείλ' το</button>
-    <p class="senderr" id="senderr">Δεν στάλθηκε — δοκίμασε ξανά ή γράψε μας στο info@pisma.gr</p>
-    <p class="safe">Καμία πληρωμή τώρα · Σε παίρνουμε τηλέφωνο την επόμενη εργάσιμη</p>
+    <button class="send" id="send" disabled>Στείλτε το</button>
+    <p class="senderr" id="senderr">Δεν στάλθηκε — δοκιμάστε ξανά ή γράψτε μας στο info@pisma.gr</p>
+    <p class="safe">Καμία πληρωμή τώρα · Σας παίρνουμε τηλέφωνο την επόμενη εργάσιμη</p>
   </div>
 </aside>
 
@@ -338,7 +338,7 @@ input{font-family:inherit}
   <div class="mcard">
     <div class="tk"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A5D6B8" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg></div>
     <h2>Το λάβαμε.</h2>
-    <p>Θα σε πάρουμε τηλέφωνο την επόμενη εργάσιμη.<br>Κράτα πρόχειρο το λογότυπό σου.</p>
+    <p>Θα σας πάρουμε τηλέφωνο την επόμενη εργάσιμη.<br>Κρατήστε πρόχειρο το λογότυπό σας.</p>
     <div class="rec" id="rec"></div>
     <div class="code" id="code"></div>
     <button class="ghostb" onclick="location.reload()">Κλείσιμο</button>
@@ -386,8 +386,8 @@ const CATS=[['all','Ολα'],['in','Μεσα'],['table','Τραπεζι'],['hand
 const X=[
 {id:'platform',n:'Η πλατφόρμα του Τροχού',pr:PLATFORM_PRICE,per:'month',lock:true,d:'Ο τροχός, τα δώρα, οι κριτικές.'},
 {id:'stand',   n:'Σταντ plexiglass',   pr:6,  per:'once', d:'Βάση για το αυτοκόλλητο τραπεζιού.'},
-{id:'nfc',     n:'NFC αυτοκόλλητα',    pr:45, per:'once', d:'Ακουμπάς το κινητό αντί να σκανάρεις. 10 τεμ.'},
-{id:'logo',    n:'Σχεδιασμός λογοτύπου',pr:120,per:'once',d:'Αν δεν έχεις έτοιμο αρχείο.'},
+{id:'nfc',     n:'NFC αυτοκόλλητα',    pr:45, per:'once', d:'Ακουμπάτε το κινητό αντί να σκανάρετε. 10 τεμ.'},
+{id:'logo',    n:'Σχεδιασμός λογοτύπου',pr:120,per:'once',d:'Αν δεν έχετε έτοιμο αρχείο.'},
 {id:'shop2',   n:'Δεύτερο κατάστημα',  pr:19, per:'month',d:'Ξεχωριστός κωδικός και στατιστικά.'},
 {id:'express', n:'Express εκτύπωση',   pr:25, per:'once', d:'3 εργάσιμες αντί για 7.'}
 ];
@@ -520,7 +520,7 @@ function draw(animate){
   const q=S.cart[f.id]||0;
   $('stgact').innerHTML=q
     ?`<span><span class="stq"><button data-d="-1" aria-label="Λιγότερα">−</button><span>${q}</span><button data-d="1" aria-label="Περισσότερα">+</button></span><span class="inbag">στο καλάθι</span></span>`
-    :`<button class="badd">Πρόσθεσέ το</button>`;
+    :`<button class="badd">Προσθέστε το</button>`;
   $('stgact').querySelectorAll('.stq button').forEach(b=>b.onclick=()=>{
     S.cart[f.id]=Math.max(0,Math.min(20,(S.cart[f.id]||0)+ +b.dataset.d));if(!S.cart[f.id])delete S.cart[f.id];draw()});
   const ba=$('stgact').querySelector('.badd');
@@ -553,7 +553,7 @@ function draw(animate){
       <span class="amt">${t.pr*S.cart[t.id]} €</span>
       <button class="x" aria-label="Αφαίρεση">×</button>
     </div>`).join('')
-    :'<p class="empty">Άδειο ακόμα.<br>Διάλεξε από τη συλλογή και πάτα «Πρόσθεσέ το».</p>';
+    :'<p class="empty">Άδειο ακόμα.<br>Διαλέξτε από τη συλλογή και πατήστε «Προσθέστε το».</p>';
   $('lines').querySelectorAll('.li').forEach(r=>{
     const id=r.dataset.f;
     r.querySelectorAll('.miniq button').forEach(b=>b.onclick=()=>{
@@ -568,7 +568,7 @@ function draw(animate){
       <button class="tgl" data-x="${x.id}" aria-pressed="${on}" ${x.lock?'disabled':''} aria-label="${x.n}"></button></div>`}).join('');
   $('extras').querySelectorAll('.tgl:not([disabled])').forEach(b=>b.onclick=()=>{
     const id=b.dataset.x;if(S.extras[id])delete S.extras[id];else S.extras[id]=1;draw()});
-  $('showmore').textContent=S.showAll?'Λιγότερα':'Δες όλα τα έξτρα';
+  $('showmore').textContent=S.showAll?'Λιγότερα':'Δείτε όλα τα έξτρα';
 
   $('t-once').textContent=once()+' €';
   $('t-month').textContent=month()+' €';
@@ -633,7 +633,7 @@ $('send').onclick=async()=>{
   }catch{
     err.classList.add('on');
   }finally{
-    btn.textContent="Στείλ' το";btn.disabled=!items().length;
+    btn.textContent="Στείλτε το";btn.disabled=!items().length;
   }
 };
 

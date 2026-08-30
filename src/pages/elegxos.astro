@@ -68,7 +68,7 @@ const steps = [
             </svg>
           </span>
           <h3>Τα δύο σκορ</h3>
-          <p>Ορατότητα και Αυτοματισμός, από το 0 έως το 100. Ξέρεις ακριβώς πού στέκεσαι.</p>
+          <p>Ορατότητα και Αυτοματισμός, από το 0 έως το 100. Ξέρετε ακριβώς πού στέκεστε.</p>
         </div>
         <div class="card reveal">
           <span class="icon-chip">
@@ -157,7 +157,7 @@ const steps = [
         <input type="hidden" name="_template" value="box" />
         <input type="hidden" name="_captcha" value="false" />
 
-        <button type="submit" class="btn btn--orange booking-btn" id="booking-btn">Κλείσε τον Έλεγχο</button>
+        <button type="submit" class="btn btn--orange booking-btn" id="booking-btn">Κλείστε τον Έλεγχο</button>
         <span class="btn-note">{ELEGXOS.price} · {ELEGXOS.minutes} λεπτά · χωρίς καμία δέσμευση</span>
 
         <p class="booking-msg" id="booking-msg" role="status" aria-live="polite"></p>
@@ -234,7 +234,7 @@ const steps = [
       if (!res.ok || !json || String(json.success) !== 'true') throw new Error('form failed');
       form.classList.add('is-done');
       btn.disabled = false;
-      btn.textContent = 'Κλείσε τον Έλεγχο';
+      btn.textContent = 'Κλείστε τον Έλεγχο';
       form.reset();
       msg.textContent = '';
       msg.classList.remove('is-error', 'is-ok');
@@ -243,7 +243,7 @@ const steps = [
       setTimeout(() => form.classList.remove('is-done'), 6000);
     } catch {
       btn.disabled = false;
-      btn.textContent = 'Κλείσε τον Έλεγχο';
+      btn.textContent = 'Κλείστε τον Έλεγχο';
       msg.innerHTML =
         'Κάτι πήγε στραβά. Δοκιμάστε ξανά ή στείλτε μας απευθείας στο ' +
         '<a href="mailto:' + form.dataset.email + '">' + form.dataset.email + '</a>.';

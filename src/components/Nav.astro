@@ -10,9 +10,9 @@ const altHref = altOf(Astro.url.pathname);
 const NAV = {
   el: {
     services: [
-      { href: '/se-vriskoun/', label: 'Ψηφιακή Προβολή', desc: 'Να σε βρίσκουν όσοι ψάχνουν' },
-      { href: '/doulevei-mono-tou/', label: 'Αυτοματισμοί γραφείου', desc: 'Λιγότερες ώρες σε μηχανικές δουλειές' },
-      { href: '/kritikes/', label: 'Κριτικές Google', desc: 'Περισσότερες κριτικές από τους πελάτες σου' },
+      { href: '/se-vriskoun/', label: 'Ψηφιακή Προβολή' },
+      { href: '/doulevei-mono-tou/', label: 'Αυτοματισμοί γραφείου' },
+      { href: '/kritikes/', label: 'Κριτικές Google' },
     ],
     links: [
       { href: '/times/', label: 'Τιμές' },
@@ -21,7 +21,7 @@ const NAV = {
     ],
     servicesLabel: 'Υπηρεσίες',
     home: '/',
-    cta: 'Μέτρησε την επιχείρησή σου',
+    cta: 'Μετρήστε την επιχείρησή σας',
     ctaHref: '/tablo/',
     cta2: 'Δωρεάν αξιολόγηση 45′',
     cta2Href: '/elegxos/',
@@ -34,9 +34,9 @@ const NAV = {
   },
   en: {
     services: [
-      { href: '/en/get-found/', label: 'Digital Visibility', desc: 'Get found by people searching' },
-      { href: '/en/runs-by-itself/', label: 'Office automations', desc: 'Fewer hours on mechanical work' },
-      { href: '/en/reviews/', label: 'Google Reviews', desc: 'More reviews from your customers' },
+      { href: '/en/get-found/', label: 'Digital Visibility' },
+      { href: '/en/runs-by-itself/', label: 'Office automations' },
+      { href: '/en/reviews/', label: 'Google Reviews' },
     ],
     links: [
       { href: '/en/pricing/', label: 'Pricing' },
@@ -87,7 +87,6 @@ const inServices = NAV.services.some((s) => path === norm(s.href));
             {NAV.services.map((s) => (
               <a class="sub-item" href={s.href} aria-current={path === norm(s.href) ? 'page' : undefined}>
                 <span class="sub-label">{s.label}</span>
-                <span class="sub-desc">{s.desc}</span>
               </a>
             ))}
           </div>
@@ -291,7 +290,6 @@ const inServices = NAV.services.some((s) => path === norm(s.href));
   }
   .nav-links a.sub-item:hover { background: rgba(255, 255, 255, .05); }
   .sub-label { display: block; font-weight: 600; font-size: .95rem; color: var(--navy); }
-  .sub-desc { display: block; font-weight: 400; font-size: .85rem; color: var(--muted); margin-top: 2px; }
   .nav-links a.sub-item[aria-current='page'] .sub-label {
     text-decoration: underline;
     text-underline-offset: 5px;
@@ -357,7 +355,6 @@ const inServices = NAV.services.some((s) => path === norm(s.href));
     .nav-links a.sub-item:hover { background: none; }
     .sub-label { font-size: 1.05rem; color: var(--muted); }
     .nav-links a.sub-item:hover .sub-label { color: var(--navy); }
-    .sub-desc { display: none; }
     /* Γλώσσα στο mobile μενού: σειρά σαν link, με badge της άλλης γλώσσας. */
     .nav-lang-mobile { display: block; border-top: 1px solid var(--line); margin-top: 6px; }
     .nav-lang-mobile a {
