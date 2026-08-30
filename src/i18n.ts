@@ -13,6 +13,7 @@ export const PAIRS: ReadonlyArray<readonly [string, string]> = [
   ['/doulevei-mono-tou/', '/en/runs-by-itself/'],
   ['/kritikes/', '/en/reviews/'],
   ['/psifiako-menou/', '/en/digital-menu/'],
+  ['/site-kratiseis/', '/en/booking-website/'],
   ['/aftokollita/', '/en/qr-stickers/'],
   ['/tablo/', '/en/business-check/'],
   ['/times/', '/en/pricing/'],

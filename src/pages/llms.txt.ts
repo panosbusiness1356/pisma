@@ -54,6 +54,7 @@ ${GUIDES.map((g) => `- [${g.q}](${SITE.url}/odigoi/${g.slug}/): ${g.blurb}`).joi
 - [Ψηφιακή Προβολή](${SITE.url}/se-vriskoun/): site, ορατότητα σε Google & AI, κριτικές
 - [Αυτοματισμοί γραφείου](${SITE.url}/doulevei-mono-tou/): πληρωμές, εισπράξεις, αναφορές στο αυτόματο
 - [Ψηφιακό Μενού με QR](${SITE.url}/psifiako-menou/): το μενού στο κινητό του πελάτη, αλλαγές χωρίς επανεκτυπώσεις
+- [Site με online κρατήσεις](${SITE.url}/site-kratiseis/): ραντεβού και τραπέζια που κλείνονται online, με αυτόματη υπενθύμιση
 - [Τιμές](${SITE.url}/times/): όλες οι τιμές δημόσια, builder πακέτου
 - [Αποτελέσματα](${SITE.url}/apotelesmata/): πώς μετριέται κάθε συνεργασία
 - [Ο Έλεγχος PISMA](${SITE.url}/elegxos/): δωρεάν αξιολόγηση ${ELEGXOS.minutes} λεπτών
