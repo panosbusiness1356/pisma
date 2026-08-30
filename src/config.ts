@@ -12,32 +12,19 @@ export const SITE = {
   email: 'info@pisma.gr',
   phone: '+30 694 727 1910',
   url: 'https://pisma.gr',
-} as const;
-
-/** Ηλεκτρονική τιμολόγηση — Β' φάση (όλες οι επιχειρήσεις) */
-export const EINVOICE = {
-  deadlineISO: '2026-10-01',
-  deadlineHuman: '1η Οκτωβρίου 2026',
-  deadlineShort: '1/10/2026',
-  earlyBirdISO: '2026-08-03',
-  earlyBirdHuman: '3 Αυγούστου 2026',
-  maxFine: 2500, // €/παράβαση
-  migrationWeeks: '6–10 εβδομάδες',
+  /** Google Analytics 4 Measurement ID (G-XXXXXXXXXX). Κενό = χωρίς GA και χωρίς μπάνερ cookies. */
+  gaId: 'G-HE6GWTRNQM',
 } as const;
 
 /** Ο Έλεγχος PISMA */
 export const ELEGXOS = {
   minutes: 45,
   price: 'Δωρεάν',
+  priceEn: 'Free',
   reportHours: 48,
 } as const;
 
 /** Οι τιμές ζουν πλέον στο src/data/pricing.ts (κατηγορίες, πακέτα, builder). */
-
-/** Παράμετροι υπολογισμών στο Ταμπλό (quiz) */
-export const QUIZ = {
-  hourRate: 15, // €/ώρα γραφείου
-} as const;
 
 /** Μορφοποίηση ποσών: 1400 → «1.400€» */
 export const eur = (n: number): string =>

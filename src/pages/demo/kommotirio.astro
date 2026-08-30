@@ -8,7 +8,7 @@ const title = 'Salon Mirella · Κερδίστε το δώρο σας!';
 <html lang="el">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex" />
   <title>{title}</title>
   <style>
@@ -77,8 +77,12 @@ const title = 'Salon Mirella · Κερδίστε το δώρο σας!';
     }
     .brand .tag { font-size: 12px; color: var(--soft); letter-spacing: 2.5px; text-transform: uppercase; }
 
-    h1 { font-size: 28px; text-align: center; line-height: 1.2; margin-top: 18px; }
-    h1 .accent { color: var(--tomato); }
+    h1, h2 { font-size: 28px; text-align: center; line-height: 1.2; margin-top: 18px; }
+    h1 .accent, h2 .accent { color: var(--tomato); }
+    /* Link επιστροφής — φαίνεται μόνο όταν η σελίδα ΔΕΝ είναι μέσα στο iframe των Κριτικών */
+    .back-site { position: fixed; top: 10px; left: 12px; z-index: 50; font-size: 13px; font-weight: 600;
+      color: #fff; background: rgba(0,0,0,.45); padding: 4px 11px; border-radius: 999px; text-decoration: none; }
+    .back-site:hover { background: rgba(0,0,0,.65); }
     .sub { text-align: center; color: var(--soft); font-size: 15.5px; line-height: 1.5; margin-top: 10px; max-width: 300px; }
 
     .btn {
@@ -372,6 +376,7 @@ const title = 'Salon Mirella · Κερδίστε το δώρο σας!';
   </style>
 </head>
 <body>
+  <a class="back-site" id="backSite" href="/kritikes/" hidden>← pisma.gr</a>
   <div class="phone" id="phone">
 
     <!-- Στάδιο 1 · Καλωσόρισμα (μετά το σκανάρισμα του QR) -->
@@ -420,7 +425,7 @@ const title = 'Salon Mirella · Κερδίστε το δώρο σας!';
         <div class="logo">💇‍♀️</div>
         <div class="name">Salon Mirella</div>
       </div>
-      <h1>Κάντε κριτική για να ξεκλειδώσετε <span class="accent">το δώρο σας</span></h1>
+      <h2>Κάντε κριτική για να ξεκλειδώσετε <span class="accent">το δώρο σας</span></h2>
       <!-- Η Μιρέλλα σερβίρει το κλειδωμένο δώρο μπροστά -->
       <div class="serve-scene" aria-hidden="true">
         <div class="serve-gino"><svg viewBox="0 0 130 175">
@@ -498,7 +503,7 @@ const title = 'Salon Mirella · Κερδίστε το δώρο σας!';
         <div class="logo">💇‍♀️</div>
         <div class="name">Salon Mirella</div>
       </div>
-      <h1>Το δώρο σας είναι <span class="accent">έτοιμο</span>!</h1>
+      <h2>Το δώρο σας είναι <span class="accent">έτοιμο</span>!</h2>
       <div class="coupon">
         <div class="top">
           <div class="c-emoji" id="couponEmoji">💆‍♀️</div>
@@ -522,7 +527,7 @@ const title = 'Salon Mirella · Κερδίστε το δώρο σας!';
         <div class="demo-note">Προσομοίωση · έτσι φαίνεται στο Google</div>
         <div class="place">Salon Mirella<small>Δημοσίευση κριτικής δημόσια</small></div>
         <div class="rate-stars" id="rateStars">
-          <button data-v="1">★</button><button data-v="2">★</button><button data-v="3">★</button><button data-v="4">★</button><button data-v="5">★</button>
+          <button data-v="1" aria-label="1 αστέρι">★</button><button data-v="2" aria-label="2 αστέρια">★</button><button data-v="3" aria-label="3 αστέρια">★</button><button data-v="4" aria-label="4 αστέρια">★</button><button data-v="5" aria-label="5 αστέρια">★</button>
         </div>
         <textarea id="reviewText" placeholder="Πείτε μας για την εμπειρία σας (προαιρετικό)…"></textarea>
         <button class="btn publish" id="publishBtn" disabled>Δημοσίευση</button>
@@ -765,6 +770,9 @@ const title = 'Salon Mirella · Κερδίστε το δώρο σας!';
         setTimeout(() => c.remove(), 4000);
       }
     }
+
+    // Απευθείας επίσκεψη (όχι μέσα στο iframe των Κριτικών): δείξε το link επιστροφής.
+    if (window.self === window.top) document.getElementById('backSite').hidden = false;
   </script>
 </body>
 </html>

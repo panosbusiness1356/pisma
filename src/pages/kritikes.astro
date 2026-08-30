@@ -8,13 +8,15 @@ import { optionById } from '../data/pricing';
 
 // Το προϊόν κριτικών — μία πηγή αλήθειας: pricing.ts.
 // Τιμές αυτοκόλλητων: πίνακας F στο /aftokollita/ (εφάπαξ, από 18 € το πακέτο).
+// ΣΚΟΠΙΜΑ teaser: ο μηχανισμός του Τροχού δεν περιγράφεται πουθενά δημόσια —
+// ούτε βήματα, ούτε demo link. Παρουσιάζεται μόνο ζωντανά, σε ραντεβού.
 const wheel = optionById('auto-reviews')!;
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'Ο Τροχός των Κριτικών',
-  serviceType: 'Αύξηση κριτικών Google με QR στον χώρο της επιχείρησης',
+  name: 'Το Εργαλείο Κριτικών',
+  serviceType: 'Αύξηση κριτικών Google για τοπικές επιχειρήσεις',
   areaServed: SITE.region,
   provider: {
     '@type': 'LocalBusiness',
@@ -30,141 +32,74 @@ const schema = {
     description: `${eur(wheel.price)} τον μήνα, χωρίς δέσμευση — συν αυτοκόλλητα QR εφάπαξ.`,
   },
   description:
-    'Αυτοκόλλητο QR στο τραπέζι ή στο ταμείο: ο πελάτης σκανάρει, γυρνάει τον τροχό, κερδίζει δώρο — και αφήνει κριτική στο Google πριν βγει από την πόρτα.',
+    'Το εργαλείο της PISMA που κάνει τις κριτικές Google να μαζεύονται μόνες τους. Ξεκινά από ένα αυτοκόλλητο QR στον χώρο της επιχείρησης — και παρουσιάζεται μόνο ζωντανά, σε ραντεβού.',
 };
 
-const steps = [
+const what = [
   {
-    t: 'Σκανάρει',
-    d: 'Ο πελάτης βλέπει το αυτοκόλλητο στο τραπέζι, στο ταμείο ή στη σακούλα του delivery. Το σκανάρει με την κάμερα — τίποτα να κατεβάσει, τίποτα να γράψει.',
-  },
-  {
-    t: 'Γυρνάει τον τροχό',
-    d: 'Στο κινητό του ανοίγει ένας τροχός με δώρα. Τον γυρνάει και κερδίζει πάντα κάτι — έκπτωση, κέρασμα, δωράκι. Τα δώρα τα ορίζετε εσείς.',
-  },
-  {
-    t: 'Κερδίζει το κουπόνι',
-    d: 'Το κουπόνι εμφανίζεται στην οθόνη του — το δείχνει στο ταμείο τώρα, ή την επόμενη φορά. Δικό του έτσι κι αλλιώς: ένας λόγος παραπάνω να ξανάρθει.',
-  },
-  {
-    t: 'Αφήνει κριτική',
-    d: 'Τη στιγμή που μόλις κέρδισε, του ζητάμε δυο λόγια στο Google. Ένα tap και η φόρμα της κριτικής είναι ανοιχτή — η σωστή στιγμή, με τον εύκολο τρόπο.',
-  },
-];
-
-const why = [
-  {
-    t: 'Ο πελάτης έχει λόγο να σκανάρει',
-    d: 'Ένα σκέτο «αφήστε μας κριτική» το προσπερνάνε. Έναν τροχό με δώρα, όχι.',
-  },
-  {
-    t: 'Η σωστή στιγμή, κάθε φορά',
-    d: 'Η κριτική ζητιέται όταν ο πελάτης μόλις κέρδισε — όχι μια βδομάδα μετά, με ένα απρόσωπο μήνυμα.',
+    t: 'Ο πελάτης το χαίρεται',
+    d: 'Δεν είναι άλλο ένα «αφήστε μας κριτική» που το προσπερνάνε. Ξεκινά από ένα αυτοκόλλητο στον χώρο σας — στο τραπέζι, στο ταμείο, στη ρεσεψιόν — και γίνεται κάτι που ο πελάτης σας κάνει με χαμόγελο.',
   },
   {
     t: 'Δουλεύει χωρίς εσάς',
-    d: 'Δεν χρειάζεται να θυμάστε να ζητάτε. Το αυτοκόλλητο είναι εκεί κάθε μέρα, για κάθε τραπέζι.',
+    d: 'Δεν χρειάζεται να θυμάστε να ζητάτε. Στήνεται μία φορά και δουλεύει κάθε μέρα, για κάθε πελάτη — εσείς απλώς βλέπετε τις κριτικές να ανεβαίνουν.',
+  },
+  {
+    t: 'Μέσα στους κανόνες της Google',
+    d: 'Καμία αγορασμένη κριτική, καμία στημένη, κανένα αντάλλαγμα. Ήταν η πρώτη προδιαγραφή όταν το σχεδιάζαμε — και στο ραντεβού θα δείτε ακριβώς πώς τηρείται.',
   },
 ];
 
 const faqItems = [
   {
-    q: 'Είναι μέσα στους κανόνες της Google;',
-    a: 'Ναι. Η Google απαγορεύει το αντάλλαγμα για κριτική — και εδώ δεν υπάρχει: το δώρο ο πελάτης το κερδίζει με το σκανάρισμα, είτε γράψει κριτική είτε όχι. Την κριτική τη ζητάμε μετά, ευγενικά και χωρίς όρους. Αγορασμένες ή στημένες κριτικές δεν κάνουμε ποτέ.',
+    q: 'Τι είναι το Εργαλείο Κριτικών;',
+    a: 'Το εργαλείο της PISMA για κριτικές Google: ξεκινά από ένα αυτοκόλλητο QR στον χώρο σου και κάνει τις κριτικές να μαζεύονται μόνες τους — με έναν τρόπο που οι πελάτες σου τον χαίρονται. Το πώς ακριβώς δουλεύει δεν το περιγράφουμε δημόσια· το βλέπεις ζωντανά.',
   },
   {
-    q: 'Τι δώρα κερδίζει ο πελάτης;',
-    a: 'Ό,τι ορίσεις εσύ: έκπτωση, κέρασμα, δωράκι με την επόμενη επίσκεψη. Τα ποσοστά και τα δώρα τα κλείνουμε μαζί στο τηλέφωνο — ένα −40% σε καφέ δεν είναι ίδιο με −40% σε κούρεμα.',
+    q: 'Γιατί δεν δείχνετε πώς δουλεύει;',
+    a: 'Γιατί ό,τι δουλεύει, αντιγράφεται. Το Εργαλείο το δείχνουμε μόνο ζωντανά — σε εσένα, στημένο για το δικό σου μαγαζί, με το όνομα και τα χρώματά σου. Μια βιντεοκλήση 15 λεπτών φτάνει για να καταλάβεις αν σου κάνει.',
+  },
+  {
+    q: 'Είναι μέσα στους κανόνες της Google;',
+    a: 'Ναι, απόλυτα. Η Google απαγορεύει τις αγορασμένες κριτικές, το αντάλλαγμα για κριτική και το φιλτράρισμα — το Εργαλείο δεν κάνει τίποτα από τα τρία. Στο ζωντανό ραντεβού θα δεις ακριβώς πώς το πετυχαίνουμε.',
   },
   {
     q: 'Τι χρειάζομαι για να ξεκινήσω;',
-    a: 'Ένα προφίλ στο Google (αν δεν έχεις, το στήνουμε) και τα αυτοκόλλητα QR. Όλα τα υπόλοιπα — τροχός, δώρα, κουπόνια — τα στήνουμε εμείς. Εσύ κολλάς τα αυτοκόλλητα.',
+    a: 'Ένα προφίλ στο Google (αν δεν έχεις, το στήνουμε) και τα αυτοκόλλητα QR. Όλα τα υπόλοιπα τα στήνουμε εμείς — εσύ κολλάς τα αυτοκόλλητα.',
   },
   {
     q: 'Πόσο κοστίζει;',
-    a: `${eur(wheel.price)} τον μήνα για την πλατφόρμα — τροχός, δώρα, κουπόνια — χωρίς συμβόλαιο και χωρίς δέσμευση. Τα αυτοκόλλητα QR πληρώνονται μία φορά, από 18€ το πακέτο.`,
+    a: `${eur(wheel.price)} τον μήνα για την πλατφόρμα — χωρίς συμβόλαιο και χωρίς δέσμευση. Τα αυτοκόλλητα QR πληρώνονται μία φορά, από 18€ το πακέτο.`,
   },
   {
     q: 'Δουλεύει και για delivery;',
-    a: 'Ναι — υπάρχουν αυτοκόλλητα για τη σακούλα και την απόδειξη. Ο πελάτης σκανάρει από το σπίτι του, το κουπόνι τον φέρνει στην επόμενη παραγγελία.',
+    a: 'Ναι — υπάρχουν αυτοκόλλητα για τη σακούλα και την απόδειξη, και το Εργαλείο δουλεύει το ίδιο καλά κι από το σπίτι του πελάτη.',
   },
 ];
 ---
 
 <Base
-  title="Ο Τροχός των Κριτικών — Περισσότερες κριτικές Google | PISMA"
-  description="QR στο τραπέζι: ο πελάτης σκανάρει, γυρνάει τον τροχό, κερδίζει δώρο — και αφήνει κριτική στο Google. Δείτε το ζωντανό demo. Χωρίς δέσμευση."
+  title="Το Εργαλείο Κριτικών — Περισσότερες κριτικές Google | PISMA"
+  description="Το εργαλείο της PISMA που κάνει τις κριτικές Google να μαζεύονται μόνες τους. Δεν το δείχνουμε δημόσια — κλείστε να το δείτε ζωντανά. Χωρίς δέσμευση."
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
-    kicker="Ο Τροχός των Κριτικών"
-    sub="Ένα αυτοκόλλητο QR στο τραπέζι. Ο πελάτης σκανάρει, κερδίζει ένα δώρο — και αφήνει κριτική στο Google πριν βγει από την πόρτα."
+    kicker="Το Εργαλείο Κριτικών"
+    sub="Το εργαλείο που κάνει τους πελάτες σου να θέλουν να αφήσουν κριτική στο Google — και να το χαίρονται κιόλας. Το πώς; Αυτό δεν το δείχνουμε δημόσια."
   >
     Κριτικές που μαζεύονται <span class="accent">μόνες τους</span>
   </PageHero>
 
-  <!-- 2. Πώς δουλεύει -->
-  <section class="section section--tight" aria-labelledby="how-title">
+  <!-- 2. Τι κάνει (αποτέλεσμα, όχι μηχανισμός) -->
+  <section class="section section--tight" aria-labelledby="what-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">Πώς δουλεύει</p>
-        <h2 id="how-title">Τέσσερα βήματα — όλα από τον πελάτη σας.</h2>
-      </div>
-      <ol class="steps grid-4">
-        {steps.map((s, i) => (
-          <li class="card step reveal">
-            <span class="step-num num">{i + 1}</span>
-            <h3>{s.t}</h3>
-            <p>{s.d}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!-- 3. Ζωντανό demo -->
-  <section class="section" aria-labelledby="demo-title">
-    <div class="container">
-      <div class="sec-head sec-head--center">
-        <p class="kicker">Δοκιμάστε το τώρα</p>
-        <h2 id="demo-title">Αυτό βλέπει ο πελάτης σας</h2>
-        <p>Ζωντανό demo σε εικονική πιτσαρία — σκανάρετε νοερά και γυρίστε τον τροχό.</p>
-      </div>
-      <div class="demo-wrap reveal">
-        <div class="phone-frame">
-          <iframe
-            src="/demo/pitsaria/"
-            title="Ζωντανό demo: ο Τροχός των Κριτικών σε εικονική πιτσαρία"
-            loading="lazy"
-          ></iframe>
-        </div>
-        <div class="demo-side">
-          <p>
-            Ό,τι βλέπετε εδώ είναι το πραγματικό εργαλείο — με το δικό σας λογότυπο,
-            τα δικά σας χρώματα και τα δικά σας δώρα.
-          </p>
-          <a class="btn btn--orange" href="/demo/pitsaria/" target="_blank" rel="noopener">
-            Ανοίξτε το σε πλήρη οθόνη
-          </a>
-          <a class="btn btn--ghost" href="/demo/kommotirio/" target="_blank" rel="noopener">
-            Δείτε και το demo κομμωτηρίου
-          </a>
-          <p class="btn-note">Είναι demo — καμία πραγματική κριτική δεν στέλνεται.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 4. Γιατί δουλεύει -->
-  <section class="section section--tight" aria-labelledby="why-title">
-    <div class="container">
-      <div class="sec-head">
-        <p class="kicker">Γιατί δουλεύει</p>
-        <h2 id="why-title">Οι κριτικές θέλουν αφορμή — όχι παρακάλια.</h2>
+        <p class="kicker">Τι κάνει</p>
+        <h2 id="what-title">Το αποτέλεσμα το βλέπετε. Τον μηχανισμό, μόνο από κοντά.</h2>
       </div>
       <div class="grid-3">
-        {why.map((w) => (
+        {what.map((w) => (
           <article class="card reveal">
             <h3>{w.t}</h3>
             <p>{w.d}</p>
@@ -174,8 +109,28 @@ const faqItems = [
     </div>
   </section>
 
-  <!-- 5. Τιμή -->
-  <section class="section" aria-labelledby="price-title">
+  <!-- 3. Γιατί δεν το δείχνουμε -->
+  <section class="section" aria-labelledby="secret-title">
+    <div class="container container--narrow">
+      <div class="card secret-card reveal">
+        <p class="kicker">Γιατί δεν το δείχνουμε;</p>
+        <h2 id="secret-title">Ό,τι δουλεύει, αντιγράφεται.</h2>
+        <p class="secret-sub">
+          Γι’ αυτό το Εργαλείο δεν εξηγείται σε καμία σελίδα — παρουσιάζεται μόνο ζωντανά.
+          Σε μια βιντεοκλήση 15 λεπτών ή από κοντά στο μαγαζί σου, το βλέπεις όπως θα
+          το βλέπει ο πελάτης σου — στημένο με το όνομα και τα χρώματα του μαγαζιού σου.
+        </p>
+        <div class="secret-cta">
+          <a class="btn btn--orange" href="/epikoinonia/">Κλείσε να το δεις ζωντανά</a>
+          <a class="btn btn--ghost" href="/elegxos/">Δωρεάν αξιολόγηση {ELEGXOS.minutes}′</a>
+        </div>
+        <p class="btn-note">15 λεπτά φτάνουν για να καταλάβεις αν σου κάνει.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Τιμή -->
+  <section class="section section--tight" aria-labelledby="price-title">
     <div class="container container--narrow">
       <div class="card price-card reveal">
         <div class="price-main">
@@ -184,7 +139,7 @@ const faqItems = [
             <span class="price-num num">{eur(wheel.price)}</span> τον μήνα
           </h2>
           <p class="price-sub">
-            Τροχός, δώρα, κουπόνια, στατιστικά — όλα μέσα. Χωρίς συμβόλαιο, χωρίς δέσμευση:
+            Όλα μέσα — πλατφόρμα, στήσιμο, στατιστικά. Χωρίς συμβόλαιο, χωρίς δέσμευση:
             σταματάτε όποτε θέλετε.
           </p>
           <p class="price-sub">
@@ -194,14 +149,14 @@ const faqItems = [
         </div>
         <div class="price-cta">
           <a class="btn btn--orange" href="/aftokollita/">Διαλέξτε τα αυτοκόλλητά σας →</a>
-          <a class="btn btn--ghost" href="/elegxos/">Δωρεάν αξιολόγηση {ELEGXOS.minutes}′</a>
+          <a class="btn btn--ghost" href="/epikoinonia/">Ρωτήστε μας ό,τι θέλετε</a>
           <span class="btn-note">Καμία πληρωμή online — το κλείνουμε στο τηλέφωνο.</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 6. FAQ -->
+  <!-- 5. FAQ -->
   <section class="section section--tight" aria-labelledby="faq-title">
     <div class="container">
       <div class="sec-head">
@@ -212,64 +167,33 @@ const faqItems = [
     </div>
   </section>
 
-  <!-- 7. CTA -->
+  <!-- 6. CTA -->
   <CtaBand
-    title="Βάλτε τον Τροχό να δουλεύει για εσάς."
-    sub="Διαλέξτε αυτοκόλλητα, στείλτε το καλάθι — σας παίρνουμε τηλέφωνο την επόμενη εργάσιμη."
-    ctaText="Ξεκινήστε με τα αυτοκόλλητα"
-    ctaHref="/aftokollita/"
+    title="Δείτε το Εργαλείο ζωντανά."
+    sub="Μια βιντεοκλήση 15 λεπτών ή από κοντά στο μαγαζί σας — και καταλαβαίνετε αμέσως γιατί δεν το δείχνουμε δημόσια."
+    ctaText="Κλείστε το ραντεβού"
+    ctaHref="/epikoinonia/"
     note="Καμία πληρωμή online · χωρίς δέσμευση"
   />
 </Base>
 
 <style>
-  /* ---- Βήματα ---- */
-  .steps {
-    list-style: none;
-    padding: 0;
+  /* ---- Μυστικό ---- */
+  .secret-card {
+    text-align: center;
+    padding: clamp(28px, 4.5vw, 52px);
   }
-  .grid-4 {
-    display: grid;
-    gap: 18px;
-    grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
+  .secret-card .kicker { margin-bottom: 14px; }
+  .secret-sub {
+    color: var(--muted);
+    max-width: 52ch;
+    margin: 14px auto 22px;
   }
-  .step { position: relative; }
-  .step-num {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 34px; height: 34px; border-radius: 10px;
-    background: var(--orange-soft); color: var(--orange-text);
-    font-weight: 700; margin-bottom: 14px;
+  .secret-cta {
+    display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+    margin-bottom: 12px;
   }
-  .step h3 { margin-bottom: 6px; }
-  .step p { color: var(--muted); font-size: .95rem; }
-
-  /* ---- Demo ---- */
-  .demo-wrap {
-    display: flex; align-items: center; justify-content: center;
-    gap: clamp(28px, 5vw, 64px); flex-wrap: wrap;
-  }
-  .phone-frame {
-    flex: none;
-    width: min(375px, 92vw);
-    height: min(730px, 82svh);
-    border: 1px solid var(--line-strong);
-    border-radius: 34px;
-    padding: 10px;
-    background: var(--card);
-    box-shadow: var(--shadow);
-  }
-  .phone-frame iframe {
-    width: 100%; height: 100%;
-    border: 0; border-radius: 26px;
-    background: #fdf6ec; /* το cream του demo — να μη «τρεμοπαίξει» σκούρο στο load */
-  }
-  .demo-side {
-    display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
-    max-width: 34ch;
-  }
-  .demo-side > p:first-child { color: var(--muted); font-size: 1.05rem; }
-  .demo-side .btn { width: 100%; text-align: center; }
-  .demo-side .btn-note { align-self: center; }
+  .secret-card .btn-note { margin: 0; }
 
   /* ---- Τιμή ---- */
   .price-card {

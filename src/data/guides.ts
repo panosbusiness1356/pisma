@@ -1,6 +1,7 @@
 /**
  * Ευρετήριο οδηγών — μία πηγή για /odigoi/, /llms.txt και ό,τι άλλο τους λιστάρει.
- * Νέος οδηγός = νέα γραμμή εδώ + αρχείο στο src/pages/odigoi/ + γραμμή στο sitemap.
+ * Νέος οδηγός = νέα γραμμή εδώ + αρχείο στο src/pages/odigoi/ + γραμμή στο PAIRS (i18n.ts)
+ * — το sitemap.xml παράγεται αυτόματα από το PAIRS, δεν θέλει χειροκίνητη ενημέρωση.
  */
 export interface GuideMeta {
   slug: string;

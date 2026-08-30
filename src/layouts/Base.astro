@@ -4,6 +4,7 @@ import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Mascot from '../components/Mascot.astro';
+import Consent from '../components/Consent.astro';
 import { SITE } from '../config';
 import { langOf, PAIRS } from '../i18n';
 
@@ -14,9 +15,11 @@ interface Props {
   schema?: object | object[];
   /** Προαιρετική εικόνα κοινοποίησης (π.χ. campaign visual) — default το /og.png */
   image?: string;
+  /** Σελίδες εκτός αναζήτησης (π.χ. 404): noindex + χωρίς canonical */
+  noindex?: boolean;
 }
 
-const { title, description, schema, image = '/og.png' } = Astro.props;
+const { title, description, schema, image = '/og.png', noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).href;
 const ogImage = new URL(image, Astro.site ?? SITE.url).href;
 
@@ -44,7 +47,7 @@ const schemas = [siteSchema, ...(schema ? (Array.isArray(schema) ? schema : [sch
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     {pair && (
       <>
         <link rel="alternate" hreflang="el" href={new URL(pair[0], SITE.url).href} />
@@ -52,7 +55,10 @@ const schemas = [siteSchema, ...(schema ? (Array.isArray(schema) ? schema : [sch
         <link rel="alternate" hreflang="x-default" href={new URL(pair[0], SITE.url).href} />
       </>
     )}
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0D0A14" />
 
     <meta property="og:title" content={title} />
@@ -73,6 +79,9 @@ const schemas = [siteSchema, ...(schema ? (Array.isArray(schema) ? schema : [sch
     <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/inter-var-greek.woff2" as="font" type="font/woff2" crossorigin />
 
+    <!-- Χωρίς JS το IntersectionObserver δεν τρέχει ποτέ — δείξε τα .reveal κανονικά. -->
+    <noscript><style is:inline>.reveal{opacity:1;transform:none;filter:none}</style></noscript>
+
     {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
   </head>
   <body>
@@ -83,6 +92,7 @@ const schemas = [siteSchema, ...(schema ? (Array.isArray(schema) ? schema : [sch
     </main>
     <Footer />
     <Mascot />
+    <Consent />
 
     <script>
       // Smooth scroll με αδράνεια (Lenis) — ίδιο σύστημα με τα σύγχρονα studio sites.

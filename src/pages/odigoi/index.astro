@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import { SITE } from '../../config';
+import { SITE, ELEGXOS } from '../../config';
 import { GUIDES as guides } from '../../data/guides';
 
 const schema = {
@@ -54,10 +54,10 @@ const schema = {
 
   <CtaBand
     title="Προτιμάτε να τα δούμε μαζί;"
-    sub="Ο Έλεγχος PISMA: 45 λεπτά, μετράμε πού στέκεστε σε Google, AI και καθημερινή λειτουργία."
+    sub={`Ο Έλεγχος PISMA: ${ELEGXOS.minutes} λεπτά, μετράμε πού στέκεστε σε Google, AI και καθημερινή λειτουργία.`}
     ctaText="Κλείστε τον δωρεάν Έλεγχο"
     ctaHref="/elegxos/"
-    note="Δωρεάν · χωρίς καμία δέσμευση"
+    note={`${ELEGXOS.price} · χωρίς καμία δέσμευση`}
   />
 </Base>
 

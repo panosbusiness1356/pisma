@@ -1,0 +1,660 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, ELEGXOS, eur } from '../config';
+import { optionById } from '../data/pricing';
+
+// Μία πηγή αλήθειας για την τιμή: pricing.ts (auto-menu).
+const menu = optionById('auto-menu')!;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Ψηφιακό Μενού με QR',
+  serviceType: 'Ψηφιακό μενού εστίασης με κωδικό QR',
+  areaServed: SITE.region,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: SITE.name,
+    email: SITE.email,
+    telephone: SITE.phone,
+    url: SITE.url,
+  },
+  offers: {
+    '@type': 'Offer',
+    price: menu.price,
+    priceCurrency: 'EUR',
+    description: `${eur(menu.price)} τον μήνα, χωρίς δέσμευση.`,
+  },
+  description:
+    'QR στο τραπέζι: ο πελάτης σκανάρει και βλέπει το μενού στο κινητό του. Αλλάζετε τιμές και πιάτα όποτε θέλετε — χωρίς επανεκτυπώσεις.',
+};
+
+const why = [
+  {
+    t: 'Πάντα ενημερωμένο',
+    d: 'Άλλαξε τιμή, κρύψε πιάτο που τελείωσε, πρόσθεσε το πιάτο ημέρας — η αλλαγή φαίνεται αμέσως σε κάθε τραπέζι.',
+    icon: 'fresh',
+  },
+  {
+    t: 'Τέλος οι επανεκτυπώσεις',
+    d: 'Κάθε αλλαγή στο χάρτινο μενού σημαίνει τυπογραφείο, κόστος, αναμονή. Εδώ σημαίνει ένα μήνυμα.',
+    icon: 'print',
+  },
+  {
+    t: 'Τίποτα να κατεβάσει ο πελάτης',
+    d: 'Σκανάρει με την κάμερα και το μενού ανοίγει στον browser. Καμία εφαρμογή, κανένας λογαριασμός.',
+    icon: 'phone',
+  },
+];
+
+const faqItems = [
+  {
+    q: 'Πόσο γρήγορα αλλάζει μια τιμή ή ένα πιάτο;',
+    a: 'Αμέσως. Οι αλλαγές γίνονται online και εμφανίζονται σε όλα τα τραπέζια τη στιγμή που αποθηκεύονται — καμία επανεκτύπωση, καμία αναμονή.',
+  },
+  {
+    q: 'Χρειάζεται ο πελάτης κάποια εφαρμογή;',
+    a: 'Όχι. Σκανάρει το QR με την κάμερα του κινητού του και το μενού ανοίγει στον browser — όπως μια κανονική σελίδα.',
+  },
+  {
+    q: 'Τι χρειάζομαι για να ξεκινήσω;',
+    a: 'Το μενού σας — και φωτογραφίες, αν θέλετε να φαίνονται τα πιάτα. Εμείς το στήνουμε με τα χρώματα και το λογότυπό σας· εσείς κολλάτε το QR στα τραπέζια.',
+  },
+  {
+    q: 'Πόσο κοστίζει;',
+    a: `${eur(menu.price)} τον μήνα, χωρίς συμβόλαιο και χωρίς δέσμευση — σταματάτε όποτε θέλετε. Οι αλλαγές σε τιμές και πιάτα περιλαμβάνονται.`,
+  },
+  {
+    q: 'Δουλεύει και για delivery ή βιτρίνα;',
+    a: 'Ναι — το ίδιο μενού ανοίγει από QR στη βιτρίνα, στη σακούλα του delivery ή από link στα social σας. Ένα μενού, παντού το ίδιο, πάντα φρέσκο.',
+  },
+];
+---
+
+<Base
+  title="Ψηφιακό Μενού με QR — χωρίς επανεκτυπώσεις | PISMA"
+  description="QR στο τραπέζι: ο πελάτης σκανάρει και βλέπει το μενού στο κινητό του. Αλλάζετε τιμές και πιάτα όποτε θέλετε — χωρίς επανεκτυπώσεις. Δες το ζωντανά."
+  schema={schema}
+>
+  <!-- 1. Hero -->
+  <PageHero
+    kicker="Ψηφιακό Μενού με QR"
+    sub="Ένα QR στο τραπέζι. Ο πελάτης σκανάρει, το μενού ανοίγει στο κινητό του — και κάθε αλλαγή σας φαίνεται αμέσως, χωρίς τυπογραφείο."
+  >
+    Το μενού σας, <span class="accent">στο κινητό του πελάτη</span>
+  </PageHero>
+
+  <!-- 2. «Δείτε το ζωντανά» — σκηνή σε loop όπως «Η άνοδος στη Google» στην
+       αρχική: το HTML έχει το τελικό state (μενού ανοιχτό, τιμή ενημερωμένη)
+       — χωρίς JS ή με reduced motion μένει στατικό· το JS το «ξαναπαίζει»
+       όσο το section είναι ορατό. -->
+  <section class="section section--tight" aria-labelledby="live-title">
+    <div class="container">
+      <div class="dm-grid">
+        <div class="dm-copy">
+          <div class="sec-head">
+            <p class="kicker">Δείτε το ζωντανά</p>
+            <h2 id="live-title">Σκανάρει, βλέπει, παραγγέλνει</h2>
+          </div>
+          <p class="dm-sub">
+            Έτσι το ζει ο πελάτης σας: το QR ανοίγει το μενού στο κινητό του.
+            Κι όταν αλλάξετε μια τιμή, την επόμενη στιγμή τη βλέπει κάθε τραπέζι.
+          </p>
+          <div class="dm-cta">
+            <a class="btn btn--orange" href="/times/">Πρόσθεσέ το στο πακέτο σου →</a>
+          </div>
+          <p class="dm-note">Ενδεικτική απεικόνιση — το δικό σας μενού στήνεται με τα χρώματα και τα πιάτα σας.</p>
+        </div>
+
+        <div class="dm-stage" id="dm-stage" aria-hidden="true">
+          <div class="dm-phone">
+            <div class="dm-screen">
+              <div class="dm-status">
+                <span class="dm-time num">9:41</span>
+                <span class="dm-island"></span>
+                <span class="dm-sicons">
+                  <svg class="di-signal" viewBox="0 0 18 12" aria-hidden="true"><rect x="0" y="7.5" width="3.2" height="4.5" rx="1"/><rect x="4.9" y="5.3" width="3.2" height="6.7" rx="1"/><rect x="9.8" y="2.8" width="3.2" height="9.2" rx="1"/><rect x="14.7" y="0" width="3.2" height="12" rx="1"/></svg>
+                  <svg class="di-wifi" viewBox="0 0 16 12" aria-hidden="true"><path d="M2.5 5.5 A7.8 7.8 0 0 1 13.5 5.5" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M4.75 8.05 A4.6 4.6 0 0 1 11.25 8.05" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><circle cx="8" cy="10.6" r="1.5"/></svg>
+                  <svg class="di-batt" viewBox="0 0 27 13" aria-hidden="true"><rect x="0.6" y="0.6" width="22.3" height="11.8" rx="3.8" fill="none" stroke="currentColor" stroke-width="1.1" opacity=".35"/><rect x="2.4" y="2.4" width="18.7" height="8.2" rx="2.2"/><path d="M24.8 4.4 v4.2 a2.15 2.15 0 0 0 0 -4.2 z" opacity=".4"/></svg>
+                </span>
+              </div>
+
+              <div class="dm-app">
+                <p class="dm-url is-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="10.5" width="14" height="9.5" rx="2.5"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/></svg>menu-gonia.gr</p>
+                <div class="dm-hero is-in">
+                  <span class="dm-hero-art" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.2 5.6 12 21 19.8 5.6" /><path d="M4.2 5.6a15 15 0 0 1 15.6 0" /><circle cx="10" cy="9.4" r="1.5" /><circle cx="14.4" cy="11.6" r="1.5" /><circle cx="11.6" cy="14.8" r="1.5" /></svg></span>
+                  <p class="dm-hero-name">Πιτσαρία «Η Γωνιά»</p>
+                  <p class="dm-hero-sub">Ξυλόφουρνος · τραπέζι 12</p>
+                  <p class="dm-hero-meta" aria-hidden="true"><span>★ 4,9</span><span>25–35′</span><span>Ανοιχτά τώρα</span></p>
+                </div>
+                <div class="dm-pills is-in" aria-hidden="true">
+                  <span class="is-on">Πίτσες</span><span>Σαλάτες</span><span>Ποτά</span><span>Γλυκά</span>
+                </div>
+                <div class="dm-row is-in is-hot" id="dm-hot">
+                  <span class="dm-tile" aria-hidden="true"><img src="/menu-demo/margarita.jpg" alt="" loading="lazy" width="42" height="42" /></span>
+                  <span class="dm-info"><b>Μαργαρίτα <em class="dm-pop">Δημοφιλές</em></b><i>σάλτσα, μοτσαρέλα, βασιλικός</i></span>
+                  <b class="dm-price num" id="dm-price">8,90€</b>
+                  <span class="dm-ring" id="dm-ring"></span>
+                </div>
+                <div class="dm-row is-in">
+                  <span class="dm-tile" aria-hidden="true"><img src="/menu-demo/diavola.jpg" alt="" loading="lazy" width="42" height="42" /></span>
+                  <span class="dm-info"><b>Ντιάβολα</b><i>πικάντικο σαλάμι, καυτερό λάδι</i></span>
+                  <b class="dm-price num">10,20€</b>
+                </div>
+                <div class="dm-row is-in">
+                  <span class="dm-tile" aria-hidden="true"><img src="/menu-demo/choriatiki.jpg" alt="" loading="lazy" width="42" height="42" /></span>
+                  <span class="dm-info"><b>Χωριάτικη</b><i>ντομάτα, φέτα, ελιές</i></span>
+                  <b class="dm-price num">6,80€</b>
+                </div>
+                <div class="dm-row is-in">
+                  <span class="dm-tile" aria-hidden="true"><img src="/menu-demo/lemonada.jpg" alt="" loading="lazy" width="42" height="42" /></span>
+                  <span class="dm-info"><b>Σπιτική λεμονάδα</b><i>φρέσκο λεμόνι, δυόσμος</i></span>
+                  <b class="dm-price num">3,50€</b>
+                </div>
+                <span class="dm-order is-in" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9.8a6 6 0 0 1 12 0c0 4.8 1.7 6 1.7 6H4.3S6 14.6 6 9.8" /><path d="M10.1 19a2.1 2.1 0 0 0 3.8 0" /></svg>Παραγγελία στο τραπέζι</span>
+              </div>
+
+              <!-- Κάμερα iPhone: φαίνεται μόνο στην αρχή κάθε κύκλου (JS) —
+                   το «τραπέζι» με το αυτοκόλλητο QR, η κίτρινη αναγνώριση
+                   της iOS και το banner ανοίγματος. -->
+              <div class="dm-cam" id="dm-cam">
+                <span class="dm-cam-island" aria-hidden="true"></span>
+                <div class="dm-cam-view">
+                  <svg class="dm-cam-flash" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13 2.5 4.5 13.5h6l-1 8L19.5 10.5h-6z"/></svg>
+                  <div class="dm-sticker">
+                    <svg viewBox="0 0 100 100" aria-hidden="true">
+                      <rect x="6" y="6" width="26" height="26" rx="3" fill="none" stroke="currentColor" stroke-width="6"/><rect x="14" y="14" width="10" height="10"/>
+                      <rect x="68" y="6" width="26" height="26" rx="3" fill="none" stroke="currentColor" stroke-width="6"/><rect x="76" y="14" width="10" height="10"/>
+                      <rect x="6" y="68" width="26" height="26" rx="3" fill="none" stroke="currentColor" stroke-width="6"/><rect x="14" y="76" width="10" height="10"/>
+                      <rect x="42" y="8" width="8" height="8"/><rect x="54" y="18" width="8" height="8"/><rect x="42" y="30" width="8" height="8"/>
+                      <rect x="8" y="42" width="8" height="8"/><rect x="22" y="50" width="8" height="8"/><rect x="38" y="44" width="10" height="10"/>
+                      <rect x="56" y="42" width="8" height="8"/><rect x="70" y="48" width="8" height="8"/><rect x="84" y="42" width="8" height="8"/>
+                      <rect x="44" y="60" width="8" height="8"/><rect x="58" y="66" width="10" height="10"/><rect x="76" y="62" width="8" height="8"/>
+                      <rect x="42" y="82" width="8" height="8"/><rect x="56" y="88" width="8" height="8"/><rect x="72" y="80" width="10" height="10"/>
+                    </svg>
+                    <span>ΜΕΝΟΥ</span>
+                  </div>
+                  <span class="dm-corners" id="dm-corners" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                  <span class="dm-camchip" id="dm-camchip">menu-gonia.gr — Άνοιγμα</span>
+                </div>
+                <div class="dm-cam-ui" aria-hidden="true">
+                  <span class="dm-cam-modes">
+                    <span class="dm-cam-mode">ΒΙΝΤΕΟ</span>
+                    <span class="dm-cam-mode dm-cam-mode--on">ΦΩΤΟ</span>
+                    <span class="dm-cam-mode">ΠΑΝΟ</span>
+                  </span>
+                  <span class="dm-shutter"></span>
+                </div>
+              </div>
+
+              <span class="dm-homebar"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Τι κερδίζεις -->
+  <section class="section" aria-labelledby="why-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker kicker--blue">Τι κερδίζεις</p>
+        <h2 id="why-title">Ένα μενού που δεν παλιώνει ποτέ.</h2>
+      </div>
+      <div class="grid-3">
+        {why.map((w) => (
+          <article class="card reveal">
+            <span class="icon-chip">
+              {w.icon === 'fresh' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 11.5A8.3 8.3 0 1 1 12 3.5" /><path d="M20 4v4.5h-4.5" /><path d="M20 4l-3.2 3.2" />
+                </svg>
+              )}
+              {w.icon === 'print' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M7 8V3.5h10V8" /><rect x="4" y="8" width="16" height="8.5" rx="2" /><path d="M7 13h10v7H7z" /><path d="M4 4l16 16" />
+                </svg>
+              )}
+              {w.icon === 'phone' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="7" y="3" width="10" height="18" rx="2.5" /><path d="M10.5 18.5h3" />
+                </svg>
+              )}
+            </span>
+            <h3>{w.t}</h3>
+            <p>{w.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Τιμή -->
+  <section class="section section--tight" aria-labelledby="price-title">
+    <div class="container container--narrow">
+      <div class="card price-card reveal">
+        <div class="price-main">
+          <p class="kicker">Τιμή — δημόσια, ίδια για όλους</p>
+          <h2 id="price-title">
+            <span class="price-num num">{eur(menu.price)}</span> τον μήνα
+          </h2>
+          <p class="price-sub">
+            Στήσιμο με τα δικά σας χρώματα και λογότυπο, απεριόριστες αλλαγές σε
+            τιμές και πιάτα — όλα μέσα. Χωρίς συμβόλαιο, χωρίς δέσμευση.
+          </p>
+        </div>
+        <div class="price-cta">
+          <a class="btn btn--orange" href="/times/">Φτιάξε το πακέτο σου →</a>
+          <a class="btn btn--ghost" href="/elegxos/">Δωρεάν αξιολόγηση {ELEGXOS.minutes}′</a>
+          <span class="btn-note">Καμία πληρωμή online — το κλείνουμε στο τηλέφωνο.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FAQ -->
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Συχνές ερωτήσεις</p>
+        <h2 id="faq-title">Πριν ρωτήσεις, ρώτησαν άλλοι.</h2>
+      </div>
+      <Faq items={faqItems} withSchema />
+    </div>
+  </section>
+
+  <!-- 6. CTA -->
+  <CtaBand
+    title="Το μενού σας, ψηφιακό από αύριο."
+    sub={`Ξεκινάμε με μια δωρεάν αξιολόγηση ${ELEGXOS.minutes} λεπτών — βλέπουμε το μενού σας και σας δείχνουμε πώς θα φαίνεται.`}
+    ctaText="Κλείσε τη δωρεάν αξιολόγηση"
+    ctaHref="/elegxos/"
+    note="Καμία πληρωμή online · χωρίς δέσμευση"
+  />
+</Base>
+
+<script>
+  // «Σκανάρει, βλέπει, παραγγέλνει»: το HTML έχει το τελικό state (μενού
+  // ανοιχτό, Μαργαρίτα 8,90€, toast ορατό). Με JS + ορατότητα, σε loop:
+  // κάμερα iPhone πάνω από το τραπέζι → κίτρινη αναγνώριση του QR → banner
+  // «Άνοιγμα» → το μενού-site ξεδιπλώνεται → η τιμή αλλάζει μπροστά σου.
+  // Εκτός οθόνης γυρνά στο τελικό state. Χωρίς JS/reduced motion: στατικό.
+  const dmStage = document.getElementById('dm-stage');
+  const dmReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (dmStage && !dmReduce && 'IntersectionObserver' in window) {
+    const camEl = document.getElementById('dm-cam')!;
+    const cornersEl = document.getElementById('dm-corners')!;
+    const chipEl = document.getElementById('dm-camchip')!;
+    const hotEl = document.getElementById('dm-hot')!;
+    const priceEl = document.getElementById('dm-price')!;
+    const ringEl = document.getElementById('dm-ring')!;
+    // Ό,τι «χτίζει» το μενού με τη σειρά: url bar, hero, κατηγορίες, πιάτα, κουμπί
+    const parts = Array.from(dmStage.querySelectorAll<HTMLElement>('.dm-url, .dm-hero, .dm-pills, .dm-row, .dm-order'));
+    let dmTimers: number[] = [];
+    let dmActive = false;
+    const later = (fn: () => void, ms: number) => dmTimers.push(window.setTimeout(fn, ms));
+    const raf2 = (fn: () => void) => requestAnimationFrame(() => requestAnimationFrame(fn));
+
+    const dmFinal = () => {
+      camEl.style.opacity = '0';
+      cornersEl.classList.remove('is-lock');
+      chipEl.classList.remove('is-on');
+      parts.forEach((p) => p.classList.add('is-in'));
+      hotEl.classList.add('is-hot');
+      priceEl.textContent = '8,90€';
+    };
+
+    const dmCycle = () => {
+      dmTimers.forEach(clearTimeout); dmTimers = [];
+      // Επαναφορά: κάμερα ανοιχτή, κρυφό μενού, παλιά τιμή
+      camEl.style.opacity = '1';
+      cornersEl.classList.remove('is-lock');
+      chipEl.classList.remove('is-on');
+      parts.forEach((p) => p.classList.remove('is-in'));
+      hotEl.classList.remove('is-hot');
+      priceEl.textContent = '8,50€';
+      // Η κάμερα «βρίσκει» το QR: κίτρινες γωνίες → banner ανοίγματος
+      later(() => cornersEl.classList.add('is-lock'), 900);
+      later(() => chipEl.classList.add('is-on'), 1700);
+      // Άνοιγμα του site: η κάμερα σβήνει, το μενού χτίζεται κομμάτι-κομμάτι
+      later(() => { camEl.style.opacity = '0'; }, 3000);
+      later(() => {
+        parts.forEach((p, i) => later(() => p.classList.add('is-in'), i * 160));
+      }, 3300);
+      // Η τιμή αλλάζει μπροστά σου — με «τίναγμα» στο ποσό
+      later(() => {
+        hotEl.classList.add('is-hot');
+        priceEl.textContent = '8,90€';
+        priceEl.classList.add('is-pop');
+        later(() => priceEl.classList.remove('is-pop'), 650);
+        ringEl.style.transition = 'none'; ringEl.style.opacity = '.9'; ringEl.style.transform = 'scale(1)';
+        raf2(() => {
+          ringEl.style.transition = 'opacity .6s ease-out, transform .6s ease-out';
+          ringEl.style.opacity = '0'; ringEl.style.transform = 'scale(1.1)';
+        });
+      }, 6400);
+      // Δίχτυ ασφαλείας: κλείδωμα στο στατικό state
+      later(dmFinal, 9600);
+      later(dmCycle, 12000);
+    };
+
+    const dmIo = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting && !dmActive) { dmActive = true; dmCycle(); }
+          else if (!e.isIntersecting && dmActive) {
+            dmActive = false;
+            dmTimers.forEach(clearTimeout); dmTimers = [];
+            dmFinal();
+          }
+        }
+      },
+      { threshold: 0.35 }
+    );
+    dmIo.observe(dmStage);
+  }
+</script>
+
+<style>
+  /* ---------- «Σκανάρει, βλέπει, παραγγέλνει» ---------- */
+  /* Δίστηλη διάταξη σε desktop, στοίβαγμα σε στενές οθόνες — όπως η ενότητα
+     κριτικών της αρχικής. */
+  .dm-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(28px, 5vw, 64px);
+    align-items: center;
+    max-width: 900px; margin-inline: auto;
+  }
+  .dm-copy .sec-head { margin-bottom: 0; }
+  .dm-sub { color: var(--muted); max-width: 46ch; margin: 16px 0 28px; }
+  .dm-cta { display: flex; justify-content: flex-start; }
+  .dm-note { color: var(--muted); font-size: .78rem; margin: 14px 0 0; max-width: 44ch; }
+  @media (max-width: 880px) {
+    .dm-grid { grid-template-columns: 1fr; }
+    .dm-stage { margin-inline: auto; }
+  }
+
+  /* iPhone σε πραγματικές αναλογίες σώματος (1:2.06) — ίδιο κέλυφος με την
+     ενότητα κριτικών της αρχικής, σε μεγαλύτερο, «φυσικό» μέγεθος. */
+  .dm-stage { position: relative; width: 352px; max-width: 100%; }
+  .dm-phone {
+    width: 332px; margin-inline: auto;
+    background: #17171a; border-radius: 58px;
+    padding: 11px; border: 1px solid #45454d;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, .6);
+  }
+  .dm-screen {
+    position: relative;
+    display: flex; flex-direction: column;
+    height: 662px;
+    /* Σκούρο premium φόντο του μενού-site — όχι λευκό */
+    background:
+      radial-gradient(120% 65% at 50% -8%, #3d2c1f, transparent 62%),
+      linear-gradient(180deg, #231a13 0%, #171009 100%);
+    border-radius: 48px;
+    padding: 0 13px 13px; overflow: hidden;
+  }
+  .dm-status {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 15px 9px 7px;
+  }
+  .dm-time { width: 58px; font-size: .84rem; font-weight: 700; color: #fff; }
+  .dm-island {
+    width: 96px; height: 28px; background: #0b0b0c; border-radius: 999px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, .05);
+  }
+  .dm-sicons { display: flex; align-items: center; gap: 6px; width: 58px; justify-content: flex-end; color: #fff; }
+  .dm-sicons svg { fill: currentColor; }
+  .di-signal { width: 17px; height: 11px; }
+  .di-wifi { width: 15px; height: 11px; }
+  .di-batt { width: 24px; height: 11px; }
+  .dm-homebar {
+    display: block; flex: none;
+    width: 124px; height: 5px; margin: auto auto 2px;
+    background: rgba(255, 255, 255, .32); border-radius: 999px;
+  }
+  @media (max-width: 420px) {
+    .dm-stage { width: 100%; }
+    .dm-phone { width: 296px; border-radius: 52px; padding: 10px; }
+    .dm-screen { height: 590px; border-radius: 42px; }
+  }
+
+  /* Το μενού-site — «κανονική» σελίδα με url bar, hero και κάρτες πιάτων */
+  .dm-app { display: flex; flex-direction: column; }
+  .dm-url, .dm-hero, .dm-pills, .dm-row {
+    opacity: 1; transform: none;
+    transition: opacity .45s ease, transform .45s ease;
+  }
+  .dm-url:not(.is-in), .dm-hero:not(.is-in), .dm-pills:not(.is-in),
+  .dm-row:not(.is-in) { opacity: 0; transform: translateY(10px); }
+  .dm-url {
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+    margin: 6px 0 9px; max-width: none;
+    background: rgba(255, 255, 255, .09); border-radius: 999px; padding: 7px 12px;
+    color: #cfc3b4; font-size: .7rem; font-weight: 600;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .05);
+  }
+  .dm-url svg { width: 11px; height: 11px; flex: none; }
+  .dm-hero {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(90% 120% at 88% -10%, rgba(255, 214, 160, .5), transparent 55%),
+      radial-gradient(60% 90% at 0% 110%, rgba(90, 12, 0, .35), transparent 60%),
+      linear-gradient(118deg, #FF6A3D 0%, #EE4F27 55%, #C23917 100%);
+    border-radius: 18px; padding: 12px 15px 11px;
+    box-shadow: 0 10px 26px rgba(198, 58, 24, .32);
+  }
+  /* Λάμψη-sheen που «περνάει» πάνω από το hero */
+  .dm-hero::before {
+    content: ''; position: absolute; top: -30%; bottom: -30%; left: -35%; width: 34%;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .3), transparent);
+    transform: skewX(-12deg) translateX(-60%);
+    animation: dm-sheen 4.2s ease-in-out infinite;
+  }
+  @keyframes dm-sheen {
+    0%, 55% { transform: skewX(-12deg) translateX(-60%); }
+    85%, 100% { transform: skewX(-12deg) translateX(440%); }
+  }
+  .dm-hero-art {
+    position: absolute; right: -6px; top: -4px;
+    opacity: .4; transform: rotate(14deg);
+    animation: dm-bob 4.5s ease-in-out infinite;
+  }
+  .dm-hero-art svg {
+    width: 68px; height: 68px;
+    fill: none; stroke: #fff; stroke-width: 1.6;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  @keyframes dm-bob {
+    0%, 100% { transform: rotate(14deg) translateY(0); }
+    50% { transform: rotate(9deg) translateY(5px); }
+  }
+  .dm-hero-name { margin: 0; color: #fff; font-size: .95rem; font-weight: 800; max-width: none; }
+  .dm-hero-sub { margin: 3px 0 0; color: rgba(255, 255, 255, .85); font-size: .68rem; max-width: none; }
+  .dm-hero-meta { display: flex; gap: 5px; margin: 8px 0 0; max-width: none; }
+  .dm-hero-meta span {
+    background: rgba(255, 255, 255, .16);
+    border: 1px solid rgba(255, 255, 255, .3);
+    color: #fff; border-radius: 999px; padding: 3px 9px;
+    font-size: .6rem; font-weight: 700; letter-spacing: .02em;
+    backdrop-filter: blur(2px);
+  }
+  .dm-pills { display: flex; gap: 6px; margin: 10px 0 4px; overflow: hidden; }
+  .dm-pills span {
+    flex: none;
+    background: rgba(255, 255, 255, .09); color: #cfc3b4;
+    border-radius: 999px; padding: 5px 12px;
+    font-size: .68rem; font-weight: 700;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .05);
+  }
+  .dm-pills span.is-on {
+    background: linear-gradient(92deg, #FF6A3D, #D63E1B); color: #fff;
+    box-shadow: 0 4px 12px rgba(214, 62, 27, .4);
+  }
+  .dm-row {
+    position: relative;
+    display: flex; align-items: center; gap: 10px;
+    background: #2c2118; border: 1.5px solid rgba(255, 255, 255, .05); border-radius: 16px;
+    padding: 8px 10px; margin-top: 8px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .32);
+    transition: opacity .45s ease, transform .45s ease,
+      border-color .4s ease, background-color .4s ease, box-shadow .4s ease;
+  }
+  .dm-tile {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; flex: none; border-radius: 12px;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08), 0 3px 8px rgba(0, 0, 0, .35);
+  }
+  .dm-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .dm-info { min-width: 0; display: flex; flex-direction: column; gap: 2px; margin-right: auto; }
+  .dm-info b { color: #f6efe4; font-size: .78rem; font-weight: 700; }
+  .dm-pop {
+    display: inline-block; vertical-align: 1px;
+    background: #FFE8CF; color: #A14E08;
+    border-radius: 999px; padding: 1.5px 7px; margin-left: 5px;
+    font-size: .54rem; font-weight: 700; font-style: normal; letter-spacing: .03em;
+  }
+  .dm-info i {
+    color: #a2937f; font-size: .64rem; font-style: normal;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .dm-price {
+    flex: none;
+    background: rgba(255, 255, 255, .1); color: #eee2d0;
+    border-radius: 999px; padding: 5px 10px;
+    font-size: .72rem; font-weight: 700;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .05);
+  }
+  .dm-row.is-hot {
+    border-color: var(--orange); background: #3c2517;
+    box-shadow: 0 6px 20px rgba(214, 62, 27, .35);
+  }
+  .dm-row.is-hot .dm-price { background: #FFE1D0; color: #c2410c; box-shadow: none; }
+  .dm-price.is-pop { animation: dm-pricepop .55s cubic-bezier(.3, 1.5, .4, 1); }
+  @keyframes dm-pricepop { 40% { transform: scale(1.22); } }
+  .dm-ring {
+    position: absolute; inset: -3px; border: 2px solid var(--orange);
+    border-radius: 18px; opacity: 0; pointer-events: none;
+  }
+  .dm-order {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    margin-top: 9px; padding: 10px;
+    background: linear-gradient(92deg, #FF6A3D 0%, #EE4F27 55%, #D63E1B 100%);
+    color: #fff; border-radius: 14px;
+    font-size: .76rem; font-weight: 800; letter-spacing: .01em;
+    box-shadow: 0 8px 20px rgba(214, 62, 27, .32);
+    opacity: 1; transform: none;
+    transition: opacity .45s ease, transform .45s ease;
+  }
+  .dm-order:not(.is-in) { opacity: 0; transform: translateY(10px); }
+  .dm-order svg {
+    width: 14px; height: 14px; flex: none;
+    fill: none; stroke: #fff; stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dm-hero::before, .dm-hero-art { animation: none; }
+  }
+
+  /* Κάμερα iPhone — καλύπτει την οθόνη στην αρχή κάθε κύκλου.
+     Το dynamic island μένει ορατό ΚΑΙ πάνω από την κάμερα (όπως στο iOS). */
+  .dm-cam {
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; flex-direction: column;
+    background: #000; border-radius: 48px; overflow: hidden;
+    opacity: 0; pointer-events: none;
+    transition: opacity .55s ease;
+  }
+  .dm-cam-island {
+    position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
+    width: 96px; height: 28px; background: #0b0b0c; border-radius: 999px;
+    z-index: 3;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, .07);
+  }
+  .dm-cam-flash {
+    position: absolute; top: 58px; left: 18px; z-index: 3;
+    width: 15px; height: 15px; color: rgba(255, 255, 255, .8);
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, .6));
+  }
+  .dm-cam-view {
+    position: relative; flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    /* «Τραπέζι» ξύλου μέσα από τον φακό */
+    background:
+      radial-gradient(120% 90% at 50% 0%, rgba(255, 235, 200, .18), transparent 55%),
+      repeating-linear-gradient(97deg, rgba(0, 0, 0, .14) 0 26px, transparent 26px 54px),
+      linear-gradient(160deg, #9a6a44 0%, #7c4f2e 55%, #5f3a1f 100%);
+  }
+  .dm-sticker {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    background: #fff; border-radius: 12px; padding: 14px 14px 10px;
+    transform: rotate(-4deg);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, .45);
+  }
+  .dm-sticker svg { width: 96px; height: 96px; fill: #1c1c1e; color: #1c1c1e; }
+  .dm-sticker span {
+    color: #1c1c1e; font-size: .62rem; font-weight: 800; letter-spacing: .22em;
+  }
+  /* Κίτρινες γωνίες αναγνώρισης (iOS) γύρω από το αυτοκόλλητο */
+  .dm-corners {
+    position: absolute; left: 50%; top: 50%;
+    width: 158px; height: 172px; transform: translate(-50%, -52%) scale(1.35);
+    opacity: 0; pointer-events: none;
+    transition: opacity .35s ease, transform .45s cubic-bezier(.2, 1.1, .3, 1.1);
+  }
+  .dm-corners.is-lock { opacity: 1; transform: translate(-50%, -52%) scale(1); }
+  .dm-corners i { position: absolute; width: 26px; height: 26px; border: 3.5px solid #FFCC00; }
+  .dm-corners i:nth-child(1) { left: 0; top: 0; border-right: 0; border-bottom: 0; border-top-left-radius: 10px; }
+  .dm-corners i:nth-child(2) { right: 0; top: 0; border-left: 0; border-bottom: 0; border-top-right-radius: 10px; }
+  .dm-corners i:nth-child(3) { left: 0; bottom: 0; border-right: 0; border-top: 0; border-bottom-left-radius: 10px; }
+  .dm-corners i:nth-child(4) { right: 0; bottom: 0; border-left: 0; border-top: 0; border-bottom-right-radius: 10px; }
+  /* Banner ανοίγματος (σαν το κίτρινο chip της iOS κάμερας) */
+  .dm-camchip {
+    position: absolute; left: 50%; bottom: 16px; transform: translate(-50%, 8px);
+    background: #FFCC00; color: #1c1c1e;
+    border-radius: 999px; padding: 7px 14px;
+    font-size: .7rem; font-weight: 700; white-space: nowrap;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .4);
+    opacity: 0;
+    transition: opacity .4s ease, transform .4s cubic-bezier(.2, 1.2, .3, 1.2);
+  }
+  .dm-camchip.is-on { opacity: 1; transform: translate(-50%, 0); }
+  /* Κάτω μπάρα κάμερας: σειρά λειτουργιών ΠΑΝΩ, κλείστρο ΑΠΟ ΚΑΤΩ (όπως στο iOS) */
+  .dm-cam-ui {
+    flex: none;
+    display: flex; flex-direction: column; align-items: center; gap: 11px;
+    padding: 11px 0 15px;
+    background: #000;
+  }
+  .dm-cam-modes { display: flex; align-items: center; gap: 16px; }
+  .dm-cam-mode { color: #8e8e93; font-size: .6rem; font-weight: 700; letter-spacing: .08em; }
+  .dm-cam-mode--on { color: #FFCC00; }
+  .dm-shutter {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: #fff; border: 3px solid #000; outline: 2.5px solid #fff;
+  }
+
+  /* ---- Τιμή (ίδιο μοτίβο με τη σελίδα του Τροχού) ---- */
+  .price-card {
+    display: grid;
+    grid-template-columns: 1.2fr minmax(min(240px, 100%), .8fr);
+    gap: clamp(24px, 4vw, 48px);
+    align-items: center;
+    padding: clamp(26px, 4vw, 48px);
+  }
+  @media (max-width: 720px) {
+    .price-card { grid-template-columns: 1fr; }
+  }
+  .price-main .kicker { margin-bottom: 14px; }
+  .price-num { font-size: clamp(2rem, 5vw, 2.8rem); color: var(--orange-text); }
+  .price-sub { margin-top: 12px; color: var(--muted); }
+  .price-cta { display: flex; flex-direction: column; gap: 12px; }
+  .price-cta .btn { text-align: center; }
+  .price-cta .btn-note { text-align: center; }
+</style>

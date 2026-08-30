@@ -158,6 +158,11 @@ p { max-width: 62ch; }
   text-decoration: none; white-space: nowrap;
   transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, filter .18s ease;
 }
+/* Σε πολύ στενές οθόνες τα μακριά ελληνικά CTA σπάνε σε δεύτερη γραμμή
+   αντί να ξεχειλώνουν (το body έχει overflow-x: clip και θα τα έκοβε). */
+@media (max-width: 400px) {
+  .btn { white-space: normal; text-align: center; }
+}
 .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
 .btn:active { transform: translateY(0); }
 .btn--orange { background: var(--grad); color: #fff; box-shadow: 0 6px 24px rgba(238, 79, 39, .35); }

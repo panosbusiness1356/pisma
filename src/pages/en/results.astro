@@ -185,7 +185,7 @@ const steps = [
     sub="In the Check we measure where you stand today — and show you, live, the systems we run for ourselves."
     ctaText="Book the Check"
     ctaHref="/en/free-assessment/"
-    note={`Free · ${ELEGXOS.minutes} minutes · no commitment`}
+    note={`${ELEGXOS.priceEn} · ${ELEGXOS.minutes} minutes · no commitment`}
   />
 </Base>
 
@@ -326,6 +326,9 @@ const steps = [
 
     function cycle() {
       if (!running) return;
+      // Clear the previous cycle's timers — otherwise the array grows unbounded
+      timers.forEach(clearTimeout);
+      timers = [];
       reset();
       later(() => {
         line!.style.transition = 'stroke-dashoffset 2.6s cubic-bezier(.5,.05,.4,1)';

@@ -16,6 +16,8 @@ const schema = {
     email: SITE.email,
     telephone: SITE.phone,
     url: SITE.url,
+    image: `${SITE.url}/og.png`,
+    priceRange: '€€',
     address: {
       '@type': 'PostalAddress',
       addressRegion: 'Αττική',
@@ -94,7 +96,13 @@ const schema = {
         </div>
 
         <!-- Φόρμα -->
-        <form class="card reveal" id="contact-form" data-email={SITE.email}>
+        <form
+          class="card reveal"
+          id="contact-form"
+          action="https://formsubmit.co/info@pisma.gr"
+          method="POST"
+          data-email={SITE.email}
+        >
           <h3>Γράψτε μας</h3>
           <div class="field">
             <label for="cf-name">Όνομα</label>
@@ -111,6 +119,8 @@ const schema = {
           <input type="hidden" name="_subject" value="Νέο μήνυμα από τη σελίδα Επικοινωνίας — pisma.gr" />
           <input type="hidden" name="_template" value="box" />
           <input type="hidden" name="_captcha" value="false" />
+          <!-- Honeypot: τα bots το συμπληρώνουν, το FormSubmit απορρίπτει σιωπηλά -->
+          <input type="text" name="_honey" class="f-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <button type="submit" class="btn btn--orange" id="cf-submit">Στείλτε το</button>
           <p class="feedback" data-feedback role="status" aria-live="polite"></p>
           <!-- Εφέ επιτυχίας: παίρνει τη θέση των πεδίων όταν σταλεί -->
@@ -154,6 +164,7 @@ const schema = {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = new FormData(form);
+      if ((data.get('_honey') as string)?.trim()) return; // bot — σιωπηλή απόρριψη
       btn.disabled = true;
       btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span>Αποστολή…';
       try {
@@ -193,7 +204,7 @@ const schema = {
   /* Εφέ επιτυχίας φόρμας (Δ): τικ που ζωγραφίζεται + κομφετί μέσα στην κάρτα */
   #contact-form { position: relative; overflow: hidden; }
   .form-done { display: none; }
-  #contact-form.is-done > :not(.form-done) { display: none; }
+  #contact-form.is-done > :not(.form-done):not(.fd-confetti) { display: none; }
   #contact-form.is-done .form-done {
     display: block; text-align: center; padding: 26px 0 10px;
     animation: fd-pop .45s cubic-bezier(.3, 1.4, .5, 1) both;
@@ -234,10 +245,12 @@ const schema = {
   .alt-link .card-arrow { margin-top: 0; margin-left: 6px; }
 
   /* Φόρμα */
+  .f-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  /* Το feedback γράφεται μόνο σε αποτυχία — κόκκινη απόχρωση, όχι πράσινη */
   .feedback {
     margin-top: 16px; padding: 14px 18px; border-radius: 12px;
-    background: var(--ok-soft); color: var(--ok-text); font-size: .95rem;
+    background: var(--red-soft); color: var(--red-text); font-size: .95rem;
   }
-  .feedback a { color: var(--ok-text); font-weight: 700; }
+  .feedback a { color: var(--red-text); font-weight: 700; }
   .feedback:empty { padding: 0; margin: 0; background: none; }
 </style>

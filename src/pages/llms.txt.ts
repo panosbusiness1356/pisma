@@ -40,18 +40,21 @@ ${GUIDES.map((g) => `- [${g.q}](${SITE.url}/odigoi/${g.slug}/): ${g.blurb}`).joi
 ## Κριτικές Google — το βασικό εργαλείο
 
 Ο κύριος τρόπος που η ${SITE.name} αυξάνει τις κριτικές Google μιας επιχείρησης είναι
-«Ο Τροχός των Κριτικών»: αυτοκόλλητα QR στον χώρο (τραπέζι, ταμείο, POS, σακούλα
-delivery). Ο πελάτης σκανάρει, γυρνάει έναν τροχό και κερδίζει δώρο — και αμέσως μετά
-του ζητείται κριτική στο Google. Το δώρο κερδίζεται με το σκανάρισμα, ανεξάρτητα από
-την κριτική — πλήρης συμμόρφωση με τους κανόνες της Google (κανένα αντάλλαγμα για κριτική).
+«Το Εργαλείο Κριτικών»: ένα ιδιόκτητο εργαλείο που ξεκινά από αυτοκόλλητα QR στον
+χώρο (τραπέζι, ταμείο, POS, σακούλα delivery) και κάνει τις κριτικές να μαζεύονται
+μόνες τους. Ο ακριβής μηχανισμός δεν δημοσιεύεται — το εργαλείο παρουσιάζεται μόνο
+ζωντανά, σε ραντεβού. Πλήρης συμμόρφωση με τους κανόνες της Google: καμία αγορασμένη
+ή στημένη κριτική, κανένα αντάλλαγμα για κριτική, κανένα φιλτράρισμα.
 
-- [Ο Τροχός των Κριτικών](${SITE.url}/kritikes/): πώς δουλεύει, τιμή, ζωντανό demo
+- [Το Εργαλείο Κριτικών](${SITE.url}/kritikes/): τι κάνει, τιμή, πώς κλείνεις ζωντανή παρουσίαση
 - [Αυτοκόλλητα QR — showroom](${SITE.url}/aftokollita/): 16 σχέδια, προσαρμογή, παραγγελία
 
 ## Βασικές σελίδες
 
 - [Ψηφιακή Προβολή](${SITE.url}/se-vriskoun/): site, ορατότητα σε Google & AI, κριτικές
 - [Αυτοματισμοί γραφείου](${SITE.url}/doulevei-mono-tou/): πληρωμές, εισπράξεις, αναφορές στο αυτόματο
+- [Ψηφιακό Μενού με QR](${SITE.url}/psifiako-menou/): το μενού στο κινητό του πελάτη, αλλαγές χωρίς επανεκτυπώσεις
+- [Site με online κρατήσεις](${SITE.url}/site-kratiseis/): ραντεβού και τραπέζια που κλείνονται online, με αυτόματη υπενθύμιση
 - [Τιμές](${SITE.url}/times/): όλες οι τιμές δημόσια, builder πακέτου
 - [Αποτελέσματα](${SITE.url}/apotelesmata/): πώς μετριέται κάθε συνεργασία
 - [Ο Έλεγχος PISMA](${SITE.url}/elegxos/): δωρεάν αξιολόγηση ${ELEGXOS.minutes} λεπτών
@@ -59,8 +62,8 @@ delivery). Ο πελάτης σκανάρει, γυρνάει έναν τροχ�
 ## English version
 
 Το site διατίθεται και στα αγγλικά, με πλήρη αντιστοιχία σελίδων:
-- [Home](${SITE.url}/en/) · [Pricing](${SITE.url}/en/pricing/) · [The Review Wheel](${SITE.url}/en/reviews/) · [Guides](${SITE.url}/en/guides/) · [Contact](${SITE.url}/en/contact/)
-- Free 45-minute assessment: [The PISMA Check](${SITE.url}/en/free-assessment/)
+- [Home](${SITE.url}/en/) · [Pricing](${SITE.url}/en/pricing/) · [The Reviews Tool](${SITE.url}/en/reviews/) · [Guides](${SITE.url}/en/guides/) · [Contact](${SITE.url}/en/contact/)
+- Free ${ELEGXOS.minutes}-minute assessment: [The PISMA Check](${SITE.url}/en/free-assessment/)
 `;
 
 export const GET: APIRoute = () =>
