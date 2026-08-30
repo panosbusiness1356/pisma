@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import ServiceCards from '../components/ServiceCards.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { SITE } from '../config';
@@ -32,6 +33,7 @@ const services = [
     t: 'Site που πουλάει',
     d: 'Γρήγορο, καθαρό, με ένα ξεκάθαρο επόμενο βήμα σε κάθε σελίδα. Όχι βιτρίνα — εργαλείο δουλειάς. Και με προαιρετική μηνιαία συντήρηση, τρέχει χωρίς να το σκέφτεστε.',
     icon: 'site',
+    href: '/site-pou-poulaei/',
   },
   {
     t: 'Site με online κρατήσεις',
@@ -56,16 +58,16 @@ const services = [
     icon: 'ai',
   },
   {
-    t: 'Social media',
-    d: 'Προφίλ που δείχνουν ζωντανά: ξεκαθάρισμα και στήσιμο ή μηνιαία διαχείριση με posts και stories — με υλικό δικό σας ή δικό μας.',
-    icon: 'social',
-    href: '/odigoi/diaxeirisi-social-media/',
-  },
-  {
     t: 'Το Εργαλείο Κριτικών',
     d: 'Το εργαλείο μας που κάνει τις κριτικές Google να μαζεύονται μόνες τους. Πώς; Αυτό το δείχνουμε μόνο ζωντανά.',
     icon: 'star',
     href: '/kritikes/',
+  },
+  {
+    t: 'Social media',
+    d: 'Προφίλ που δείχνουν ζωντανά: ξεκαθάρισμα και στήσιμο ή μηνιαία διαχείριση με posts και stories — με υλικό δικό σας ή δικό μας.',
+    icon: 'social',
+    href: '/odigoi/diaxeirisi-social-media/',
   },
   {
     t: 'Ψηφιακό Μενού με QR',
@@ -120,62 +122,7 @@ const faqItems = [
         <p class="kicker">Τι στήνουμε</p>
         <h2 id="svc-title">Εννιά δουλειές. Ένας στόχος: να σας βρίσκουν.</h2>
       </div>
-      <div class="grid-3">
-        {services.map((s) => (
-          <article class="card reveal">
-            <span class="icon-chip">
-              {s.icon === 'site' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="3" y="4.5" width="18" height="15" rx="2.5" /><path d="M3 9.5h18M6.4 7h.01M9.4 7h.01" />
-                </svg>
-              )}
-              {s.icon === 'cal' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="3.5" y="5" width="17" height="16" rx="2.5" /><path d="M3.5 9.8h17M8 2.8V6M16 2.8V6M8.5 14.5l2.3 2.3 4.4-4.6" />
-                </svg>
-              )}
-              {s.icon === 'pin' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M12 21.5s-7-6.2-7-11.3A7 7 0 0 1 19 10.2c0 5.1-7 11.3-7 11.3z" /><circle cx="12" cy="10" r="2.6" />
-                </svg>
-              )}
-              {s.icon === 'social' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <circle cx="6" cy="12" r="2.8" /><circle cx="17.5" cy="5.5" r="2.8" /><circle cx="17.5" cy="18.5" r="2.8" /><path d="M8.6 10.7l6.3-3.7M8.6 13.3l6.3 3.7" />
-                </svg>
-              )}
-              {s.icon === 'seo' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21" /><path d="M7.4 12.4l2-2 1.7 1.5 2.5-2.8" />
-                </svg>
-              )}
-              {s.icon === 'ai' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-2.9-.4-4.1-1L3 20l1-5.4A8.5 8.5 0 1 1 21 11.5z" /><path d="M12 8.5v5M9.5 11h5" />
-                </svg>
-              )}
-              {s.icon === 'star' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" />
-                </svg>
-              )}
-              {s.icon === 'menu' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="7" y="3" width="10" height="18" rx="2.5" /><path d="M10 7.5h4M10 11h4M10 14.5h2.5" />
-                </svg>
-              )}
-              {s.icon === 'eye' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" />
-                </svg>
-              )}
-            </span>
-            <h3>{s.t}</h3>
-            <p>{s.d}</p>
-            {s.href && <a class="card-arrow" href={s.href}>Μάθετε τι κάνει →</a>}
-          </article>
-        ))}
-      </div>
+      <ServiceCards services={services} cta="Μάθετε τι κάνει →" />
     </div>
   </section>
 

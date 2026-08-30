@@ -217,6 +217,61 @@ p { max-width: 62ch; }
 .card-arrow { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--orange-text); font-size: .95rem; margin-top: 14px; text-decoration: none; }
 a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; text-underline-offset: 3px; }
 
+/* ---------- Κάρτες υπηρεσιών (bento): ServiceCards.astro ----------
+   Δύο «ναυαρχίδες» σε διπλό πλάτος, λωρίδα-κλείσιμο, έγχρωμα αντικείμενα/λογότυπα.
+   Χωρίς μωβ — μόνο ζεστή πορτοκαλί λάμψη στις μεγάλες. */
+.svc-grid { display: grid; gap: 18px; grid-template-columns: repeat(4, 1fr); }
+.svc-grid .card { padding: 22px 20px; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.svc-grid .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--line-strong); }
+.svc-grid .card p { font-size: .94rem; }
+.svc-big {
+  grid-column: span 2;
+  background:
+    radial-gradient(120% 130% at 20% -10%, rgba(238, 79, 39, .18), transparent 60%),
+    radial-gradient(110% 120% at 95% 110%, rgba(255, 122, 80, .09), transparent 55%),
+    var(--card-2);
+  border-color: var(--line-strong);
+  padding: clamp(24px, 3vw, 32px);
+}
+.svc-big p { font-size: .99rem; }
+.svc-strip { grid-column: span 2; display: flex; align-items: center; gap: 18px; padding: 18px 22px; }
+.svc-strip3 { grid-column: span 3; }
+.svc-strip h3 { margin-bottom: 4px; }
+.svc-strip p { font-size: .92rem; }
+.svc-art { display: block; width: 96px; transition: transform .22s ease; }
+.svc-art svg { width: 100%; height: auto; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .3)); }
+.svc-big .svc-art { width: 118px; }
+.svc-art--sm { width: 76px; }
+.card:hover .svc-art { transform: translateY(-3px) rotate(-1.5deg); }
+/* Σειρά «οπτικού»: αντικείμενο ή/και λογότυπα ή/και αστέρια μαζί */
+.svc-viz { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; min-height: 54px; }
+.svc-viz--strip { margin-bottom: 0; flex: 0 0 auto; min-height: 0; }
+.svc-chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 54px; height: 54px; border-radius: 15px;
+  background: #FBF2EA;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .3);
+  transition: transform .22s ease;
+}
+.svc-chip:nth-child(2) { transition-delay: .04s; }
+.svc-chip:nth-child(3) { transition-delay: .08s; }
+.svc-chip img { width: 30px; height: 30px; }
+.card:hover .svc-chip { transform: translateY(-3px); }
+.svc-stars { display: flex; gap: 2px; margin-left: 4px; }
+.svc-stars svg { width: 19px; height: 19px; }
+@media (max-width: 980px) {
+  .svc-grid { grid-template-columns: repeat(2, 1fr); }
+  .svc-strip3 { grid-column: span 2; }
+}
+@media (max-width: 560px) {
+  .svc-grid { grid-template-columns: 1fr; }
+  .svc-big, .svc-strip, .svc-strip3 { grid-column: span 1; }
+  .svc-strip { flex-direction: column; align-items: flex-start; gap: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .svc-art, .svc-chip, .svc-grid .card { transition: none; }
+}
+
 /* ---------- Αριθμημένα βήματα ---------- */
 .steps {
   list-style: none;

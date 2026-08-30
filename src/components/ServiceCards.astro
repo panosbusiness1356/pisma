@@ -1,0 +1,173 @@
+---
+// Κάρτες υπηρεσιών «Ψηφιακής Προβολής» σε διάταξη bento (επιλογή χρήστριας: σχέδιο Ε6).
+// Δύο «ναυαρχίδες» σε διπλό πλάτος (site, star), το «μάτι» κλείνει ως φαρδιά ρηχή λωρίδα,
+// και πάνω σε κάθε κάρτα: πραγματικά λογότυπα όπου υπάρχει brand (Google Maps, Google,
+// ChatGPT, Instagram/Facebook/TikTok), αλλιώς έγχρωμο flat SVG αντικείμενο.
+// Χωρίς μωβ αποχρώσεις — μόνο ζεστή πορτοκαλί λάμψη στις μεγάλες (ρητό αίτημα).
+interface Service {
+  t: string;
+  d: string;
+  icon: string;
+  href?: string;
+  /* Προαιρετικές παρακάμψεις των defaults που βγαίνουν από το icon: */
+  size?: 'big' | 'strip' | 'strip3';
+  art?: string;
+  logos?: string[];
+  stars?: boolean;
+}
+interface Props {
+  services: Service[];
+  cta: string;
+}
+const { services, cta } = Astro.props;
+
+// Έγχρωμα αντικείμενα (viewBox 0 0 96 72) — μόνο για υπηρεσίες χωρίς πραγματικό brand
+const art: Record<string, string> = {
+  site: `
+    <rect x="8" y="8" width="80" height="56" rx="7" fill="#FBF2EA"/>
+    <path d="M8 15a7 7 0 0 1 7-7h66a7 7 0 0 1 7 7v7H8z" fill="#FF7A50"/>
+    <circle cx="17" cy="15" r="2.2" fill="#fff" opacity=".85"/><circle cx="24" cy="15" r="2.2" fill="#fff" opacity=".6"/><circle cx="31" cy="15" r="2.2" fill="#fff" opacity=".35"/>
+    <rect x="16" y="30" width="32" height="5" rx="2.5" fill="#33254A"/>
+    <rect x="16" y="39" width="24" height="4" rx="2" fill="#C0B4D2"/>
+    <rect x="16" y="49" width="27" height="10" rx="5" fill="#EE4F27"/>
+    <rect x="21" y="53" width="17" height="2.4" rx="1.2" fill="#fff" opacity=".9"/>
+    <path d="M54 56l9-9 7 5 11-13" stroke="#2FA36B" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="81" cy="39" r="3.4" fill="#2FA36B"/>`,
+  cal: `
+    <rect x="16" y="13" width="52" height="49" rx="7" fill="#FBF2EA"/>
+    <path d="M16 20a7 7 0 0 1 7-7h38a7 7 0 0 1 7 7v8H16z" fill="#FF5C41"/>
+    <rect x="26" y="8" width="5" height="11" rx="2.5" fill="#33254A"/><rect x="53" y="8" width="5" height="11" rx="2.5" fill="#33254A"/>
+    <circle cx="27" cy="38" r="2.6" fill="#C0B4D2"/><circle cx="38" cy="38" r="2.6" fill="#C0B4D2"/><circle cx="49" cy="38" r="2.6" fill="#C0B4D2"/>
+    <circle cx="27" cy="49" r="2.6" fill="#C0B4D2"/><circle cx="38" cy="49" r="2.6" fill="#C0B4D2"/>
+    <circle cx="49" cy="49" r="6.5" fill="#FF7A50"/>
+    <circle cx="72" cy="52" r="12" fill="#2FA36B"/>
+    <path d="M66.5 52l4 4 7-7.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+  menu: `
+    <rect x="12" y="12" width="34" height="34" rx="6" fill="#FBF2EA"/>
+    <rect x="17" y="17" width="9" height="9" rx="1.5" fill="#33254A"/><rect x="32" y="17" width="9" height="9" rx="1.5" fill="#33254A"/><rect x="17" y="32" width="9" height="9" rx="1.5" fill="#33254A"/>
+    <rect x="20" y="20" width="3" height="3" fill="#FBF2EA"/><rect x="35" y="20" width="3" height="3" fill="#FBF2EA"/><rect x="20" y="35" width="3" height="3" fill="#FBF2EA"/>
+    <rect x="32" y="32" width="4" height="4" fill="#33254A"/><rect x="38" y="36" width="3" height="3" fill="#33254A"/><rect x="34" y="40" width="3" height="3" fill="#33254A"/>
+    <circle cx="63" cy="45" r="17" fill="#F3E4D3"/>
+    <path d="M63 31a14 14 0 0 1 12.8 8.4L63 45z" fill="#EFB93C"/>
+    <path d="M75.8 39.4A14 14 0 1 1 55 34.6L63 45z" fill="#E8593A"/>
+    <circle cx="60" cy="52" r="2.4" fill="#7A2A17"/><circle cx="68" cy="49" r="2.4" fill="#7A2A17"/><circle cx="56" cy="44" r="2.2" fill="#7A2A17"/>`,
+  eye: `
+    <rect x="10" y="10" width="76" height="52" rx="8" fill="#FBF2EA"/>
+    <path d="M18 52l14-12 10 7 16-16 10 5" stroke="#EE4F27" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="68" cy="31" r="3.6" fill="#EE4F27"/>
+    <path d="M18 44l14-7 10 3 16-9 10 2" stroke="#9AA7B8" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".8" stroke-dasharray="1 6"/>
+    <rect x="58" y="14" width="24" height="11" rx="5.5" fill="#2FA36B"/>
+    <path d="M64 19.5h9M69.8 16.5l3.6 3-3.6 3" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+  /* Αντικείμενα σελίδας Αυτοματισμών */
+  match: `
+    <rect x="8" y="16" width="34" height="40" rx="6" fill="#FBF2EA"/>
+    <circle cx="25" cy="30" r="7" fill="#FF7A50"/>
+    <path d="M23 30h4M25 28v4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+    <rect x="15" y="42" width="20" height="4" rx="2" fill="#C0B4D2"/>
+    <rect x="15" y="49" width="14" height="3.4" rx="1.7" fill="#C0B4D2" opacity=".7"/>
+    <rect x="54" y="16" width="34" height="40" rx="6" fill="#FBF2EA"/>
+    <path d="M80 16l8 8h-8z" fill="#E4D5C2"/>
+    <rect x="60" y="28" width="18" height="4" rx="2" fill="#33254A"/>
+    <rect x="60" y="36" width="22" height="3.4" rx="1.7" fill="#C0B4D2"/>
+    <rect x="60" y="43" width="16" height="3.4" rx="1.7" fill="#C0B4D2" opacity=".7"/>
+    <circle cx="48" cy="36" r="11" fill="#2FA36B" stroke="#171221" stroke-width="3"/>
+    <path d="M43 36l3.6 3.6 6.4-7" stroke="#fff" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+  chase: `
+    <rect x="8" y="10" width="52" height="28" rx="12" fill="#EE4F27"/>
+    <path d="M18 38l-2 8 10-8z" fill="#EE4F27"/>
+    <circle cx="24" cy="24" r="8" fill="#fff"/>
+    <text x="24" y="28.5" font-size="12.5" font-weight="800" fill="#EE4F27" text-anchor="middle" font-family="Arial, sans-serif">€</text>
+    <rect x="36" y="20" width="18" height="4" rx="2" fill="#fff" opacity=".9"/>
+    <rect x="36" y="27" width="12" height="3.4" rx="1.7" fill="#fff" opacity=".6"/>
+    <rect x="42" y="44" width="44" height="20" rx="10" fill="#2FA36B"/>
+    <circle cx="54" cy="54" r="6" fill="#fff"/>
+    <path d="M51.5 54l2 2 3.4-3.8" stroke="#2FA36B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="64" y="51" width="16" height="4" rx="2" fill="#fff" opacity=".9"/>`,
+  day: `
+    <rect x="28" y="4" width="38" height="64" rx="9" fill="#33254A"/>
+    <rect x="32" y="10" width="30" height="52" rx="5" fill="#FBF2EA"/>
+    <rect x="42" y="6.5" width="10" height="2.6" rx="1.3" fill="#171221"/>
+    <rect x="22" y="22" width="52" height="26" rx="7" fill="#fff"/>
+    <circle cx="31" cy="31" r="4" fill="#FF7A50"/>
+    <rect x="39" y="27" width="22" height="3.6" rx="1.8" fill="#33254A"/>
+    <rect x="39" y="33" width="16" height="3" rx="1.5" fill="#C0B4D2"/>
+    <rect x="39" y="40" width="4" height="5" rx="1" fill="#2FA36B"/>
+    <rect x="45" y="38" width="4" height="7" rx="1" fill="#2FA36B"/>
+    <rect x="51" y="35" width="4" height="10" rx="1" fill="#FF7A50"/>
+    <rect x="57" y="39" width="4" height="6" rx="1" fill="#C0B4D2"/>
+    <circle cx="68" cy="24" r="6.5" fill="#FF5C41"/>
+    <rect x="66" y="22.6" width="4" height="2.8" rx="1.4" fill="#fff"/>`,
+  loyal: `
+    <rect x="8" y="14" width="62" height="42" rx="8" fill="#FBF2EA"/>
+    <path d="M8 22a8 8 0 0 1 8-8h46a8 8 0 0 1 8 8v6H8z" fill="#FF7A50"/>
+    <rect x="14" y="18" width="24" height="4.6" rx="2.3" fill="#fff" opacity=".9"/>
+    <circle cx="18" cy="43" r="5.5" fill="#EE4F27"/><path d="M15.7 43l1.7 1.7 3-3.2" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="32" cy="43" r="5.5" fill="#EE4F27"/><path d="M29.7 43l1.7 1.7 3-3.2" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="46" cy="43" r="5.5" fill="#EE4F27"/><path d="M43.7 43l1.7 1.7 3-3.2" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="60" cy="43" r="5.5" fill="none" stroke="#C0B4D2" stroke-width="1.6" stroke-dasharray="2.4 2.6"/>
+    <rect x="62" y="36" width="26" height="24" rx="5" fill="#E84D7A"/>
+    <rect x="73" y="36" width="4" height="24" fill="#fff" opacity=".85"/>
+    <rect x="62" y="45" width="26" height="4" fill="#fff" opacity=".85"/>
+    <path d="M75 36c-2-4-7-6-8-3s3 4 8 3zM75 36c2-4 7-6 8-3s-3 4-8 3z" fill="#E84D7A" stroke="#fff" stroke-width="1.4"/>`,
+};
+
+// Πραγματικά λογότυπα (self-hosted στο public/logos/) όπου υπάρχει brand
+const logos: Record<string, string[]> = {
+  pin: ['google-maps.svg'],
+  seo: ['google-icon.svg'],
+  ai: ['openai-icon.svg'],
+  social: ['instagram-icon.svg', 'facebook.svg', 'tiktok-icon.svg'],
+  star: ['google-icon.svg'],
+};
+
+const goldStar =
+  '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" fill="#F6C34C"/>';
+
+/* Defaults από το icon, με προαιρετική παράκαμψη ανά υπηρεσία */
+const sizeOf = (s: Service) =>
+  s.size ?? (s.icon === 'site' || s.icon === 'star' ? 'big' : s.icon === 'eye' ? 'strip' : undefined);
+const sizeClass = (s: Service) => {
+  const size = sizeOf(s);
+  return size === 'big' ? 'svc-big' : size === 'strip' ? 'svc-strip' : size === 'strip3' ? 'svc-strip svc-strip3' : '';
+};
+const logosOf = (s: Service) => s.logos ?? logos[s.icon];
+const artOf = (s: Service) => s.art ?? (art[s.icon] ? s.icon : undefined);
+const starsOf = (s: Service) => s.stars ?? s.icon === 'star';
+const isStrip = (s: Service) => sizeOf(s) === 'strip' || sizeOf(s) === 'strip3';
+---
+
+<div class="svc-grid">
+  {services.map((s) => (
+    <article class={`card reveal ${sizeClass(s)}`}>
+      <span class={`svc-viz ${isStrip(s) ? 'svc-viz--strip' : ''}`} aria-hidden="true">
+        {artOf(s) && (
+          <span class={`svc-art ${isStrip(s) ? 'svc-art--sm' : ''}`}>
+            <svg viewBox="0 0 96 72" set:html={art[artOf(s)]} />
+          </span>
+        )}
+        {logosOf(s) && logosOf(s).map((f) => (
+          <span class="svc-chip"><img src={`/logos/${f}`} alt="" width="30" height="30" loading="lazy" /></span>
+        ))}
+        {logosOf(s) && starsOf(s) && (
+          <span class="svc-stars">
+            {[0, 1, 2, 3, 4].map(() => (
+              <svg viewBox="0 0 24 24" set:html={goldStar} />
+            ))}
+          </span>
+        )}
+      </span>
+      {isStrip(s) ? (
+        <div>
+          <h3>{s.t}</h3>
+          <p>{s.d}</p>
+        </div>
+      ) : (
+        <>
+          <h3>{s.t}</h3>
+          <p>{s.d}</p>
+          {s.href && <a class="card-arrow" href={s.href}>{cta}</a>}
+        </>
+      )}
+    </article>
+  ))}
+</div>
