@@ -9,7 +9,7 @@ const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   name: 'Digital Visibility — Get found on Google and AI',
-  serviceType: 'Website development, SEO, GEO/AEO, Google Reviews',
+  serviceType: 'Website development, Google Business Profile, SEO, GEO/AEO, Social media, Google Reviews',
   areaServed: SITE.regionEn,
   provider: {
     '@type': 'LocalBusiness',
@@ -30,8 +30,19 @@ const schema = {
 const services = [
   {
     t: 'A website that sells',
-    d: 'Fast, clean, with one clear next step on every page. Not a shop window — a working tool.',
+    d: 'Fast, clean, with one clear next step on every page. Not a shop window — a working tool. And with optional monthly care, it keeps running without you thinking about it.',
     icon: 'site',
+  },
+  {
+    t: 'A website with online bookings',
+    d: 'Your customers book an appointment or a table online and get an automatic reminder — no more no-shows.',
+    icon: 'cal',
+  },
+  {
+    t: 'Google Business Profile',
+    d: 'Set-up and optimization of your profile on Google Maps and Search — correct details, categories, photos.',
+    icon: 'pin',
+    href: '/en/guides/google-maps-profile/',
   },
   {
     t: 'First on Google (SEO)',
@@ -44,6 +55,12 @@ const services = [
     icon: 'ai',
   },
   {
+    t: 'Social media',
+    d: 'Profiles that look alive: a one-off clean-up and set-up, or monthly management with posts and stories — using your material or ours.',
+    icon: 'social',
+    href: '/en/guides/social-media-management/',
+  },
+  {
     t: 'The Reviews Tool',
     d: 'Our tool that makes Google reviews pile up on their own. How? That part we only show live.',
     icon: 'star',
@@ -53,6 +70,7 @@ const services = [
     t: 'Digital Menu with QR',
     d: 'A QR code on the table: customers scan and see your menu on their phone. Change prices and dishes anytime — no reprints.',
     icon: 'menu',
+    href: '/en/digital-menu/',
   },
   {
     t: 'An eye on the competition',
@@ -99,7 +117,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">What we set up</p>
-        <h2 id="svc-title">Six jobs. One goal: getting you found.</h2>
+        <h2 id="svc-title">Nine jobs. One goal: getting you found.</h2>
       </div>
       <div class="grid-3">
         {services.map((s) => (
@@ -108,6 +126,21 @@ const faqItems = [
               {s.icon === 'site' && (
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <rect x="3" y="4.5" width="18" height="15" rx="2.5" /><path d="M3 9.5h18M6.4 7h.01M9.4 7h.01" />
+                </svg>
+              )}
+              {s.icon === 'cal' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3.5" y="5" width="17" height="16" rx="2.5" /><path d="M3.5 9.8h17M8 2.8V6M16 2.8V6M8.5 14.5l2.3 2.3 4.4-4.6" />
+                </svg>
+              )}
+              {s.icon === 'pin' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 21.5s-7-6.2-7-11.3A7 7 0 0 1 19 10.2c0 5.1-7 11.3-7 11.3z" /><circle cx="12" cy="10" r="2.6" />
+                </svg>
+              )}
+              {s.icon === 'social' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="6" cy="12" r="2.8" /><circle cx="17.5" cy="5.5" r="2.8" /><circle cx="17.5" cy="18.5" r="2.8" /><path d="M8.6 10.7l6.3-3.7M8.6 13.3l6.3 3.7" />
                 </svg>
               )}
               {s.icon === 'seo' && (
