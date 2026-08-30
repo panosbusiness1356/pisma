@@ -37,6 +37,7 @@ const services = [
     t: 'Site με online κρατήσεις',
     d: 'Οι πελάτες σας κλείνουν ραντεβού ή τραπέζι online και παίρνουν αυτόματη υπενθύμιση — τέλος τα «μου έστησε».',
     icon: 'cal',
+    href: '#kratiseis',
   },
   {
     t: 'Google Business Profile',
@@ -174,6 +175,99 @@ const faqItems = [
             {s.href && <a class="card-arrow" href={s.href}>Μάθε τι κάνει →</a>}
           </article>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 2β. «Site που πουλάει» — laptop mockup σε loop όπως οι άλλες σκηνές:
+       το HTML έχει το τελικό state (site πλήρες, κράτηση κλεισμένη) — χωρίς
+       JS ή με reduced motion μένει στατικό· το JS το «ξαναπαίζει» όσο το
+       section είναι ορατό: η σελίδα χτίζεται κομμάτι-κομμάτι, ο κέρσορας
+       πατά «Κλείσε ραντεβού» και η κράτηση επιβεβαιώνεται. -->
+  <section class="section section--tight" id="kratiseis" aria-labelledby="lp-title">
+    <div class="container">
+      <div class="lp-grid">
+        <div class="lp-copy">
+          <div class="sec-head">
+            <p class="kicker kicker--blue">Site με online κρατήσεις</p>
+            <h2 id="lp-title">Ραντεβού που κλείνονται μόνα τους</h2>
+          </div>
+          <p class="lp-sub">
+            Ο πελάτης βλέπει, διαλέγει ώρα και κλείνει — μέρα ή νύχτα, χωρίς
+            τηλεφωνήματα. Εσείς απλώς βλέπετε το ημερολόγιο να γεμίζει.
+          </p>
+          <div class="lp-cta-row">
+            <a class="btn btn--orange" href="/times/">Δες τιμές για site →</a>
+          </div>
+          <p class="lp-note">Ενδεικτική απεικόνιση — το δικό σας site στήνεται για τη δική σας δουλειά.</p>
+        </div>
+
+        <div class="lp-stage" id="lp-stage" aria-hidden="true">
+          <div class="lp-laptop">
+            <div class="lp-screen">
+              <span class="lp-camdot"></span>
+              <div class="lp-page is-dim" id="lp-page">
+                <div class="lp-browser">
+                  <span class="lp-dots"><i></i><i></i><i></i></span>
+                  <span class="lp-url">anna-hair.gr</span>
+                </div>
+                <div class="lp-body">
+                  <div class="lp-part lp-nav is-in">
+                    <b>ANNA<span>hair studio</span></b>
+                    <span class="lp-links"><i>Υπηρεσίες</i><i>Τιμές</i><i>Επικοινωνία</i></span>
+                  </div>
+                  <div class="lp-hero">
+                    <div class="lp-part lp-hcopy is-in">
+                      <p class="lp-h1">Λάμψε από την πρώτη ματιά</p>
+                      <p class="lp-hsub">Κούρεμα, βαφή, styling — online κράτηση σε 30 δευτερόλεπτα.</p>
+                      <span class="lp-btn" id="lp-cta">Κλείσε ραντεβού</span>
+                    </div>
+                    <div class="lp-part lp-hart is-in">
+                      <img src="/site-demo/salon.jpg" alt="" loading="lazy" width="360" height="290" />
+                      <span class="lp-hart-chip">★ 4,9 · 234 κριτικές</span>
+                    </div>
+                  </div>
+                  <div class="lp-cards">
+                    <span class="lp-part lp-mini is-in"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6.5" r="2.6"/><circle cx="6" cy="17.5" r="2.6"/><path d="M8.3 8.2 20 19.4M8.3 15.8 20 4.6"/></svg>Κούρεμα <b class="num">15€</b></span>
+                    <span class="lp-part lp-mini is-in"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5c3.4 4.1 5.8 7.1 5.8 9.9a5.8 5.8 0 1 1-11.6 0c0-2.8 2.4-5.8 5.8-9.9z"/></svg>Βαφή <b class="num">45€</b></span>
+                    <span class="lp-part lp-mini is-in"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l1.9 5.6 5.6 1.9-5.6 1.9L12 18.5l-1.9-5.6-5.6-1.9 5.6-1.9z"/><path d="M18.8 16.6l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg>Styling <b class="num">20€</b></span>
+                  </div>
+                </div>
+                <!-- Βήματα κράτησης: υπηρεσία → ώρα → επιβεβαίωση (μόνο με JS) -->
+                <div class="lp-book" id="lp-book">
+                  <p class="lp-book-t">Κλείσε ραντεβού</p>
+                  <p class="lp-book-l">Υπηρεσία</p>
+                  <div class="lp-chips">
+                    <span class="lp-chip" id="lp-svc">Κούρεμα</span>
+                    <span class="lp-chip">Βαφή</span>
+                    <span class="lp-chip">Styling</span>
+                  </div>
+                  <p class="lp-book-l">Ημέρα</p>
+                  <div class="lp-chips">
+                    <span class="lp-chip">Πέμπτη</span>
+                    <span class="lp-chip" id="lp-day">Παρασκευή</span>
+                    <span class="lp-chip">Σάββατο</span>
+                    <span class="lp-chip lp-chip--more">Άλλη μέρα ›</span>
+                  </div>
+                  <p class="lp-book-l">Ώρα</p>
+                  <div class="lp-chips">
+                    <span class="lp-chip">16:00</span>
+                    <span class="lp-chip" id="lp-time">17:30</span>
+                    <span class="lp-chip">19:00</span>
+                  </div>
+                  <span class="lp-confirm" id="lp-confirm">Επιβεβαίωση</span>
+                </div>
+                <div class="lp-done is-on" id="lp-done">
+                  <span class="lp-done-check">✓</span>
+                  <p class="lp-done-t">Το ραντεβού κλείστηκε!</p>
+                  <p class="lp-done-s">Παρασκευή 17:30 · Κούρεμα</p>
+                </div>
+                <svg class="lp-cursor" id="lp-cursor" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 3.2 19 12.2l-6.6 1.1 3.4 6.4-2.7 1.4-3.4-6.4-4.2 4.6z" fill="#111" stroke="#fff" stroke-width="1.4"/></svg>
+              </div>
+            </div>
+            <div class="lp-base"></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -333,9 +427,396 @@ const faqItems = [
     }
     // Με reduced-motion (ή χωρίς IO): καμία κλάση — τελικό state αμέσως.
   }
+
+  // «Site με online κρατήσεις» (laptop): το HTML έχει το τελικό state (site
+  // πλήρες, κράτηση επιβεβαιωμένη). Με JS + ορατότητα, σε loop: η σελίδα
+  // χτίζεται κομμάτι-κομμάτι, ο κέρσορας πατά «Κλείσε ραντεβού» και περνάει
+  // τα ΒΗΜΑΤΑ της κράτησης — υπηρεσία → ώρα → Επιβεβαίωση → «κλείστηκε».
+  // Εκτός οθόνης: τελικό state.
+  const lpStage = document.getElementById('lp-stage');
+  if (lpStage && !reduce && 'IntersectionObserver' in window) {
+    const lpPage = document.getElementById('lp-page')!;
+    const lpCta = document.getElementById('lp-cta')!;
+    const lpBook = document.getElementById('lp-book')!;
+    const lpSvc = document.getElementById('lp-svc')!;
+    const lpDay = document.getElementById('lp-day')!;
+    const lpTime = document.getElementById('lp-time')!;
+    const lpConfirm = document.getElementById('lp-confirm')!;
+    const lpDone = document.getElementById('lp-done')!;
+    const lpCursor = document.getElementById('lp-cursor')!;
+    const lpParts = Array.from(lpStage.querySelectorAll<HTMLElement>('.lp-part'));
+    let lpTimers: number[] = [];
+    let lpActive = false;
+    const lpLater = (fn: () => void, ms: number) => lpTimers.push(window.setTimeout(fn, ms));
+
+    // Ο κέρσορας ταξιδεύει ώστε η μύτη του βέλους να πέφτει πάνω στο στοιχείο
+    const lpGo = (el: HTMLElement, ms: number) => {
+      const pr = lpPage.getBoundingClientRect();
+      const br = el.getBoundingClientRect();
+      lpCursor.style.transition = `opacity .3s ease, left ${ms}ms cubic-bezier(.3, .7, .25, 1), top ${ms}ms cubic-bezier(.3, .7, .25, 1)`;
+      lpCursor.style.opacity = '1';
+      lpCursor.style.left = `${Math.round(br.left - pr.left + br.width * 0.55)}px`;
+      lpCursor.style.top = `${Math.round(br.top - pr.top + br.height * 0.55)}px`;
+    };
+
+    const lpFinal = () => {
+      lpParts.forEach((p) => p.classList.add('is-in'));
+      lpCta.classList.remove('is-press');
+      lpConfirm.classList.remove('is-press');
+      lpBook.classList.remove('is-on');
+      lpSvc.classList.add('is-sel');
+      lpDay.classList.add('is-sel');
+      lpTime.classList.add('is-sel');
+      lpPage.classList.add('is-dim');
+      lpDone.classList.add('is-on');
+      lpCursor.style.opacity = '0';
+    };
+
+    const lpCycle = () => {
+      lpTimers.forEach(clearTimeout); lpTimers = [];
+      const pr = lpPage.getBoundingClientRect();
+      // Επαναφορά: άδεια σελίδα, κέρσορας κάτω-δεξιά, τίποτα επιλεγμένο
+      lpParts.forEach((p) => p.classList.remove('is-in'));
+      lpCta.classList.remove('is-press');
+      lpConfirm.classList.remove('is-press');
+      lpBook.classList.remove('is-on');
+      lpSvc.classList.remove('is-sel');
+      lpDay.classList.remove('is-sel');
+      lpTime.classList.remove('is-sel');
+      lpPage.classList.remove('is-dim');
+      lpDone.classList.remove('is-on');
+      lpCursor.style.transition = 'none';
+      lpCursor.style.opacity = '0';
+      lpCursor.style.left = `${Math.round(pr.width - 34)}px`;
+      lpCursor.style.top = `${Math.round(pr.height - 30)}px`;
+      // Η σελίδα «χτίζεται» κομμάτι-κομμάτι
+      lpLater(() => {
+        lpParts.forEach((p, i) => lpLater(() => p.classList.add('is-in'), i * 220));
+      }, 600);
+      // 1) Κλικ στο «Κλείσε ραντεβού» → ανοίγει η φόρμα βημάτων
+      lpLater(() => lpGo(lpCta, 1000), 3200);
+      lpLater(() => lpCta.classList.add('is-press'), 4400);
+      lpLater(() => lpCta.classList.remove('is-press'), 4700);
+      lpLater(() => { lpPage.classList.add('is-dim'); lpBook.classList.add('is-on'); }, 5000);
+      // 2) Επιλογή υπηρεσίας
+      lpLater(() => lpGo(lpSvc, 850), 5800);
+      lpLater(() => lpSvc.classList.add('is-sel'), 6900);
+      // 3) Επιλογή ημέρας
+      lpLater(() => lpGo(lpDay, 850), 7400);
+      lpLater(() => lpDay.classList.add('is-sel'), 8500);
+      // 4) Επιλογή ώρας
+      lpLater(() => lpGo(lpTime, 850), 9000);
+      lpLater(() => lpTime.classList.add('is-sel'), 10100);
+      // 5) Επιβεβαίωση → «Το ραντεβού κλείστηκε!»
+      lpLater(() => lpGo(lpConfirm, 850), 10600);
+      lpLater(() => lpConfirm.classList.add('is-press'), 11700);
+      lpLater(() => lpConfirm.classList.remove('is-press'), 12000);
+      lpLater(() => {
+        lpBook.classList.remove('is-on');
+        lpDone.classList.add('is-on');
+        lpCursor.style.opacity = '0';
+      }, 12400);
+      // Δίχτυ ασφαλείας: κλείδωμα στο στατικό state
+      lpLater(lpFinal, 16800);
+      lpLater(lpCycle, 18600);
+    };
+
+    const lpIo = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting && !lpActive) { lpActive = true; lpCycle(); }
+          else if (!e.isIntersecting && lpActive) {
+            lpActive = false;
+            lpTimers.forEach(clearTimeout); lpTimers = [];
+            lpFinal();
+          }
+        }
+      },
+      { threshold: 0.35 }
+    );
+    lpIo.observe(lpStage);
+  }
 </script>
 
 <style>
+  /* ---------- «Site με online κρατήσεις» — laptop ---------- */
+  /* Δίστηλη διάταξη σε desktop (κείμενο αριστερά, laptop δεξιά), στοίβαγμα
+     σε στενές οθόνες — ίδιο μοτίβο με την ενότητα κριτικών της αρχικής. */
+  .lp-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(28px, 5vw, 60px);
+    align-items: center;
+    max-width: 1020px; margin-inline: auto;
+  }
+  .lp-copy .sec-head { margin-bottom: 0; }
+  .lp-sub { color: var(--muted); max-width: 44ch; margin: 16px 0 26px; }
+  .lp-cta-row { display: flex; }
+  .lp-note { color: var(--muted); font-size: .78rem; margin: 14px 0 0; max-width: 42ch; }
+  @media (max-width: 960px) {
+    .lp-grid { grid-template-columns: 1fr; }
+    .lp-stage { margin-inline: auto; }
+  }
+
+  /* Ρεαλιστικό laptop: οθόνη 16:10 με λεπτό μπεζέλ και αλουμινένια βάση */
+  .lp-stage { width: 520px; max-width: 100%; }
+  .lp-laptop { position: relative; }
+  .lp-screen {
+    position: relative;
+    background: #0f0f11; border: 1px solid #3c3c42;
+    border-radius: 16px 16px 4px 4px;
+    padding: 11px 11px 15px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, .55);
+  }
+  .lp-camdot {
+    position: absolute; top: 5px; left: 50%; transform: translateX(-50%);
+    width: 4px; height: 4px; border-radius: 50%;
+    background: #2c2c31; box-shadow: inset 0 0 2px #000, 0 0 0 1px rgba(255, 255, 255, .05);
+  }
+  .lp-base {
+    width: 118%; margin-left: -9%;
+    height: 14px;
+    background: linear-gradient(180deg, #eceef1 0%, #c3c5cb 50%, #9a9ca3 100%);
+    border-radius: 2px 2px 14px 14px;
+    position: relative;
+  }
+  .lp-base::before {
+    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 84px; height: 5px;
+    background: #a2a4ab; border-radius: 0 0 9px 9px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .18);
+  }
+  .lp-base::after {
+    content: ''; position: absolute; top: 0; left: 2%; right: 2%;
+    height: 1px; background: rgba(0, 0, 0, .18);
+  }
+
+  /* Η σελίδα μέσα στην οθόνη — φωτεινό άσπρο-ροζ beauty site, γεμάτο χρώμα */
+  .lp-page {
+    position: relative;
+    display: flex; flex-direction: column;
+    aspect-ratio: 16 / 10;
+    background:
+      radial-gradient(90% 70% at 100% 0%, rgba(255, 138, 184, .28), transparent 55%),
+      radial-gradient(75% 60% at 0% 105%, rgba(178, 135, 245, .22), transparent 60%),
+      linear-gradient(165deg, #FFFDFE 0%, #FFF2F8 60%, #FAF0FF 100%);
+    border-radius: 6px; overflow: hidden;
+  }
+  /* Τεράστιο μονόγραμμα-υδατογράφημα, όπως στα ακριβά editorial sites */
+  .lp-page::after {
+    content: 'A';
+    position: absolute; right: -22px; bottom: -58px;
+    font-size: 175px; font-weight: 800; line-height: 1;
+    color: rgba(232, 93, 158, .06);
+    -webkit-text-stroke: 1px rgba(232, 93, 158, .12);
+    transform: rotate(-8deg);
+    pointer-events: none; z-index: 0;
+  }
+  .lp-browser {
+    display: flex; align-items: center; gap: 8px;
+    background: #f4f1f4; padding: 6px 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, .05);
+  }
+  .lp-dots { display: inline-flex; gap: 5px; }
+  .lp-dots i { width: 8px; height: 8px; border-radius: 50%; }
+  .lp-dots i:nth-child(1) { background: #ff5f57; }
+  .lp-dots i:nth-child(2) { background: #febc2e; }
+  .lp-dots i:nth-child(3) { background: #28c840; }
+  .lp-url {
+    flex: 1; text-align: center;
+    background: #fff; border-radius: 999px; padding: 3px 10px;
+    color: #6b6470; font-size: .64rem; font-weight: 600;
+    box-shadow: 0 1px 3px rgba(60, 20, 45, .08);
+  }
+  .lp-body {
+    flex: 1; display: flex; flex-direction: column;
+    padding: 12px 16px 14px;
+    transition: opacity .5s ease, filter .5s ease;
+  }
+  .lp-page.is-dim .lp-body { opacity: .35; filter: blur(1.5px); }
+
+  .lp-part { opacity: 1; transform: none; transition: opacity .45s ease, transform .45s ease; }
+  .lp-part:not(.is-in) { opacity: 0; transform: translateY(8px); }
+
+  .lp-nav {
+    position: relative;
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding-bottom: 9px;
+    border-bottom: 1px solid rgba(0, 0, 0, .06);
+  }
+  /* Κοντή ροζ hairline πάνω στο διαχωριστικό — πινελιά πολυτέλειας */
+  .lp-nav::after {
+    content: ''; position: absolute; left: 0; bottom: -1px;
+    width: 58px; height: 1px;
+    background: linear-gradient(90deg, #E85D9E, transparent);
+  }
+  .lp-nav b { color: #241f26; font-size: .78rem; font-weight: 800; letter-spacing: .04em; }
+  .lp-nav b span { color: #E85D9E; font-weight: 700; font-size: .62rem; margin-left: 4px; letter-spacing: .08em; }
+  .lp-links { display: inline-flex; gap: 11px; }
+  .lp-links i {
+    color: #97909c; font-size: .52rem; font-style: normal; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .14em;
+  }
+
+  .lp-hero {
+    display: grid; grid-template-columns: 1.15fr .85fr; gap: 14px;
+    align-items: center; margin-block: auto;
+  }
+  .lp-h1 { margin: 0; color: #241f26; font-size: 1rem; font-weight: 800; line-height: 1.2; max-width: none; }
+  .lp-h1::after {
+    content: ''; display: block;
+    width: 46px; height: 2.5px; margin-top: 7px;
+    background: linear-gradient(90deg, #FF8AB8, #E85D9E);
+    border-radius: 999px;
+  }
+  .lp-hsub { margin: 7px 0 11px; color: #7e7685; font-size: .64rem; line-height: 1.45; max-width: none; }
+  /* Ροζ κουμπί που «αναπνέει» — τραβάει το μάτι εκεί που θα γίνει το κλικ */
+  .lp-btn {
+    display: inline-block;
+    background: linear-gradient(92deg, #FF7FB2 0%, #ED5B9C 55%, #E4468C 100%);
+    color: #fff; border-radius: 9px; padding: 7px 13px;
+    font-size: .66rem; font-weight: 800; letter-spacing: .01em;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 6px 18px rgba(232, 93, 158, .35);
+    transition: transform .16s ease, box-shadow .16s ease;
+    animation: lp-glow 2.6s ease-in-out infinite;
+  }
+  @keyframes lp-glow {
+    50% { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 6px 28px rgba(232, 93, 158, .6); }
+  }
+  .lp-btn.is-press { transform: scale(.92); box-shadow: 0 2px 8px rgba(232, 93, 158, .4); }
+  /* Βιτρίνα-μονόγραμμα: πολύχρωμο ροζ→μωβ πλακίδιο με λάμψη-sheen */
+  .lp-hart {
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    aspect-ratio: 1 / .8; border-radius: 14px;
+    background:
+      radial-gradient(85% 95% at 78% 0%, rgba(255, 255, 255, .4), transparent 55%),
+      linear-gradient(135deg, #FFC1DC 0%, #FF8AB8 45%, #B287F5 100%);
+    box-shadow: 0 10px 26px rgba(232, 93, 158, .3);
+  }
+  .lp-hart::before {
+    content: ''; position: absolute; top: -30%; bottom: -30%; left: -40%; width: 36%;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .45), transparent);
+    transform: skewX(-12deg) translateX(-60%);
+    animation: lp-sheen 4.4s ease-in-out infinite;
+  }
+  @keyframes lp-sheen {
+    0%, 55% { transform: skewX(-12deg) translateX(-60%); }
+    85%, 100% { transform: skewX(-12deg) translateX(430%); }
+  }
+  .lp-hart img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .lp-hart::before { z-index: 1; }
+  .lp-hart-chip {
+    position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%); z-index: 2;
+    background: #fff; color: #241f26;
+    border-radius: 999px; padding: 3px 9px; white-space: nowrap;
+    font-size: .56rem; font-weight: 700;
+    box-shadow: 0 4px 12px rgba(60, 20, 45, .2);
+  }
+  .lp-cards { display: flex; gap: 8px; margin-top: 14px; }
+  .lp-mini {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+    background: #fff;
+    border: 1px solid rgba(232, 93, 158, .16);
+    border-radius: 10px; padding: 7px 4px;
+    color: #5a5361; font-size: .6rem; font-weight: 700; white-space: nowrap;
+    box-shadow: 0 3px 10px rgba(60, 20, 45, .07);
+  }
+  .lp-mini b { color: #241f26; font-weight: 700; font-size: .6rem; }
+  .lp-mini svg {
+    width: 12px; height: 12px; flex: none;
+    fill: none; stroke-width: 1.9;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  /* «Πολλά χρώματα»: κάθε υπηρεσία με δικό της χρώμα */
+  .lp-mini:nth-child(1) svg { stroke: #E85D9E; }
+  .lp-mini:nth-child(2) svg { stroke: #9A6BF0; }
+  .lp-mini:nth-child(3) svg { stroke: #E8A23D; }
+
+  /* Βήματα κράτησης: υπηρεσία → ώρα → επιβεβαίωση */
+  .lp-book {
+    position: absolute; left: 50%; top: 52%;
+    transform: translate(-50%, -50%) scale(.88);
+    width: min(76%, 300px);
+    background: #fff; border: 1px solid rgba(232, 93, 158, .18);
+    border-radius: 14px; padding: 13px 15px 14px;
+    box-shadow: 0 18px 50px rgba(60, 20, 45, .3);
+    opacity: 0; pointer-events: none; z-index: 2;
+    transition: opacity .35s ease, transform .4s cubic-bezier(.3, 1.4, .4, 1.1);
+  }
+  .lp-book.is-on { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  .lp-book-t { margin: 0; color: #241f26; font-size: .74rem; font-weight: 800; max-width: none; }
+  .lp-book-l {
+    margin: 9px 0 5px; max-width: none;
+    color: #E85D9E; font-size: .5rem; font-weight: 800;
+    text-transform: uppercase; letter-spacing: .14em;
+  }
+  .lp-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .lp-chip {
+    background: #f6f2f6; border: 1px solid rgba(0, 0, 0, .06);
+    border-radius: 999px; padding: 4px 10px;
+    color: #5a5361; font-size: .58rem; font-weight: 700; white-space: nowrap;
+    transition: background-color .25s ease, color .25s ease, box-shadow .25s ease;
+  }
+  .lp-chip.is-sel {
+    background: linear-gradient(92deg, #FF7FB2, #E4468C); color: #fff;
+    border-color: transparent;
+    box-shadow: 0 4px 10px rgba(232, 93, 158, .35);
+  }
+  /* «Άλλη μέρα» — άνοιγμα ημερολογίου, αν δεν βολεύει καμία ορατή */
+  .lp-chip--more {
+    background: #fff; border: 1px dashed rgba(232, 93, 158, .5);
+    color: #E85D9E;
+  }
+  .lp-confirm {
+    display: block; margin-top: 12px; text-align: center;
+    background: linear-gradient(92deg, #FF7FB2 0%, #ED5B9C 55%, #E4468C 100%);
+    color: #fff; border-radius: 9px; padding: 7px;
+    font-size: .62rem; font-weight: 800;
+    box-shadow: 0 5px 14px rgba(232, 93, 158, .3);
+    transition: transform .16s ease;
+  }
+  .lp-confirm.is-press { transform: scale(.94); }
+
+  /* Επιβεβαίωση κράτησης */
+  .lp-done {
+    position: absolute; left: 50%; top: 52%;
+    transform: translate(-50%, -50%) scale(.8);
+    background: #fff; border: 1px solid rgba(0, 0, 0, .05);
+    border-radius: 14px; padding: 14px 22px;
+    text-align: center;
+    box-shadow: 0 18px 50px rgba(60, 20, 45, .3);
+    opacity: 0; pointer-events: none; z-index: 2;
+    transition: opacity .4s ease, transform .45s cubic-bezier(.3, 1.5, .4, 1.1);
+  }
+  .lp-done.is-on { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  .lp-done-check {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: #1D9E75; color: #fff; font-size: 1rem; font-weight: 800;
+    box-shadow: 0 0 0 4px rgba(29, 158, 117, .15);
+  }
+  .lp-done-t { margin: 8px 0 0; color: #241f26; font-size: .78rem; font-weight: 800; max-width: none; }
+  .lp-done-s { margin: 2px 0 0; color: #7e7685; font-size: .64rem; max-width: none; }
+
+  .lp-cursor { position: absolute; width: 17px; height: 17px; z-index: 5; opacity: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lp-btn, .lp-hart::before { animation: none; }
+  }
+  @media (max-width: 560px) {
+    /* Η προεξοχή της βάσης μαζεύει ώστε να μη δημιουργεί οριζόντιο scroll */
+    .lp-base { width: 106%; margin-left: -3%; }
+  }
+  @media (max-width: 460px) {
+    .lp-hero { grid-template-columns: 1fr; }
+    .lp-hart { display: none; }
+    .lp-page { aspect-ratio: auto; }
+  }
   /* ---------- Chat demo ---------- */
   .chat {
     max-width: 620px;

@@ -125,7 +125,7 @@ const faqItems = [
               <div class="dm-app">
                 <p class="dm-url is-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="10.5" width="14" height="9.5" rx="2.5"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/></svg>menu-gonia.gr</p>
                 <div class="dm-hero is-in">
-                  <span class="dm-hero-art" aria-hidden="true">🍕</span>
+                  <span class="dm-hero-art" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.2 5.6 12 21 19.8 5.6" /><path d="M4.2 5.6a15 15 0 0 1 15.6 0" /><circle cx="10" cy="9.4" r="1.5" /><circle cx="14.4" cy="11.6" r="1.5" /><circle cx="11.6" cy="14.8" r="1.5" /></svg></span>
                   <p class="dm-hero-name">Πιτσαρία «Η Γωνιά»</p>
                   <p class="dm-hero-sub">Ξυλόφουρνος · τραπέζι 12</p>
                   <p class="dm-hero-meta" aria-hidden="true"><span>★ 4,9</span><span>25–35′</span><span>Ανοιχτά τώρα</span></p>
@@ -154,7 +154,7 @@ const faqItems = [
                   <span class="dm-info"><b>Σπιτική λεμονάδα</b><i>φρέσκο λεμόνι, δυόσμος</i></span>
                   <b class="dm-price num">3,50€</b>
                 </div>
-                <span class="dm-order is-in" aria-hidden="true">🛎️ Παραγγελία στο τραπέζι</span>
+                <span class="dm-order is-in" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9.8a6 6 0 0 1 12 0c0 4.8 1.7 6 1.7 6H4.3S6 14.6 6 9.8" /><path d="M10.1 19a2.1 2.1 0 0 0 3.8 0" /></svg>Παραγγελία στο τραπέζι</span>
               </div>
 
               <!-- Κάμερα iPhone: φαίνεται μόνο στην αρχή κάθε κύκλου (JS) —
@@ -461,9 +461,14 @@ const faqItems = [
     85%, 100% { transform: skewX(-12deg) translateX(440%); }
   }
   .dm-hero-art {
-    position: absolute; right: -10px; top: -8px;
-    font-size: 66px; opacity: .35; transform: rotate(14deg);
+    position: absolute; right: -6px; top: -4px;
+    opacity: .4; transform: rotate(14deg);
     animation: dm-bob 4.5s ease-in-out infinite;
+  }
+  .dm-hero-art svg {
+    width: 68px; height: 68px;
+    fill: none; stroke: #fff; stroke-width: 1.6;
+    stroke-linecap: round; stroke-linejoin: round;
   }
   @keyframes dm-bob {
     0%, 100% { transform: rotate(14deg) translateY(0); }
@@ -548,6 +553,11 @@ const faqItems = [
     transition: opacity .45s ease, transform .45s ease;
   }
   .dm-order:not(.is-in) { opacity: 0; transform: translateY(10px); }
+  .dm-order svg {
+    width: 14px; height: 14px; flex: none;
+    fill: none; stroke: #fff; stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
   @media (prefers-reduced-motion: reduce) {
     .dm-hero::before, .dm-hero-art { animation: none; }
   }
