@@ -161,20 +161,6 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
         <a class="btn btn--ghost" href="/en/free-assessment/">Free {ELEGXOS.minutes}-minute assessment</a>
       </div>
       <p class="btn-note blur-in" style="--d:.54s">No email · no commitment · your score appears instantly</p>
-
-      <!-- Mockup: pisma.gr on two phones + platform logos -->
-      <div class="hero-shot blur-in" style="--d:.6s">
-        <img
-          src="/hero/pisma-devices.webp"
-          srcset="/hero/pisma-devices-sm.webp 760w, /hero/pisma-devices.webp 1600w"
-          sizes="(max-width: 680px) 92vw, min(880px, 92vw)"
-          width="1600"
-          height="1132"
-          alt="pisma.gr open on two phones, next to Facebook, Instagram, LinkedIn, TikTok, WhatsApp, Excel and ChatGPT logos"
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
     </div>
 
     <!-- Πριν → Μετά -->
@@ -851,13 +837,6 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
   .hero .sub { margin: 24px auto 0; font-size: 1.1rem; color: var(--muted); max-width: 62ch; }
   .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 36px; }
   .hero .btn-note { margin-top: 14px; margin-inline: auto; }
-  /* position/z-index: the hero's floating logos pass BEHIND the card */
-  .hero-shot { margin: 44px auto 0; max-width: 880px; position: relative; z-index: 2; }
-  .hero-shot img {
-    display: block; width: 100%; height: auto;
-    border-radius: 18px; border: 1px solid var(--line);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
-  }
   .btn-frame {
     display: inline-flex; padding: 3px; border-radius: 14px;
     background: rgba(255, 255, 255, .08); border: 1px solid var(--line);
@@ -1151,7 +1130,6 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     .hero-ctas { order: 3; }
     .hero .btn-note { order: 4; }
     .hero .sub { order: 5; }
-    .hero-shot { order: 6; margin-top: 30px; animation-delay: .64s; }
     /* Το animation ακολουθεί τη νέα οπτική σειρά — η περιγραφή εμφανίζεται τελευταία. */
     .hero .sub { font-size: .92rem; margin-top: 26px; max-width: 40ch; animation-delay: .56s; }
     .sub-more { display: none; }
