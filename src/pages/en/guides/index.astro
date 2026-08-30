@@ -2,7 +2,7 @@
 import Base from '../../../layouts/Base.astro';
 import PageHero from '../../../components/PageHero.astro';
 import CtaBand from '../../../components/CtaBand.astro';
-import { SITE } from '../../../config';
+import { SITE, ELEGXOS } from '../../../config';
 import { GUIDES_EN as guides } from '../../../data/guides.en';
 
 const schema = {
@@ -27,7 +27,7 @@ const schema = {
 ---
 
 <Base
-  title="Guides for businesses — Google, AI, reviews, websites | PISMA"
+  title="Guides for businesses — Google, AI, reviews, sites | PISMA"
   description="Practical guides in plain words: how customers find you on Google and AI, how to get reviews, what a website costs. Written for owners, not for techies."
   schema={schema}
 >
@@ -54,10 +54,10 @@ const schema = {
 
   <CtaBand
     title="Rather look at it together?"
-    sub="The PISMA Check: 45 minutes to measure where you stand on Google, AI and day-to-day operations."
+    sub={`The PISMA Check: ${ELEGXOS.minutes} minutes to measure where you stand on Google, AI and day-to-day operations.`}
     ctaText="Book your free Check"
     ctaHref="/en/free-assessment/"
-    note="Free · no commitment whatsoever"
+    note={`${ELEGXOS.priceEn} · no commitment whatsoever`}
   />
 </Base>
 

@@ -63,7 +63,7 @@ ${GUIDES.map((g) => `- [${g.q}](${SITE.url}/odigoi/${g.slug}/): ${g.blurb}`).joi
 
 Το site διατίθεται και στα αγγλικά, με πλήρη αντιστοιχία σελίδων:
 - [Home](${SITE.url}/en/) · [Pricing](${SITE.url}/en/pricing/) · [The Reviews Tool](${SITE.url}/en/reviews/) · [Guides](${SITE.url}/en/guides/) · [Contact](${SITE.url}/en/contact/)
-- Free 45-minute assessment: [The PISMA Check](${SITE.url}/en/free-assessment/)
+- Free ${ELEGXOS.minutes}-minute assessment: [The PISMA Check](${SITE.url}/en/free-assessment/)
 `;
 
 export const GET: APIRoute = () =>

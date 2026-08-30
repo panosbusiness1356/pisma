@@ -3,6 +3,7 @@
 // στο mobile μενού εμφανίζονται σκέτες, στην ίδια θέση, χωρίς trigger.
 // Δίγλωσσο: όλα τα λεκτικά/links του μενού ανά γλώσσα — η γλώσσα βγαίνει από το URL.
 import { langOf, altOf } from '../i18n';
+import { ELEGXOS } from '../config';
 
 const lang = langOf(Astro.url.pathname);
 const altHref = altOf(Astro.url.pathname);
@@ -23,13 +24,13 @@ const NAV = {
     home: '/',
     cta: 'Μέτρησε την επιχείρησή σου',
     ctaHref: '/tablo/',
-    cta2: 'Δωρεάν αξιολόγηση 45′',
+    cta2: `Δωρεάν αξιολόγηση ${ELEGXOS.minutes}′`,
     cta2Href: '/elegxos/',
     sounds: 'Ήχοι κλικ',
     menuAria: 'Κύριο μενού',
     burgerAria: 'Μενού',
     langBtn: 'EN',
-    langAria: 'Switch to English',
+    langAria: 'EN — Switch to English',
     langMobile: 'English',
   },
   en: {
@@ -47,13 +48,13 @@ const NAV = {
     home: '/en/',
     cta: 'Measure your business',
     ctaHref: '/en/business-check/',
-    cta2: 'Free 45-minute assessment',
+    cta2: `Free ${ELEGXOS.minutes}-minute assessment`,
     cta2Href: '/en/free-assessment/',
     sounds: 'Click sounds',
     menuAria: 'Main menu',
     burgerAria: 'Menu',
     langBtn: 'ΕΛ',
-    langAria: 'Αλλαγή σε ελληνικά',
+    langAria: 'ΕΛ — Αλλαγή σε ελληνικά',
     langMobile: 'Ελληνικά',
   },
 }[lang];
@@ -74,7 +75,6 @@ const inServices = NAV.services.some((s) => path === norm(s.href));
           type="button"
           class:list={['sub-trigger', { 'is-active': inServices }]}
           aria-expanded="false"
-          aria-haspopup="true"
           aria-controls="sub-panel"
         >
           {NAV.servicesLabel}
@@ -141,6 +141,7 @@ const inServices = NAV.services.some((s) => path === norm(s.href));
 <script>
   const burger = document.querySelector<HTMLButtonElement>('.burger')!;
   const nav = document.getElementById('nav-links')!;
+  const wrap = document.querySelector<HTMLElement>('.nav-wrap')!;
   burger.addEventListener('click', () => {
     const open = burger.getAttribute('aria-expanded') === 'true';
     burger.setAttribute('aria-expanded', String(!open));
@@ -166,9 +167,15 @@ const inServices = NAV.services.some((s) => path === norm(s.href));
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') setSub(false);
   });
+  // Το CSS ανοίγει το πάνελ και με hover/focus-within — κράτα το aria-expanded συγχρονισμένο.
+  sub?.addEventListener('mouseenter', () => setSub(true));
+  sub?.addEventListener('mouseleave', () => setSub(false));
+  sub?.addEventListener('focusin', () => setSub(true));
+  sub?.addEventListener('focusout', (e) => {
+    if (!sub.contains((e as FocusEvent).relatedTarget as Node)) setSub(false);
+  });
 
   // Floating nav: μαζεύει σε «κάψουλα» με blur μετά από λίγο scroll.
-  const wrap = document.querySelector<HTMLElement>('.nav-wrap')!;
   const onScroll = () => wrap.classList.toggle('is-scrolled', window.scrollY > 50);
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -191,7 +198,17 @@ const inServices = NAV.services.some((s) => path === norm(s.href));
   for (const btn of soundToggles) {
     btn.addEventListener('click', () => {
       const api = (window as unknown as { pismaSound?: { toggle: () => boolean } }).pismaSound;
-      if (api) syncSound(api.toggle());
+      if (api) {
+        syncSound(api.toggle());
+        return;
+      }
+      // Δίχτυ ασφαλείας: αν το audio module του Base δεν φόρτωσε, ο διακόπτης
+      // αλλάζει τουλάχιστον την αποθηκευμένη προτίμηση και το εικονίδιο.
+      try {
+        const next = localStorage.getItem('pisma-sound') === 'off';
+        localStorage.setItem('pisma-sound', next ? 'on' : 'off');
+        syncSound(next);
+      } catch { /* χωρίς αποθήκευση */ }
     });
   }
 </script>

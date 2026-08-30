@@ -153,7 +153,7 @@ const faqItems = [
             <path d="M15 27 l8 8 l15 -16" fill="none" />
           </svg>
           <p class="fd-title">Your quote is on its way!</p>
-          <p class="fd-sub">We'll get back to you within 48 hours.</p>
+          <p class="fd-sub">We'll get back to you within {ELEGXOS.reportHours} hours.</p>
         </div>
       </div>
     </div>
@@ -191,10 +191,10 @@ const faqItems = [
   <!-- Τελικό CTA -->
   <CtaBand
     title="Not sure what you need?"
-    sub="The free 45-minute assessment shows you what's actually worth getting — with numbers, not guesses."
+    sub={`The free ${ELEGXOS.minutes}-minute assessment shows you what's actually worth getting — with numbers, not guesses.`}
     ctaText="Book your free assessment"
     ctaHref="/en/free-assessment/"
-    note={`Free · ${ELEGXOS.minutes} minutes · you leave with written findings`}
+    note={`${ELEGXOS.priceEn} · ${ELEGXOS.minutes} minutes · you leave with written findings`}
   />
 </Base>
 

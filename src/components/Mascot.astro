@@ -369,6 +369,11 @@ const cloudB = dots.slice(half);
 
   window.addEventListener('resize', () => {
     el.style.width = W() + 'px';
+    // Ξανακλείδωσε τον Ντοτ μέσα στο νέο viewport (π.χ. αλλαγή προσανατολισμού),
+    // αλλιώς μένει παρκαρισμένος εκτός οθόνης μέχρι το επόμενο scroll.
+    px = Math.min(Math.max(px, 6), Math.max(6, window.innerWidth - W() - 6));
+    py = Math.min(Math.max(py, 6), Math.max(6, window.innerHeight - H() - 6));
+    if (reduce) el.style.transform = `translate(${px}px, ${py}px)`;
   });
 
   /* Κλικ: χοροπηδηματάκι + ήχος + ξαναδείχνει το μήνυμα της στάσης. */
@@ -392,7 +397,11 @@ const cloudB = dots.slice(half);
     will-change: transform;
     filter: drop-shadow(0 10px 26px rgba(238, 79, 39, .22));
     transition: opacity .7s ease;
+    /* Μόνο οι ζωγραφισμένες κουκίδες πιάνουν κλικ — οι άδειες γωνίες του
+       κουτιού αφήνουν τα taps να περνούν στο περιεχόμενο από κάτω. */
+    pointer-events: none;
   }
+  #pisma-mascot circle { pointer-events: auto; }
   #pisma-mascot.is-ready { opacity: 1; }
   #pisma-mascot svg { overflow: visible; width: 100%; height: auto; }
 

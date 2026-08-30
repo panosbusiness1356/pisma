@@ -16,21 +16,11 @@ export const SITE = {
   gaId: 'G-HE6GWTRNQM',
 } as const;
 
-/** Ηλεκτρονική τιμολόγηση — Β' φάση (όλες οι επιχειρήσεις) */
-export const EINVOICE = {
-  deadlineISO: '2026-10-01',
-  deadlineHuman: '1η Οκτωβρίου 2026',
-  deadlineShort: '1/10/2026',
-  earlyBirdISO: '2026-08-03',
-  earlyBirdHuman: '3 Αυγούστου 2026',
-  maxFine: 2500, // €/παράβαση
-  migrationWeeks: '6–10 εβδομάδες',
-} as const;
-
 /** Ο Έλεγχος PISMA */
 export const ELEGXOS = {
   minutes: 45,
   price: 'Δωρεάν',
+  priceEn: 'Free',
   reportHours: 48,
 } as const;
 

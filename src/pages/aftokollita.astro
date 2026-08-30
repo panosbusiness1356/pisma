@@ -7,12 +7,42 @@
 // (κοινές με το /en/qr-stickers/) — εδώ μόνο τα ελληνικά λεκτικά.
 import { SITE } from '../config';
 import Consent from '../components/Consent.astro';
+import { STICKER_PRICES } from '../data/stickers';
 import '../styles/fonts.css'; // self-hosted Inter/Unbounded/JetBrains Mono — ίδιες με το υπόλοιπο site
 
 const title = 'Αυτοκόλλητα QR — Το Εργαλείο Κριτικών | PISMA';
 const description =
   'Διάλεξε από 16 αυτοκόλλητα QR για τραπέζι, ταμείο, βιτρίνα και delivery — με τα χρώματα και το όνομα του μαγαζιού σου. Στέλνεις το καλάθι, σε παίρνουμε τηλέφωνο.';
 const canonical = `${SITE.url}/aftokollita/`;
+
+// JSON-LD: ίδια «ταυτότητα» WebSite με το Base + το προϊόν με εύρος τιμών από stickers.ts.
+const prices = Object.values(STICKER_PRICES);
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: SITE.url,
+    inLanguage: 'el',
+    publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url, email: SITE.email },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: 'Αυτοκόλλητα QR — Το Εργαλείο Κριτικών',
+    description,
+    url: canonical,
+    image: `${SITE.url}/og.png`,
+    brand: { '@type': 'Brand', name: SITE.name },
+    offers: {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'EUR',
+      lowPrice: Math.min(...prices),
+      highPrice: Math.max(...prices),
+      offerCount: prices.length,
+    },
+  },
+];
 ---
 
 <!doctype html>
@@ -43,12 +73,9 @@ const canonical = `${SITE.url}/aftokollita/`;
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content={`${SITE.url}/og.png`}>
 <meta name="theme-color" content="#0D0A14">
-<!-- Google Fonts μόνο για τη Noto Sans Display: είναι η γραμματοσειρά ΤΟΥ ΠΡΟΪΟΝΤΟΣ
-     (τα SVG των αυτοκόλλητων, ίδια και στην εκτύπωση) — το UI χρησιμοποιεί τις
-     self-hosted γραμματοσειρές του site. -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@700;800;900&display=swap" rel="stylesheet">
+{schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+<!-- Η Noto Sans Display (γραμματοσειρά ΤΟΥ ΠΡΟΪΟΝΤΟΣ στα SVG των αυτοκόλλητων)
+     είναι πλέον self-hosted στο fonts.css — κανένα εξωτερικό αίτημα. -->
 <style is:global>
 /* Tokens του site (src/styles/global.css) — το showroom μιλά την ίδια γλώσσα. */
 :root{
@@ -297,8 +324,8 @@ input{font-family:inherit}
   <div class="info">
     <div class="l">
       <div class="idx" id="idx">01 / 16</div>
-      <h1 id="stgname"></h1>
-      <div class="sz" id="stgsize"></div>
+      <h1 id="stgname">Στο ταμείο</h1>
+      <div class="sz" id="stgsize">10 × 10 cm · 25 τεμ.</div>
     </div>
     <div class="r">
       <span class="price"><span id="stgprice"></span><small>/ πακέτο</small></span>
@@ -308,8 +335,8 @@ input{font-family:inherit}
 
   <!-- ============ style ============ -->
   <div class="style">
-    <span class="grp"><label>Χρώματα</label><span class="dots" id="dots"></span></span>
-    <span class="grp"><label>Λέξη</label><span class="wchips" id="words"></span></span>
+    <span class="grp"><label id="lbl-dots">Χρώματα</label><span class="dots" id="dots" role="group" aria-labelledby="lbl-dots"></span></span>
+    <span class="grp"><label id="lbl-words">Λέξη</label><span class="wchips" id="words" role="group" aria-labelledby="lbl-words"></span></span>
   </div>
 
   <!-- ============ filmstrip ============ -->
@@ -342,7 +369,7 @@ input{font-family:inherit}
     </div>
     <input type="text" id="f-hp" class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
     <button class="send" id="send" disabled>Στείλ' το</button>
-    <p class="senderr" id="senderr">Δεν στάλθηκε — δοκίμασε ξανά ή γράψε μας στο {SITE.email}</p>
+    <p class="senderr" id="senderr" role="alert">Δεν στάλθηκε — δοκίμασε ξανά ή γράψε μας στο {SITE.email}</p>
     <p class="safe">Καμία πληρωμή τώρα · Σε παίρνουμε τηλέφωνο την επόμενη εργάσιμη</p>
   </div>
 </aside>
@@ -503,7 +530,9 @@ $('dots').querySelectorAll('.dot').forEach(b=>b.onclick=()=>{
 $('words').innerHTML=WORDS.map(w=>`<button data-w="${w}" aria-pressed="${w===S.word}">${w}</button>`).join('');
 $('words').querySelectorAll('button').forEach(b=>b.onclick=()=>{
   S.word=b.dataset.w;$('words').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.w===S.word));draw()});
-$('f-biz').addEventListener('input',e=>{S.biz=e.target.value||' ';draw()});
+/* Debounce: το draw() ξαναχτίζει 17 SVG — όχι σε κάθε πάτημα πλήκτρου */
+let bizT;
+$('f-biz').addEventListener('input',e=>{S.biz=e.target.value||' ';clearTimeout(bizT);bizT=setTimeout(draw,140)});
 
 /* nav */
 function step(d){const v=visible();S.dir=d;S.cur=(S.cur+d+v.length)%v.length;draw(true)}
@@ -606,7 +635,11 @@ function showDone(it,xt){
   cartOpen(false);$('done').classList.add('on');
 }
 $('send').onclick=async()=>{
-  const tel=$('f-tel').value.trim(),mail=$('f-mail').value.trim();
+  const name=$('f-name').value.trim(),tel=$('f-tel').value.trim(),mail=$('f-mail').value.trim();
+  if(!name){
+    $('f-name').classList.add('err');$('f-name').focus();
+    setTimeout(()=>$('f-name').classList.remove('err'),2200);return;
+  }
   if(!tel&&!mail){
     $('f-tel').classList.add('err');$('f-mail').classList.add('err');$('f-tel').focus();
     setTimeout(()=>{$('f-tel').classList.remove('err');$('f-mail').classList.remove('err')},2200);return;
@@ -632,7 +665,7 @@ $('send').onclick=async()=>{
         _subject:`Αυτοκόλλητα QR — ${S.biz.trim()||'—'} (${once()} € + ${month()} €/μήνα)`,
         'Είδος':'Παραγγελία αυτοκόλλητων QR (Το Εργαλείο Κριτικών)',
         'Μαγαζί':S.biz.trim(),
-        'Ονοματεπώνυμο':$('f-name').value.trim(),
+        'Ονοματεπώνυμο':name,
         'Τηλέφωνο':tel,
         'Email':mail,
         'Παραγγελία':order,

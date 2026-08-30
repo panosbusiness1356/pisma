@@ -326,6 +326,9 @@ const steps = [
 
     function cycle() {
       if (!running) return;
+      // Καθάρισμα των timers του προηγούμενου κύκλου — αλλιώς ο πίνακας μεγαλώνει επ' άπειρον
+      timers.forEach(clearTimeout);
+      timers = [];
       reset();
       later(() => {
         line!.style.transition = 'stroke-dashoffset 2.6s cubic-bezier(.5,.05,.4,1)';

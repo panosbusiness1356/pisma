@@ -8,7 +8,7 @@ import Base from './Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { SITE } from '../config';
+import { SITE, ELEGXOS } from '../config';
 
 interface Props {
   /** Πλήρης <title>, π.χ. «Πόσο κοστίζει ένα site; | PISMA» */
@@ -45,7 +45,7 @@ const T = {
     ctaSub: 'Ο Έλεγχος PISMA: μετράμε πού στέκεσαι σε Google, AI και καθημερινή λειτουργία — και φεύγεις με γραπτή εικόνα.',
     ctaText: 'Κλείσε τον δωρεάν Έλεγχο',
     ctaHref: '/elegxos/',
-    ctaNote: '45 λεπτά · χωρίς καμία δέσμευση',
+    ctaNote: `${ELEGXOS.minutes} λεπτά · χωρίς καμία δέσμευση`,
   },
   en: {
     base: '/en/guides/',
@@ -62,7 +62,7 @@ const T = {
     ctaSub: 'The PISMA Check: we measure where you stand on Google, AI and day-to-day operations — and you leave with a written picture.',
     ctaText: 'Book the free Check',
     ctaHref: '/en/free-assessment/',
-    ctaNote: '45 minutes · no commitment',
+    ctaNote: `${ELEGXOS.minutes} minutes · no commitment`,
   },
 }[lang];
 
@@ -79,8 +79,10 @@ const schema = [
     headline: question,
     description,
     inLanguage: lang,
+    datePublished: updated,
     dateModified: updated,
-    mainEntityOfPage: url,
+    image: `${SITE.url}/og.png`,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     author: { '@type': 'Organization', name: SITE.name, url: SITE.url },
     publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
   },

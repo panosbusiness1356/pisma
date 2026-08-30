@@ -13,7 +13,8 @@ const day = optionByIdEn('auto-day')!;
 const debt = optionByIdEn('auto-debt')!;
 const spy = optionByIdEn('auto-spy')!;
 const reviews = optionByIdEn('auto-reviews')!;
-const care = optionByIdEn('care-web')!;
+const loyalty = optionByIdEn('auto-loyalty')!;
+const menu = optionByIdEn('auto-menu')!;
 
 const faq = [
   {
@@ -62,7 +63,7 @@ const faq = [
   </p>
 
   <h2>Which automations does PISMA build?</h2>
-  <p>Six, each for one specific job. One sentence each:</p>
+  <p>Eight, each for one specific job. One sentence each:</p>
   <ul>
     <li>
       <strong>{match.label}</strong> — every payment that lands in your account finds its own
@@ -85,8 +86,16 @@ const faq = [
       prices, offers, presence. ({eurEn(spy.price)} per month)
     </li>
     <li>
-      <strong>{reviews.label}</strong> — every happy customer gets the Google review link at the
-      right moment. ({eurEn(reviews.price)} per month)
+      <strong>{reviews.label}</strong> — makes Google reviews pile up on their own. How?
+      That part we only show live. ({eurEn(reviews.price)} per month)
+    </li>
+    <li>
+      <strong>{loyalty.label}</strong> — a QR code at the register: customers collect stamps on
+      every visit and win a gift — and they come back. ({eurEn(loyalty.price)} per month)
+    </li>
+    <li>
+      <strong>{menu.label}</strong> — a QR code on the table: customers see your menu on their
+      phone. Change prices and dishes with no reprints. ({eurEn(menu.price)} per month)
     </li>
   </ul>
   <p>

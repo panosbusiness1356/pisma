@@ -109,17 +109,17 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
 
     <!-- Αιωρούμενα λογότυπα πλατφορμών — αυθεντικά SVG στο /public/logos -->
     <div class="float-logos" aria-hidden="true">
-      <span class="flogo flogo-ig" data-speed="0.10" style="left:5%;top:13%;--w:44px;--dur:5.2s"><img src="/logos/instagram-icon.svg" alt="" loading="lazy" /></span>
-      <span class="flogo flogo-fb" data-speed="-0.07" style="left:12%;top:38%;--w:38px;--dur:6.4s"><img src="/logos/facebook.svg" alt="" loading="lazy" /></span>
-      <span class="flogo flogo-gm" data-speed="0.13" style="left:4%;top:64%;--w:38px;--dur:7.1s"><img src="/logos/google-gmail.svg" alt="" loading="lazy" /></span>
-      <span class="flogo flogo--sm flogo-ai" data-speed="-0.05" style="left:19%;top:22%;--w:28px;--dur:6s"><img class="inv" src="/logos/openai-icon.svg" alt="" loading="lazy" /></span>
-      <span class="flogo flogo--sm flogo-vb" data-speed="0.08" style="left:3.5%;top:98%;--w:30px;--dur:5.8s"><img src="/logos/viber.svg" alt="" loading="lazy" /></span>
-      <span class="flogo flogo--sm flogo-li" data-speed="-0.1" style="left:4%;top:94%;--w:28px;--dur:6.6s"><img src="/logos/linkedin-icon.svg" alt="" loading="lazy" /></span>
-      <span class="flogo flogo-go" data-speed="0.08" style="right:5%;top:12%;--w:42px;--dur:5.6s"><img src="/logos/google-icon.svg" alt="" loading="lazy" /></span>
-      <span class="flogo flogo-wa" data-speed="-0.11" style="right:12%;top:38%;--w:40px;--dur:6.8s"><img src="/logos/whatsapp-icon.svg" alt="" loading="lazy" /></span>
-      <span class="flogo flogo-mp" data-speed="0.06" style="right:4%;top:64%;--w:30px;--dur:7.4s"><img src="/logos/google-maps.svg" alt="" loading="lazy" /></span>
-      <span class="flogo flogo--sm flogo-xl" data-speed="0.12" style="right:19%;top:22%;--w:30px;--dur:6.2s"><img src="/logos/excel.svg" alt="" loading="lazy" /></span>
-      <span class="flogo flogo--sm flogo-tt" data-speed="-0.08" style="right:5%;top:95%;--w:28px;--dur:5.4s"><img class="chip" src="/logos/tiktok-icon.svg" alt="" loading="lazy" /></span>
+      <span class="flogo flogo-ig" data-speed="0.10" style="left:5%;top:13%;--w:44px;--dur:5.2s"><img src="/logos/instagram-icon.svg" alt="" /></span>
+      <span class="flogo flogo-fb" data-speed="-0.07" style="left:12%;top:38%;--w:38px;--dur:6.4s"><img src="/logos/facebook.svg" alt="" /></span>
+      <span class="flogo flogo-gm" data-speed="0.13" style="left:4%;top:64%;--w:38px;--dur:7.1s"><img src="/logos/google-gmail.svg" alt="" /></span>
+      <span class="flogo flogo--sm flogo-ai" data-speed="-0.05" style="left:19%;top:22%;--w:28px;--dur:6s"><img class="inv" src="/logos/openai-icon.svg" alt="" /></span>
+      <span class="flogo flogo--sm flogo-vb" data-speed="0.08" style="left:3.5%;top:98%;--w:30px;--dur:5.8s"><img src="/logos/viber.svg" alt="" /></span>
+      <span class="flogo flogo--sm flogo-li" data-speed="-0.1" style="left:4%;top:94%;--w:28px;--dur:6.6s"><img src="/logos/linkedin-icon.svg" alt="" /></span>
+      <span class="flogo flogo-go" data-speed="0.08" style="right:5%;top:12%;--w:42px;--dur:5.6s"><img src="/logos/google-icon.svg" alt="" /></span>
+      <span class="flogo flogo-wa" data-speed="-0.11" style="right:12%;top:38%;--w:40px;--dur:6.8s"><img src="/logos/whatsapp-icon.svg" alt="" /></span>
+      <span class="flogo flogo-mp" data-speed="0.06" style="right:4%;top:64%;--w:30px;--dur:7.4s"><img src="/logos/google-maps.svg" alt="" /></span>
+      <span class="flogo flogo--sm flogo-xl" data-speed="0.12" style="right:19%;top:22%;--w:30px;--dur:6.2s"><img src="/logos/excel.svg" alt="" /></span>
+      <span class="flogo flogo--sm flogo-tt" data-speed="-0.08" style="right:5%;top:95%;--w:28px;--dur:5.4s"><img class="chip" src="/logos/tiktok-icon.svg" alt="" /></span>
     </div>
 
     <div class="container hero-inner">
@@ -315,7 +315,7 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     aria-labelledby="method-title"
     data-mascot-stop
     data-mascot-side="right"
-    data-mascot-say="Κάθε συνεργασία ξεκινά με δωρεάν αξιολόγηση 45 λεπτών — παραλαμβάνετε τα ευρήματα γραπτώς."
+    data-mascot-say={`Κάθε συνεργασία ξεκινά με δωρεάν αξιολόγηση ${ELEGXOS.minutes} λεπτών — παραλαμβάνετε τα ευρήματα γραπτώς.`}
   >
     <span class="flogo sflogo" aria-hidden="true" style="right:4%;top:40px;--w:24px;--dur:5.9s"><img src="/logos/google-maps.svg" alt="" loading="lazy" /></span>
     <div class="container">
@@ -334,9 +334,6 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
       </ol>
     </div>
   </section>
-
-  <!-- 4. Ηλεκτρονική τιμολόγηση 2026: ΠΡΟΣΩΡΙΝΑ ΕΚΤΟΣ — φυλάσσεται στο
-       components/Einvoice2026.astro, επαναφορά με <Einvoice2026 /> εδώ. -->
 
   <!-- 6. Τιμολόγηση — φτιάξτε το δικό σας πακέτο -->
   <section
@@ -436,16 +433,16 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     aria-labelledby="final-title"
     data-mascot-stop
     data-mascot-side="right"
-    data-mascot-say="Ξεκινήστε με τη δωρεάν αξιολόγηση — 45 λεπτά, χωρίς δέσμευση."
+    data-mascot-say={`Ξεκινήστε με τη δωρεάν αξιολόγηση — ${ELEGXOS.minutes} λεπτά, χωρίς δέσμευση.`}
   >
     <span class="flogo sflogo" aria-hidden="true" style="left:5%;top:12px;--w:24px;--dur:5.4s"><img src="/logos/viber.svg" alt="" loading="lazy" /></span>
     <div class="container">
-      <h2 id="final-title">Ξεκινήστε με μια δωρεάν<br /><span class="grad-text">αξιολόγηση 45 λεπτών</span></h2>
+      <h2 id="final-title">Ξεκινήστε με μια δωρεάν<br /><span class="grad-text">αξιολόγηση {ELEGXOS.minutes} λεπτών</span></h2>
       <p>
         Καταγράφουμε τι χάνετε σε πελάτες και χρόνο — παραλαμβάνετε τα ευρήματα γραπτώς.
       </p>
       <a class="btn btn--orange" href="/elegxos/">Κλείστε τη δωρεάν αξιολόγηση</a>
-      <p class="btn-note">45 λεπτά · χωρίς χρέωση · χωρίς δέσμευση</p>
+      <p class="btn-note">{ELEGXOS.minutes} λεπτά · χωρίς χρέωση · χωρίς δέσμευση</p>
     </div>
   </section>
 </Base>

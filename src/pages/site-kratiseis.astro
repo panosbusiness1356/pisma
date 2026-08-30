@@ -389,7 +389,11 @@ const faqItems = [
   .lp-note { color: var(--muted); font-size: .78rem; margin: 14px 0 0; max-width: 42ch; }
   @media (max-width: 960px) {
     .lp-grid { grid-template-columns: 1fr; }
-    .lp-stage { margin-inline: auto; }
+    /* width:100% (όχι το σταθερό 520px): μέσα σε 1fr track το fixed πλάτος
+       μετράει ως min-content και ΑΝΟΙΓΕΙ το mobile viewport στα ~556px.
+       Ο selector με το .lp-grid: ο βασικός κανόνας .lp-stage γράφεται πιο
+       κάτω στο αρχείο και αλλιώς θα υπερίσχυε (ίδια specificity). */
+    .lp-grid .lp-stage { width: 100%; max-width: 520px; margin-inline: auto; }
   }
 
   /* Ρεαλιστικό laptop: οθόνη 16:10 με λεπτό μπεζέλ και αλουμινένια βάση */
