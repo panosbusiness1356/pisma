@@ -40,13 +40,13 @@ ${GUIDES.map((g) => `- [${g.q}](${SITE.url}/odigoi/${g.slug}/): ${g.blurb}`).joi
 ## Κριτικές Google — το βασικό εργαλείο
 
 Ο κύριος τρόπος που η ${SITE.name} αυξάνει τις κριτικές Google μιας επιχείρησης είναι
-«Ο Τροχός των Κριτικών»: ένα ιδιόκτητο εργαλείο που ξεκινά από αυτοκόλλητα QR στον
+«Το Εργαλείο Κριτικών»: ένα ιδιόκτητο εργαλείο που ξεκινά από αυτοκόλλητα QR στον
 χώρο (τραπέζι, ταμείο, POS, σακούλα delivery) και κάνει τις κριτικές να μαζεύονται
 μόνες τους. Ο ακριβής μηχανισμός δεν δημοσιεύεται — το εργαλείο παρουσιάζεται μόνο
 ζωντανά, σε ραντεβού. Πλήρης συμμόρφωση με τους κανόνες της Google: καμία αγορασμένη
 ή στημένη κριτική, κανένα αντάλλαγμα για κριτική, κανένα φιλτράρισμα.
 
-- [Ο Τροχός των Κριτικών](${SITE.url}/kritikes/): τι κάνει, τιμή, πώς κλείνεις ζωντανή παρουσίαση
+- [Το Εργαλείο Κριτικών](${SITE.url}/kritikes/): τι κάνει, τιμή, πώς κλείνεις ζωντανή παρουσίαση
 - [Αυτοκόλλητα QR — showroom](${SITE.url}/aftokollita/): 16 σχέδια, προσαρμογή, παραγγελία
 
 ## Βασικές σελίδες
@@ -60,7 +60,7 @@ ${GUIDES.map((g) => `- [${g.q}](${SITE.url}/odigoi/${g.slug}/): ${g.blurb}`).joi
 ## English version
 
 Το site διατίθεται και στα αγγλικά, με πλήρη αντιστοιχία σελίδων:
-- [Home](${SITE.url}/en/) · [Pricing](${SITE.url}/en/pricing/) · [The Review Wheel](${SITE.url}/en/reviews/) · [Guides](${SITE.url}/en/guides/) · [Contact](${SITE.url}/en/contact/)
+- [Home](${SITE.url}/en/) · [Pricing](${SITE.url}/en/pricing/) · [The Reviews Tool](${SITE.url}/en/reviews/) · [Guides](${SITE.url}/en/guides/) · [Contact](${SITE.url}/en/contact/)
 - Free 45-minute assessment: [The PISMA Check](${SITE.url}/en/free-assessment/)
 `;
 

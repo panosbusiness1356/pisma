@@ -11,7 +11,7 @@ import { SITE } from '../../config';
 import Consent from '../../components/Consent.astro';
 import '../../styles/fonts.css'; // self-hosted Inter/Unbounded/JetBrains Mono — ίδιες με το υπόλοιπο site
 
-const title = 'QR Stickers — The Review Wheel | PISMA';
+const title = 'QR Stickers — The Reviews Tool | PISMA';
 const description =
   'Pick from 16 QR stickers for the table, the till and delivery — in your colors, with your business name. You send the cart, we call you.';
 const canonical = `${SITE.url}/en/qr-stickers/`;
@@ -280,7 +280,7 @@ input{font-family:inherit}
   <!-- ============ top ============ -->
   <div class="top">
     <a class="logo" href="/en/"><b>PISMA<i>.</i></b><em>SHOWROOM</em></a>
-    <a class="whatlink" href="/en/reviews/">What's the Wheel? →</a>
+    <a class="whatlink" href="/en/reviews/">What's the tool? →</a>
     <span class="bizwrap"><input class="biz" id="f-biz" value="CAFÉ KYMA" maxlength="22" placeholder="YOUR BUSINESS" aria-label="Business name"></span>
     <a class="langlink" href="/aftokollita/" aria-label="Ελληνική έκδοση">ΕΛ</a>
     <button class="cartbtn" id="cartbtn"><span>Cart</span>
@@ -394,14 +394,14 @@ const F=[
 {id:'kathr',  n:'Mirror',             sz:'8 × 20 cm · 6 pcs',    w:640, h:1500, L:'stack',  cat:'in'},
 {id:'bar',    n:'Bar counter',        sz:'10 × 10 cm · 25 pcs',  w:1000,h:1000, L:'stack',  cat:'in', dark:true},
 {id:'koup',   n:'Hand-out coupon',    sz:'14 × 8 cm · 100 pcs',  w:1400,h:800,  L:'ticket', cat:'hand'},
-{id:'psygeio',n:'Fridge / takeaway',  sz:'Ø 11 cm · 25 pcs',     w:1000,h:1000, L:'wheel',  cat:'in'},
+{id:'psygeio',n:'Fridge / takeaway',  sz:'Ø 11 cm · 25 pcs',     w:1000,h:1000, L:'disk',  cat:'in'},
 {id:'rafi',   n:'Premium shelf',      sz:'8 × 8 cm · 40 pcs',    w:800, h:800,  L:'mini',   cat:'in'},
 {id:'arith',  n:'Table number',       sz:'8 × 12 cm · 20 pcs',   w:800, h:1200, L:'header', cat:'table'},
 {id:'paidi',  n:'Kids\' table',       sz:'10 × 10 cm · 25 pcs',  w:1000,h:1000, L:'stack',  cat:'table'}
 ].map(o=>({...o,pr:SP[o.id]}));
 const CATS=[['all','All'],['in','Inside'],['table','Table'],['hand','Handed out']];
 const X=[
-{id:'platform',n:'The Wheel platform',pr:PLATFORM_PRICE,per:'month',lock:true,d:'The tool behind the stickers.'},
+{id:'platform',n:'The Reviews Tool',pr:PLATFORM_PRICE,per:'month',lock:true,d:'The platform behind the stickers.'},
 {id:'stand',   n:'Plexiglass stand',  pr:XP.stand,  per:'once', d:'A base for the table sticker.'},
 {id:'nfc',     n:'NFC stickers',      pr:XP.nfc, per:'once', d:'Tap the phone instead of scanning. 10 pcs.'},
 {id:'logo',    n:'Logo design',       pr:XP.logo,per:'once', d:'If you don\'t have a print-ready file.'},
@@ -426,7 +426,7 @@ function sticker(f,st){
   const W=f.w,H=f.h,P=st.pal,u=Math.min(W,H);
   const paper=f.dark?'#101922':P.paper, ink=f.dark?'#F4F1EA':P.ink, fr=f.dark?P.acc:P.fr, acc=P.acc;
   const sw=Math.max(6,u*.0095);let o='';
-  const round=f.L==='circle'||f.L==='wheel';
+  const round=f.L==='circle'||f.L==='disk';
   if(round){
     o+=`<circle cx="${W/2}" cy="${H/2}" r="${W/2-sw/2}" fill="${paper}" stroke="${fr}" stroke-width="${sw*2.3}"/>`;
     o+=`<circle cx="${W/2}" cy="${H/2}" r="${W/2-sw*3.3}" fill="none" stroke="${ink}" stroke-width="${sw*.7}" opacity=".85"/>`;
@@ -470,7 +470,7 @@ function sticker(f,st){
     o+=T(W*.10,H*.79,st.word,H*.10,ink,{ls:H*.014,a:'start'});
     o+=`<path d="M${cut} ${H*.12}V${H*.88}" stroke="${ink}" stroke-width="${sw*.8}" stroke-dasharray="${H*.05} ${H*.04}" opacity=".7"/>`;
     o+=QR((cut+W)/2,H/2,Math.min(H*.66,(W-cut)*.72));o+=PIS(W*.10,H*.92,'start');
-  }else if(f.L==='wheel'){
+  }else if(f.L==='disk'){
     for(let i=0;i<10;i++){const a0=(i*36-90)*Math.PI/180,a1=((i+1)*36-90)*Math.PI/180,R=W/2-sw*3.6;
       if(i%2)o+=`<path d="M${W/2},${H/2} L${W/2+R*Math.cos(a0)},${H/2+R*Math.sin(a0)} A${R},${R} 0 0,1 ${W/2+R*Math.cos(a1)},${H/2+R*Math.sin(a1)} Z" fill="${acc}" opacity=".92"/>`;}
     o+=`<circle cx="${W/2}" cy="${H/2}" r="${u*.30}" fill="${paper}" stroke="${ink}" stroke-width="${sw}"/>`;
@@ -633,7 +633,7 @@ $('send').onclick=async()=>{
       headers:{'Content-Type':'application/json',Accept:'application/json'},
       body:JSON.stringify({
         _subject:`QR stickers (EN) — ${S.biz.trim()||'—'} (€${once()} + €${month()}/month)`,
-        'Type':'QR sticker order (The Review Wheel) — English page',
+        'Type':'QR sticker order (The Reviews Tool) — English page',
         'Business':S.biz.trim(),
         'Full name':$('f-name').value.trim(),
         'Phone':tel,

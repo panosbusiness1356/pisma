@@ -9,7 +9,7 @@ import { SITE } from '../config';
 import Consent from '../components/Consent.astro';
 import '../styles/fonts.css'; // self-hosted Inter/Unbounded/JetBrains Mono — ίδιες με το υπόλοιπο site
 
-const title = 'Αυτοκόλλητα QR — Ο Τροχός των Κριτικών | PISMA';
+const title = 'Αυτοκόλλητα QR — Το Εργαλείο Κριτικών | PISMA';
 const description =
   'Διάλεξε από 16 αυτοκόλλητα QR για τραπέζι, ταμείο, βιτρίνα και delivery — με τα χρώματα και το όνομα του μαγαζιού σου. Στέλνεις το καλάθι, σε παίρνουμε τηλέφωνο.';
 const canonical = `${SITE.url}/aftokollita/`;
@@ -278,7 +278,7 @@ input{font-family:inherit}
   <!-- ============ top ============ -->
   <div class="top">
     <a class="logo" href="/"><b>PISMA<i>.</i></b><em>SHOWROOM</em></a>
-    <a class="whatlink" href="/kritikes/">Τι είναι ο Τροχός; →</a>
+    <a class="whatlink" href="/kritikes/">Τι είναι το Εργαλείο; →</a>
     <span class="bizwrap"><input class="biz" id="f-biz" value="CAFÉ KYMA" maxlength="22" placeholder="ΤΟ ΜΑΓΑΖΙ ΣΟΥ" aria-label="Όνομα μαγαζιού"></span>
     <a class="langlink" href="/en/qr-stickers/" aria-label="English version">EN</a>
     <button class="cartbtn" id="cartbtn"><span>Καλάθι</span>
@@ -392,14 +392,14 @@ const F=[
 {id:'kathr',  n:'Καθρέφτης',         sz:'8 × 20 cm · 6 τεμ.',   w:640, h:1500, L:'stack',  cat:'in'},
 {id:'bar',    n:'Πάγκος μπαρ',       sz:'10 × 10 cm · 25 τεμ.', w:1000,h:1000, L:'stack',  cat:'in', dark:true},
 {id:'koup',   n:'Κουπόνι στο χέρι',  sz:'14 × 8 cm · 100 τεμ.', w:1400,h:800,  L:'ticket', cat:'hand'},
-{id:'psygeio',n:'Ψυγείο / take away',sz:'Ø 11 cm · 25 τεμ.',    w:1000,h:1000, L:'wheel',  cat:'in'},
+{id:'psygeio',n:'Ψυγείο / take away',sz:'Ø 11 cm · 25 τεμ.',    w:1000,h:1000, L:'disk',  cat:'in'},
 {id:'rafi',   n:'Ράφι premium',      sz:'8 × 8 cm · 40 τεμ.',   w:800, h:800,  L:'mini',   cat:'in'},
 {id:'arith',  n:'Αριθμός τραπεζιού', sz:'8 × 12 cm · 20 τεμ.',  w:800, h:1200, L:'header', cat:'table'},
 {id:'paidi',  n:'Παιδικό τραπέζι',   sz:'10 × 10 cm · 25 τεμ.', w:1000,h:1000, L:'stack',  cat:'table'}
 ].map(o=>({...o,pr:SP[o.id]}));
 const CATS=[['all','Όλα'],['in','Μέσα'],['table','Τραπέζι'],['hand','Στο χέρι']];
 const X=[
-{id:'platform',n:'Η πλατφόρμα του Τροχού',pr:PLATFORM_PRICE,per:'month',lock:true,d:'Το εργαλείο πίσω από τα αυτοκόλλητα.'},
+{id:'platform',n:'Το Εργαλείο Κριτικών',pr:PLATFORM_PRICE,per:'month',lock:true,d:'Η πλατφόρμα πίσω από τα αυτοκόλλητα.'},
 {id:'stand',   n:'Σταντ plexiglass',   pr:XP.stand,  per:'once', d:'Βάση για το αυτοκόλλητο τραπεζιού.'},
 {id:'nfc',     n:'NFC αυτοκόλλητα',    pr:XP.nfc, per:'once', d:'Ακουμπάς το κινητό αντί να σκανάρεις. 10 τεμ.'},
 {id:'logo',    n:'Σχεδιασμός λογοτύπου',pr:XP.logo,per:'once',d:'Αν δεν έχεις έτοιμο αρχείο.'},
@@ -423,7 +423,7 @@ function sticker(f,st){
   const W=f.w,H=f.h,P=st.pal,u=Math.min(W,H);
   const paper=f.dark?'#101922':P.paper, ink=f.dark?'#F4F1EA':P.ink, fr=f.dark?P.acc:P.fr, acc=P.acc;
   const sw=Math.max(6,u*.0095);let o='';
-  const round=f.L==='circle'||f.L==='wheel';
+  const round=f.L==='circle'||f.L==='disk';
   if(round){
     o+=`<circle cx="${W/2}" cy="${H/2}" r="${W/2-sw/2}" fill="${paper}" stroke="${fr}" stroke-width="${sw*2.3}"/>`;
     o+=`<circle cx="${W/2}" cy="${H/2}" r="${W/2-sw*3.3}" fill="none" stroke="${ink}" stroke-width="${sw*.7}" opacity=".85"/>`;
@@ -467,7 +467,7 @@ function sticker(f,st){
     o+=T(W*.10,H*.79,st.word,H*.10,ink,{ls:H*.014,a:'start'});
     o+=`<path d="M${cut} ${H*.12}V${H*.88}" stroke="${ink}" stroke-width="${sw*.8}" stroke-dasharray="${H*.05} ${H*.04}" opacity=".7"/>`;
     o+=QR((cut+W)/2,H/2,Math.min(H*.66,(W-cut)*.72));o+=PIS(W*.10,H*.92,'start');
-  }else if(f.L==='wheel'){
+  }else if(f.L==='disk'){
     for(let i=0;i<10;i++){const a0=(i*36-90)*Math.PI/180,a1=((i+1)*36-90)*Math.PI/180,R=W/2-sw*3.6;
       if(i%2)o+=`<path d="M${W/2},${H/2} L${W/2+R*Math.cos(a0)},${H/2+R*Math.sin(a0)} A${R},${R} 0 0,1 ${W/2+R*Math.cos(a1)},${H/2+R*Math.sin(a1)} Z" fill="${acc}" opacity=".92"/>`;}
     o+=`<circle cx="${W/2}" cy="${H/2}" r="${u*.30}" fill="${paper}" stroke="${ink}" stroke-width="${sw}"/>`;
@@ -630,7 +630,7 @@ $('send').onclick=async()=>{
       headers:{'Content-Type':'application/json',Accept:'application/json'},
       body:JSON.stringify({
         _subject:`Αυτοκόλλητα QR — ${S.biz.trim()||'—'} (${once()} € + ${month()} €/μήνα)`,
-        'Είδος':'Παραγγελία αυτοκόλλητων QR (Τροχός των Κριτικών)',
+        'Είδος':'Παραγγελία αυτοκόλλητων QR (Το Εργαλείο Κριτικών)',
         'Μαγαζί':S.biz.trim(),
         'Ονοματεπώνυμο':$('f-name').value.trim(),
         'Τηλέφωνο':tel,
