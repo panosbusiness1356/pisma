@@ -13,7 +13,7 @@ export const SITE = {
   phone: '+30 694 727 1910',
   url: 'https://pisma.gr',
   /** Google Analytics 4 Measurement ID (G-XXXXXXXXXX). Κενό = χωρίς GA και χωρίς μπάνερ cookies. */
-  gaId: '',
+  gaId: 'G-HE6GWTRNQM',
 } as const;
 
 /** Ηλεκτρονική τιμολόγηση — Β' φάση (όλες οι επιχειρήσεις) */
