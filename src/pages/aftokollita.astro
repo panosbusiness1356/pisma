@@ -6,6 +6,7 @@
 // Οι τιμές των αυτοκόλλητων και των έξτρα ζουν στο src/data/stickers.ts
 // (κοινές με το /en/qr-stickers/) — εδώ μόνο τα ελληνικά λεκτικά.
 import { SITE } from '../config';
+import Consent from '../components/Consent.astro';
 import '../styles/fonts.css'; // self-hosted Inter/Unbounded/JetBrains Mono — ίδιες με το υπόλοιπο site
 
 const title = 'Αυτοκόλλητα QR — Ο Τροχός των Κριτικών | PISMA';
@@ -655,5 +656,6 @@ $('done-close').addEventListener('click',()=>location.reload());
 
 draw();
 </script>
+<Consent />
 </body>
 </html>

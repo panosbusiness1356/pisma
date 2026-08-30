@@ -4,6 +4,7 @@ import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Mascot from '../components/Mascot.astro';
+import Consent from '../components/Consent.astro';
 import { SITE } from '../config';
 import { langOf, PAIRS } from '../i18n';
 
@@ -91,6 +92,7 @@ const schemas = [siteSchema, ...(schema ? (Array.isArray(schema) ? schema : [sch
     </main>
     <Footer />
     <Mascot />
+    <Consent />
 
     <script>
       // Smooth scroll με αδράνεια (Lenis) — ίδιο σύστημα με τα σύγχρονα studio sites.
