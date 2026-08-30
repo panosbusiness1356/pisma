@@ -1,0 +1,109 @@
+---
+// Κάρτες υπηρεσιών «Ψηφιακής Προβολής» σε διάταξη bento (επιλογή χρήστριας: σχέδιο Ε6).
+// Δύο «ναυαρχίδες» σε διπλό πλάτος (site, star), το «μάτι» κλείνει ως φαρδιά ρηχή λωρίδα,
+// και πάνω σε κάθε κάρτα: πραγματικά λογότυπα όπου υπάρχει brand (Google Maps, Google,
+// ChatGPT, Instagram/Facebook/TikTok), αλλιώς έγχρωμο flat SVG αντικείμενο.
+// Χωρίς μωβ αποχρώσεις — μόνο ζεστή πορτοκαλί λάμψη στις μεγάλες (ρητό αίτημα).
+interface Service {
+  t: string;
+  d: string;
+  icon: string;
+  href?: string;
+}
+interface Props {
+  services: Service[];
+  cta: string;
+}
+const { services, cta } = Astro.props;
+
+// Έγχρωμα αντικείμενα (viewBox 0 0 96 72) — μόνο για υπηρεσίες χωρίς πραγματικό brand
+const art: Record<string, string> = {
+  site: `
+    <rect x="8" y="8" width="80" height="56" rx="7" fill="#FBF2EA"/>
+    <path d="M8 15a7 7 0 0 1 7-7h66a7 7 0 0 1 7 7v7H8z" fill="#FF7A50"/>
+    <circle cx="17" cy="15" r="2.2" fill="#fff" opacity=".85"/><circle cx="24" cy="15" r="2.2" fill="#fff" opacity=".6"/><circle cx="31" cy="15" r="2.2" fill="#fff" opacity=".35"/>
+    <rect x="16" y="30" width="32" height="5" rx="2.5" fill="#33254A"/>
+    <rect x="16" y="39" width="24" height="4" rx="2" fill="#C0B4D2"/>
+    <rect x="16" y="49" width="27" height="10" rx="5" fill="#EE4F27"/>
+    <rect x="21" y="53" width="17" height="2.4" rx="1.2" fill="#fff" opacity=".9"/>
+    <path d="M54 56l9-9 7 5 11-13" stroke="#2FA36B" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="81" cy="39" r="3.4" fill="#2FA36B"/>`,
+  cal: `
+    <rect x="16" y="13" width="52" height="49" rx="7" fill="#FBF2EA"/>
+    <path d="M16 20a7 7 0 0 1 7-7h38a7 7 0 0 1 7 7v8H16z" fill="#FF5C41"/>
+    <rect x="26" y="8" width="5" height="11" rx="2.5" fill="#33254A"/><rect x="53" y="8" width="5" height="11" rx="2.5" fill="#33254A"/>
+    <circle cx="27" cy="38" r="2.6" fill="#C0B4D2"/><circle cx="38" cy="38" r="2.6" fill="#C0B4D2"/><circle cx="49" cy="38" r="2.6" fill="#C0B4D2"/>
+    <circle cx="27" cy="49" r="2.6" fill="#C0B4D2"/><circle cx="38" cy="49" r="2.6" fill="#C0B4D2"/>
+    <circle cx="49" cy="49" r="6.5" fill="#FF7A50"/>
+    <circle cx="72" cy="52" r="12" fill="#2FA36B"/>
+    <path d="M66.5 52l4 4 7-7.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+  menu: `
+    <rect x="12" y="12" width="34" height="34" rx="6" fill="#FBF2EA"/>
+    <rect x="17" y="17" width="9" height="9" rx="1.5" fill="#33254A"/><rect x="32" y="17" width="9" height="9" rx="1.5" fill="#33254A"/><rect x="17" y="32" width="9" height="9" rx="1.5" fill="#33254A"/>
+    <rect x="20" y="20" width="3" height="3" fill="#FBF2EA"/><rect x="35" y="20" width="3" height="3" fill="#FBF2EA"/><rect x="20" y="35" width="3" height="3" fill="#FBF2EA"/>
+    <rect x="32" y="32" width="4" height="4" fill="#33254A"/><rect x="38" y="36" width="3" height="3" fill="#33254A"/><rect x="34" y="40" width="3" height="3" fill="#33254A"/>
+    <circle cx="63" cy="45" r="17" fill="#F3E4D3"/>
+    <path d="M63 31a14 14 0 0 1 12.8 8.4L63 45z" fill="#EFB93C"/>
+    <path d="M75.8 39.4A14 14 0 1 1 55 34.6L63 45z" fill="#E8593A"/>
+    <circle cx="60" cy="52" r="2.4" fill="#7A2A17"/><circle cx="68" cy="49" r="2.4" fill="#7A2A17"/><circle cx="56" cy="44" r="2.2" fill="#7A2A17"/>`,
+  eye: `
+    <rect x="10" y="10" width="76" height="52" rx="8" fill="#FBF2EA"/>
+    <path d="M18 52l14-12 10 7 16-16 10 5" stroke="#EE4F27" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="68" cy="31" r="3.6" fill="#EE4F27"/>
+    <path d="M18 44l14-7 10 3 16-9 10 2" stroke="#9AA7B8" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".8" stroke-dasharray="1 6"/>
+    <rect x="58" y="14" width="24" height="11" rx="5.5" fill="#2FA36B"/>
+    <path d="M64 19.5h9M69.8 16.5l3.6 3-3.6 3" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+};
+
+// Πραγματικά λογότυπα (self-hosted στο public/logos/) όπου υπάρχει brand
+const logos: Record<string, string[]> = {
+  pin: ['google-maps.svg'],
+  seo: ['google-icon.svg'],
+  ai: ['openai-icon.svg'],
+  social: ['instagram-icon.svg', 'facebook.svg', 'tiktok-icon.svg'],
+  star: ['google-icon.svg'],
+};
+
+const goldStar =
+  '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" fill="#F6C34C"/>';
+
+const sizeClass = (icon: string) =>
+  icon === 'site' || icon === 'star' ? 'svc-big' : icon === 'eye' ? 'svc-strip' : '';
+---
+
+<div class="svc-grid">
+  {services.map((s) => (
+    <article class={`card reveal ${sizeClass(s.icon)}`}>
+      {logos[s.icon] ? (
+        <span class="svc-logos" aria-hidden="true">
+          {logos[s.icon].map((f) => (
+            <span class="svc-chip"><img src={`/logos/${f}`} alt="" width="30" height="30" loading="lazy" /></span>
+          ))}
+          {s.icon === 'star' && (
+            <span class="svc-stars">
+              {[0, 1, 2, 3, 4].map(() => (
+                <svg viewBox="0 0 24 24" set:html={goldStar} />
+              ))}
+            </span>
+          )}
+        </span>
+      ) : (
+        <span class="svc-art" aria-hidden="true">
+          <svg viewBox="0 0 96 72" set:html={art[s.icon]} />
+        </span>
+      )}
+      {s.icon === 'eye' ? (
+        <div>
+          <h3>{s.t}</h3>
+          <p>{s.d}</p>
+        </div>
+      ) : (
+        <>
+          <h3>{s.t}</h3>
+          <p>{s.d}</p>
+          {s.href && <a class="card-arrow" href={s.href}>{cta}</a>}
+        </>
+      )}
+    </article>
+  ))}
+</div>
