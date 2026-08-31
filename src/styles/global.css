@@ -114,6 +114,19 @@ p { max-width: 62ch; }
 .section { padding-block: clamp(56px, 9vw, 104px); }
 .section--tight { padding-block: clamp(36px, 6vw, 64px); }
 
+/* Νοητός διαχωρισμός sections: κάθε δεύτερο section παίρνει ελαφρώς πιο
+   ανοιχτό φόντο (bg-soft), ώστε στην πλοήγηση να «διαβάζεται» η εναλλαγή
+   ενότητας — χρώμα στο φόντο, όχι σε μικρο-στοιχεία. */
+main section:nth-of-type(even) {
+  background: linear-gradient(
+    180deg,
+    var(--bg) 0,
+    var(--bg-soft) clamp(36px, 5vw, 72px),
+    var(--bg-soft) calc(100% - clamp(36px, 5vw, 72px)),
+    var(--bg) 100%
+  );
+}
+
 /* Κεφαλή ενότητας: kicker + h2 + προαιρετικό sub */
 .sec-head { max-width: 680px; margin-bottom: clamp(28px, 5vw, 48px); }
 .sec-head--center { margin-inline: auto; text-align: center; }
