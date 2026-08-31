@@ -178,30 +178,6 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like a fr
         </a>
         <span class="chat-note">same-day reply</span>
       </div>
-      <!-- Το viber:// ανοίγει μόνο με εγκατεστημένη εφαρμογή — αλλιώς δείχνουμε τον αριθμό. -->
-      <p class="chat-fallback" id="vb-fallback" hidden>
-        Viber only opens if the app is installed on your device. Our number:
-        <button type="button" id="vb-copy">{SITE.phone} — tap to copy</button>
-      </p>
-      <script is:inline define:vars={{ vbPhone: SITE.phone, vbCopied: 'Copied ✓' }}>
-        // Viber: αν μείνουμε στη σελίδα μετά το κλικ (δεν άνοιξε εφαρμογή), δείξε τον αριθμό.
-        (function () {
-          var vb = document.querySelector('.chat-btn--vb');
-          var fb = document.getElementById('vb-fallback');
-          var copy = document.getElementById('vb-copy');
-          if (!vb || !fb || !copy) return;
-          vb.addEventListener('click', function () {
-            var t = setTimeout(function () { fb.hidden = false; }, 1500);
-            var cancel = function () { clearTimeout(t); };
-            window.addEventListener('blur', cancel, { once: true });
-            document.addEventListener('visibilitychange', cancel, { once: true });
-          });
-          copy.addEventListener('click', function () {
-            if (!navigator.clipboard) return;
-            navigator.clipboard.writeText(vbPhone).then(function () { copy.textContent = vbCopied; });
-          });
-        })();
-      </script>
 
       <!-- Αριθμοί-δεσμεύσεις: τιμή-άγκυρα από το pricing.ts, χρόνοι από το config. -->
       <ul class="hero-stats blur-in" style="--d:.64s">
@@ -912,12 +888,6 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like a fr
   .chat-btn--wa { background: linear-gradient(160deg, #2BD97C, #128C5A); }
   .chat-btn--vb { background: linear-gradient(160deg, #8B7DF9, #5B4AC8); }
   .chat-note { font-size: .85rem; color: var(--muted); flex-basis: auto; }
-  .chat-fallback { margin: 10px auto 0; font-size: .85rem; color: var(--muted); max-width: 60ch; }
-  .chat-fallback button {
-    background: none; border: 0; padding: 0; cursor: pointer;
-    font: inherit; font-weight: 700; color: var(--ink);
-    text-decoration: underline; text-underline-offset: 3px;
-  }
 
   /* Αριθμοί-δεσμεύσεις κάτω από τα CTAs */
   .hero-stats {
@@ -1229,7 +1199,6 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like a fr
     .hero .btn-note { order: 4; }
     /* Τα pills WhatsApp/Viber μένουν ψηλά — κανάλι με τη μικρότερη τριβή. */
     .hero-chat { order: 5; }
-    .chat-fallback { order: 5; }
     .hero .sub { order: 6; }
     /* Οι αριθμοί-δεσμεύσεις κατεβαίνουν κάτω από την περιγραφή στο κινητό. */
     .hero-stats { order: 7; margin-top: 22px; gap: 8px 22px; }
