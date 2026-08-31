@@ -42,27 +42,27 @@ function lockPage(wrong: boolean): string {
   body {
     min-height: 100svh; display: flex; align-items: center; justify-content: center;
     background:
-      radial-gradient(58% 34% at 82% -4%, rgba(139, 92, 246, .16), transparent 62%),
-      radial-gradient(46% 30% at 8% 0%, rgba(238, 79, 39, .10), transparent 60%),
-      #0D0A14;
-    color: #E6E1F0;
+      radial-gradient(58% 34% at 82% -4%, rgba(255, 122, 80, .11), transparent 62%),
+      radial-gradient(46% 30% at 8% 0%, rgba(255, 170, 120, .05), transparent 60%),
+      #171514;
+    color: #E7E1DB;
     font-family: 'Inter', system-ui, sans-serif;
     padding: 20px;
   }
   .box {
     width: min(100%, 380px); text-align: center;
-    background: #171221; border: 1px solid rgba(255, 255, 255, .12);
+    background: #1F1C1A; border: 1px solid rgba(255, 240, 225, .12);
     border-radius: 18px; padding: 36px 28px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, .35), 0 14px 40px rgba(0, 0, 0, .35);
   }
-  .logo { font-weight: 800; font-size: 1.6rem; letter-spacing: .01em; color: #F5F2FB; }
+  .logo { font-weight: 800; font-size: 1.6rem; letter-spacing: .01em; color: #F4F0EC; }
   .logo span { color: #FF7A50; }
   .lock { font-size: 1.8rem; margin: 14px 0 6px; }
-  p { color: #A79DBB; font-size: .95rem; line-height: 1.55; margin-bottom: 22px; }
+  p { color: #A79E95; font-size: .95rem; line-height: 1.55; margin-bottom: 22px; }
   input {
     width: 100%; padding: 14px 16px; font: inherit; font-size: 1.05rem; text-align: center;
-    background: #0D0A14; color: #F5F2FB; letter-spacing: .12em;
-    border: 1px solid rgba(255, 255, 255, .16); border-radius: 12px; outline: none;
+    background: #171514; color: #F4F0EC; letter-spacing: .12em;
+    border: 1px solid rgba(255, 240, 225, .16); border-radius: 12px; outline: none;
   }
   input:focus { border-color: #FF7A50; }
   button {
