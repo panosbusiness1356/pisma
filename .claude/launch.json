@@ -24,6 +24,14 @@
       "port": 4399
     },
     {
+      "name": "pisma-xromata",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "/Users/panospap/Downloads/pisma-xromata/server.js"
+      ],
+      "port": 4747
+    },
+    {
       "name": "pisma-site",
       "runtimeExecutable": "npm",
       "runtimeArgs": [

@@ -1,33 +1,33 @@
 /* ============================================================
    PISMA — Design System (dark)
-   Σκούρο μωβ-μαύρο φόντο, πορτοκαλί gradient accents.
-   Κανένα hardcoded χρώμα στα components — πάντα οι μεταβλητές.
+   «Ανθρακί + Φωτιά»: ζεστό ανθρακί φόντο, πορτοκαλί gradient accents,
+   χωρίς μωβ. Κανένα hardcoded χρώμα στα components — πάντα οι μεταβλητές.
    ============================================================ */
 
 :root {
-  --bg: #0D0A14;
-  --bg-soft: #14101E;
-  --card: #171221;
-  --card-2: #1E1830;
-  --navy: #F5F2FB;        /* χρώμα επικεφαλίδων / «σκούρο» κείμενο του παλιού theme */
-  --ink: #E6E1F0;
-  --muted: #A79DBB;
+  --bg: #171514;
+  --bg-soft: #1D1A18;
+  --card: #1F1C1A;
+  --card-2: #262220;
+  --navy: #F4F0EC;        /* χρώμα επικεφαλίδων / «σκούρο» κείμενο του παλιού theme */
+  --ink: #E7E1DB;
+  --muted: #A79E95;
   --orange: #FF7A50;      /* accent: εικονίδια, λεπτομέρειες, logo dot */
   --orange-cta: #EE4F27;  /* φόντο κουμπιών */
   --orange-hi: #FF6A3D;
   --orange-soft: rgba(255, 122, 80, .13);
   --orange-text: #FFA284; /* πορτοκαλί ΚΕΙΜΕΝΟ πάνω σε σκούρο — AA */
-  --purple: #8B5CF6;
-  --purple-soft: rgba(139, 92, 246, .14);
-  --purple-text: #C4B0FF;
-  --blue: #5B7FA6;
-  --blue-soft: rgba(91, 127, 166, .16);
-  --blue-text: #A9C3DE;
+  --purple: #B09A8C;      /* πρώην μωβ — τώρα ζεστό taupe, δένει με το ανθρακί */
+  --purple-soft: rgba(176, 154, 140, .12);
+  --purple-text: #D1BFB3;
+  --blue: #A08E7E;
+  --blue-soft: rgba(160, 142, 126, .13);
+  --blue-text: #C6B6A8;
   --yellow: #C0913D;
   --yellow-soft: rgba(192, 145, 61, .15);
   --yellow-text: #DDBE85;
-  --line: rgba(255, 255, 255, .09);
-  --line-strong: rgba(255, 255, 255, .16);
+  --line: rgba(255, 240, 225, .09);
+  --line-strong: rgba(255, 240, 225, .17);
   --ok: #55A874;
   --ok-soft: rgba(85, 168, 116, .15);
   --ok-text: #A5D6B8;
@@ -77,8 +77,8 @@ body::before {
   position: absolute; left: 0; right: 0; top: 0; height: 100vh;
   z-index: -1; pointer-events: none;
   background:
-    radial-gradient(58% 34% at 82% -4%, rgba(139, 92, 246, .16), transparent 62%),
-    radial-gradient(46% 30% at 8% 0%, rgba(238, 79, 39, .10), transparent 60%);
+    radial-gradient(58% 34% at 82% -4%, rgba(255, 122, 80, .11), transparent 62%),
+    radial-gradient(46% 30% at 8% 0%, rgba(255, 170, 120, .05), transparent 60%);
 }
 img, svg { display: block; max-width: 100%; }
 input, button, textarea, select { font: inherit; color: inherit; }
@@ -189,7 +189,7 @@ p { max-width: 62ch; }
 .card--link:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--line-strong); }
 .card--navy {
   background:
-    radial-gradient(90% 100% at 50% 0%, rgba(139, 92, 246, .16), transparent 70%),
+    radial-gradient(90% 100% at 50% 0%, rgba(255, 122, 80, .10), transparent 70%),
     var(--card-2);
   border-color: var(--line-strong); color: #fff;
 }
@@ -210,8 +210,8 @@ p { max-width: 62ch; }
   margin-bottom: 16px;
 }
 .icon-chip svg { width: 24px; height: 24px; }
-.icon-chip--navy { background: var(--purple-soft); color: #C4B5FD; }
-.icon-chip--blue { background: var(--blue-soft); color: #8FAECB; }
+.icon-chip--navy { background: var(--purple-soft); color: #D1BFB3; }
+.icon-chip--blue { background: var(--blue-soft); color: #C6B6A8; }
 
 /* Βέλος-link μέσα σε clickable κάρτα */
 .card-arrow { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--orange-text); font-size: .95rem; margin-top: 14px; text-decoration: none; }
