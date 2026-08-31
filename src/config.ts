@@ -11,6 +11,9 @@ export const SITE = {
   regionEn: 'Southern suburbs of Athens',
   email: 'info@pisma.gr',
   phone: '+30 694 727 1910',
+  /** Άμεσα κανάλια — το ίδιο νούμερο με το phone, χωρίς κενά/σύμβολα. */
+  whatsapp: 'https://wa.me/306947271910',
+  viber: 'viber://chat?number=%2B306947271910',
   url: 'https://pisma.gr',
   /** Google Analytics 4 Measurement ID (G-XXXXXXXXXX). Κενό = χωρίς GA και χωρίς μπάνερ cookies. */
   gaId: 'G-HE6GWTRNQM',
@@ -22,6 +25,12 @@ export const ELEGXOS = {
   price: 'Δωρεάν',
   priceEn: 'Free',
   reportHours: 48,
+} as const;
+
+/** Δημόσιες δεσμεύσεις χρόνου — εμφανίζονται στο hero και σε CTA. */
+export const PROMISE = {
+  /** Πρώτο preview της ιστοσελίδας εντός τόσων ωρών από το «ναι». */
+  previewHours: 72,
 } as const;
 
 /** Οι τιμές ζουν πλέον στο src/data/pricing.ts (κατηγορίες, πακέτα, builder). */
