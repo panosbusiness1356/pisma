@@ -155,15 +155,24 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
           <a class="btn btn--orange" href="/tablo/">Μετρήστε την επιχείρησή σας — Quiz</a>
         </span>
         <a class="btn btn--ghost" href="/elegxos/">Κλείστε δωρεάν αξιολόγηση</a>
-        <a class="btn btn--wa" href={waHref} target="_blank" rel="noopener">
-          <img src="/logos/whatsapp-icon.svg" alt="" width="20" height="20" />
-          WhatsApp — απαντάμε την ίδια μέρα
-        </a>
       </div>
       <p class="btn-note blur-in" style="--d:.54s">Χωρίς email · χωρίς δέσμευση · 2 λεπτά και βλέπετε το σκορ</p>
 
+      <!-- Άμεσα κανάλια: brand pills WhatsApp & Viber -->
+      <div class="hero-chat blur-in" style="--d:.58s">
+        <a class="chat-btn chat-btn--wa" href={waHref} target="_blank" rel="noopener">
+          <span class="ic"><img src="/logos/whatsapp-icon.svg" alt="" width="19" height="19" /></span>
+          WhatsApp
+        </a>
+        <a class="chat-btn chat-btn--vb" href={SITE.viber}>
+          <span class="ic"><img src="/logos/viber.svg" alt="" width="19" height="19" /></span>
+          Viber
+        </a>
+        <span class="chat-note">απαντάμε την ίδια μέρα</span>
+      </div>
+
       <!-- Αριθμοί-δεσμεύσεις: τιμή-άγκυρα από το pricing.ts, χρόνοι από το config. -->
-      <ul class="hero-stats blur-in" style="--d:.58s">
+      <ul class="hero-stats blur-in" style="--d:.64s">
         <li><strong>από {eur(sitePriceFrom)}</strong><span>ιστοσελίδα</span></li>
         <li><strong>{PROMISE.previewHours} ώρες</strong><span>πρώτο preview</span></li>
         <li><strong>{ELEGXOS.reportHours} ώρες</strong><span>γραπτή πρόταση</span></li>
@@ -843,14 +852,31 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
   .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 36px; }
   .hero .btn-note { margin-top: 14px; margin-inline: auto; }
 
-  /* WhatsApp CTA — πράσινο περίγραμμα, ίδιο σχήμα με τα υπόλοιπα κουμπιά */
-  .btn--wa {
-    display: inline-flex; align-items: center; gap: 9px;
-    background: transparent; color: var(--ink);
-    box-shadow: inset 0 0 0 1.5px rgba(37, 211, 102, .55);
+  /* WhatsApp & Viber — γυαλιστερά brand pills με λευκό δίσκο για το εικονίδιο */
+  .hero-chat {
+    display: flex; align-items: center; justify-content: center;
+    flex-wrap: wrap; gap: 10px 12px; margin-top: 20px;
   }
-  .btn--wa img { width: 20px; height: 20px; }
-  .btn--wa:hover { background: rgba(37, 211, 102, .08); }
+  .chat-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 20px 8px 9px; border-radius: 999px;
+    font-weight: 700; font-size: .95rem; color: #fff; text-decoration: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .28), inset 0 1px 0 rgba(255, 255, 255, .28);
+    transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+  }
+  .chat-btn:hover {
+    transform: translateY(-2px); filter: brightness(1.07);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, .34), inset 0 1px 0 rgba(255, 255, 255, .28);
+  }
+  .chat-btn .ic {
+    width: 32px; height: 32px; border-radius: 50%; background: #fff;
+    display: grid; place-items: center; flex: none;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .22);
+  }
+  .chat-btn .ic img { width: 19px; height: 19px; display: block; }
+  .chat-btn--wa { background: linear-gradient(160deg, #2BD97C, #128C5A); }
+  .chat-btn--vb { background: linear-gradient(160deg, #8B7DF9, #5B4AC8); }
+  .chat-note { font-size: .85rem; color: var(--muted); flex-basis: auto; }
 
   /* Αριθμοί-δεσμεύσεις κάτω από τα CTAs */
   .hero-stats {
@@ -1160,9 +1186,11 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
     .hero h1 { order: 2; }
     .hero-ctas { order: 3; }
     .hero .btn-note { order: 4; }
-    .hero .sub { order: 5; }
+    /* Τα pills WhatsApp/Viber μένουν ψηλά — κανάλι με τη μικρότερη τριβή. */
+    .hero-chat { order: 5; }
+    .hero .sub { order: 6; }
     /* Οι αριθμοί-δεσμεύσεις κατεβαίνουν κάτω από την περιγραφή στο κινητό. */
-    .hero-stats { order: 6; margin-top: 22px; gap: 8px 22px; }
+    .hero-stats { order: 7; margin-top: 22px; gap: 8px 22px; }
     .hero-stats strong { font-size: 1.05rem; }
     /* Το animation ακολουθεί τη νέα οπτική σειρά — η περιγραφή εμφανίζεται τελευταία. */
     .hero .sub { font-size: .92rem; margin-top: 26px; max-width: 40ch; animation-delay: .56s; }
@@ -1175,8 +1203,6 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
       text-decoration: underline; text-underline-offset: 5px;
       text-decoration-color: var(--orange);
     }
-    /* Το WhatsApp μένει κουμπί και στο κινητό — είναι το κανάλι με τη μικρότερη τριβή. */
-    .hero-ctas .btn--wa { justify-content: center; font-size: .98rem; }
     .announce { font-size: .8rem; margin-bottom: 20px; }
     .hero-ba { margin-top: 44px; }
     .einv-panel { display: none; }
