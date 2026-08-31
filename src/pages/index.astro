@@ -75,8 +75,8 @@ const steps = [
    Τα labels των generic βαθμίδων («Standard», «Setup») παίρνουν το όνομα της
    κατηγορίας τους για να στέκουν μόνα τους. */
 const bdDefs: { id: string; label?: string }[] = [
-  { id: 'web-standard', label: 'Ιστοσελίδα Standard' },
-  { id: 'gbp-setup', label: 'Προφίλ Google — Setup' },
+  { id: 'web-standard', label: 'Ιστοσελίδα — Βασική' },
+  { id: 'gbp-setup', label: 'Προφίλ Google — Στήσιμο' },
   { id: 'auto-reviews' },
   { id: 'care-web' },
 ];
@@ -345,15 +345,15 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
     <span class="flogo sflogo" aria-hidden="true" style="right:4%;top:42px;--w:26px;--dur:6.8s"><img src="/logos/facebook.svg" alt="" loading="lazy" /></span>
     <div class="container">
       <div class="sec-head">
-        <p class="kicker kicker--blue">Τιμολόγηση</p>
-        <h2 id="pricing-title">Κανένα έτοιμο πακέτο — φτιάχνετε το δικό σας</h2>
-        <p>Όλες οι τιμές δημόσιες. Διαλέγετε μόνο ό,τι χρειάζεστε — και ξέρετε το κόστος πριν από την πρώτη επικοινωνία.</p>
+        <p class="kicker kicker--blue">Τιμές</p>
+        <h2 id="pricing-title">Φτιάξτε το πακέτο σας</h2>
+        <p>Φανερές τιμές. Διαλέγετε ό,τι χρειάζεστε και φτιάχνετε το πακέτο σας.</p>
       </div>
 
       <div class="card bd reveal" id="builder-demo">
         <!-- Αριστερά: μίνι-preview του builder — δείγμα με πραγματικές τιμές -->
         <div class="bd-mock" aria-hidden="true">
-          <p class="bd-mock-title">Η προσφορά σας <span class="tag tag--demo">Δείγμα</span></p>
+          <p class="bd-mock-title">Το πακέτο σας <span class="tag tag--demo">Δείγμα</span></p>
           <ul class="bd-list">
             {bdItems.map((o) => (
               <li class="bd-item is-on" data-price={o.price} data-ptype={o.type}>
@@ -366,8 +366,8 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
             ))}
           </ul>
           <div class="bd-totals">
-            <span>Εφάπαξ</span><b class="num" id="bd-once">{eur(bdTotals.once)}</b>
-            <span>Μηνιαία</span><b class="num bd-sm" id="bd-month">{eur(bdTotals.monthly)}</b>
+            <span>Αρχικό κόστος</span><b class="num" id="bd-once">{eur(bdTotals.once)}</b>
+            <span>Μηνιαίο</span><b class="num bd-sm" id="bd-month">{eur(bdTotals.monthly)}</b>
           </div>
         </div>
 
@@ -378,26 +378,26 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
               <span class="bd-n num">1</span>
               <div>
                 <h3>Διαλέγετε υπηρεσίες</h3>
-                <p>Site, Google, το Εργαλείο Κριτικών, αυτοματισμοί — τικάρετε μόνο ό,τι σας χρειάζεται.</p>
+                <p>Ιστοσελίδα, social media, κριτικές Google, ορατότητα σε Google και AI, αυτοματισμοί. Διαλέξτε αυτά που χρειάζεστε.</p>
               </div>
             </li>
             <li>
               <span class="bd-n num">2</span>
               <div>
-                <h3>Βλέπετε το σύνολο ζωντανά</h3>
-                <p>Εφάπαξ και μηνιαία, χωρίς ψιλά γράμματα — το άθροισμα ενημερώνεται μπροστά σας.</p>
+                <h3>Βλέπετε το σύνολο</h3>
+                <p>Βλέπετε αμέσως τι πληρώνετε μία φορά και τι κάθε μήνα.</p>
               </div>
             </li>
             <li>
               <span class="bd-n num">3</span>
               <div>
-                <h3>Τη λαμβάνετε γραπτώς</h3>
-                <p>Καμία πληρωμή online — στέλνετε την προσφορά και τα λέμε.</p>
+                <h3>Λαμβάνετε την προσφορά γραπτώς</h3>
+                <p>Στέλνετε την προσφορά και τα λέμε από κοντά. Χωρίς καμία δέσμευση.</p>
               </div>
             </li>
           </ol>
           <a class="btn btn--orange" href="/times/">Φτιάξτε το πακέτο σας →</a>
-          <p class="btn-note">2 λεπτά · όλες οι τιμές δημόσιες · χωρίς στοιχεία</p>
+          <p class="btn-note">2 λεπτά · όλες οι τιμές δημόσιες</p>
         </div>
       </div>
     </div>
