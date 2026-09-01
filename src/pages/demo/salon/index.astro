@@ -1,0 +1,47 @@
+---
+// Ευρετήριο των τριών demo εκδοχών κομμωτηρίου (portfolio).
+const title = 'Demo κομμωτηρίου · 3 εκδοχές';
+const variants = [
+  { href: '/demo/salon/metaxi', name: 'ΜΕΤΑΞΙ', tag: 'Hair atelier — φωτεινό', desc: 'Ζωντανό χρωματολόγιο: διαλέγεις απόχρωση και βάφεται όλη η σελίδα. Κράτηση σε πλαϊνή κάρτα 4 βημάτων.', bg: 'linear-gradient(135deg,#f6efee,#c98a7d)', ink: '#2e2228' },
+  { href: '/demo/salon/nyx', name: 'NYX', tag: 'Νυχτερινό studio', desc: 'Καθρέφτης καμαρινιού με αναμμένες λάμπες — η κράτηση γίνεται μέσα στον καθρέφτη.', bg: 'linear-gradient(135deg,#17111f,#3d3352)', ink: '#ffd9a0' },
+  { href: '/demo/salon/bikouti', name: 'Το Μπικουτί', tag: 'Ρετρό γειτονιάς', desc: 'Τέντα με ρίγες, τιμοκατάλογος του ’74 και καρτέλα πελάτη που σφραγίζεται «ΚΛΕΙΣΤΗΚΕ».', bg: 'linear-gradient(135deg,#d8ebe0,#f2b9c4)', ink: '#43302a' },
+];
+---
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>{title}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #14100f; color: #f3ede8; min-height: 100svh; display: grid; place-items: center; padding: 40px 5vw; }
+    h1 { font-size: clamp(26px, 4vw, 40px); margin-bottom: 8px; }
+    .sub { color: #a99d94; margin-bottom: 36px; font-size: 15px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; max-width: 1000px; }
+    a.card { display: block; text-decoration: none; border-radius: 18px; padding: 28px 24px 24px; min-height: 220px; transition: transform .2s; }
+    a.card:hover { transform: translateY(-4px); }
+    .card h2 { font-size: 26px; letter-spacing: .04em; }
+    .card .tag { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; opacity: .8; display: block; margin-bottom: 14px; }
+    .card p { font-size: 14px; line-height: 1.55; opacity: .85; }
+    .card .go { display: inline-block; margin-top: 16px; font-size: 13px; font-weight: 600; border-bottom: 1px solid currentColor; }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>Ένα κομμωτήριο, τρεις εκδοχές</h1>
+    <p class="sub">Demo σελίδες portfolio με πλήρες (εικονικό) σύστημα κρατήσεων. Διάλεξε κατεύθυνση:</p>
+    <div class="grid">
+      {variants.map(v => (
+        <a class="card" href={v.href} style={`background:${v.bg};color:${v.ink}`}>
+          <span class="tag">{v.tag}</span>
+          <h2>{v.name}</h2>
+          <p>{v.desc}</p>
+          <span class="go">Άνοιξέ το →</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</body>
+</html>
