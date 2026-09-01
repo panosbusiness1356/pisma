@@ -13,18 +13,18 @@ interface Props {
   description: string;
   /** JSON-LD αντικείμενο ή πίνακας αντικειμένων (schema.org) */
   schema?: object | object[];
-  /** Προαιρετική εικόνα κοινοποίησης (π.χ. campaign visual) — default το /og.png */
+  /** Προαιρετική εικόνα κοινοποίησης (π.χ. campaign visual) — default /og.png (EL) ή /og-en.png (EN) */
   image?: string;
   /** Σελίδες εκτός αναζήτησης (π.χ. 404): noindex + χωρίς canonical */
   noindex?: boolean;
 }
 
-const { title, description, schema, image = '/og.png', noindex = false } = Astro.props;
+const { title, description, schema, image, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).href;
-const ogImage = new URL(image, Astro.site ?? SITE.url).href;
 
 // Γλώσσα από το URL (/en/ = αγγλικά) + hreflang ζεύγος, όταν υπάρχει αντίστοιχη σελίδα.
 const lang = langOf(Astro.url.pathname);
+const ogImage = new URL(image ?? (lang === 'en' ? '/og-en.png' : '/og.png'), Astro.site ?? SITE.url).href;
 const pathNorm = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : Astro.url.pathname + '/';
 const pair = PAIRS.find(([el, en]) => pathNorm === el || pathNorm === en);
 
