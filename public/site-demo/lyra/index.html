@@ -1,0 +1,3045 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Λύρα — Οινοποιείο</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=GFS+Didot:ital@0;1&family=Commissioner:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#150C11;
+  --ink-2:#1D1016;
+  --wine:#6E1423;
+  --wine-bright:#9E2338;
+  --wine-glow:#C13A52;
+  --gold:#C7A24B;
+  --gold-soft:#8F7A45;
+  --cream:#F1EADF;
+  --cream-2:#E9DFD0;
+  --rose:#E9D2D4;
+  --muted:#A08E93;
+  --muted-dark:#6E5F58;
+  --line:rgba(199,162,75,.22);
+  --serif:'GFS Didot', Georgia, serif;
+  --sans:'Commissioner', 'Segoe UI', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);
+  color:var(--cream);
+  font-family:var(--sans);
+  font-weight:300;
+  line-height:1.7;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--wine);color:var(--cream)}
+img{max-width:100%;display:block}
+
+/* ---------- LOADER ---------- */
+#loader{
+  position:fixed;inset:0;z-index:999;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .9s cubic-bezier(.7,0,.2,1);
+}
+#loader.done{transform:translateY(-101%)}
+#loader .word{
+  font-family:var(--serif);font-size:clamp(3rem,10vw,6.5rem);
+  letter-spacing:.3em;text-indent:.3em;color:var(--cream);display:flex;
+}
+#loader .word span{opacity:0;transform:translateY(.6em);animation:lrise .7s cubic-bezier(.2,.7,.2,1) forwards}
+#loader .word span:nth-child(1){animation-delay:.05s}
+#loader .word span:nth-child(2){animation-delay:.15s}
+#loader .word span:nth-child(3){animation-delay:.25s}
+#loader .word span:nth-child(4){animation-delay:.35s}
+@keyframes lrise{to{opacity:1;transform:none}}
+#loader .l-lyre{width:56px;height:56px;margin-bottom:1.6rem;opacity:0;animation:lfade .6s .2s forwards}
+#loader .lstr{stroke:rgba(241,234,223,.85);stroke-width:1.1;animation:strum .16s ease-in-out infinite}
+#loader .lstr:nth-child(4){animation-delay:.05s}
+#loader .lstr:nth-child(5){animation-delay:.1s}
+@keyframes strum{0%,100%{transform:translateX(0)}50%{transform:translateX(1.7px)}}
+#loader{flex-direction:column}
+#loader .lyre{position:absolute;bottom:12vh;opacity:0;animation:lfade 1s .5s forwards;color:var(--gold);font-size:.7rem;letter-spacing:.4em;text-transform:uppercase}
+@keyframes lfade{to{opacity:.7}}
+
+
+/* ---------- FILM GRAIN + VIGNETTE ---------- */
+#grain{
+  position:fixed;inset:-60px;z-index:900;pointer-events:none;opacity:.055;
+  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/></filter><rect width="240" height="240" filter="url(%23n)"/></svg>');
+  background-size:240px 240px;
+  animation:grainJump .9s steps(4) infinite;
+}
+@keyframes grainJump{
+  0%{transform:translate(0,0)}25%{transform:translate(-30px,18px)}
+  50%{transform:translate(22px,-26px)}75%{transform:translate(-14px,-12px)}100%{transform:translate(0,0)}
+}
+#vignette{
+  position:fixed;inset:0;z-index:899;pointer-events:none;
+  background:radial-gradient(115% 115% at 50% 45%,transparent 62%,rgba(10,5,7,.32) 100%);
+}
+/* ---------- HERO: breathing titles ---------- */
+body.loaded .hero-type .w{animation:heroFloat 8s ease-in-out infinite}
+body.loaded .hero-type .row:nth-child(1) .w{animation-delay:2.4s}
+body.loaded .hero-type .row:nth-child(3) .w{animation-delay:2.9s}
+body.loaded .hero-type .row:nth-child(4) .w{animation-delay:3.4s}
+@keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+/* ---------- QUOTE TYPES ITSELF ---------- */
+.band h3 .qw{opacity:0;filter:blur(5px);display:inline-block;transition:opacity .55s ease,filter .55s ease}
+.band.qon h3 .qw{opacity:1;filter:none}
+@media (prefers-reduced-motion: reduce){
+  #grain,#vignette{display:none}
+  body.loaded .hero-type .w{animation:none}
+  .band h3 .qw{opacity:1;filter:none}
+}
+
+
+/* ---------- CINEMATIC INTRO ---------- */
+#cine{
+  position:fixed;inset:0;z-index:1000;background:#0D0709;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6rem;
+  cursor:pointer;
+}
+#cine.done{animation:cineUp .85s cubic-bezier(.7,0,.2,1) forwards}
+@keyframes cineUp{to{transform:translateY(-101%)}}
+.cine-lyre{width:110px;height:110px}
+.cine-lyre path{
+  stroke:var(--gold);stroke-width:2;stroke-linecap:round;
+  stroke-dasharray:1;stroke-dashoffset:1;
+  filter:drop-shadow(0 0 6px rgba(199,162,75,.65));
+  animation:cdraw 1.7s cubic-bezier(.4,0,.3,1) forwards;
+}
+.cine-lyre path:nth-child(2){animation-delay:.45s}
+.cine-lyre path:nth-child(3){animation-delay:.7s}
+.cine-lyre .str{stroke-width:1.1;animation-delay:1.05s;animation-duration:.7s}
+.cine-lyre path:nth-child(5){animation-delay:1.2s}
+.cine-lyre path:nth-child(6){animation-delay:1.35s}
+.cine-lyre path:nth-child(7){animation-delay:1.5s}
+.cine-lyre .peg{fill:var(--gold);stroke:none;opacity:0;animation:pegfade .5s ease 1.6s forwards}
+@keyframes pegfade{to{opacity:1}}
+@keyframes cdraw{to{stroke-dashoffset:0}}
+.cine-year{
+  font-family:var(--serif);font-size:1.4rem;letter-spacing:.5em;text-indent:.5em;
+  color:rgba(241,234,223,.55);
+}
+.cine-line{
+  font-family:var(--serif);font-style:italic;font-size:clamp(1.2rem,3vw,1.9rem);
+  color:var(--cream);letter-spacing:.04em;text-align:center;padding:0 1.5rem;
+  opacity:0;animation:cfade 2.1s ease 2s forwards;
+}
+@keyframes cfade{0%{opacity:0;transform:translateY(10px)}25%{opacity:1;transform:none}78%{opacity:1}100%{opacity:0}}
+.cine-skip{
+  position:absolute;bottom:2.4rem;font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(241,234,223,.35);
+}
+/* ---------- HERO DUST ---------- */
+.hdust{
+  position:absolute;border-radius:50%;background:#F6ECD8;pointer-events:none;z-index:4;
+  filter:blur(1px);opacity:0;animation:hdrift linear infinite;
+}
+@keyframes hdrift{
+  0%{transform:translate(0,20px);opacity:0}
+  15%{opacity:var(--o,.35)}
+  85%{opacity:calc(var(--o,.35)*.55)}
+  100%{transform:translate(var(--sw,14px),-140px);opacity:0}
+}
+@media (prefers-reduced-motion: reduce){
+  #cine{display:none}
+  .hdust{display:none}
+}
+
+
+/* ---------- LANG VEIL ---------- */
+#langVeil{position:fixed;inset:0;background:var(--ink);z-index:1200;opacity:0;pointer-events:none;transition:opacity .45s ease}
+#langVeil.on{opacity:1;pointer-events:all}
+/* ---------- GUESTBOOK ---------- */
+.gb-card{
+  background:#FBF7EF;border:1px solid rgba(21,12,17,.08);border-top:3px solid var(--gold);
+  border-radius:6px;padding:2.8rem 2.4rem 2rem;margin-top:2.6rem;
+  box-shadow:0 26px 60px -32px rgba(21,12,17,.28);
+}
+.gb-stars{color:var(--gold);letter-spacing:.4em;text-indent:.4em;font-size:.85rem;margin-bottom:1.3rem}
+.gb-quote{
+  font-family:var(--serif);font-style:italic;font-size:clamp(1.15rem,2.6vw,1.55rem);
+  line-height:1.55;color:var(--ink);min-height:4.6em;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .45s ease,transform .45s ease;
+}
+.gb-name{
+  margin-top:1.1rem;font-family:var(--sans);font-size:.7rem;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--wine);
+  transition:opacity .45s ease,transform .45s ease;
+}
+#gbCard.fade .gb-quote,#gbCard.fade .gb-name{opacity:0;transform:translateY(8px)}
+.gb-dots{margin-top:1.6rem;display:flex;gap:.55rem;justify-content:center}
+.gb-dots button{width:8px;height:8px;border-radius:50%;border:none;padding:0;background:rgba(21,12,17,.18);cursor:pointer;transition:background .3s,transform .3s}
+.gb-dots button.on{background:var(--wine);transform:scale(1.35)}
+/* ---------- two new letter effects ---------- */
+.fx-slant .ltr{opacity:0;transform:translateY(26px) rotate(var(--r,6deg))}
+.fx-slant .ltr:nth-child(even){--r:-7deg}
+.fx-slant.letters-go .ltr{animation:lslant .55s cubic-bezier(.25,.9,.3,1) forwards;animation-delay:var(--d,0s)}
+@keyframes lslant{0%{opacity:0;transform:translateY(26px) rotate(var(--r,6deg))}100%{opacity:1;transform:none}}
+
+
+/* ---------- SCROLL-DRIVEN ANIMATIONS (native CSS, Chrome 115+) ---------- */
+@supports (animation-timeline: view()) {
+  #heroMedia{
+    animation:sdHero linear both;
+    animation-timeline:scroll(root);
+    animation-range:0 130vh;
+  }
+  @keyframes sdHero{from{transform:scale(1.06) translateY(0)}to{transform:scale(1.06) translateY(23.4vh)}}
+  .band .band-bg{
+    animation:sdBand linear both;
+    animation-timeline:view();
+    animation-range:entry 0% exit 100%;
+  }
+  @keyframes sdBand{from{transform:translateY(-18px)}to{transform:translateY(18px)}}
+  .f-photo{animation-timeline:view();animation-range:entry 0% exit 100%;animation-duration:1s;animation-timing-function:linear;animation-fill-mode:both}
+  .fp1{animation-name:sdFp1}
+  .fp2{animation-name:sdFp2}
+  .fp3{animation-name:sdFp3}
+  @keyframes sdFp1{from{transform:translateY(41px) rotate(-7deg)}to{transform:translateY(-41px) rotate(1deg)}}
+  @keyframes sdFp2{from{transform:translateY(64px) rotate(6deg)}to{transform:translateY(-64px) rotate(14deg)}}
+  @keyframes sdFp3{from{transform:translateY(30px) rotate(-3deg)}to{transform:translateY(-30px) rotate(5deg)}}
+}
+@media (prefers-reduced-motion: reduce){
+  #heroMedia,.band .band-bg,.f-photo{animation:none}
+}
+
+
+/* ---------- hover life for the remaining titles ---------- */
+@media (hover:hover){
+  /* hero words: the letters slowly spread & glow gold */
+  .hero-type .w{pointer-events:auto;cursor:default;transition:letter-spacing .6s cubic-bezier(.25,.8,.3,1),text-shadow .6s ease}
+  .hero-type .w:hover{letter-spacing:.2em;text-shadow:0 0 28px rgba(199,162,75,.55)}
+  /* philosophy quote: each word lifts & turns gold */
+  .band h3 .qw{transition:opacity .55s ease,filter .55s ease,transform .3s cubic-bezier(.3,1.5,.4,1),color .3s ease;cursor:default}
+  .band.qon h3 .qw:hover{transform:translateY(-4px);color:var(--gold)}
+  /* timeline rows: title slides, year springs */
+  .tl-body h3{transition:transform .3s ease,color .3s ease}
+  .tl-ev:hover .tl-body h3{transform:translateX(8px);color:var(--wine)}
+  /* small serif headers: a gold underline draws itself */
+  .food-copy h3,.nl-side h3{
+    display:inline-block;padding-bottom:4px;
+    background-image:linear-gradient(var(--gold),var(--gold));
+    background-repeat:no-repeat;background-size:0% 2px;background-position:0 100%;
+    transition:background-size .45s cubic-bezier(.25,.8,.3,1);
+  }
+  .food-copy h3:hover,.nl-side h3:hover{background-size:100% 2px}
+  /* shelf names: tracking widens, colour deepens */
+  .shelf-item h3{transition:letter-spacing .35s ease,color .35s ease}
+  .shelf-item:hover h3{letter-spacing:.12em;color:var(--wine)}
+  /* FAQ questions: nudge right on top of the colour change */
+  .fq-q{transition:color .3s ease,padding-left .3s ease}
+  .fq-q:hover{padding-left:10px}
+}
+
+/* ---------- CURSOR / PROGRESS ---------- */
+#cursor{
+  position:fixed;top:0;left:0;width:13px;height:13px;
+  border-radius:0 50% 50% 50%;
+  background:var(--wine-glow);z-index:998;pointer-events:none;
+  transform:translate(-50%,-50%) rotate(45deg);
+  box-shadow:0 0 14px rgba(193,58,82,.55);
+  transition:width .25s,height .25s,background .25s,opacity .3s,border-radius .25s;
+  opacity:0;
+}
+#cursor.on{opacity:.9}
+#cursor.grow{width:36px;height:36px;background:rgba(193,58,82,.2);border:1px solid var(--wine-glow);border-radius:50%}
+@media (hover:none){#cursor{display:none}}
+
+/* wine wave page transition */
+#wave{
+  position:fixed;left:-10vw;right:-10vw;top:0;bottom:-8vh;z-index:400;pointer-events:none;
+  background:linear-gradient(180deg,var(--wine-glow),var(--wine) 40%,#4A0D18);
+  transform:translateY(103%);border-radius:48% 52% 0 0/7vh 9vh 0 0;
+}
+#wave.cover{transition:transform .55s cubic-bezier(.7,0,.3,1);transform:translateY(0);border-radius:0}
+#wave.leave{transition:transform .55s cubic-bezier(.7,0,.3,1);transform:translateY(-103%);border-radius:0 0 48% 52%/0 0 7vh 9vh}
+
+/* language toggle */
+#langBtn{
+  background:none;border:1px solid rgba(241,234,223,.35);color:var(--cream);
+  font-family:var(--sans);font-size:.68rem;font-weight:700;letter-spacing:.18em;
+  padding:.45rem .8rem;border-radius:999px;cursor:pointer;
+  transition:color .3s,border-color .3s;margin-left:1.4rem;
+}
+#langBtn:hover{color:var(--gold);border-color:var(--gold)}
+nav.scrolled #langBtn{color:var(--ink);border-color:rgba(21,12,17,.35)}
+nav.scrolled #langBtn:hover{color:var(--wine);border-color:var(--wine)}
+body.menu-open #langBtn{color:var(--cream);border-color:rgba(241,234,223,.35)}
+
+/* wine stains on click / selection */
+.stain{
+  position:fixed;z-index:997;pointer-events:none;
+  background:radial-gradient(circle at 40% 35%, rgba(193,58,82,.85), rgba(110,20,35,.65) 70%, transparent 72%);
+  animation:stainFade .9s ease-out forwards;
+}
+@keyframes stainFade{
+  0%{transform:scale(.2);opacity:0}
+  25%{opacity:.85;transform:scale(1.05)}
+  100%{opacity:0;transform:scale(1.25)}
+}
+
+/* wine rain easter egg */
+.rdrop{
+  position:fixed;top:-24px;width:7px;height:11px;z-index:996;pointer-events:none;
+  background:var(--wine-glow);border-radius:0 50% 50% 50%;
+  transform:rotate(45deg);opacity:.9;
+  animation:rfall linear forwards;
+}
+@keyframes rfall{
+  80%{opacity:.9}
+  100%{transform:translateY(115vh) rotate(45deg);opacity:0}
+}
+
+/* scroll progress: a glass filling with wine */
+#glassProgress{
+  position:fixed;right:1.1rem;bottom:1.1rem;z-index:200;
+  width:46px;height:66px;display:flex;align-items:center;justify-content:center;
+  background:rgba(21,12,17,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(241,234,223,.16);border-radius:999px;pointer-events:none;
+}
+#glassProgress svg{width:26px;height:46px;overflow:visible}
+
+/* ambient sound toggle */
+#soundBtn{
+  position:fixed;left:1.1rem;bottom:1.1rem;z-index:200;
+  width:46px;height:46px;border-radius:50%;
+  background:rgba(21,12,17,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(241,234,223,.2);color:var(--cream);
+  font-size:1.1rem;cursor:pointer;transition:color .3s,border-color .3s,box-shadow .3s;
+}
+#soundBtn:hover{color:var(--gold);border-color:var(--gold)}
+#soundBtn.on{color:var(--gold);border-color:var(--gold);box-shadow:0 0 16px rgba(199,162,75,.4);animation:spulse 2.4s ease-in-out infinite}
+@keyframes spulse{50%{box-shadow:0 0 4px rgba(199,162,75,.15)}}
+
+/* ---------- NAV ---------- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.4rem clamp(1.2rem,4vw,3.5rem);
+  transition:background .5s,padding .4s,box-shadow .5s;
+}
+nav .nav-logo{
+  font-family:var(--serif);font-size:1.5rem;font-weight:600;
+  letter-spacing:.34em;text-indent:.34em;
+  color:var(--cream);text-decoration:none;
+  display:flex;align-items:center;gap:.6rem;transition:color .4s;
+}
+nav .nav-logo svg{width:22px;height:22px;flex:none}
+.nav-links{display:flex;gap:clamp(1.2rem,3vw,2.6rem);list-style:none}
+.nav-links a{
+  color:rgba(241,234,223,.75);text-decoration:none;
+  font-size:.72rem;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;
+  transition:color .3s;position:relative;padding-bottom:.3em;
+}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--gold);transition:width .35s}
+.nav-links a:hover::after{width:100%}
+.nav-links a:hover{color:var(--cream)}
+nav.scrolled{
+  background:rgba(241,234,223,.93);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  padding-top:.85rem;padding-bottom:.85rem;
+  box-shadow:0 1px 0 rgba(21,12,17,.08);
+}
+nav.scrolled .nav-logo{color:var(--ink)}
+nav.scrolled .nav-links a{color:var(--muted-dark)}
+nav.scrolled .nav-links a:hover{color:var(--ink)}
+.nav-links a:focus-visible{outline:1px solid var(--gold);outline-offset:4px}
+#burger{
+  display:none;background:none;border:none;cursor:pointer;
+  width:40px;height:40px;position:relative;z-index:302;padding:8px;
+}
+#burger span{
+  display:block;height:2px;width:100%;background:var(--cream);
+  margin:5px 0;transition:transform .4s cubic-bezier(.2,.7,.2,1),opacity .3s,background .4s;
+}
+nav.scrolled #burger span{background:var(--ink)}
+body.menu-open #burger span{background:var(--cream)}
+body.menu-open #burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+body.menu-open #burger span:nth-child(2){opacity:0}
+body.menu-open #burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+#mobileMenu{
+  position:fixed;inset:0;z-index:300;
+  background:
+    radial-gradient(120% 90% at 50% 110%, rgba(110,20,35,.4) 0%, rgba(110,20,35,0) 55%),
+    var(--ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;
+  opacity:0;pointer-events:none;transition:opacity .45s ease;
+}
+body.menu-open #mobileMenu{opacity:1;pointer-events:auto}
+#mobileMenu a{
+  font-family:var(--serif);font-size:clamp(2rem,9vw,3rem);font-weight:500;
+  color:var(--cream);text-decoration:none;letter-spacing:.08em;
+  padding:.35rem 1rem;opacity:0;transform:translateY(20px);
+  transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.2,1),color .3s;
+}
+#mobileMenu a:active,#mobileMenu a:hover{color:var(--gold)}
+body.menu-open #mobileMenu a{opacity:1;transform:none}
+body.menu-open #mobileMenu a:nth-child(2){transition-delay:.08s}
+body.menu-open #mobileMenu a:nth-child(3){transition-delay:.16s}
+body.menu-open #mobileMenu a:nth-child(4){transition-delay:.24s}
+body.menu-open #mobileMenu a:nth-child(5){transition-delay:.32s}
+#mobileMenu .mm-foot{
+  position:absolute;bottom:3rem;font-size:.65rem;letter-spacing:.35em;
+  text-transform:uppercase;color:var(--muted);
+}
+body.menu-open{overflow:hidden}
+body.menu-open nav{z-index:301;background:none;box-shadow:none}
+body.menu-open nav .nav-logo{color:var(--cream)}
+@media(max-width:720px){
+  .nav-links{display:none}
+  #burger{display:block}
+}
+@media(min-width:721px){#mobileMenu{display:none}}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;height:100vh;height:100svh;overflow:hidden;background:#0F0A0D}
+.hero-media{
+  position:absolute;inset:-12% 0 0 0;height:118%;width:100%;
+  object-fit:cover;will-change:transform;
+  transform:scale(1.06);
+}
+.hero-shade{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,rgba(15,10,13,.55) 0%,rgba(15,10,13,.15) 40%,rgba(21,12,17,.65) 100%);
+}
+.hero-type{
+  position:absolute;inset:0;z-index:5;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;pointer-events:none;
+}
+.hero-type .row{overflow:hidden;padding:0 .1em}
+.hero-type .w{
+  display:inline-block;
+  font-family:var(--serif);font-weight:500;
+  font-size:clamp(3.2rem,11vw,8.5rem);
+  letter-spacing:.12em;text-indent:.12em;line-height:1.04;
+  color:var(--cream);
+  transform:translateY(110%);
+  transition:transform 1s cubic-bezier(.2,.7,.15,1);
+}
+.hero-type .row:nth-child(2) .w{transition-delay:.12s}
+.hero-type .row:nth-child(4) .w{transition-delay:.24s}
+body.loaded .hero-type .w{transform:none}
+.hero-type .mid{
+  margin:1.4rem 0;max-width:34ch;
+  font-size:clamp(.72rem,1.1vw,.85rem);letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(241,234,223,.9);font-weight:500;line-height:2;
+  text-shadow:0 1px 20px rgba(15,10,13,.8);
+  opacity:0;transition:opacity 1.2s .5s;
+}
+body.loaded .hero-type .mid{opacity:1}
+.hero-badge{
+  position:absolute;left:clamp(1rem,3vw,2.5rem);bottom:2.2rem;z-index:6;
+  width:64px;height:64px;border-radius:50%;
+  border:1px solid rgba(241,234,223,.4);
+  display:flex;align-items:center;justify-content:center;
+  animation:spin 14s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-scroll{
+  position:absolute;bottom:2.4rem;left:50%;transform:translateX(-50%);z-index:6;
+  color:rgba(241,234,223,.8);font-size:.62rem;letter-spacing:.3em;text-indent:.3em;
+  text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:.6rem;
+}
+.hero-scroll .line{width:1px;height:42px;background:linear-gradient(180deg,var(--gold),transparent);transform-origin:top;animation:drip 2.2s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0)}55%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+
+/* ---------- SHARED ---------- */
+.eyebrow{
+  display:flex;align-items:center;gap:1rem;
+  font-size:.7rem;letter-spacing:.34em;text-transform:uppercase;
+  color:var(--gold);font-weight:700;margin-bottom:1.6rem;
+}
+.eyebrow::before{content:"";width:42px;height:1px;background:var(--gold);opacity:.7}
+.btn{
+  display:inline-block;padding:1rem 2.9rem;
+  border:1px solid currentColor;color:inherit;
+  text-decoration:none;font-size:.72rem;font-weight:700;
+  letter-spacing:.3em;text-indent:.3em;text-transform:uppercase;
+  position:relative;overflow:hidden;transition:color .4s;z-index:1;
+}
+.btn::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:currentColor;transform:scaleY(0);transform-origin:bottom;
+  transition:transform .4s cubic-bezier(.2,.7,.2,1);
+}
+.btn:hover::before{transform:scaleY(1)}
+.btn span{position:relative;transition:color .4s}
+.btn:hover span{color:var(--fillText,var(--cream))}
+.btn:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.12s}.reveal.d2{transition-delay:.24s}.reveal.d3{transition-delay:.36s}
+
+/* ---------- LETTER EFFECTS (one per title) ---------- */
+.lword{display:inline-block;white-space:nowrap}
+.ltr{display:inline-block;opacity:0;will-change:transform}
+.ltr.stay{animation:none;opacity:1;transform:none;filter:none}
+
+/* 1. fall — letters drop from above */
+.fx-fall .ltr{transform:translateY(-1em) rotate(var(--rot,0deg))}
+.fx-fall.letters-go .ltr{animation:ldrop .75s cubic-bezier(.25,1.35,.35,1) forwards;animation-delay:var(--d,0s)}
+@keyframes ldrop{
+  0%{opacity:0;transform:translateY(-1em) rotate(var(--rot,0deg))}
+  55%{opacity:1;transform:translateY(.1em) rotate(calc(var(--rot,0deg)*-.35))}
+  75%{transform:translateY(-.04em) rotate(calc(var(--rot,0deg)*.12))}
+  100%{opacity:1;transform:none}
+}
+
+/* 2. pop — letters bubble up from nothing */
+.fx-pop .ltr{transform:scale(0) rotate(var(--rot,0deg))}
+.fx-pop.letters-go .ltr{animation:lpop .55s cubic-bezier(.3,1.9,.4,1) forwards;animation-delay:var(--d,0s)}
+@keyframes lpop{
+  0%{opacity:0;transform:scale(0) rotate(var(--rot,0deg))}
+  70%{opacity:1;transform:scale(1.15) rotate(calc(var(--rot,0deg)*-.2))}
+  100%{opacity:1;transform:none}
+}
+
+/* 3. scatter — letters fly in from random directions */
+.fx-scatter .ltr{transform:translate(var(--dx,0px),var(--dy,0px)) rotate(var(--rot,0deg))}
+.fx-scatter.letters-go .ltr{animation:lscatter .8s cubic-bezier(.2,.85,.3,1.1) forwards;animation-delay:var(--d,0s)}
+@keyframes lscatter{
+  0%{opacity:0;transform:translate(var(--dx,0px),var(--dy,0px)) rotate(var(--rot,0deg))}
+  100%{opacity:1;transform:none}
+}
+
+/* 4. flip — letters turn over like cards */
+.fx-flip{perspective:700px}
+.fx-flip .ltr{transform:rotateY(96deg);transform-origin:50% 50%}
+.fx-flip.letters-go .ltr{animation:lflip .6s cubic-bezier(.3,1.4,.4,1) forwards;animation-delay:var(--d,0s)}
+@keyframes lflip{
+  0%{opacity:0;transform:rotateY(96deg)}
+  60%{opacity:1;transform:rotateY(-14deg)}
+  100%{opacity:1;transform:none}
+}
+
+/* 5. rise — letters spring up from below */
+.fx-rise .ltr{transform:translateY(1.1em) scaleY(.6)}
+.fx-rise.letters-go .ltr{animation:lrise2 .6s cubic-bezier(.25,1.6,.4,1) forwards;animation-delay:var(--d,0s)}
+@keyframes lrise2{
+  0%{opacity:0;transform:translateY(1.1em) scaleY(.6)}
+  60%{opacity:1;transform:translateY(-.1em) scaleY(1.06)}
+  100%{opacity:1;transform:none}
+}
+
+/* 6. blur focus */
+.fx-blur .ltr{opacity:0;filter:blur(14px);transform:scale(1.18)}
+.fx-blur.letters-go .ltr{animation:lblur .7s ease-out forwards;animation-delay:var(--d,0s)}
+@keyframes lblur{0%{opacity:0;filter:blur(14px);transform:scale(1.18)}100%{opacity:1;filter:blur(0);transform:none}}
+
+/* 7. swing down on a hinge */
+.fx-swing{perspective:650px}
+.fx-swing .ltr{opacity:0;transform:rotateX(-92deg);transform-origin:50% 0}
+.fx-swing.letters-go .ltr{animation:lswing .8s cubic-bezier(.3,1.4,.4,1) forwards;animation-delay:var(--d,0s)}
+@keyframes lswing{0%{opacity:0;transform:rotateX(-92deg)}60%{opacity:1;transform:rotateX(16deg)}100%{opacity:1;transform:none}}
+
+/* 8. slide in with a skew that straightens */
+.fx-slide .ltr{opacity:0;transform:translateX(-42px) skewX(-12deg)}
+.fx-slide.letters-go .ltr{animation:lslide .65s cubic-bezier(.2,.8,.25,1) forwards;animation-delay:var(--d,0s)}
+@keyframes lslide{0%{opacity:0;transform:translateX(-42px) skewX(-12deg)}70%{opacity:1;transform:translateX(4px) skewX(3deg)}100%{opacity:1;transform:none}}
+
+/* 9. travelling wave */
+.fx-wave .ltr{opacity:0;transform:translateY(18px)}
+.fx-wave.letters-go .ltr{animation:lwave .6s cubic-bezier(.3,.9,.3,1) forwards;animation-delay:var(--d,0s)}
+@keyframes lwave{0%{opacity:0;transform:translateY(18px)}40%{opacity:1;transform:translateY(-14px)}70%{transform:translateY(6px)}100%{opacity:1;transform:none}}
+
+/* 10. typewriter */
+.fx-type .ltr{opacity:0}
+.fx-type.letters-go .ltr{animation:ltype .05s steps(1) forwards;animation-delay:var(--d,0s)}
+@keyframes ltype{to{opacity:1}}
+
+/* 11. grow from the baseline */
+.fx-grow .ltr{opacity:0;transform:scaleY(0);transform-origin:50% 100%}
+.fx-grow.letters-go .ltr{animation:lgrow .6s cubic-bezier(.3,1.2,.35,1) forwards;animation-delay:var(--d,0s)}
+@keyframes lgrow{0%{opacity:0;transform:scaleY(0)}60%{opacity:1;transform:scaleY(1.16)}80%{transform:scaleY(.94)}100%{opacity:1;transform:none}}
+
+/* hover jiggle (shared micro-interaction) */
+@keyframes ljiggle{
+  0%{transform:none}
+  30%{transform:translateY(-.22em) rotate(6deg) scale(1.08)}
+  60%{transform:translateY(.06em) rotate(-4deg)}
+  100%{transform:none}
+}
+@media (prefers-reduced-motion: reduce){.ltr{opacity:1;transform:none;filter:none;animation:none}}
+
+/* ---------- DARK BAND ---------- */
+.band{
+  position:relative;text-align:center;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  padding:clamp(7rem,14vh,10rem) 1.5rem;
+  min-height:min(66vw,92vh);
+}
+.band .band-bg{
+  position:absolute;inset:0;width:100%;height:104%;object-fit:cover;object-position:center 62%;
+  will-change:transform;
+}
+.band .band-shade{position:absolute;inset:0;z-index:2;background:radial-gradient(58% 72% at 50% 46%,rgba(18,10,15,.66),rgba(18,10,15,.34))}
+.band .inner{position:relative;z-index:3}
+.band p.k{font-size:.72rem;letter-spacing:.4em;text-indent:.4em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.band h3{
+  font-family:var(--serif);font-weight:500;font-style:italic;
+  font-size:clamp(2rem,4.5vw,3.4rem);color:var(--cream);
+  margin:1.2rem auto 2.4rem;max-width:22ch;line-height:1.25;
+}
+.band h3 b{font-weight:600;font-style:normal;color:var(--gold)}
+.band .btn{color:var(--cream);--fillText:var(--ink)}
+
+/* ---------- LIGHT SECTIONS ---------- */
+.on-light{background:var(--cream);color:var(--ink)}
+.on-light .eyebrow{color:var(--wine)}
+.on-light .eyebrow::before{background:var(--wine)}
+.sec{padding:clamp(5rem,13vh,9rem) clamp(1.4rem,6vw,4rem)}
+.wrap{max-width:1240px;margin:0 auto}
+.on-light h2.big,.estates h2.giant{
+  font-family:var(--serif);font-weight:500;
+  font-size:clamp(2.6rem,7vw,5.6rem);line-height:1.05;letter-spacing:.02em;
+}
+.on-light .lead{color:var(--muted-dark);max-width:56ch;font-size:clamp(.98rem,1.3vw,1.12rem)}
+.on-light .lead strong{color:var(--ink);font-weight:600}
+
+/* resort split */
+.resort{display:grid;grid-template-columns:.92fr 1.08fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+@media(max-width:900px){.resort{grid-template-columns:1fr}}
+.resort .txt .btn{margin-top:2.4rem;color:var(--ink)}
+.frame{
+  position:relative;overflow:hidden;border-radius:2px;
+  box-shadow:0 30px 80px -30px rgba(21,12,17,.45);
+}
+.frame img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.frame:hover img{transform:scale(1.06)}
+.frame .cap{
+  position:absolute;left:0;right:0;bottom:0;
+  padding:2.2rem 1.4rem 1.1rem;
+  background:linear-gradient(180deg,transparent,rgba(21,12,17,.65));
+  color:var(--cream);font-size:.68rem;letter-spacing:.26em;text-transform:uppercase;font-weight:600;
+}
+.resort .media{position:relative}
+.resort .frame.main{aspect-ratio:4/3}
+.resort .frame.float{
+  position:absolute;right:-6%;bottom:-14%;width:46%;aspect-ratio:1;
+  border:6px solid var(--cream);z-index:2;
+}
+@media(max-width:900px){.resort .frame.float{right:0;bottom:-10%}}
+
+/* ---------- ESTATES ---------- */
+.estates{background:var(--aura,var(--ink));position:relative;transition:background 1.2s ease}
+.estates .giant{
+  text-align:center;
+  font-size:clamp(3rem,10vw,8rem);letter-spacing:.06em;line-height:1;
+  color:var(--cream);white-space:nowrap;
+  font-family:var(--serif);font-weight:500;
+  will-change:transform;
+}
+.estates .giant em{font-style:italic;color:var(--wine-glow)}
+.panels{display:flex;gap:8px;height:min(74vh,700px);margin-top:3rem}
+.panel{
+  position:relative;overflow:hidden;border-radius:2px;
+  flex:1;min-width:0;cursor:pointer;
+  border:1px solid rgba(241,234,223,.08);
+  transition:flex 1s cubic-bezier(.25,.8,.25,1),border-color .5s;
+}
+.panel.active{flex:4;border-color:rgba(199,162,75,.35)}
+.panel:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.panel img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:grayscale(.9) brightness(.45);
+  transform:scale(1.01);
+  transition:filter 1.1s ease,transform 1.2s cubic-bezier(.2,.7,.2,1);
+}
+.panel.active img{
+  filter:none;transform:scale(1.13);
+  transition:filter 1.1s ease,transform 18s linear;
+}
+.p-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(21,12,17,.05) 45%,rgba(21,12,17,.62));transition:opacity .8s}
+.p-vert{
+  position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%) rotate(180deg);
+  writing-mode:vertical-rl;white-space:nowrap;
+  font-family:var(--serif);font-weight:500;
+  font-size:clamp(1.1rem,1.8vw,1.6rem);letter-spacing:.55em;
+  color:rgba(241,234,223,.85);
+  transition:opacity .35s;pointer-events:none;
+}
+.panel.active .p-vert{opacity:0}
+.p-info{
+  position:absolute;left:clamp(1.2rem,3vw,2.6rem);bottom:clamp(1.2rem,3vw,2.4rem);
+  opacity:0;transform:translateY(18px);
+  transition:opacity .55s ease .3s,transform .55s cubic-bezier(.2,.7,.2,1) .3s;
+  pointer-events:none;max-width:90%;
+}
+.panel.active .p-info{opacity:1;transform:none}
+.p-name{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(2.2rem,4.8vw,3.8rem);letter-spacing:.1em;line-height:1;
+  color:var(--cream);display:inline-block;
+  transform:rotate(-90deg) translateX(-20px);transform-origin:left bottom;
+  transition:transform .85s cubic-bezier(.2,.85,.2,1) .25s;
+}
+.panel.active .p-name{transform:none}
+.p-sub{font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-top:.6rem;font-weight:700}
+.p-meta{margin-top:.8rem;font-size:.78rem;letter-spacing:.08em;color:rgba(241,234,223,.8)}
+.p-meta b{font-family:var(--serif);font-size:1.7rem;font-weight:600;color:var(--cream);margin-right:.25rem}
+/* ambient particles, a different colour per region */
+.p-dust{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .9s .35s}
+.panel.active .p-dust{opacity:1}
+.p-dust i{
+  position:absolute;border-radius:50%;
+  background:var(--dustc,#F2D98B);box-shadow:0 0 8px var(--dustc,#F2D98B);
+  opacity:0;animation:dustFloat linear infinite;
+}
+@keyframes dustFloat{
+  0%{transform:translateY(16px);opacity:0}
+  25%{opacity:.85}
+  75%{opacity:.4}
+  100%{transform:translateY(-52px);opacity:0}
+}
+@media(max-width:899px){
+  .panels{flex-direction:column;height:auto}
+  .panel{flex:none;height:74px;transition:height .85s cubic-bezier(.25,.8,.25,1),border-color .5s}
+  .panel.active{flex:none;height:58vh}
+  .p-vert{writing-mode:horizontal-tb;transform:translate(-50%,-50%);letter-spacing:.45em}
+  .p-name{font-size:clamp(1.8rem,8vw,2.6rem)}
+}
+
+
+
+/* ---------- ROSE ---------- */
+.rose{background:var(--rose);color:var(--ink);position:relative;overflow:hidden;text-align:center}
+.rose .huge{
+  font-family:var(--serif);font-weight:500;line-height:.98;
+  font-size:clamp(3rem,10vw,8.2rem);letter-spacing:.02em;
+  color:var(--wine);position:relative;z-index:2;
+}
+.rose .huge .l2{font-style:italic}
+.rose .lead{color:#6b4a50;max-width:52ch;margin:2.2rem auto 0;position:relative;z-index:2}
+.rose .btn{margin-top:2.6rem;color:var(--wine);position:relative;z-index:2}
+.f-photo{
+  position:absolute;z-index:1;will-change:transform;
+  border:8px solid #fff;box-shadow:0 24px 50px -18px rgba(21,12,17,.4);
+  overflow:hidden;
+}
+.f-photo{perspective:600px}
+.f-photo img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease;will-change:transform}
+.fp1{left:4%;top:14%;width:200px;aspect-ratio:3/4;transform:rotate(-7deg)}
+.fp2{right:5%;top:8%;width:240px;aspect-ratio:3/4;transform:rotate(6deg)}
+.fp3{left:7%;bottom:7%;width:190px;aspect-ratio:4/3;transform:rotate(-3deg)}
+@media(max-width:860px){
+  .fp3{display:none}
+  .fp1{width:130px;top:auto;bottom:3%;left:3%}
+  .fp2{width:150px;top:auto;bottom:3%;right:3%}
+}
+
+/* ---------- FOOD ---------- */
+.food-grid{
+  display:grid;grid-template-columns:1.15fr .85fr;
+  gap:clamp(1.6rem,4vw,3.5rem);margin-top:3rem;align-items:start;
+}
+@media(max-width:900px){.food-grid{grid-template-columns:1fr}}
+.food-grid .frame.main{aspect-ratio:4/3}
+.food-grid .col2{display:flex;flex-direction:column;gap:1.6rem}
+.food-grid .frame.small{max-width:340px;aspect-ratio:1;align-self:flex-end}
+.food-copy h3{font-family:var(--serif);font-weight:600;font-size:clamp(1.6rem,2.6vw,2.2rem);letter-spacing:.06em}
+.food-copy p{color:var(--muted-dark);margin-top:1rem;max-width:44ch}
+.food-copy .btn{margin-top:1.8rem;color:var(--ink)}
+
+/* ---------- STATS ---------- */
+.stats{background:var(--ink-2);border-top:1px solid rgba(241,234,223,.06);border-bottom:1px solid rgba(241,234,223,.06)}
+.stats .wrap{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:2rem;padding:clamp(3.5rem,8vh,5.5rem) 0;text-align:center;
+}
+@media(max-width:760px){.stats .wrap{grid-template-columns:repeat(2,1fr)}}
+.stat .n{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(2.6rem,5vw,4rem);color:var(--cream);line-height:1;
+}
+.stat .n span{font-size:.5em;color:var(--gold)}
+.stat .k{margin-top:.6rem;font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- NEWS ---------- */
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2vw,1.8rem);margin-top:3rem}
+@media(max-width:900px){.news-grid{grid-template-columns:1fr;max-width:520px}}
+.news{
+  background:#fff;border:1px solid rgba(21,12,17,.08);
+  transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .5s;
+  text-decoration:none;color:var(--ink);display:block;
+}
+.news:hover{transform:translateY(-8px);box-shadow:0 30px 60px -25px rgba(21,12,17,.3)}
+.news .thumb{overflow:hidden;aspect-ratio:5/3}
+.news .thumb img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.news:hover .thumb img{transform:scale(1.07)}
+.news .nbody{padding:1.4rem 1.5rem 1.6rem}
+.news h3{font-family:var(--serif);font-weight:600;font-size:1.25rem;line-height:1.3;letter-spacing:.04em}
+.news .date{margin-top:.9rem;font-size:.64rem;letter-spacing:.28em;color:var(--muted-dark);text-transform:uppercase}
+
+/* ---------- FOOTER ---------- */
+footer{background:#120A0F;color:var(--muted);padding:clamp(4rem,9vh,6rem) clamp(1.4rem,6vw,4rem) 2rem}
+.f-top{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:2.5rem}
+@media(max-width:860px){.f-top{grid-template-columns:1fr 1fr}}
+.f-brand .logo{font-family:var(--serif);font-size:1.8rem;letter-spacing:.34em;color:var(--cream);display:flex;align-items:center;gap:.7rem}
+.f-brand p{margin-top:1.2rem;font-size:.85rem;max-width:30ch}
+.f-col h4{font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:1.2rem}
+.f-col ul{list-style:none}
+.f-col li{margin-bottom:.7rem}
+.f-col a{color:var(--muted);text-decoration:none;font-size:.85rem;transition:color .3s,padding-left .3s}
+.f-col a:hover{color:var(--cream);padding-left:.4rem}
+.f-bottom{
+  max-width:1240px;margin:3.5rem auto 0;padding-top:1.6rem;
+  border-top:1px solid rgba(241,234,223,.08);
+  display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  font-size:.68rem;letter-spacing:.14em;
+}
+.f-bottom .warn{color:var(--gold-soft)}
+
+/* ---------- MOBILE POLISH ---------- */
+@media(max-width:860px){
+  .resort .media{margin-bottom:3.5rem}
+  .rose.sec{padding-bottom:clamp(9rem,20vh,12rem)}
+  .news-grid{margin-left:auto;margin-right:auto}
+  .food-grid .frame.small{align-self:center}
+}
+@media(max-width:420px){
+  .hero-type .w{font-size:clamp(2.5rem,12vw,3.2rem)}
+  .rose .huge{font-size:clamp(2.5rem,11vw,3rem)}
+  .estates .giant{font-size:clamp(2.2rem,11vw,3rem)}
+  .btn{padding:.95rem 2.2rem}
+}
+
+
+/* ---------- TIMELINE ---------- */
+.tlsec{background:var(--cream-2)}
+.tl{margin-top:3.5rem;border-bottom:1px solid rgba(21,12,17,.16)}
+.tl-line{display:none}
+.tl-ev{
+  display:grid;grid-template-columns:clamp(130px,22vw,240px) 1fr auto;
+  gap:clamp(1rem,4vw,3rem);align-items:baseline;
+  padding:2.3rem .8rem;border-top:1px solid rgba(21,12,17,.16);
+  cursor:default;position:relative;
+  transition:background .5s,padding-left .6s cubic-bezier(.2,.7,.2,1);
+}
+.tl-ev::before{
+  content:"";position:absolute;left:0;top:-1px;height:1px;width:0;
+  background:var(--wine);transition:width .8s cubic-bezier(.2,.7,.2,1);
+}
+.tl-ev.lit::before{width:100%}
+.tl-ev:hover{background:rgba(110,20,35,.05);padding-left:1.6rem}
+.tl-year{
+  font-family:var(--serif);font-weight:600;line-height:.9;
+  font-size:clamp(2.6rem,5.5vw,4.8rem);letter-spacing:.02em;
+  color:transparent;-webkit-text-stroke:1.2px rgba(110,20,35,.45);
+  transition:color .7s ease,-webkit-text-stroke-color .7s ease;
+}
+.tl-ev.lit .tl-year{color:var(--wine);-webkit-text-stroke-color:var(--wine)}
+.tl-body h3{font-family:var(--serif);font-weight:600;font-size:clamp(1.2rem,1.8vw,1.55rem);letter-spacing:.05em}
+.tl-body p{color:var(--muted-dark);font-size:.92rem;margin-top:.35rem;max-width:52ch}
+.tl-idx{font-size:.62rem;letter-spacing:.34em;color:rgba(21,12,17,.35);justify-self:end;align-self:start;padding-top:.6rem}
+@media(max-width:700px){
+  .tl-ev{grid-template-columns:1fr;gap:.4rem;padding:1.8rem .4rem}
+  .tl-idx{display:none}
+  .tl-year{font-size:2.6rem}
+}
+
+/* ---------- BOTTLE / TASTING ---------- */
+.fiali{background:
+  radial-gradient(85% 95% at 82% 105%, rgba(110,20,35,.32) 0%, rgba(110,20,35,0) 60%),
+  var(--ink)}
+.fiali-grid{display:grid;grid-template-columns:1.28fr .72fr;gap:clamp(1.6rem,5vw,4.5rem);align-items:center}
+.fiali-grid .f-card{order:2}
+.fiali-grid .f-copy{order:1}
+@media(max-width:900px){
+  .fiali-grid{grid-template-columns:58% 38%;gap:4%;align-items:center}
+  .f-card-inner.is-art img.bottle-art{height:min(46vh,380px)}
+  .f-notes{margin-top:1.2rem}
+  .f-notes li{padding:.55rem 0;gap:.6rem;flex-wrap:wrap}
+  .f-notes b{font-size:.92rem}
+  .f-notes span{font-size:.5rem;letter-spacing:.2em;margin-left:1.25rem;flex-basis:100%}
+  .f-specs{gap:1rem;margin-top:1.4rem}
+  .f-specs em{font-size:1rem}
+}
+.f-card{perspective:1000px}
+.f-card-inner{
+  position:relative;overflow:hidden;border-radius:3px;
+  aspect-ratio:3/4;max-height:74vh;
+  transform-style:preserve-3d;transition:transform .2s ease-out;
+  box-shadow:0 45px 90px -35px rgba(0,0,0,.75);
+  will-change:transform;
+}
+.f-card-inner img{width:100%;height:100%;object-fit:cover;display:block}
+.f-card-inner::before{
+  content:"";position:absolute;inset:12px;z-index:2;pointer-events:none;
+  border:1px solid rgba(199,162,75,.35);border-radius:2px;
+}
+.f-card-inner.is-art{
+  aspect-ratio:auto;max-height:none;overflow:visible;
+  box-shadow:none;background:none;border-radius:0;
+}
+.f-card-inner.is-art::before{display:none}
+.f-card-inner.is-art img.bottle-art{
+  display:block;height:min(56vh,470px);width:auto;object-fit:contain;
+  margin:0 auto;filter:drop-shadow(0 36px 32px rgba(0,0,0,.55));
+}
+.f-card-inner.is-art{position:relative}
+.b-aura{
+  position:absolute;left:50%;top:52%;width:115%;aspect-ratio:1;
+  transform:translate(-50%,-50%);z-index:0;pointer-events:none;
+  background:radial-gradient(circle,rgba(129,26,44,.5),rgba(110,20,35,.16) 46%,transparent 70%);
+  filter:blur(12px);transition:transform .15s ease-out;
+}
+.f-card-inner.is-art img.bottle-art{position:relative;z-index:1}
+.b-glow{z-index:2}
+.b-glow{
+  position:absolute;inset:0;pointer-events:none;opacity:0;
+  transition:opacity .4s ease;
+  background:radial-gradient(230px 300px at var(--gx,35%) var(--gy,30%),
+    rgba(255,255,255,.32),rgba(255,255,255,.07) 42%,transparent 68%);
+  -webkit-mask-image:url('images/bottle-user-dark.png?v=4');
+  -webkit-mask-size:contain;-webkit-mask-repeat:no-repeat;-webkit-mask-position:center;
+  mask-image:url('images/bottle-user-dark.png?v=4');
+  mask-size:contain;mask-repeat:no-repeat;mask-position:center;
+}
+.f-card:hover .b-glow{opacity:1}
+.f-sheen{
+  position:absolute;inset:-25%;z-index:1;pointer-events:none;
+  background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.1) 50%,transparent 58%);
+  transform:translateX(-70%);transition:transform .25s ease-out;
+}
+.fiali .lead{color:var(--muted);max-width:48ch;margin-top:1.4rem;font-size:clamp(.95rem,1.3vw,1.1rem)}
+.f-notes{list-style:none;margin-top:2.2rem}
+.f-notes li{
+  display:flex;align-items:center;gap:1rem;
+  padding:.9rem .2rem;border-bottom:1px solid rgba(241,234,223,.09);
+  transition:padding-left .4s cubic-bezier(.2,.7,.2,1);
+}
+.f-notes li:first-child{border-top:1px solid rgba(241,234,223,.09)}
+.f-notes li:hover{padding-left:.9rem}
+.f-notes li::before{
+  content:"";width:7px;height:7px;border-radius:50%;flex:none;
+  background:var(--wine-glow);box-shadow:0 0 9px rgba(193,58,82,.7);
+}
+.f-notes b{font-family:var(--serif);font-weight:600;font-size:1.18rem;letter-spacing:.04em;color:var(--cream)}
+.f-notes span{margin-left:auto;font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.f-specs{display:flex;gap:clamp(1.6rem,4vw,3.2rem);margin-top:2.4rem;flex-wrap:wrap}
+.f-specs i{display:block;font-style:normal;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.25rem}
+.f-specs em{font-style:normal;font-family:var(--serif);font-size:1.3rem;font-weight:600;color:var(--cream);letter-spacing:.02em}
+
+/* ---------- MAP ---------- */
+.gmap{position:relative;width:min(380px,76vw);margin:2.5rem auto 0;perspective:700px}
+.gmap-svg{width:100%;height:auto;will-change:transform;transition:transform .3s ease-out;filter:drop-shadow(0 18px 30px rgba(0,0,0,.35))}
+.pin .tip{
+  position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%) translateY(6px);
+  background:rgba(18,10,15,.95);border:1px solid rgba(199,162,75,.5);border-radius:3px;
+  padding:.6rem .9rem;white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity .3s,transform .3s;z-index:3;
+}
+.pin .tip::after{
+  content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  border:5px solid transparent;border-top-color:rgba(199,162,75,.5);
+}
+.pin .tip b{display:block;font-family:var(--serif);font-size:.95rem;font-weight:600;letter-spacing:.1em;color:var(--cream)}
+.pin .tip em{font-style:normal;font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold)}
+.pin:hover .tip,.pin:focus-visible .tip,.pin.on .tip{opacity:1;transform:translateX(-50%) translateY(0)}
+.pin{
+  position:absolute;transform:translate(-50%,-50%);
+  background:none;border:none;cursor:pointer;padding:10px;
+}
+.pin i{
+  display:block;width:11px;height:11px;border-radius:50%;
+  background:var(--wine-glow);box-shadow:0 0 12px rgba(193,58,82,.8);
+  position:relative;
+}
+.pin i::after{
+  content:"";position:absolute;inset:-7px;border:1px solid rgba(193,58,82,.7);
+  border-radius:50%;animation:pinPulse 2.2s ease-out infinite;
+}
+@keyframes pinPulse{0%{transform:scale(.5);opacity:1}100%{transform:scale(1.9);opacity:0}}
+.pin span{
+  position:absolute;left:50%;top:100%;transform:translateX(-50%);
+  font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);
+  white-space:nowrap;transition:color .3s;
+}
+.pin:hover span,.pin.on span{color:var(--gold)}
+.pin.on i{background:var(--gold);box-shadow:0 0 14px rgba(199,162,75,.9)}
+
+/* ---------- QUIZ ---------- */
+.quizsec{background:linear-gradient(180deg,#F4E8E6,var(--rose));color:var(--ink)}
+.quizsec .eyebrow{color:var(--wine)}
+.quizsec .eyebrow::before{background:var(--wine)}
+.quiz-box{margin-top:3rem;min-height:300px;position:relative}
+.q-step{animation:qin .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes qin{0%{opacity:0;transform:translateY(24px)}100%{opacity:1;transform:none}}
+.q-q{font-family:var(--serif);font-style:italic;font-size:clamp(1.4rem,2.6vw,2rem);margin-bottom:1.8rem;color:var(--wine)}
+.q-opts{display:flex;flex-direction:column;gap:.8rem;max-width:460px;margin:0 auto}
+.q-opt{
+  background:#fff;border:1px solid rgba(21,12,17,.12);
+  color:var(--ink);font-family:var(--sans);font-size:.9rem;letter-spacing:.04em;
+  padding:1rem 1.4rem;cursor:pointer;border-radius:3px;
+  box-shadow:0 10px 24px -14px rgba(21,12,17,.18);
+  transition:background .3s,border-color .3s,transform .3s,box-shadow .3s;
+}
+.q-opt:hover{background:#FDFAF5;border-color:var(--wine);transform:translateX(6px);box-shadow:0 16px 30px -14px rgba(110,20,35,.25)}
+.q-count{font-size:.66rem;letter-spacing:.34em;text-transform:uppercase;color:rgba(21,12,17,.45);margin-bottom:1.2rem}
+.q-res img{width:130px;height:170px;object-fit:cover;border:5px solid #fff;transform:rotate(-3deg);margin:0 auto 1.4rem;box-shadow:0 18px 40px -12px rgba(0,0,0,.5)}
+.q-res h3{font-family:var(--serif);font-weight:600;font-size:clamp(1.8rem,3.4vw,2.6rem);letter-spacing:.05em}
+.q-res p{color:var(--muted-dark);max-width:44ch;margin:.8rem auto 1.6rem}
+.q-res .btn{color:var(--wine);margin:0 .4rem .5rem}
+
+/* ---------- BOOKING / NEWSLETTER ---------- */
+.krathsi-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(2rem,6vw,5rem);align-items:start}
+@media(max-width:860px){.krathsi-grid{grid-template-columns:1fr}}
+#bookForm{margin-top:2rem;display:flex;flex-direction:column;gap:.9rem}
+#bookForm .frow{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+@media(max-width:560px){#bookForm .frow{grid-template-columns:1fr}}
+#bookForm input,#bookForm select,#bookForm textarea{
+  width:100%;padding:.95rem 1.1rem;font-family:var(--sans);font-size:.9rem;
+  background:#fff;border:1px solid rgba(21,12,17,.18);border-radius:2px;color:var(--ink);
+  transition:border-color .3s,box-shadow .3s;
+}
+#bookForm input:focus,#bookForm select:focus,#bookForm textarea:focus{
+  outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(199,162,75,.18);
+}
+#bookForm .btn{align-self:flex-start;margin-top:.4rem}
+.fnote{font-size:.8rem;color:var(--wine);min-height:1.2em}
+.nl-side{
+  background:#fff;color:var(--ink);padding:2.6rem 2.2rem;border-radius:4px;
+  border-top:2px solid var(--gold);
+  box-shadow:0 30px 60px -32px rgba(21,12,17,.3);
+}
+.nl-side h3{font-family:var(--serif);font-weight:600;font-size:1.6rem;letter-spacing:.05em;color:var(--ink)}
+.nl-side p{color:var(--muted-dark);font-size:.88rem;margin:.8rem 0 1.6rem}
+.bottle-form{
+  position:relative;display:flex;align-items:center;gap:.4rem;
+  background:var(--cream);
+  border:1px solid rgba(21,12,17,.14);border-radius:999px;
+  padding:.4rem .4rem .4rem 1.5rem;
+  transition:border-color .4s,box-shadow .4s,background .6s;
+}
+.bottle-form:focus-within{border-color:var(--gold);box-shadow:0 0 0 4px rgba(199,162,75,.2)}
+.bottle-form input{
+  flex:1;background:none;border:none;color:var(--ink);
+  font-family:var(--sans);font-size:.92rem;letter-spacing:.03em;
+  padding:.65rem .2rem;min-width:0;
+}
+.bottle-form input:focus{outline:none}
+.bottle-form input::placeholder{color:rgba(21,12,17,.4)}
+.bottle-form button{
+  background:var(--gold);border:none;color:var(--ink);
+  width:44px;height:44px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .3s,background .3s;flex:none;
+}
+.bottle-form button:hover{transform:scale(1.1) rotate(-8deg)}
+.bottle-form.corked{
+  background:linear-gradient(90deg,rgba(199,162,75,.3),rgba(199,162,75,.12));
+  border-color:var(--gold);
+  animation:corkpop .5s cubic-bezier(.3,1.6,.4,1);
+}
+.bottle-form.corked input{color:var(--ink)}
+.bottle-form.corked button{background:var(--wine);color:var(--cream);pointer-events:none}
+@keyframes corkpop{0%{transform:scale(1)}40%{transform:scale(1.05)}100%{transform:scale(1)}}
+.nl-side .fnote{color:var(--wine);margin-top:.8rem}
+
+
+/* ---------- AWARDS ---------- */
+.awards{
+  background:var(--ink);
+  border-bottom:1px solid rgba(241,234,223,.07);
+  text-align:center;
+  padding:1.5rem clamp(1rem,4vw,3rem) 1.2rem;
+}
+.aw-line{display:flex;align-items:center;justify-content:center;gap:1.2rem}
+.aw-laurel{flex:none;opacity:.85}
+.aw-swap{min-height:3.1em;display:flex;flex-direction:column;justify-content:center;min-width:min(60vw,420px)}
+.aw-swap b{
+  font-family:var(--serif);font-weight:500;
+  font-size:1.08rem;letter-spacing:.06em;color:var(--cream);line-height:1.2;
+  transition:opacity .5s ease,transform .5s ease;
+}
+.aw-swap i{
+  font-style:normal;display:block;margin-top:.35rem;
+  font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--gold);font-weight:600;
+  transition:opacity .5s ease,transform .5s ease;
+}
+.awards.fade .aw-swap b,.awards.fade .aw-swap i{opacity:0;transform:translateY(6px)}
+.aw-dots{display:flex;gap:.4rem;justify-content:center;margin-top:.8rem}
+.aw-dots span{width:4px;height:4px;border-radius:50%;background:rgba(241,234,223,.22);transition:background .3s}
+.aw-dots span.on{background:var(--gold)}
+@media(max-width:760px){
+  .awards{padding:1.2rem 1rem .9rem}
+  .aw-swap{min-width:0;flex:1}
+  .aw{padding:.7rem 1.2rem}
+  .aw+.aw::before{display:none}
+}
+
+/* ---------- SHELF ---------- */
+.shelf{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.8rem,3vw,2.5rem);
+  align-items:end;margin-top:3rem;padding-bottom:2.2rem;
+  border-bottom:2px solid rgba(21,12,17,.22);
+}
+.shelf-item{
+  text-align:center;cursor:pointer;outline:none;
+  opacity:0;transform:translateY(110px);
+  transition:opacity .9s ease,transform 1s cubic-bezier(.4,0,.6,1);
+}
+.shelf.on .shelf-item{
+  opacity:1;transform:none;
+  transition:opacity 1.2s ease,transform 1.6s cubic-bezier(.16,.84,.28,1);
+}
+.shelf.on .shelf-item:nth-child(1){transition-delay:.05s}
+.shelf.on .shelf-item:nth-child(2){transition-delay:.3s}
+.shelf.on .shelf-item:nth-child(3){transition-delay:.55s}
+.shelf-item img{
+  height:clamp(170px,30vh,300px);width:auto;margin:0 auto;
+  filter:drop-shadow(0 22px 18px rgba(21,12,17,.35));
+  transition:transform .55s cubic-bezier(.2,.9,.3,1.35),filter .55s;
+}
+.shelf-item:hover img,.shelf-item:focus-visible img{
+  transform:translateY(-16px) rotate(-1.5deg);
+  filter:drop-shadow(0 36px 28px rgba(21,12,17,.42));
+}
+.shelf-item h3{font-family:var(--serif);font-weight:600;font-size:1.45rem;letter-spacing:.1em;margin-top:1.4rem}
+.shelf-item .sv{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--wine);font-weight:700;margin-top:.3rem}
+.shelf-item .sn{
+  font-size:.8rem;color:var(--muted-dark);max-width:26ch;margin:.6rem auto 0;
+  opacity:0;transform:translateY(6px);transition:opacity .45s,transform .45s;
+}
+.shelf-item:hover .sn,.shelf-item:focus-visible .sn{opacity:1;transform:none}
+@media(max-width:640px){
+  .shelf-item img{height:clamp(130px,22vh,190px)}
+  .shelf-item h3{font-size:1rem;margin-top:.9rem}
+  .shelf-item .sv{font-size:.5rem;letter-spacing:.2em}
+  .shelf-item .sn{display:none}
+}
+
+/* ---------- FAQ ---------- */
+.faq{margin-top:2.8rem;border-top:1px solid rgba(21,12,17,.16)}
+.fq{border-bottom:1px solid rgba(21,12,17,.16)}
+.fq-q{
+  width:100%;display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  background:none;border:none;text-align:left;cursor:pointer;
+  font-family:var(--serif);font-weight:600;font-size:clamp(1.05rem,1.8vw,1.3rem);
+  color:var(--ink);padding:1.35rem .2rem;letter-spacing:.03em;
+  transition:color .3s;
+}
+.fq-q:hover{color:var(--wine)}
+.fq-q i{
+  width:27px;height:27px;border:1px solid rgba(21,12,17,.3);border-radius:50%;
+  position:relative;flex:none;color:var(--ink);
+  transition:transform .45s cubic-bezier(.2,.7,.2,1),background .3s,border-color .3s,color .3s;
+}
+.fq-q i::before,.fq-q i::after{content:"";position:absolute;left:50%;top:50%;background:currentColor;transform:translate(-50%,-50%)}
+.fq-q i::before{width:11px;height:1.5px}
+.fq-q i::after{width:1.5px;height:11px;transition:opacity .3s}
+.fq.open .fq-q{color:var(--wine)}
+.fq.open .fq-q i{transform:rotate(180deg);background:var(--wine);border-color:var(--wine);color:var(--cream)}
+.fq.open .fq-q i::after{opacity:0}
+.fq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.2,.7,.2,1)}
+.fq-a>p{overflow:hidden;color:var(--muted-dark);font-size:.93rem;max-width:62ch;line-height:1.75}
+.fq.open .fq-a{grid-template-rows:1fr}
+.fq.open .fq-a>p{margin-bottom:1.35rem}
+
+/* ---------- STICKY BOOK ---------- */
+#stickyBook{
+  position:fixed;right:1.1rem;bottom:5.6rem;z-index:200;
+  background:var(--wine);color:var(--cream);text-decoration:none;
+  font-size:.66rem;font-weight:700;letter-spacing:.26em;text-indent:.26em;text-transform:uppercase;
+  padding:.85rem 1.5rem;border-radius:999px;
+  box-shadow:0 14px 30px -10px rgba(110,20,35,.6);
+  opacity:0;transform:translateY(14px);pointer-events:none;
+  transition:opacity .4s,transform .4s,background .3s;
+}
+#stickyBook.show{opacity:1;transform:none;pointer-events:auto}
+#stickyBook:hover{background:var(--wine-bright)}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .shelf-item{opacity:1 !important;transform:none !important;transition:none !important}
+  .reveal,.hero-type .w,.hero-type .mid{opacity:1;transform:none;transition:none}
+  .hero-scroll .line,.hero-badge{animation:none}
+  #loader{display:none}
+  *{transition-duration:.01ms !important}
+}
+@media (hover:hover){
+  .hero-type .w{transition:transform 1s cubic-bezier(.2,.7,.15,1),letter-spacing .6s cubic-bezier(.25,.8,.3,1),text-shadow .6s ease}
+}
+/* newer titles: base state hides letters, so .stay is re-asserted late in the cascade
+   and each gets its own transition-based hover */
+.fx-blur .ltr.stay,.fx-swing .ltr.stay,.fx-slide .ltr.stay,.fx-wave .ltr.stay,.fx-type .ltr.stay,.fx-grow .ltr.stay,.fx-slant .ltr.stay{
+  animation:none;opacity:1;transform:none;filter:none;
+  transition:transform .25s cubic-bezier(.3,1.7,.4,1),color .25s ease;
+}
+.fx-blur .ltr.stay:hover{transform:scale(1.45)}
+.fx-swing .ltr.stay:hover{transform:rotateX(55deg)}
+.fx-slide .ltr.stay:hover{transform:translateX(.22em) skewX(-14deg)}
+.fx-wave .ltr.stay:hover{transform:translateY(-.35em) scale(1.1,.85)}
+.fx-type .ltr.stay:hover{transform:translateY(.16em) scale(.85);color:var(--gold)}
+.fx-grow .ltr.stay:hover{transform:scaleY(1.6)}
+.fx-slant .ltr.stay:hover{transform:rotate(14deg) translateY(-.15em)}
+
+/* timeline years: calm, slow wine glow */
+@media (hover:hover){
+  .tl-year{transition:text-shadow .6s ease,transform .6s ease}
+  .tl-ev:hover .tl-year{transform:scale(1.03);text-shadow:0 0 20px rgba(110,20,35,.35)}
+}
+/* mobile: no sideways drift, ever */
+html,body{overflow-x:clip}
+@supports not (overflow:clip){html,body{overflow-x:hidden;max-width:100%}}
+body{touch-action:pan-y pinch-zoom}
+</style>
+</head>
+<body>
+
+<div id="cine">
+  <svg class="cine-lyre" viewBox="0 0 120 120" fill="none">
+    <path pathLength="1" d="M45 80 C38 68 36 44 37 26 M75 80 C82 68 84 44 83 26"/>
+    <path pathLength="1" d="M33 26 L87 26"/>
+    <path pathLength="1" d="M41 80 C41 96 50 102 60 102 C70 102 79 96 79 80 M41 80 L79 80 M52 88 L68 88"/>
+    <path pathLength="1" class="str" d="M48 28 L53.5 88"/>
+    <path pathLength="1" class="str" d="M56 28 L57.9 88"/>
+    <path pathLength="1" class="str" d="M64 28 L62.3 88"/>
+    <path pathLength="1" class="str" d="M72 28 L66.5 88"/>
+    <circle class="peg" cx="33" cy="26" r="2.3"/>
+    <circle class="peg" cx="87" cy="26" r="2.3"/>
+  </svg>
+  <div class="cine-year" id="cineYear">1974</div>
+  <p class="cine-line">Από το 1974, μια οικογένεια κουρδίζει τη γη.</p>
+  <span class="cine-skip">κλικ για παραλειψη</span>
+</div>
+<div id="grain" aria-hidden="true"></div>
+<div id="vignette" aria-hidden="true"></div>
+<div id="loader" aria-hidden="true" style="display:none">
+  <svg class="l-lyre" viewBox="0 0 48 48" fill="none" stroke="#C7A24B" stroke-width="1.6" aria-hidden="true">
+    <path d="M12 5c0 10 3 14 6 17v10M36 5c0 10-3 14-6 17v10"/>
+    <path d="M18 32h12M18 38h12"/>
+    <line class="lstr" x1="20" y1="12" x2="20" y2="32"/>
+    <line class="lstr" x1="24" y1="10" x2="24" y2="32"/>
+    <line class="lstr" x1="28" y1="12" x2="28" y2="32"/>
+  </svg>
+  <div class="word"><span>Λ</span><span>Υ</span><span>Ρ</span><span>Α</span></div>
+  <div class="lyre">Οινοποιειο · 1974</div>
+</div>
+<div id="cursor"></div>
+<div id="langVeil" aria-hidden="true"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="liquidFx" x="-20%" y="-20%" width="140%" height="140%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.05" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G" id="liquidDisp"/>
+  </filter>
+</svg>
+<div id="wave" aria-hidden="true"></div>
+<a id="stickyBook" href="#krathsi"><span>Κρατηση</span></a>
+<div id="glassProgress" aria-hidden="true">
+  <svg viewBox="0 0 36 60">
+    <defs><clipPath id="miniBowl"><path d="M8 4 C8 20 12 26 18 27 C24 26 28 20 28 4 Z"/></clipPath></defs>
+    <g clip-path="url(#miniBowl)"><rect id="glassWine" x="6" y="27" width="24" height="34" fill="#9E2338"/></g>
+    <path d="M8 4 C8 20 12 26 18 27 C24 26 28 20 28 4" fill="none" stroke="rgba(241,234,223,.85)" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M18 27 L18 46" stroke="rgba(241,234,223,.85)" stroke-width="1.6" stroke-linecap="round"/>
+    <ellipse cx="18" cy="49" rx="8" ry="2.4" fill="none" stroke="rgba(241,234,223,.8)" stroke-width="1.4"/>
+  </svg>
+</div>
+<button id="soundBtn" aria-pressed="false" aria-label="Ήχος περιβάλλοντος">♪</button>
+
+<nav id="nav">
+  <a class="nav-logo" href="#top" aria-label="Λύρα — αρχική">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#C7A24B" stroke-width="1.3" aria-hidden="true">
+      <path d="M6 3c0 5 1.5 7 3 8.5V17M18 3c0 5-1.5 7-3 8.5V17"/>
+      <path d="M9 17h6M9 20h6M10 11.5h4"/><path d="M12 11.5V20"/>
+    </svg>
+    ΛΥΡΑ
+  </a>
+  <ul class="nav-links">
+    <li><a href="#istoria">Ιστορία</a></li>
+    <li><a href="#xenonas">Ο Ξενώνας</a></li>
+    <li><a href="#ampelones">Οι Αμπελώνες</a></li>
+    <li><a href="#gefsi">Γεύση</a></li>
+    <li><a href="#nea">Νέα</a></li>
+    <li><a href="#krathsi">Κράτηση</a></li>
+  </ul>
+  <div style="display:flex;align-items:center">
+  <button id="langBtn" aria-label="Switch language">EN</button>
+  <button id="burger" aria-label="Μενού" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div id="mobileMenu" aria-hidden="true">
+  <a href="#istoria">Ιστορία</a>
+  <a href="#xenonas">Ο Ξενώνας</a>
+  <a href="#ampelones">Οι Αμπελώνες</a>
+  <a href="#gefsi">Γεύση</a>
+  <a href="#nea">Νέα</a>
+  <a href="#krathsi">Κράτηση</a>
+  <div class="mm-foot">Οινοποιειο Λυρα · 1974</div>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <video class="hero-media" id="heroMedia" autoplay muted loop playsinline preload="auto" poster="images/hero.jpg?v=3" aria-label="Εναέριο πλάνο του αμπελώνα της Λύρας">
+    <source src="video/vineyard.mp4?v=1" type="video/mp4">
+  </video>
+  <div class="hero-shade"></div>
+  <div class="hero-type">
+    <div class="row"><span class="w">ΑΥΘΕΝΤΙΚΗ</span></div>
+    <p class="mid">Στην καρδιά της Νεμέας, τρεις γενιές καλλιεργούμε το Αγιωργίτικο στα 620 μέτρα — και κλείνουμε τη γη μας σε κάθε φιάλη Λύρα, από το 1974.</p>
+    <div class="row"><span class="w" style="font-style:italic">ΨΥΧΗ</span></div>
+    <div class="row"><span class="w">ΤΗΣ ΝΕΜΕΑΣ</span></div>
+  </div>
+  <div class="hero-badge" aria-hidden="true">
+    <svg viewBox="0 0 64 64" width="62" height="62">
+      <defs><path id="circ" d="M32 8 a24 24 0 1 1 -0.01 0"/></defs>
+      <text font-size="8.2" letter-spacing="2.5" fill="rgba(241,234,223,.75)" font-family="Commissioner,sans-serif">
+        <textPath href="#circ">ΛΥΡΑ · ΝΕΜΕΑ · 1974 · </textPath>
+      </text>
+    </svg>
+  </div>
+  <div class="hero-scroll"><span>Κυλήστε</span><div class="line"></div></div>
+</header>
+
+<!-- ============ AWARDS ============ -->
+<div class="awards reveal" id="awards">
+  <div class="aw-line">
+    <svg class="aw-laurel" width="30" height="40" viewBox="0 0 34 44" fill="none" stroke="#C7A24B" stroke-width="1.2" aria-hidden="true"><path d="M26 4C14 10 8 20 9 34" fill="none"/><path d="M9 34c-4-2-6-5-6-9 4 0 6 2 6 9zM10 25c-4-1-6-4-6-8 4 0 6 3 6 8zM12 17c-3-1-4-4-4-7 3 1 4 3 4 7zM15 10c-2-1-3-3-3-6 3 1 3 3 3 6z"/></svg>
+    <div class="aw-swap"><b id="awB"></b><i id="awI"></i></div>
+    <svg class="aw-laurel" width="30" height="40" viewBox="0 0 34 44" fill="none" stroke="#C7A24B" stroke-width="1.2" style="transform:scaleX(-1)" aria-hidden="true"><path d="M26 4C14 10 8 20 9 34" fill="none"/><path d="M9 34c-4-2-6-5-6-9 4 0 6 2 6 9zM10 25c-4-1-6-4-6-8 4 0 6 3 6 8zM12 17c-3-1-4-4-4-7 3 1 4 3 4 7zM15 10c-2-1-3-3-3-6 3 1 3 3 3 6z"/></svg>
+  </div>
+  <div class="aw-dots" id="awDots" aria-hidden="true"></div>
+</div>
+
+<!-- ============ DARK BAND ============ -->
+<section class="band">
+  <img class="band-bg" id="bandBg" src="images/band2.jpg?v=1" alt="" aria-hidden="true">
+  <div class="band-shade"></div>
+  <div class="inner">
+    <p class="k reveal">Η φιλοσοφια μας</p>
+    <h3 class="reveal d1">«Το κρασί, όπως και η μουσική, θέλει <b>χρόνο, αυτί και υπομονή</b>.»</h3>
+    <a class="btn reveal d2" href="#xenonas"><span>Ανακαλυψτε το κτημα</span></a>
+  </div>
+</section>
+
+<!-- ============ TIMELINE ============ -->
+<section class="on-light sec tlsec" id="istoria">
+  <div class="wrap">
+    <p class="eyebrow reveal">Η Ιστορια</p>
+    <h2 class="big reveal d1">Μισός αιώνας,<br>μία οικογένεια</h2>
+    <div class="tl">
+      <div class="tl-line" aria-hidden="true"><i id="tlFill"></i><b class="tl-dot" id="tlDot"></b></div>
+      <div class="tl-ev reveal"><span class="tl-year">1974</span><div class="tl-body"><h3>Η αρχή</h3><p>Ο παππούς Λεωνίδας φυτεύει τα πρώτα 30 στρέμματα Αγιωργίτικου στο Κούτσι της Νεμέας.</p></div><span class="tl-idx">01</span></div>
+      <div class="tl-ev reveal"><span class="tl-year">1982</span><div class="tl-body"><h3>Πρώτη φιάλη</h3><p>Η πρώτη εμφιάλωση — 4.000 φιάλες — φτάνει στα ράφια της Αθήνας με την ετικέτα ΛΥΡΑ.</p></div><span class="tl-idx">02</span></div>
+      <div class="tl-ev reveal"><span class="tl-year">1999</span><div class="tl-body"><h3>Δεύτερη γενιά</h3><p>Η οικογένεια αποκτά αμπέλι στη Σαντορίνη — Ασύρτικο σε αιωνόβιες κουλούρες.</p></div><span class="tl-idx">03</span></div>
+      <div class="tl-ev reveal"><span class="tl-year">2011</span><div class="tl-body"><h3>Βιολογική πιστοποίηση</h3><p>Όλοι οι αμπελώνες καλλιεργούνται πλέον βιολογικά.</p></div><span class="tl-idx">04</span></div>
+      <div class="tl-ev reveal"><span class="tl-year">2019</span><div class="tl-body"><h3>Νάουσα</h3><p>Το Ξινόμαυρο των πλαγιών του Βερμίου μπαίνει στην οικογένεια.</p></div><span class="tl-idx">05</span></div>
+      <div class="tl-ev reveal"><span class="tl-year">2024</span><div class="tl-body"><h3>50 χρόνια</h3><p>Μισός αιώνας, τρεις γενιές, τρεις αμπελώνες, μία νότα.</p></div><span class="tl-idx">06</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ΞΕΝΩΝΑΣ ============ -->
+<section class="on-light sec" id="xenonas">
+  <div class="wrap resort">
+    <div class="txt">
+      <p class="eyebrow reveal">Φιλοξενια</p>
+      <h2 class="big reveal d1">Ο Ξενώνας<br>του Κτήματος</h2>
+      <p class="lead reveal d2" style="margin-top:1.6rem">Δίπλα στο οινοποιείο, ο ασβεστωμένος ξενώνας μας με τα έξι δωμάτια: πρωινό με προϊόντα του κτήματος, τραπεζάκια στο λιθόστρωτο κάτω από τη βουκαμβίλια και <strong>κελάρι ανοιχτό για τους επισκέπτες μας</strong> όλο τον χρόνο.</p>
+      <a class="btn reveal d3" href="#krathsi"><span>Κρατηση</span></a>
+    </div>
+    <div class="media reveal d2">
+      <div class="frame main">
+        <img src="images/xenonas.jpg?v=3" alt="Η αυλή του ξενώνα με τα τραπεζάκια κάτω από τη βουκαμβίλια">
+        <div class="cap">Η αυλη του ξενωνα</div>
+      </div>
+      <div class="frame float">
+        <img src="images/news-cellar.jpg?v=3" alt="Το κελάρι του οινοποιείου">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BOTTLE ============ -->
+<section class="sec fiali" id="fiali">
+  <div class="wrap fiali-grid">
+    <div class="f-card reveal d1" id="bStage">
+      <div class="f-card-inner is-art" id="bTilt">
+        <div class="b-aura" aria-hidden="true"></div>
+        <img class="bottle-art" src="images/bottle-user-dark.png?v=4" alt="Φιάλη Λύρα Ερυθρή 2021">
+        <div class="b-glow" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="f-copy">
+      <p class="eyebrow reveal">Η φιαλη</p>
+      <h2 class="big reveal d1">Λύρα Ερυθρή 2021</h2>
+      <p class="lead reveal d2">Το Αγιωργίτικο της Νεμέας στην πιο καθαρή του μορφή — δώδεκα μήνες σε γαλλικό δρύινο βαρέλι, αφιλτράριστο, εμφιαλωμένο στο κτήμα.</p>
+      <ul class="f-notes reveal d2">
+        <li class="note n1"><b>Βύσσινο &amp; δαμάσκηνο</b><span>Στη μυτη</span></li>
+        <li class="note n2"><b>Γλυκά μπαχαρικά</b><span>Στο στομα</span></li>
+        <li class="note n3"><b>Βελούδινες ταννίνες</b><span>Στο φιναλε</span></li>
+        <li class="note n4"><b>12 μήνες</b><span>Σε δρυινο βαρελι</span></li>
+      </ul>
+      <div class="f-specs reveal d3">
+        <div><i>Ποικιλια</i><em>Αγιωργίτικο 100%</em></div>
+        <div><i>Αλκοολ</i><em>13,8% vol.</em></div>
+        <div><i>Σερβιρισμα</i><em>16–18°C</em></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHELF ============ -->
+<section class="on-light sec" id="etiketes">
+  <div class="wrap">
+    <p class="eyebrow reveal">Οι ετικετες</p>
+    <h2 class="big reveal d1">Το ράφι<br>της Λύρας</h2>
+    <div class="shelf">
+      <div class="shelf-item" tabindex="0">
+        <img src="images/bottle-user.png?v=4" alt="Λύρα Ερυθρή 2021" loading="lazy">
+        <h3>Ερυθρή</h3>
+        <p class="sv">Αγιωργιτικο · Νεμεα</p>
+        <p class="sn">Βύσσινο, γλυκά μπαχαρικά, βελούδινο φινάλε · 13,8%</p>
+      </div>
+      <div class="shelf-item" tabindex="0">
+        <img src="images/bottle-white.png?v=4" alt="Λύρα Λευκή 2023" loading="lazy">
+        <h3>Λευκή</h3>
+        <p class="sv">Ασυρτικο · Θηρα</p>
+        <p class="sn">Εσπεριδοειδή, ορυκτότητα, κοφτερή οξύτητα · 13,5%</p>
+      </div>
+      <div class="shelf-item" tabindex="0">
+        <img src="images/bottle-rose.png?v=4" alt="Λύρα Ροζέ 2023" loading="lazy">
+        <h3>Ροζέ</h3>
+        <p class="sv">Ξινομαυρο · Ναουσα</p>
+        <p class="sn">Φράουλα, ροδοπέταλα, αλμυρό τελείωμα · 12,5%</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ESTATES ============ -->
+<section class="estates sec" id="ampelones">
+  <div class="wrap">
+    <h2 class="giant reveal" id="giantTitle">ΟΙ <em>ΑΜΠΕΛΩΝΕΣ</em></h2>
+    <div class="gmap reveal" id="gmap" aria-label="Χάρτης με τους τρεις αμπελώνες">
+      <svg viewBox="0 0 1024 1024" class="gmap-svg" id="gmapSvg">
+        <g transform="translate(0.000000,1024.000000) scale(0.100000,-0.100000)" fill="rgba(241,234,223,.1)" stroke="rgba(241,234,223,.4)" stroke-width="14">
+<path d="M7568 10212 c-47 -27 -48 -27 -48 -79 0 -51 1 -53 39 -72 39 -21 51
+-37 51 -73 0 -11 7 -35 16 -54 13 -28 14 -39 4 -63 -9 -24 -9 -34 4 -60 15
+-28 15 -34 1 -61 -8 -16 -15 -36 -15 -44 0 -20 -79 -66 -114 -66 -15 0 -41 -7
+-59 -17 -18 -9 -54 -22 -82 -29 -47 -13 -52 -12 -79 7 -27 20 -30 21 -63 5
+-18 -9 -43 -16 -55 -16 -12 0 -30 -7 -39 -16 -15 -14 -23 -15 -47 -5 -21 9
+-36 9 -57 1 -23 -9 -31 -7 -47 7 -19 17 -21 17 -43 -11 -22 -28 -25 -29 -47
+-14 -22 15 -28 13 -112 -29 -80 -40 -93 -44 -136 -38 -36 5 -51 12 -61 31 -16
+32 -116 114 -138 114 -9 0 -36 14 -61 30 -27 18 -58 30 -78 30 -18 0 -47 7
+-63 16 -22 11 -43 13 -71 9 -32 -6 -42 -13 -50 -37 -9 -25 -14 -29 -37 -23
+-14 4 -27 7 -27 8 -1 1 -11 22 -24 46 -20 40 -24 43 -52 37 -17 -3 -36 -2 -42
+3 -6 5 -22 11 -36 13 -22 3 -29 15 -56 93 -30 90 -30 90 -66 93 -28 2 -40 -2
+-51 -19 -13 -18 -22 -21 -59 -15 -27 4 -61 1 -90 -9 l-48 -14 0 30 c0 22 -6
+32 -25 41 -22 10 -28 9 -41 -10 -8 -12 -21 -22 -28 -22 -8 0 -19 -6 -25 -14
+-11 -13 -18 -12 -55 4 l-43 18 -27 -24 c-21 -20 -26 -34 -26 -69 0 -46 -7 -54
+-27 -34 -9 9 -19 7 -39 -8 -27 -20 -28 -20 -60 -1 l-33 19 -16 -24 c-12 -18
+-27 -26 -65 -30 -27 -3 -62 -15 -77 -26 -16 -10 -50 -22 -78 -26 -27 -4 -57
+-13 -66 -21 -13 -12 -23 -11 -72 6 -82 29 -139 26 -203 -10 l-53 -30 -26 26
+c-21 21 -32 25 -57 20 -17 -3 -37 -6 -44 -6 -8 0 -19 -20 -25 -46 l-12 -46
+-141 6 c-223 10 -329 7 -347 -10 -11 -10 -18 -41 -23 -107 -7 -91 -21 -137
+-42 -144 -6 -2 -25 8 -42 22 l-31 26 -16 -37 c-24 -58 -31 -61 -193 -57 -142
+3 -146 3 -173 29 -23 22 -37 27 -82 26 -47 0 -58 -4 -85 -32 l-31 -31 -39 26
+-40 26 -43 -29 c-24 -16 -63 -40 -86 -53 -29 -16 -43 -32 -47 -51 -3 -16 -12
+-28 -21 -28 -8 0 -17 -10 -20 -23 -4 -13 -19 -31 -35 -40 -18 -11 -30 -28 -34
+-51 -9 -49 -27 -60 -90 -53 -52 5 -55 4 -92 -35 -58 -59 -78 -64 -123 -29 -31
+25 -44 29 -91 27 -43 -1 -63 -7 -90 -28 -20 -15 -54 -31 -77 -36 -36 -8 -46
+-7 -75 13 l-32 22 -18 -23 c-11 -13 -34 -25 -58 -29 -23 -4 -46 -15 -54 -27
+-13 -19 -13 -23 5 -37 10 -9 21 -29 24 -46 5 -24 0 -36 -25 -62 -42 -44 -64
+-46 -38 -3 10 16 10 23 -4 36 -16 16 -16 19 2 44 19 27 19 27 -5 50 l-24 23
+-35 -29 c-56 -47 -56 -74 -1 -156 l47 -70 -7 -77 c-6 -64 -12 -81 -35 -106
+-15 -16 -42 -52 -60 -79 l-33 -49 -53 6 c-49 5 -54 4 -54 -14 0 -10 -4 -19 -9
+-19 -19 0 -45 -56 -42 -93 2 -33 -5 -47 -44 -95 -46 -55 -47 -58 -40 -108 5
+-42 2 -60 -15 -94 -12 -23 -19 -48 -16 -55 2 -7 0 -31 -6 -53 -10 -38 -12 -40
+-68 -52 -31 -7 -66 -9 -78 -6 -11 4 -31 1 -45 -5 -19 -8 -34 -9 -57 -1 l-31
+11 -31 -64 -32 -65 -44 0 c-38 0 -43 -2 -37 -17 5 -10 10 -34 13 -53 2 -20 21
+-58 43 -87 39 -52 50 -98 29 -119 -6 -6 -33 -9 -60 -6 l-50 5 0 -32 c0 -18 5
+-41 11 -52 8 -16 5 -26 -19 -54 -16 -18 -32 -39 -35 -47 -4 -11 -7 -11 -18 0
+-11 10 -15 8 -24 -17 l-10 -29 -90 29 c-49 15 -97 28 -105 28 -19 1 110 -85
+136 -91 15 -3 19 -11 18 -43 -1 -23 -8 -43 -18 -50 -9 -7 -16 -23 -16 -37 0
+-27 42 -48 98 -48 22 0 32 -5 32 -15 0 -9 -9 -15 -22 -15 -21 0 -21 -1 5 -28
+29 -30 27 -42 -8 -42 -20 0 -22 -4 -16 -29 3 -16 18 -39 33 -51 16 -12 28 -31
+28 -42 0 -12 11 -41 25 -64 27 -45 26 -45 137 -59 47 -6 58 -17 58 -58 0 -24
+176 -217 197 -217 7 0 26 -19 43 -42 24 -33 30 -51 30 -93 0 -36 6 -60 18 -75
+21 -26 42 -20 42 11 0 19 1 19 31 4 17 -9 33 -14 36 -11 11 10 -7 37 -37 54
+-36 20 -37 32 -7 68 23 27 24 27 43 7 10 -11 33 -23 49 -27 17 -4 37 -14 46
+-22 14 -13 18 -13 29 1 16 19 37 19 47 0 5 -7 27 -17 50 -21 41 -6 43 -5 64
+30 17 30 24 34 36 25 26 -22 37 -53 37 -111 1 -45 6 -61 24 -81 16 -17 21 -30
+15 -40 -6 -12 -13 -9 -33 19 -32 43 -58 44 -66 4 -7 -32 -21 -39 -30 -15 -4 8
+-12 15 -20 15 -10 0 -13 7 -8 26 6 24 4 25 -15 19 -15 -4 -26 -2 -34 8 -14 19
+-75 26 -85 11 -4 -6 -14 -13 -24 -17 -12 -4 -18 2 -23 21 l-7 27 -23 -27 c-26
+-30 -62 -37 -71 -13 -8 21 -21 19 -34 -5 -9 -17 -7 -28 9 -54 26 -41 26 -42 1
+-49 -11 -3 -25 -19 -31 -36 -12 -35 -29 -32 -29 5 0 36 -18 30 -66 -22 -39
+-41 -84 -132 -84 -168 0 -8 -6 -19 -14 -25 -11 -9 -14 -35 -14 -97 1 -83 8
+-101 27 -66 27 46 28 46 60 11 28 -32 30 -32 31 -11 0 12 6 22 14 22 7 0 19 7
+26 15 17 21 47 11 91 -32 33 -32 37 -33 42 -14 3 13 -4 27 -19 42 -28 26 -30
+47 -9 75 8 10 15 22 15 26 0 12 -39 -4 -56 -23 -17 -18 -17 -18 -30 6 -11 21
+-11 32 0 63 7 21 10 48 6 63 -6 19 -3 29 11 37 16 10 19 9 19 -6 0 -10 3 -21
+6 -24 11 -12 69 12 91 37 12 14 24 25 26 25 11 0 37 -84 37 -118 1 -53 30 -86
+70 -77 27 6 30 4 30 -17 1 -13 7 -34 15 -48 8 -14 15 -50 16 -80 0 -30 4 -66
+8 -79 l7 -24 38 34 39 34 -7 -57 c-6 -46 -3 -69 14 -117 18 -48 20 -63 10 -81
+-9 -17 -9 -32 0 -65 16 -57 42 -64 82 -24 16 16 36 29 43 29 23 0 75 34 81 53
+3 10 15 17 30 17 21 0 24 5 24 36 0 28 3 35 18 32 10 -2 18 -14 20 -32 3 -21
+11 -31 33 -39 23 -9 29 -17 29 -42 0 -47 48 -89 89 -80 17 4 45 18 62 32 33
+28 76 33 171 19 56 -8 57 -8 64 18 7 29 62 62 77 47 14 -14 66 -2 100 22 23
+15 33 17 55 9 15 -6 41 -13 57 -17 42 -9 129 -51 145 -70 18 -21 30 -19 62 12
+27 26 29 26 56 11 23 -14 89 -24 130 -19 8 1 12 14 11 39 -2 20 4 48 12 62 8
+14 15 26 15 28 1 2 20 -9 42 -25 49 -35 82 -84 82 -121 0 -33 27 -62 57 -62
+17 0 22 9 28 48 7 50 17 67 47 83 16 9 21 4 38 -33 22 -50 53 -82 93 -97 30
+-12 35 -32 11 -52 -14 -11 -13 -14 8 -25 13 -8 44 -13 69 -14 41 0 48 -3 53
+-25 7 -28 46 -36 46 -10 0 12 13 15 55 15 52 0 55 -1 55 -25 0 -34 42 -44 82
+-20 25 15 32 15 39 4 5 -8 9 -20 9 -27 0 -8 8 -10 25 -6 30 7 75 -24 53 -37
+-9 -6 -9 -11 0 -22 9 -11 6 -19 -16 -39 -58 -54 -77 -61 -150 -53 -37 4 -78
+13 -92 20 -20 10 -30 10 -46 2 -31 -19 -84 -60 -84 -67 0 -3 27 -21 59 -40 53
+-30 58 -35 49 -54 -29 -66 -104 -58 -186 20 -89 86 -191 160 -272 200 -68 33
+-79 35 -120 27 -39 -7 -49 -6 -75 14 -17 12 -58 26 -94 32 -39 6 -72 18 -86
+31 -12 11 -27 20 -33 20 -6 0 -18 13 -26 29 -19 35 -52 57 -109 72 -40 10 -46
+15 -51 44 -6 28 -12 34 -44 40 -20 4 -57 7 -82 8 -25 1 -51 6 -58 11 -9 5 -21
+1 -36 -13 -12 -12 -29 -21 -37 -21 -18 0 -63 -63 -86 -121 -26 -65 -43 -83
+-96 -103 -59 -22 -113 -15 -175 25 -42 27 -47 28 -69 14 -21 -14 -24 -14 -35
+5 -22 34 -28 23 -28 -49 0 -39 -4 -73 -10 -76 -5 -3 -10 -14 -10 -23 0 -9 -7
+-30 -16 -47 -9 -16 -20 -43 -23 -60 -4 -17 -17 -35 -31 -42 -14 -7 -32 -20
+-40 -30 -26 -32 -84 -71 -110 -75 -21 -2 -27 -11 -37 -53 -18 -81 -19 -80 50
+-99 34 -10 77 -30 96 -44 19 -15 39 -30 43 -33 20 -13 36 -108 27 -150 -13
+-55 3 -75 30 -40 l18 24 44 -31 c24 -17 71 -47 105 -67 50 -31 66 -47 87 -91
+15 -30 49 -90 76 -134 28 -44 58 -108 67 -141 17 -61 17 -62 -6 -105 -12 -24
+-42 -59 -65 -78 -53 -44 -65 -85 -55 -195 4 -45 9 -84 11 -86 2 -3 19 -22 37
+-42 118 -136 116 -133 99 -146 -20 -15 -24 -48 -14 -107 6 -36 15 -50 42 -69
+34 -23 36 -23 75 -7 30 12 40 13 40 3 0 -7 9 -29 20 -50 11 -20 20 -44 20 -52
+0 -23 13 -18 46 18 40 42 58 85 44 102 -7 8 -10 59 -8 134 l3 122 48 31 c54
+34 130 48 166 29 24 -13 27 -49 11 -116 -8 -35 -7 -42 12 -58 11 -9 29 -15 38
+-12 13 4 32 -14 74 -68 31 -40 56 -83 56 -95 0 -38 62 -152 83 -152 17 0 17
+-2 3 -22 -19 -27 -21 -79 -4 -126 11 -28 10 -38 -5 -64 -22 -38 -22 -82 0 -99
+9 -8 17 -12 17 -10 1 2 17 -6 37 -18 27 -16 39 -31 43 -55 6 -30 36 -72 36
+-50 0 5 5 38 11 74 8 54 7 70 -6 100 -11 24 -15 56 -13 95 3 58 4 60 30 58
+l27 -2 -15 41 -14 40 25 -6 c18 -5 25 -2 25 8 0 8 -5 18 -10 21 -18 11 -10 51
+15 75 14 13 25 34 25 47 0 15 12 31 39 49 36 24 43 25 76 14 20 -7 49 -10 64
+-7 24 5 31 1 49 -32 14 -24 22 -56 22 -84 0 -25 5 -58 11 -74 l11 -28 13 24
+13 24 6 -21 c4 -12 14 -22 22 -22 9 0 14 -11 14 -34 0 -29 5 -36 30 -45 22 -7
+30 -16 30 -34 0 -13 8 -32 19 -41 18 -16 18 -18 0 -54 -28 -54 -25 -69 11 -64
+24 3 30 9 30 28 0 34 36 51 61 28 10 -9 19 -24 19 -32 0 -30 23 -79 43 -91 15
+-10 30 -10 68 -1 56 14 61 29 24 66 -35 35 -44 55 -38 85 4 21 -1 31 -22 45
+-106 75 -125 114 -84 180 l21 34 -26 0 c-20 0 -26 5 -26 21 0 29 29 50 52 38
+13 -7 18 -6 18 4 0 8 6 20 14 26 15 13 17 6 -34 111 -9 19 -23 60 -30 90 -7
+30 -19 69 -26 86 -8 18 -11 47 -7 67 4 27 0 43 -16 66 -12 17 -20 35 -16 41 3
+5 -4 27 -15 50 -17 34 -25 40 -52 40 l-31 0 7 54 c4 41 3 57 -7 63 -8 4 -17
+23 -20 41 -4 18 -18 48 -32 66 -14 18 -25 40 -25 48 0 9 -7 21 -15 28 -8 7
+-15 25 -15 40 0 18 -8 33 -23 43 -21 13 -25 26 -30 94 -3 44 -12 100 -19 126
+-13 51 -6 68 38 81 17 5 23 0 32 -32 13 -41 72 -108 72 -80 0 24 24 28 85 15
+53 -11 55 -12 55 -43 0 -40 10 -47 44 -34 20 7 26 6 26 -4 0 -16 21 -26 55
+-26 13 0 31 -10 39 -22 21 -30 20 -41 -4 -33 -16 5 -20 2 -20 -19 0 -19 -5
+-26 -20 -26 -36 0 -23 -40 30 -91 28 -27 54 -49 59 -49 17 0 32 29 26 52 -9
+37 30 52 67 26 19 -13 40 -18 65 -16 50 4 49 22 -2 26 -22 2 -48 10 -57 19
+-16 14 -16 17 0 39 13 19 23 22 45 18 15 -3 33 -1 40 4 7 5 52 12 101 15 82 5
+105 13 106 39 0 3 -13 19 -29 34 -31 29 -31 54 -1 54 30 0 32 16 8 61 -20 40
+-22 41 -31 21 -6 -12 -18 -24 -28 -27 -11 -4 -19 -15 -19 -26 0 -14 -5 -19
+-17 -17 -11 2 -17 11 -15 22 2 11 -2 22 -8 26 -8 5 -5 22 10 59 25 65 25 77 0
+84 -18 5 -90 -9 -90 -17 0 -2 7 -20 15 -39 8 -20 15 -43 15 -52 0 -38 -75 -29
+-90 10 -6 16 -17 25 -32 25 -55 1 -86 59 -88 160 0 24 -6 39 -20 48 -23 14
+-27 42 -6 42 8 0 22 7 31 17 23 22 13 69 -23 106 -26 27 -30 28 -88 22 l-62
+-6 -4 31 c-3 17 -1 33 4 36 4 3 8 17 8 31 0 28 -7 27 89 7 23 -5 36 0 67 28
+73 65 99 74 199 72 78 -1 90 -3 89 -18 -2 -14 5 -16 42 -10 39 6 44 4 44 -14
+0 -15 -10 -22 -44 -31 -52 -13 -61 -23 -44 -50 19 -30 45 -32 77 -5 16 13 36
+24 45 24 9 0 16 5 16 12 0 6 7 19 16 29 14 16 14 18 -5 24 -12 3 -21 12 -21
+19 0 7 -11 26 -25 42 -19 22 -27 26 -37 16 -18 -18 -52 -16 -44 4 3 9 6 18 6
+20 0 2 12 4 28 4 15 0 47 9 71 20 60 27 71 26 71 -10 0 -20 -5 -30 -15 -30 -8
+0 -15 -6 -15 -12 0 -7 -3 -23 -6 -35 -5 -19 -2 -23 18 -23 14 0 35 -11 48 -25
+16 -17 27 -22 34 -15 5 5 17 10 25 10 18 0 69 -85 88 -146 17 -56 37 -72 61
+-50 24 21 26 20 67 -7 30 -19 35 -28 35 -60 0 -27 7 -45 25 -63 14 -14 25 -35
+25 -48 0 -30 15 -42 66 -50 36 -6 43 -4 57 18 10 14 17 44 17 66 0 23 7 54 15
+71 14 26 14 33 1 62 -8 17 -17 49 -21 71 -4 26 -12 40 -26 43 -23 6 -25 21 -4
+29 21 9 19 32 -5 39 -26 8 -29 75 -4 75 13 0 15 6 9 28 -3 15 -11 29 -16 30
+-5 2 -9 19 -9 37 0 19 -5 45 -11 58 -15 33 3 65 47 83 31 13 34 18 34 58 0 34
+-5 49 -23 63 -12 10 -36 36 -52 59 -30 42 -71 62 -168 83 -21 5 -48 18 -61 30
+-16 15 -35 21 -72 21 -57 0 -62 3 -93 50 -13 19 -34 44 -46 55 -13 11 -26 30
+-30 43 -11 39 29 27 60 -18 17 -24 36 -40 48 -40 11 0 44 -8 73 -17 42 -13 59
+-14 79 -5 17 8 33 8 51 2 41 -16 115 -12 136 7 17 15 19 15 32 -2 7 -10 18
+-15 24 -11 16 9 16 -66 1 -81 -8 -8 1 -13 31 -18 23 -4 43 -12 45 -18 2 -7 6
+-24 9 -40 6 -24 9 -26 26 -17 25 13 27 -5 5 -34 -23 -30 -18 -46 13 -46 52 0
+82 -55 51 -94 -20 -25 -20 -25 0 -65 19 -36 25 -40 63 -43 34 -2 45 -8 55 -28
+11 -23 9 -26 -32 -53 -33 -22 -45 -36 -45 -54 0 -21 4 -24 33 -21 27 2 33 8
+35 31 4 36 42 39 42 4 0 -16 9 -28 25 -35 43 -20 58 -16 51 13 -14 56 59 35
+84 -24 9 -22 19 -31 35 -31 26 0 55 24 55 44 0 7 8 24 19 37 14 19 19 45 22
+119 l4 95 -70 1 c-45 0 -84 7 -110 18 -31 14 -46 16 -67 8 -20 -7 -30 -7 -38
+3 -8 9 -8 15 0 20 17 11 11 25 -11 25 -23 0 -60 18 -71 34 -4 6 -8 33 -8 59 0
+34 -6 57 -20 74 -13 17 -20 41 -20 69 0 32 -4 44 -15 44 -8 0 -15 9 -15 20 0
+11 5 20 12 20 9 0 9 3 0 12 -19 19 -14 99 8 135 l20 33 -38 24 c-67 42 -86 97
+-49 144 12 15 13 14 -48 43 -53 25 -145 33 -145 13 0 -20 -49 -26 -73 -9 -12
+8 -30 15 -41 15 -39 0 -136 44 -136 62 0 10 -13 32 -29 50 -27 30 -31 32 -54
+19 -28 -15 -99 -9 -105 9 -5 13 -90 70 -106 70 -17 0 -52 39 -65 73 -6 16 -11
+49 -11 75 0 39 -4 49 -22 57 -13 6 -30 26 -39 45 -10 19 -31 46 -49 58 -31 24
+-33 24 -76 7 -24 -9 -46 -20 -49 -25 -3 -5 -28 -6 -55 -3 -34 4 -50 2 -50 -6
+0 -6 -8 -11 -19 -11 -13 0 -22 -12 -31 -44 -10 -36 -15 -43 -32 -38 -14 3 -21
+-1 -25 -16 -3 -13 -19 -26 -42 -33 -47 -15 -127 -56 -163 -82 -37 -28 -38 -52
+0 -43 15 4 45 9 67 12 83 11 88 13 82 39 -4 22 -1 25 23 25 18 0 33 -8 44 -25
+20 -30 56 -41 85 -26 31 17 91 -18 136 -79 21 -28 48 -53 62 -56 13 -4 45 -28
+70 -55 25 -27 53 -49 62 -49 24 0 41 -20 41 -47 0 -13 7 -26 16 -30 9 -3 24
+-25 35 -49 15 -37 23 -44 46 -44 50 0 71 -11 88 -46 36 -77 -3 -134 -55 -79
+-28 30 -40 32 -40 5 0 -30 -18 -27 -127 23 -21 9 -38 8 -75 -8 -10 -4 -18 -3
+-18 3 0 6 14 13 31 17 41 9 36 39 -9 43 -19 2 -32 9 -32 17 0 7 -7 15 -16 17
+-14 3 -13 7 5 30 17 21 19 32 12 51 -10 26 -42 43 -73 38 -9 -1 -22 7 -28 18
+-7 14 -21 21 -41 21 -26 0 -29 -3 -24 -20 5 -15 2 -20 -13 -20 -11 0 -25 -7
+-32 -15 -7 -8 -16 -15 -19 -15 -12 0 -51 77 -51 100 0 12 -8 35 -17 51 -15 26
+-23 29 -65 29 -27 0 -65 7 -85 15 -20 9 -44 13 -52 10 -8 -3 -25 5 -38 17 -17
+16 -34 22 -57 20 -29 -3 -37 2 -64 39 -17 23 -33 47 -35 52 -2 7 -18 2 -39
+-11 -36 -22 -65 -27 -106 -16 -19 6 -22 11 -17 31 5 21 3 24 -15 18 -37 -12
+-20 12 28 38 38 21 51 23 67 14 11 -6 38 -14 60 -18 22 -4 57 -10 77 -14 54
+-11 84 0 96 34 10 27 12 28 51 21 36 -6 45 -3 88 27 32 23 53 47 65 76 22 55
+23 81 2 73 -9 -3 -27 -9 -42 -13 l-26 -6 23 31 c22 31 22 32 5 68 -11 23 -29
+41 -46 48 -23 8 -28 16 -28 43 0 27 -5 34 -27 39 -19 5 -30 2 -39 -10 -11 -15
+-14 -10 -29 40 -19 66 -13 119 15 134 10 5 36 10 58 10 47 0 55 6 41 32 -8 14
+-7 28 1 48 12 29 12 29 45 13 19 -9 36 -26 39 -40 6 -20 12 -23 59 -23 61 -1
+100 -27 111 -75 4 -16 18 -44 32 -62 34 -44 30 -93 -7 -93 -10 0 -28 -13 -41
+-30 -12 -16 -28 -30 -36 -30 -12 0 -12 3 -2 16 11 13 9 19 -13 42 -34 33 -48
+22 -55 -46 -4 -48 -4 -49 29 -61 29 -10 37 -9 61 9 15 11 41 20 57 20 21 0 32
+6 36 20 3 11 12 20 18 20 6 0 35 12 64 28 52 27 53 28 53 73 0 38 -6 54 -35
+90 -19 24 -35 55 -35 69 0 15 -16 40 -40 65 -22 22 -40 45 -40 51 0 7 -19 36
+-43 66 -24 29 -58 74 -75 100 -22 33 -43 50 -69 59 -53 17 -110 55 -124 81 -6
+13 -20 33 -31 44 -15 17 -21 46 -29 125 -5 57 -11 114 -14 125 -3 12 -38 53
+-78 90 -67 63 -74 73 -80 117 -9 62 -8 61 -68 94 -55 30 -73 60 -84 140 -3 26
+-13 67 -21 90 -14 39 -14 44 5 82 12 22 21 54 21 71 0 36 45 129 71 148 29 20
+25 70 -6 84 -14 6 -28 23 -32 37 -3 14 -15 41 -26 60 l-21 34 42 -6 c35 -6 43
+-4 52 12 7 13 7 22 0 26 -13 8 -13 65 -1 65 6 0 12 -4 15 -9 3 -5 22 -11 41
+-13 32 -4 35 -2 35 23 0 28 15 39 53 39 12 0 41 9 64 19 35 16 42 25 45 53 3
+29 7 33 35 36 27 3 33 -1 39 -22 3 -13 3 -34 -1 -45 -4 -14 1 -30 14 -47 19
+-24 19 -29 6 -54 -16 -31 -71 -45 -131 -34 -30 5 -34 4 -34 -15 0 -11 4 -21 9
+-21 17 0 54 -62 60 -99 5 -31 10 -36 36 -39 51 -5 84 -23 106 -59 27 -44 113
+-107 164 -121 22 -6 73 -23 113 -38 l72 -27 0 -67 c0 -37 -7 -84 -15 -104 -15
+-35 -15 -36 13 -50 36 -18 57 -43 70 -85 10 -29 9 -37 -9 -59 l-20 -26 23 -9
+c13 -5 40 -6 61 -4 28 4 55 -2 102 -24 58 -26 75 -29 166 -29 76 0 100 3 97
+13 -3 6 -20 14 -39 17 -26 4 -35 10 -37 27 -2 16 -17 27 -56 42 -102 38 -177
+96 -218 168 -17 29 -45 65 -63 79 -51 39 -56 90 -15 154 l32 49 41 -16 c23 -9
+58 -31 77 -49 34 -31 37 -32 106 -27 l71 5 23 -46 c12 -26 44 -69 71 -95 27
+-27 49 -56 49 -66 0 -31 53 -115 85 -135 18 -11 40 -38 50 -60 12 -27 23 -39
+33 -35 7 3 25 5 39 5 22 0 24 3 18 31 -5 23 -2 36 13 52 31 36 35 57 10 66
+-13 5 -17 10 -10 15 7 4 7 14 -3 33 -9 18 -11 32 -4 44 14 28 11 36 -18 44
+-16 3 -72 31 -126 62 -72 41 -105 66 -122 94 -14 20 -29 40 -34 43 -5 4 -15
+22 -21 41 -10 31 -9 40 10 69 19 32 23 34 50 24 24 -8 36 -6 62 10 28 17 41
+19 86 12 43 -7 64 -18 113 -61 55 -48 64 -52 123 -56 72 -6 94 -25 116 -99 8
+-27 26 -49 56 -72 24 -18 47 -44 50 -58 4 -15 12 -23 19 -20 7 2 32 10 54 17
+29 9 40 17 36 27 -3 7 -5 17 -5 21 0 5 -24 33 -53 64 -30 30 -67 81 -83 112
+-22 42 -36 58 -56 62 -14 3 -28 13 -31 23 -2 10 -37 33 -79 53 -66 32 -77 41
+-91 77 -11 29 -21 40 -36 40 -19 0 -21 -6 -21 -55 0 -52 -1 -55 -25 -55 -40 0
+-94 32 -116 68 -11 19 -26 60 -33 92 l-14 58 49 6 c38 5 49 11 49 25 0 12 -13
+22 -42 31 -60 17 -79 33 -114 93 -25 43 -36 53 -62 55 -40 4 -41 19 -2 86 28
+50 32 52 105 74 l76 22 45 -30 c53 -37 144 -70 192 -70 28 0 45 9 82 44 26 25
+80 61 119 80 l71 36 0 45 c0 38 4 47 28 62 15 9 36 24 47 33 18 15 138 60 161
+60 5 0 18 -15 28 -32 42 -72 77 -108 105 -108 15 0 36 -7 47 -15 10 -8 32 -15
+47 -15 16 0 37 -5 47 -10 16 -9 25 -4 52 26 93 104 93 104 142 104 32 0 46 4
+46 14 0 7 9 25 20 39 11 14 20 32 20 41 0 13 11 16 55 16 50 0 57 -3 67 -25
+22 -48 72 -69 162 -67 66 0 85 -3 101 -18 11 -11 60 -37 107 -59 76 -35 96
+-40 155 -40 37 0 131 -3 208 -8 121 -8 147 -13 191 -35 51 -27 74 -58 74 -103
+0 -30 2 -30 65 -6 36 14 51 25 53 40 2 14 19 29 46 43 39 19 43 24 42 57 -1
+29 3 36 17 36 10 0 25 8 32 19 8 10 18 15 24 11 6 -3 11 0 11 9 0 8 15 24 33
+35 32 19 33 23 32 75 -1 30 -8 68 -15 85 -10 26 -10 35 4 56 22 33 20 42 -10
+49 -22 6 -24 9 -12 23 8 10 14 46 14 94 1 42 5 82 9 88 3 6 20 11 38 11 25 0
+44 12 87 54 66 64 103 79 149 60 31 -13 32 -12 43 14 16 39 14 108 -6 172 -9
+30 -18 92 -19 137 l-2 83 -31 0 c-23 0 -34 6 -42 24 -11 26 -110 104 -155 124
+-15 7 -52 12 -82 12 -44 0 -57 4 -70 22 -10 15 -26 23 -48 23 -17 0 -41 4 -52
+7 -13 4 -37 -3 -67 -20z"/>
+<path d="M5893 8812 c-15 -16 -36 -31 -46 -35 -10 -4 -29 -32 -43 -62 -20 -43
+-24 -64 -19 -94 6 -36 9 -39 46 -45 21 -3 39 -10 39 -14 0 -4 13 -23 29 -42
+l29 -35 22 20 c12 11 43 27 68 36 l47 16 7 63 c5 42 3 68 -4 77 -8 10 -6 18 7
+33 16 18 16 20 2 20 -9 0 -24 11 -33 25 -11 17 -26 25 -44 25 -15 0 -35 9 -45
+20 -23 26 -28 25 -62 -8z"/>
+<path d="M6785 7670 c-3 -5 -17 -10 -31 -10 -18 0 -24 -5 -24 -22 -1 -24 -31
+-68 -48 -68 -5 0 -15 -7 -23 -16 -11 -14 -15 -13 -31 8 -9 13 -18 28 -18 34 0
+7 -12 19 -26 29 -22 14 -30 15 -55 4 -25 -10 -32 -9 -42 4 -11 14 -17 14 -64
+-1 l-53 -17 0 -47 c0 -34 4 -48 14 -48 10 0 12 -15 8 -70 -5 -74 0 -81 38 -60
+11 6 30 8 43 5 19 -5 22 -11 19 -39 -4 -38 7 -46 55 -39 32 5 32 5 18 34 -8
+15 -15 49 -15 74 0 38 4 47 23 54 30 12 37 6 37 -35 0 -21 -4 -33 -10 -29 -17
+11 -11 -5 15 -39 14 -18 25 -37 25 -43 0 -10 43 -33 63 -33 7 0 18 9 25 21 11
+18 11 24 -2 38 -8 9 -18 35 -22 57 -6 38 -4 43 25 63 17 12 31 29 31 37 0 26
+30 74 46 74 12 0 15 6 10 23 -3 12 -6 32 -6 45 0 23 -14 30 -25 12z"/>
+<path d="M498 7334 c-10 -11 -42 -18 -97 -21 -75 -5 -83 -8 -102 -34 -19 -26
+-19 -30 -4 -59 8 -16 20 -30 25 -30 5 0 7 -6 4 -14 -8 -21 14 -56 35 -56 13 0
+21 -10 25 -34 4 -22 14 -37 26 -41 11 -4 20 -12 20 -18 0 -7 16 -23 35 -36 29
+-20 36 -32 46 -81 15 -75 42 -119 82 -133 18 -7 75 -33 127 -59 55 -28 98 -44
+103 -39 5 5 -3 34 -20 70 -26 53 -32 60 -43 46 -16 -19 -60 -20 -60 -1 0 7
+-20 21 -45 30 -50 20 -51 22 -61 129 -5 67 -4 77 10 77 28 0 17 17 -22 32 -30
+12 -40 23 -51 55 -16 48 -12 57 39 83 54 28 80 110 34 110 -7 0 -19 9 -26 20
+-15 24 -57 26 -80 4z"/>
+<path d="M6302 6948 c-13 -13 -16 -75 -6 -103 6 -14 12 -11 40 16 38 36 43 65
+17 85 -22 17 -36 17 -51 2z"/>
+<path d="M7800 6710 c-8 -6 -31 -9 -50 -8 -19 1 -52 -4 -72 -11 -34 -11 -38
+-16 -38 -46 0 -28 -5 -35 -32 -44 -18 -7 -59 -14 -90 -18 -37 -4 -63 -12 -74
+-24 -20 -23 -42 -24 -69 -5 -18 12 -23 11 -48 -10 -16 -14 -27 -33 -27 -49 0
+-14 -7 -39 -16 -56 -14 -28 -14 -32 6 -64 12 -19 29 -35 37 -35 9 0 37 -13 62
+-29 57 -36 130 -44 160 -17 10 10 36 46 57 82 l37 64 49 0 c64 0 88 -13 88
+-49 0 -25 -6 -31 -54 -50 -29 -12 -64 -30 -77 -39 -13 -9 -40 -22 -59 -27 -36
+-11 -55 -45 -26 -45 9 0 28 -21 43 -47 l26 -48 61 -2 c45 -1 75 -8 116 -30 44
+-23 68 -28 122 -28 60 0 71 3 94 27 l27 26 -35 49 c-50 68 -59 89 -52 117 5
+22 9 23 29 14 19 -9 25 -21 31 -65 8 -65 27 -89 77 -97 34 -6 37 -5 37 17 0
+13 -13 44 -30 70 -45 72 -71 127 -65 137 3 5 -5 12 -19 16 -17 4 -29 19 -41
+49 -12 33 -27 50 -61 70 -48 28 -52 40 -29 86 15 29 15 30 -14 47 -23 13 -29
+22 -25 39 4 15 0 25 -14 32 -25 13 -23 13 -42 1z"/>
+<path d="M5110 6531 c0 -4 -16 -28 -35 -52 -19 -24 -35 -53 -35 -63 0 -11 -7
+-27 -15 -36 -9 -10 -13 -24 -9 -33 5 -14 12 -12 50 15 24 17 44 39 44 47 0 9
+11 34 25 56 32 53 32 75 0 75 -14 0 -25 -4 -25 -9z"/>
+<path d="M820 6480 c0 -24 27 -63 54 -77 27 -14 31 -14 43 3 11 15 10 21 -5
+37 -31 34 -92 59 -92 37z"/>
+<path d="M4720 6438 c0 -7 16 -40 36 -72 20 -33 33 -67 31 -78 -4 -14 1 -18
+19 -18 14 0 36 -7 49 -16 33 -21 50 -13 75 36 18 36 19 41 5 47 -9 3 -21 1
+-28 -6 -16 -16 -22 -14 -35 14 -6 14 -17 25 -24 25 -6 0 -33 18 -59 40 -49 41
+-69 49 -69 28z"/>
+<path d="M4570 6415 c-5 -14 -16 -25 -24 -25 -14 0 -42 -38 -34 -45 2 -1 17
+-6 35 -9 25 -6 32 -4 37 12 4 10 18 24 33 31 l26 12 -23 24 c-29 31 -38 31
+-50 0z"/>
+<path d="M5716 6068 c-3 -13 -8 -36 -11 -53 -17 -84 -17 -85 -3 -85 19 0 61
+-57 48 -65 -6 -3 -10 -16 -10 -28 1 -20 4 -18 30 13 24 29 32 33 46 24 26 -16
+28 -31 5 -39 -20 -6 -20 -8 -4 -38 15 -31 16 -31 24 -9 9 23 39 21 39 -3 0 -9
+10 -9 44 2 39 13 44 18 37 36 -4 12 -33 41 -65 65 -50 39 -56 47 -56 80 0 29
+-8 45 -42 79 -47 48 -75 55 -82 21z"/>
+<path d="M6937 5531 c-17 -6 -17 -8 -3 -20 9 -7 16 -26 16 -41 0 -27 15 -40
+45 -40 7 0 15 17 18 37 10 57 -24 85 -76 64z"/>
+<path d="M7365 5513 c-68 -6 -119 -44 -110 -82 8 -33 49 -76 87 -92 41 -17
+103 -144 94 -193 -8 -42 -27 -63 -64 -73 -31 -7 -71 -34 -72 -47 0 -16 108
+-141 138 -159 l30 -17 7 32 c9 43 22 58 51 58 27 0 39 16 35 48 -1 14 9 36 28
+58 34 38 51 86 33 92 -8 2 -12 32 -12 82 0 44 -5 91 -12 105 -10 23 -10 28 5
+36 11 7 17 23 17 49 0 45 -11 56 -40 40 -18 -9 -23 -6 -40 23 -21 35 -55 49
+-104 45 -11 -1 -43 -3 -71 -5z"/>
+<path d="M6885 5450 c-7 -12 2 -30 16 -30 5 0 9 9 9 20 0 21 -15 27 -25 10z"/>
+<path d="M7660 5431 c0 -24 20 -41 48 -41 13 0 32 -5 43 -10 14 -8 19 -7 19 3
+0 21 -35 48 -74 57 -30 7 -36 5 -36 -9z"/>
+<path d="M1423 5361 c3 -15 1 -21 -10 -21 -12 0 -14 -8 -8 -37 7 -40 29 -88
+44 -97 5 -4 15 10 21 29 11 33 5 75 -19 124 -12 25 -35 27 -28 2z"/>
+<path d="M1297 5304 c-2 -14 -2 -55 1 -90 4 -61 3 -67 -23 -94 -16 -17 -34
+-30 -40 -30 -18 0 -43 31 -51 64 -6 24 -8 26 -16 12 -5 -9 -15 -16 -22 -16 -8
+0 -16 -17 -20 -42 -4 -23 -13 -56 -20 -72 -7 -17 -19 -55 -26 -85 -12 -52 -12
+-55 11 -72 30 -23 75 -25 83 -3 11 28 6 140 -6 152 -9 9 -8 12 8 12 18 0 29
+-20 70 -135 7 -18 6 -19 -11 -5 -17 13 -18 13 -13 0 2 -8 11 -36 18 -61 10
+-32 22 -50 43 -63 29 -16 31 -16 52 4 31 29 56 25 110 -16 37 -29 58 -37 96
+-39 45 -2 49 -1 58 28 16 44 14 54 -19 90 -48 52 -100 125 -116 162 -13 31
+-17 34 -34 25 -11 -6 -24 -8 -29 -5 -14 8 -24 67 -13 74 12 7 -17 152 -38 191
+-24 46 -45 51 -53 14z"/>
+<path d="M1480 5184 c-14 -10 -26 -18 -28 -19 -9 -6 31 -75 46 -79 37 -12 71
+21 41 39 -5 4 -9 21 -7 38 4 38 -15 45 -52 21z"/>
+<path d="M6030 4614 c-55 -36 -71 -54 -66 -72 28 -109 29 -110 50 -102 30 11
+76 -24 76 -56 0 -17 17 -43 53 -78 29 -29 61 -72 71 -94 21 -46 35 -52 58 -24
+38 45 49 132 13 102 -13 -10 -15 -9 -15 11 0 13 5 31 10 39 7 11 2 21 -18 37
+-22 17 -25 24 -14 34 6 7 12 25 12 40 0 23 -5 28 -37 33 -93 16 -92 15 -103
+57 -6 22 -18 43 -26 46 -7 3 -14 13 -14 23 0 28 -12 29 -50 4z"/>
+<path d="M1429 4503 c-17 -4 -39 -75 -39 -127 0 -25 6 -35 25 -44 14 -6 32
+-29 41 -49 35 -79 38 -84 67 -90 21 -4 34 -17 52 -53 21 -41 27 -47 49 -43 29
+6 41 30 25 49 -13 16 1 46 32 68 25 17 62 5 94 -32 l20 -24 19 21 c18 20 18
+21 -17 53 -19 18 -43 38 -53 44 -10 6 -23 26 -29 44 -10 30 -19 36 -84 58 -64
+21 -76 30 -113 78 -38 51 -51 58 -89 47z"/>
+<path d="M8240 4330 c0 -5 -7 -10 -16 -10 -9 0 -29 -11 -46 -25 -16 -14 -35
+-25 -42 -25 -7 0 -22 -11 -35 -23 -19 -22 -20 -25 -6 -37 11 -9 14 -22 10 -41
+-9 -39 8 -43 40 -9 36 38 86 48 120 26 14 -9 25 -23 25 -31 0 -21 71 -75 98
+-75 15 0 39 15 63 40 22 22 47 40 58 40 10 0 24 7 31 15 7 8 24 14 39 13 29
+-2 71 17 71 32 0 6 -7 10 -15 10 -20 0 -19 29 2 52 17 19 16 19 -9 13 -16 -4
+-38 -1 -56 9 -47 24 -65 21 -58 -9 4 -14 4 -25 2 -25 -12 0 -106 54 -106 61 0
+5 -38 9 -85 9 -50 0 -85 -4 -85 -10z"/>
+<path d="M4568 4279 c-36 -14 -36 -43 -2 -66 l26 -17 -22 -18 -22 -18 25 0
+c14 0 27 -5 29 -11 6 -18 58 12 58 34 0 11 9 34 20 53 12 18 17 35 11 38 -19
+12 -97 15 -123 5z"/>
+<path d="M4444 4176 c-3 -9 -3 -24 1 -33 6 -17 7 -17 21 2 8 10 13 24 11 29
+-6 17 -27 18 -33 2z"/>
+<path d="M7765 4150 c-11 -4 -33 -22 -49 -38 -27 -29 -32 -30 -108 -30 -82 0
+-118 -15 -118 -50 0 -8 -18 -32 -41 -54 -27 -27 -39 -46 -37 -61 3 -20 8 -22
+53 -19 35 2 65 12 100 34 29 17 69 33 95 36 54 6 66 15 142 115 l59 77 -38 -1
+c-21 0 -47 -4 -58 -9z"/>
+<path d="M5550 4135 c0 -8 -6 -15 -13 -15 -8 0 -19 -11 -25 -25 -13 -28 -17
+-167 -5 -179 4 -3 35 24 69 60 72 78 85 116 52 151 -25 26 -78 32 -78 8z"/>
+<path d="M6290 4131 c1 -23 19 -43 71 -79 26 -17 58 -45 72 -62 14 -16 30 -30
+36 -30 5 0 19 -13 30 -29 18 -25 25 -28 53 -22 27 5 34 12 36 35 2 16 10 39
+18 51 12 18 12 28 3 48 -10 21 -23 28 -68 37 -31 6 -66 15 -79 20 -13 6 -34 7
+-47 4 -19 -5 -24 -1 -27 17 -3 19 -9 22 -50 24 -38 1 -48 -2 -48 -14z"/>
+<path d="M6185 3854 c16 -39 11 -78 -13 -106 -8 -10 -10 -18 -4 -18 6 0 13
+-13 17 -30 8 -37 14 -37 48 -2 22 22 27 38 27 76 0 58 -12 81 -50 101 -41 21
+-42 20 -25 -21z"/>
+<path d="M6679 3864 c-10 -12 -10 -20 -1 -35 7 -10 12 -35 12 -54 l0 -35 67
+25 c36 14 72 30 80 36 19 17 16 39 -7 39 -10 0 -31 6 -46 12 -22 10 -28 10
+-32 0 -6 -20 -32 -14 -32 8 0 24 -22 26 -41 4z"/>
+<path d="M5654 3832 c-21 -13 -46 -73 -36 -85 6 -8 5 -40 -3 -89 -10 -62 -10
+-78 0 -78 19 0 75 68 75 90 0 11 13 32 30 46 27 25 28 28 12 40 -9 7 -25 14
+-34 14 -14 0 -18 8 -18 35 0 35 -6 41 -26 27z"/>
+<path d="M8050 3619 c0 -52 4 -72 20 -90 l19 -24 1 24 c0 14 -5 40 -12 58 -10
+29 -10 36 2 43 8 5 23 7 33 4 21 -7 22 5 2 34 -10 14 -25 21 -40 20 -24 -2
+-25 -5 -25 -69z"/>
+<path d="M4645 3674 c-38 -8 -133 -59 -145 -78 -20 -31 3 -43 45 -23 20 9 47
+17 61 17 17 0 28 7 31 19 3 11 22 27 44 35 21 9 39 20 39 26 0 10 -36 12 -75
+4z"/>
+<path d="M4189 3509 c31 -33 63 -36 69 -6 4 19 -32 37 -73 37 l-24 0 28 -31z"/>
+<path d="M5710 3427 c-28 -22 -50 -61 -50 -89 0 -31 11 -36 30 -13 18 22 35
+18 48 -10 6 -14 15 -25 20 -25 10 0 32 68 32 100 0 40 -48 63 -80 37z"/>
+<path d="M8354 3426 c-3 -9 -14 -16 -24 -16 -32 0 -32 -18 0 -36 16 -10 30
+-23 30 -29 0 -19 49 -55 75 -55 30 0 32 14 5 37 -11 10 -23 31 -26 48 -3 16
+-17 38 -30 48 -21 16 -25 16 -30 3z"/>
+<path d="M6878 3405 c-20 -14 -39 -34 -43 -45 -3 -11 -14 -20 -24 -20 -10 0
+-24 -6 -31 -14 -6 -8 -21 -16 -33 -18 -14 -2 -23 -11 -25 -25 -2 -13 -8 -23
+-14 -23 -6 0 -4 -8 4 -17 9 -10 18 -38 21 -62 4 -30 15 -53 35 -75 17 -17 32
+-44 34 -60 4 -41 22 -43 54 -7 15 17 37 31 50 31 19 0 26 12 53 93 17 50 31
+105 31 121 0 35 -49 146 -64 146 -6 0 -28 -11 -48 -25z"/>
+<path d="M6530 3333 c-56 -33 -64 -45 -44 -60 14 -10 13 -14 -10 -28 -22 -15
+-26 -25 -26 -66 0 -46 2 -50 38 -68 l39 -20 52 53 c45 46 51 55 43 77 -7 17
+-5 34 6 57 14 28 14 34 2 42 -8 5 -27 6 -43 3 -27 -6 -29 -5 -18 16 14 26 16
+26 -39 -6z"/>
+<path d="M8465 3228 c4 -13 8 -23 9 -23 55 -22 58 -24 39 -49 -14 -19 -21 -22
+-32 -13 -12 10 -14 9 -8 -5 3 -9 9 -34 13 -55 10 -58 21 -73 54 -73 23 0 30 5
+30 19 0 14 8 21 28 23 31 3 40 35 22 82 -8 23 -13 26 -25 16 -12 -10 -18 -6
+-36 24 -12 21 -39 46 -61 57 l-40 20 7 -23z"/>
+<path d="M5924 3169 c3 -13 11 -46 16 -72 5 -27 16 -61 22 -75 15 -29 38 -41
+38 -19 0 9 11 24 25 35 14 11 25 23 25 26 0 16 -63 104 -78 109 -9 2 -26 8
+-36 13 -17 6 -18 4 -12 -17z"/>
+<path d="M6376 3169 c-31 -24 -33 -53 -7 -92 l18 -29 6 24 c10 42 19 118 14
+118 -2 0 -16 -9 -31 -21z"/>
+<path d="M6304 3089 c-9 -15 1 -21 26 -17 21 3 21 3 1 15 -14 9 -22 9 -27 2z"/>
+<path d="M7440 3020 c0 -5 -8 -10 -17 -10 -10 -1 -30 -18 -45 -39 -16 -23 -41
+-44 -62 -52 -22 -8 -37 -21 -41 -36 -4 -17 -12 -23 -32 -23 -15 0 -37 -10 -50
+-22 -13 -12 -23 -16 -23 -10 0 7 -4 12 -10 12 -21 0 -9 -37 15 -48 35 -16 60
+-15 75 3 7 8 20 15 30 15 10 0 43 29 75 65 65 74 98 95 151 95 l37 0 -44 30
+c-47 32 -59 36 -59 20z"/>
+<path d="M8801 2974 c-38 -8 -69 -20 -74 -30 -5 -9 -24 -22 -42 -30 -19 -8
+-53 -38 -77 -67 -33 -41 -53 -57 -85 -65 -41 -11 -43 -13 -43 -51 0 -31 6 -44
+26 -60 38 -30 44 -27 44 20 0 55 28 78 94 79 41 0 62 8 120 44 39 24 98 55
+131 68 45 18 61 30 63 46 3 16 -2 22 -16 22 -10 0 -27 9 -37 20 -21 23 -19 23
+-104 4z"/>
+<path d="M5799 2880 c-14 -19 -26 -48 -27 -64 -3 -53 -48 -78 -78 -45 -19 22
+-44 25 -44 7 0 -31 13 -54 32 -63 35 -16 34 -35 -1 -35 -21 0 -34 6 -38 17 -7
+18 -53 62 -65 63 -9 0 -31 -137 -24 -149 4 -6 18 -6 39 0 17 5 60 9 94 9 34 0
+73 4 87 10 23 9 26 15 26 62 0 65 8 98 24 98 7 0 18 17 26 38 8 20 16 40 18
+45 2 4 -5 7 -16 7 -12 0 -22 8 -24 17 -3 14 -9 10 -29 -17z"/>
+<path d="M5905 2812 c-34 -7 -40 -20 -20 -42 28 -31 55 -26 55 9 0 34 -6 39
+-35 33z"/>
+<path d="M6623 2798 c-25 -32 -25 -98 1 -98 6 0 27 -23 46 -50 28 -39 40 -49
+60 -47 22 2 26 8 31 52 7 57 2 72 -32 89 -13 6 -30 24 -37 39 -14 29 -52 37
+-69 15z"/>
+<path d="M6485 2700 c-32 -13 -105 -85 -105 -103 0 -21 11 -21 58 -1 49 20 92
+62 92 91 0 24 -11 27 -45 13z"/>
+<path d="M6143 2622 c-16 -10 -5 -52 13 -52 7 0 21 -8 31 -19 10 -10 28 -22
+41 -25 19 -6 22 -4 22 22 0 22 -9 34 -41 55 -44 29 -48 30 -66 19z"/>
+<path d="M9504 2612 c-6 -4 -25 -28 -43 -55 -27 -39 -29 -48 -17 -53 9 -3 16
+-12 16 -20 0 -8 9 -14 20 -14 14 0 20 -7 20 -24 0 -13 7 -29 15 -36 18 -15 21
+-8 30 78 6 57 5 62 -14 62 -27 0 -38 20 -17 32 9 5 16 16 16 23 0 16 -9 19
+-26 7z"/>
+<path d="M7860 2581 c0 -5 7 -14 15 -21 18 -15 20 -39 3 -41 -7 -1 -44 -1 -82
+1 -64 2 -68 1 -61 -16 4 -11 13 -33 19 -49 23 -63 42 -82 75 -77 32 4 39 20
+20 39 -6 6 -9 23 -5 36 5 21 13 25 66 31 38 4 60 12 60 19 0 19 -73 87 -93 87
+-9 0 -17 -4 -17 -9z"/>
+<path d="M8725 2531 c-3 -10 -1 -31 5 -45 8 -22 15 -27 36 -24 36 4 48 26 35
+61 -8 21 -17 27 -40 27 -20 0 -32 -6 -36 -19z"/>
+<path d="M6747 2339 c-14 -8 -16 -14 -6 -25 6 -8 19 -14 29 -14 12 0 19 -11
+24 -37 12 -76 10 -83 -29 -83 -46 0 -44 -13 6 -38 38 -19 42 -19 72 -4 18 10
+33 18 35 19 2 0 0 23 -4 49 -5 38 -16 58 -52 96 -49 52 -49 52 -75 37z"/>
+<path d="M8955 2338 c-4 -10 -15 -18 -25 -18 -21 0 -34 -38 -19 -56 7 -8 18
+-10 32 -5 18 7 24 3 39 -31 17 -38 17 -38 50 -25 20 8 34 22 36 34 3 17 -1 19
+-29 15 -29 -4 -30 -3 -20 16 16 30 14 40 -11 48 -13 4 -28 14 -35 23 -11 15
+-12 14 -18 -1z"/>
+<path d="M6692 2295 c1 -16 9 -30 16 -33 18 -6 15 33 -4 49 -14 11 -15 9 -12
+-16z"/>
+<path d="M9920 2290 c-14 -10 -41 -22 -60 -25 -19 -4 -71 -26 -115 -50 -44
+-24 -91 -46 -105 -50 -36 -11 -79 -45 -101 -82 -12 -18 -27 -33 -34 -33 -22 0
+-55 -50 -61 -92 -6 -37 -44 -78 -72 -78 -35 0 -3 -85 36 -95 18 -4 22 -12 22
+-48 0 -24 -8 -81 -19 -128 -18 -84 -18 -86 1 -122 l19 -37 37 15 c43 18 94 71
+128 135 32 61 51 83 103 115 33 20 46 24 51 15 5 -7 15 -10 23 -7 18 7 28 56
+15 77 -8 12 -4 26 16 55 15 22 32 42 37 46 5 3 21 38 34 77 13 39 32 84 42 98
+10 15 16 38 15 50 -2 12 4 36 12 53 17 31 22 116 8 125 -4 2 -19 -4 -32 -14z"/>
+<path d="M7159 2199 c-19 -26 -20 -33 -8 -45 18 -18 99 -28 119 -15 12 8 12
+13 -4 30 -10 11 -34 30 -52 40 l-33 20 -22 -30z"/>
+<path d="M3978 2188 c-9 -7 -21 -31 -27 -52 -8 -32 -8 -43 4 -56 16 -18 20
+-85 6 -94 -8 -5 10 -112 20 -120 2 -2 29 -13 61 -26 74 -30 88 -24 88 39 0 62
+7 81 31 81 10 0 19 4 19 9 0 5 3 16 6 25 4 10 -3 19 -20 27 -14 7 -28 20 -31
+31 -4 10 -14 18 -23 18 -30 1 -63 38 -69 77 -8 52 -32 66 -65 41z"/>
+<path d="M9173 1978 c-32 -15 -29 -38 4 -38 37 0 94 22 90 35 -5 14 -67 16
+-94 3z"/>
+<path d="M8825 1482 c-19 -13 -47 -81 -41 -97 3 -10 -2 -27 -13 -41 -10 -13
+-22 -49 -26 -80 -4 -32 -11 -64 -15 -73 -4 -9 -13 -35 -19 -58 -8 -29 -23 -51
+-46 -69 -37 -28 -36 -42 5 -89 24 -27 34 -125 16 -151 -16 -22 -5 -54 19 -54
+8 0 15 -7 15 -15 0 -18 5 -18 30 -5 12 7 16 17 13 31 -7 24 29 58 60 59 24 0
+22 35 -4 53 -17 13 -19 18 -8 35 9 15 9 23 0 33 -6 8 -23 31 -37 53 -22 34
+-24 42 -14 72 6 19 16 36 21 39 5 4 9 17 9 31 0 14 7 35 15 48 8 12 14 33 14
+47 -1 13 4 56 11 94 11 60 14 134 7 142 -2 1 -7 -1 -12 -5z"/>
+<path d="M4878 1137 c-12 -23 -15 -46 -11 -82 3 -27 6 -75 7 -105 l1 -55 -37
+-3 c-63 -5 -74 7 -81 89 -9 105 -23 106 -36 2 -6 -48 -14 -101 -17 -118 -3
+-16 -5 -43 -5 -60 0 -16 -7 -52 -16 -78 -8 -27 -13 -65 -11 -85 3 -26 0 -40
+-11 -48 -14 -11 -14 -15 -1 -40 8 -15 22 -29 31 -31 9 -3 21 -15 27 -28 10
+-22 14 -22 124 -19 63 1 126 8 142 14 15 5 33 7 39 3 25 -16 102 -30 137 -26
+34 5 39 2 56 -25 l18 -31 84 5 c74 4 87 2 113 -17 27 -19 38 -20 97 -14 37 4
+75 11 85 17 14 7 22 6 30 -5 23 -27 62 -47 93 -47 25 0 39 -8 61 -35 27 -32
+35 -36 108 -45 44 -6 87 -12 96 -15 19 -6 41 -53 41 -87 -1 -51 -15 -128 -23
+-128 -5 0 -9 -9 -9 -20 0 -26 24 -26 73 0 32 17 46 19 92 12 30 -5 59 -5 66
+-1 7 4 20 2 30 -4 13 -8 24 -8 41 1 13 6 57 16 98 22 88 11 146 25 215 51 74
+28 133 33 226 20 64 -10 91 -10 114 -1 17 7 80 12 150 11 106 0 128 3 183 25
+77 31 134 35 160 11 10 -9 35 -17 55 -17 20 0 37 -4 37 -10 0 -15 36 -12 93 7
+40 14 56 27 79 62 15 25 28 55 28 67 0 12 7 27 15 34 9 8 13 21 9 35 -4 17 0
+26 15 35 25 13 19 27 -15 40 -34 13 -33 71 1 116 27 36 34 77 11 68 -7 -3 -18
+-16 -24 -29 -6 -14 -23 -27 -37 -31 -14 -3 -25 -13 -25 -22 0 -22 -77 -92
+-101 -92 -12 0 -23 8 -25 18 -7 23 -95 23 -122 -1 -10 -9 -23 -17 -29 -17 -6
+0 -16 -7 -23 -15 -7 -8 -20 -15 -30 -15 -30 0 -106 -49 -119 -76 -10 -22 -16
+-25 -41 -20 -17 3 -42 13 -56 22 -24 16 -25 21 -20 76 3 32 9 85 12 117 3 33
+12 65 20 72 29 24 15 36 -52 42 -72 7 -137 -4 -200 -35 -23 -10 -55 -20 -72
+-20 -36 -1 -82 26 -82 47 0 12 -20 15 -112 16 -62 1 -124 4 -138 8 -13 4 -46
+2 -72 -3 -42 -9 -50 -8 -62 9 -9 12 -12 32 -9 52 5 28 3 33 -15 33 -11 0 -22
+6 -24 12 -3 9 -12 8 -31 -5 -24 -15 -30 -16 -55 -3 -20 10 -42 12 -89 5 -39
+-5 -72 -5 -88 1 -15 6 -50 10 -80 10 -41 0 -60 -5 -82 -23 -42 -35 -88 -48
+-185 -52 -48 -2 -96 -8 -105 -13 -10 -5 -41 -7 -69 -4 l-52 4 -10 80 c-5 43
+-12 82 -15 84 -3 3 -18 -1 -34 -9 -25 -13 -34 -13 -88 7 -39 14 -61 27 -63 39
+-3 17 1 18 50 13 49 -6 54 -5 71 19 17 23 17 30 5 68 -10 31 -22 46 -47 59
+-31 15 -36 15 -57 1 -16 -10 -24 -25 -24 -43 0 -16 -7 -30 -15 -34 -8 -3 -15
+-12 -15 -20 0 -8 -8 -17 -18 -20 -34 -11 -104 -9 -111 3 -4 6 -15 9 -25 5 -9
+-4 -44 -1 -77 6 -47 10 -60 17 -63 34 -20 106 -24 134 -23 155 1 14 -6 29 -18
+37 -19 12 -22 11 -37 -19z"/>
+<path d="M8523 770 c-61 -18 -113 -63 -113 -97 0 -13 5 -23 10 -23 31 0 170
+94 170 115 0 22 -12 23 -67 5z"/>
+        </g>
+        <path id="routePath" fill="none" stroke="rgba(199,162,75,.55)" stroke-width="2.5" stroke-dasharray="2 9" stroke-linecap="round"/>
+      </svg>
+      <button class="pin" style="left:31%;top:17%" data-panel="2" aria-label="Νάουσα">
+        <i></i><span>Ναουσα</span>
+        <div class="tip"><b>Πλαγιες Βερμιου</b><em>Ξινομαυρο · 450μ.</em></div>
+      </button>
+      <button class="pin" style="left:29%;top:60%" data-panel="0" aria-label="Νεμέα">
+        <i></i><span>Νεμεα</span>
+        <div class="tip"><b>Κτημα Λυρα</b><em>Αγιωργιτικο · 620μ.</em></div>
+      </button>
+      <button class="pin" style="left:60%;top:74%" data-panel="1" aria-label="Θήρα">
+        <i></i><span>Θηρα</span>
+        <div class="tip"><b>Αμπελι Θηρας</b><em>Ασυρτικο · Κουλουρες</em></div>
+      </button>
+    </div>
+    <div class="panels reveal d1" id="panels">
+      <article class="panel" data-aura="#2A0F17" style="--dustc:#F2D98B" tabindex="0" aria-label="Νεμέα — Κτήμα Λύρα">
+        <img src="images/nemea.jpg?v=3" alt="Τσαμπιά Αγιωργίτικου στον ήλιο, Νεμέα">
+        <div class="p-shade"></div>
+        <div class="p-dust" aria-hidden="true"></div>
+        <div class="p-vert" aria-hidden="true">ΝΕΜΕΑ</div>
+        <div class="p-info">
+          <h3 class="p-name">ΝΕΜΕΑ</h3>
+          <p class="p-sub">Κτημα Λυρα · Αγιωργιτικο</p>
+          <p class="p-meta"><b data-alt="620">620</b>μ. υψομετρο</p>
+        </div>
+      </article>
+      <article class="panel" data-aura="#101B26" style="--dustc:#DCEBF2" tabindex="0" aria-label="Θήρα — Αμπέλι Θήρας">
+        <img src="images/santorini.jpg?v=4" alt="Λευκά σταφύλια Ασύρτικου στον τρύγο">
+        <div class="p-shade"></div>
+        <div class="p-dust" aria-hidden="true"></div>
+        <div class="p-vert" aria-hidden="true">ΘΗΡΑ</div>
+        <div class="p-info">
+          <h3 class="p-name">ΘΗΡΑ</h3>
+          <p class="p-sub">Αμπελι Θηρας · Ασυρτικο</p>
+          <p class="p-meta"><b data-alt="300">300</b> ετων κληματα</p>
+        </div>
+      </article>
+      <article class="panel" data-aura="#1D1224" style="--dustc:#CDA4E0" tabindex="0" aria-label="Νάουσα — Πλαγιές Βερμίου">
+        <img src="images/naousa.jpg?v=4" alt="Πλαγιές γεμάτες αμπελώνες στο ηλιοβασίλεμα">
+        <div class="p-shade"></div>
+        <div class="p-dust" aria-hidden="true"></div>
+        <div class="p-vert" aria-hidden="true">ΝΑΟΥΣΑ</div>
+        <div class="p-info">
+          <h3 class="p-name">ΝΑΟΥΣΑ</h3>
+          <p class="p-sub">Πλαγιες Βερμιου · Ξινομαυρο</p>
+          <p class="p-meta"><b data-alt="450">450</b>μ. υψομετρο</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROSE ============ -->
+<section class="rose sec" id="agapi">
+  <div class="f-photo fp1" aria-hidden="true"><img src="images/rose1.jpg?v=3" alt=""></div>
+  <div class="f-photo fp2" aria-hidden="true"><img src="images/rose2.jpg?v=3" alt=""></div>
+  <div class="f-photo fp3" aria-hidden="true"><img src="images/rose3.jpg?v=3" alt=""></div>
+  <div class="wrap">
+    <h2 class="huge"><span class="reveal">ΑΓΑΠΗ</span><br><span class="l2 reveal d1">για την</span><br><span class="reveal d2">ΟΙΝΟΠΟΙΙΑ</span></h2>
+    <p class="lead reveal d2">Τρεις αμπελώνες σε τρεις γωνιές της Ελλάδας — Νεμέα, Σαντορίνη, Νάουσα. Μαζί, 180 στρέμματα βιολογικής καλλιέργειας, τρύγος με το χέρι και 45.000 φιάλες τον χρόνο. Τίποτα βιαστικό, τίποτα τυχαίο.</p>
+    <a class="btn reveal d3" href="#gefsi"><span>Ανακαλυψτε περισσοτερα</span></a>
+  </div>
+</section>
+
+<!-- ============ FOOD ============ -->
+<section class="on-light sec" id="gefsi">
+  <div class="wrap">
+    <p class="eyebrow reveal">Εστιατοριο</p>
+    <h2 class="big reveal d1">Γευστική Εμπειρία</h2>
+    <div class="food-grid">
+      <div class="frame main reveal d1">
+        <img src="images/food1.jpg?v=3" alt="Πιάτο εποχής με κρασί στο εστιατόριο του κτήματος">
+        <div class="cap">Το τραπεζι του κτηματος</div>
+      </div>
+      <div class="col2">
+        <div class="food-copy reveal d2">
+          <h3>Από τον κήπο στο τραπέζι</h3>
+          <p>Η κουζίνα μας δουλεύει με ό,τι δίνει το κτήμα: λαχανικά από τον κήπο, δικό μας ελαιόλαδο και τα κρασιά της χρονιάς. Πιάτα εποχής στο τραπέζι του κτήματος, με το σωστό ποτήρι δίπλα σε κάθε πιάτο.</p>
+          <a class="btn" href="#krathsi"><span>Κρατηση τραπεζιου</span></a>
+        </div>
+        <div class="frame small reveal d3">
+          <img src="images/food2.jpg?v=3" alt="Πιάτα εποχής στο ξύλινο τραπέζι">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section class="stats">
+  <div class="wrap">
+    <div class="stat reveal"><div class="n"><b data-count="1974">0</b></div><div class="k">Ετος ιδρυσης</div></div>
+    <div class="stat reveal d1"><div class="n"><b data-count="620">0</b><span>μ.</span></div><div class="k">Υψομετρο</div></div>
+    <div class="stat reveal d2"><div class="n"><b data-count="180">0</b><span>στρ.</span></div><div class="k">Βιολογικοι αμπελωνες</div></div>
+    <div class="stat reveal d3"><div class="n"><b data-count="45">0</b><span>χιλ.</span></div><div class="k">Φιαλες / χρονο</div></div>
+  </div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section class="sec quizsec" id="quiz">
+  <div class="wrap" style="max-width:820px;text-align:center">
+    <p class="eyebrow reveal" style="justify-content:center">Το παιχνιδι</p>
+    <h2 class="big reveal d1" style="margin:0 auto">Ποιο κρασί<br>σού ταιριάζει;</h2>
+    <div class="quiz-box reveal d2" id="quizBox"></div>
+  </div>
+</section>
+
+<!-- ============ GUESTBOOK ============ -->
+<section class="on-light sec gbook" id="vivlio">
+  <div class="wrap" style="max-width:860px;text-align:center">
+    <p class="eyebrow reveal" style="justify-content:center">Το βιβλιο των επισκεπτων</p>
+    <h2 class="big reveal d1" style="margin:0 auto">Δυο λόγια<br>απ&rsquo; όσους ήρθαν</h2>
+    <div class="gb-card reveal d2" id="gbCard">
+      <div class="gb-stars" aria-hidden="true">★★★★★</div>
+      <p class="gb-quote" id="gbQuote"></p>
+      <p class="gb-name" id="gbName"></p>
+      <div class="gb-dots" id="gbDots" aria-label="Επιλογή κριτικής"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEWS ============ -->
+<section class="on-light sec" id="nea">
+  <div class="wrap">
+    <p class="eyebrow reveal">Νεα & Εκδηλωσεις</p>
+    <h2 class="big reveal d1">Τι συμβαίνει<br>στο κτήμα</h2>
+    <div class="news-grid">
+      <a class="news reveal d1" href="mailto:info@lyrawinery.gr?subject=Τρύγος%202026">
+        <div class="thumb"><img src="images/news-trygos.jpg?v=3" alt="Χέρια που κρατούν φρεσκοκομμένα σταφύλια"></div>
+        <div class="nbody"><h3>Έλα στον τρύγο: ανοιχτές ημέρες Σεπτεμβρίου</h3><p class="date">02 / 09 / 2026</p></div>
+      </a>
+      <a class="news reveal d2" href="mailto:info@lyrawinery.gr?subject=Κάθετη%20γευσιγνωσία">
+        <div class="thumb"><img src="images/news-tasting.jpg?v=3" alt="Τέσσερα ποτήρια γευσιγνωσίας πάνω σε βαρέλι"></div>
+        <div class="nbody"><h3>Γευσιγνωσία στο βαρέλι: όλες οι ετικέτες της χρονιάς</h3><p class="date">18 / 10 / 2026</p></div>
+      </a>
+      <a class="news reveal d3" href="mailto:info@lyrawinery.gr?subject=Βραδιά%20μουσικής">
+        <div class="thumb"><img src="images/news-music.jpg?v=3" alt="Παρέα κάνει πρόποση με κόκκινο κρασί"></div>
+        <div class="nbody"><h3>Μουσική βραδιά στην αυλή: κρασί κάτω από τ’ αστέρια</h3><p class="date">21 / 06 / 2026</p></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="on-light sec tlsec" id="faq">
+  <div class="wrap" style="max-width:840px">
+    <p class="eyebrow reveal">Συχνες ερωτησεις</p>
+    <h2 class="big reveal d1">Ό,τι θες<br>να ρωτήσεις</h2>
+    <div class="faq reveal d2">
+      <div class="fq"><button class="fq-q" aria-expanded="false">Χρειάζεται κράτηση για την ξενάγηση;<i></i></button>
+        <div class="fq-a"><p>Προτείνουμε κράτηση, ειδικά τα Σαββατοκύριακα και τους μήνες του τρύγου. Για καθημερινές, συνήθως βρίσκεται θέση και αυθημερόν με ένα τηλεφώνημα.</p></div></div>
+      <div class="fq"><button class="fq-q" aria-expanded="false">Πόσο διαρκεί η γευσιγνωσία;<i></i></button>
+        <div class="fq-a"><p>Περίπου 90 λεπτά: βόλτα στον αμπελώνα, επίσκεψη στο κελάρι και κάθετη δοκιμή των τριών ετικετών με μεζέδες του κτήματος.</p></div></div>
+      <div class="fq"><button class="fq-q" aria-expanded="false">Μπορώ να έρθω με παιδιά;<i></i></button>
+        <div class="fq-a"><p>Φυσικά. Η αυλή είναι ιδανική για οικογένειες και για τους μικρούς επισκέπτες έχουμε φρέσκο χυμό σταφυλιού από τα δικά μας κλήματα.</p></div></div>
+      <div class="fq"><button class="fq-q" aria-expanded="false">Στέλνετε κρασιά σε όλη την Ελλάδα;<i></i></button>
+        <div class="fq-a"><p>Ναι, με ασφαλή συσκευασία σε 2–4 εργάσιμες. Για παραγγελίες άνω των έξι φιαλών τα μεταφορικά είναι δικά μας.</p></div></div>
+      <div class="fq"><button class="fq-q" aria-expanded="false">Δέχεστε ομάδες και εκδηλώσεις;<i></i></button>
+        <div class="fq-a"><p>Έως 40 άτομα στην αυλή και το κελάρι — γευσιγνωσίες, εταιρικές βραδιές, ακόμα και μικροί γάμοι. Στείλτε μας μήνυμα από τη φόρμα κράτησης.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BOOKING ============ -->
+<section class="on-light sec" id="krathsi">
+  <div class="wrap krathsi-grid">
+    <div>
+      <p class="eyebrow reveal">Κρατησεις</p>
+      <h2 class="big reveal d1">Κλείσε τη δική<br>σου επίσκεψη</h2>
+      <p class="lead reveal d2" style="margin-top:1.4rem">Ξενάγηση, γευσιγνωσία ή τραπέζι στο εστιατόριο — πες μας πότε έρχεσαι και θα σε περιμένουμε με ένα ποτήρι στο χέρι.</p>
+      <form id="bookForm" class="reveal d2" novalidate>
+        <div class="frow">
+          <input name="name" required placeholder="Ονοματεπώνυμο" aria-label="Ονοματεπώνυμο">
+          <input type="email" name="email" required placeholder="Email" aria-label="Email">
+        </div>
+        <div class="frow">
+          <input type="date" name="date" required aria-label="Ημερομηνία">
+          <select name="people" aria-label="Άτομα">
+            <option>2 άτομα</option><option>3 άτομα</option><option>4 άτομα</option>
+            <option>5 άτομα</option><option>6+ άτομα</option>
+          </select>
+        </div>
+        <textarea name="msg" rows="3" placeholder="Μήνυμα (προαιρετικό)" aria-label="Μήνυμα"></textarea>
+        <button class="btn" type="submit" style="color:var(--ink)"><span>Αποστολη αιτηματος</span></button>
+        <p class="fnote" id="bookNote" role="status"></p>
+      </form>
+    </div>
+    <div class="nl-side reveal d3">
+      <h3>Νέα από το κελάρι</h3>
+      <p>Μία φιάλη-γράμμα τον μήνα: τι συμβαίνει στα αμπέλια, ποιες χρονιές ανοίγουν, πότε είναι ο τρύγος.</p>
+      <form id="nlForm" class="bottle-form" novalidate>
+        <input type="email" required placeholder="Το email σου" aria-label="Email newsletter">
+        <button type="submit" aria-label="Εγγραφή"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
+      </form>
+      <p class="fnote" id="nlNote" role="status"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer id="epikoinonia">
+  <div class="f-top">
+    <div class="f-brand">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#C7A24B" stroke-width="1.3">
+          <path d="M6 3c0 5 1.5 7 3 8.5V17M18 3c0 5-1.5 7-3 8.5V17"/>
+          <path d="M9 17h6M9 20h6M10 11.5h4"/><path d="M12 11.5V20"/>
+        </svg>
+        ΛΥΡΑ
+      </div>
+      <p>Κτήμα Λύρα, Κούτσι Νεμέας 205 00<br>Τετ – Κυρ · 11:00 – 19:00<br>+30 27460 20 300<br>info@lyrawinery.gr</p>
+    </div>
+    <div class="f-col">
+      <h4>Αμπελωνες</h4>
+      <ul>
+        <li><a href="#ampelones">Κτήμα Λύρα · Νεμέα</a></li>
+        <li><a href="#ampelones">Αμπέλι Θήρας</a></li>
+        <li><a href="#ampelones">Πλαγιές Βερμίου</a></li>
+        <li><a href="#ampelones">Τα κρασιά μας</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h4>Εμπειρια</h4>
+      <ul>
+        <li><a href="#xenonas">Ο Ξενώνας</a></li>
+        <li><a href="#gefsi">Το Εστιατόριο</a></li>
+        <li><a href="mailto:info@lyrawinery.gr?subject=Ξενάγηση">Ξεναγήσεις</a></li>
+        <li><a href="#nea">Εκδηλώσεις</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h4>Πληροφοριες</h4>
+      <ul>
+        <li><a href="#agapi">Η φιλοσοφία μας</a></li>
+        <li><a href="#nea">Νέα</a></li>
+        <li><a href="mailto:info@lyrawinery.gr">Επικοινωνία</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="f-bottom">
+    <span>© 2026 Οινοποιείο Λύρα · Νεμέα</span>
+    <span class="warn">Απολαύστε υπεύθυνα</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+  const lerp=(a,b,t)=>a+(b-a)*t;
+  const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+  const easeIO=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  const easeOut=t=>1-Math.pow(1-t,3);
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CSA=CSS.supports('animation-timeline','view()');
+  if('scrollRestoration' in history)history.scrollRestoration='manual';
+  window.scrollTo(0,0);
+
+  /* ---- language (ΕΛ / EN) ---- */
+  const LANG=localStorage.getItem('lyraLang')||'el';
+  const langBtn=document.getElementById('langBtn');
+  langBtn.textContent=(LANG==='en')?'ΕΛ':'EN';
+  const langVeil=document.getElementById('langVeil');
+  const switched=sessionStorage.getItem('lyraLangSwitch');
+  if(switched){
+    sessionStorage.removeItem('lyraLangSwitch');
+    langVeil.classList.add('on');
+    setTimeout(()=>langVeil.classList.remove('on'),350);
+  }
+  langBtn.addEventListener('click',()=>{
+    langVeil.classList.add('on');
+    setTimeout(()=>{
+      localStorage.setItem('lyraLang',LANG==='en'?'el':'en');
+      sessionStorage.setItem('lyraLangSwitch','1');
+      location.reload();
+    },480);
+  });
+  if(LANG==='en'){
+    document.documentElement.lang='en';
+    document.title='Lyra — Winery';
+    const T=[
+      ['.nav-links a[href="#istoria"]','Story'],['.nav-links a[href="#xenonas"]','Guesthouse'],
+      ['.nav-links a[href="#ampelones"]','Vineyards'],['.nav-links a[href="#gefsi"]','Dining'],
+      ['.nav-links a[href="#nea"]','News'],['.nav-links a[href="#krathsi"]','Book'],
+      ['#mobileMenu a[href="#istoria"]','Story'],['#mobileMenu a[href="#xenonas"]','Guesthouse'],
+      ['#mobileMenu a[href="#ampelones"]','Vineyards'],['#mobileMenu a[href="#gefsi"]','Dining'],
+      ['#mobileMenu a[href="#nea"]','News'],['#mobileMenu a[href="#krathsi"]','Book a visit'],
+      ['#mobileMenu .mm-foot','Lyra Winery · 1974'],
+      ['.hero-type .row:nth-child(1) .w','AUTHENTIC'],
+      ['.hero-type .mid','In the heart of Nemea, three generations have farmed Agiorgitiko at 620 metres — sealing our land into every bottle of Lyra since 1974.'],
+      ['.hero-type .row:nth-child(3) .w','SOUL'],
+      ['.hero-type .row:nth-child(4) .w','OF NEMEA'],
+      ['.hero-scroll span','Scroll'],
+      ['.band p.k','Our philosophy'],
+      ['.band h3','\u201CWine, like music, takes <b>time, a good ear and patience</b>.\u201D'],
+      ['.band .btn span','Discover the estate'],
+      ['#istoria .eyebrow','Our story'],
+      ['#istoria h2.big','Half a century,<br>one family'],
+      ['#istoria .tl-ev:nth-child(2) h3','The beginning'],
+      ['#istoria .tl-ev:nth-child(2) p','Grandfather Leonidas plants the first three hectares of Agiorgitiko in Koutsi, Nemea.'],
+      ['#istoria .tl-ev:nth-child(3) h3','First bottle'],
+      ['#istoria .tl-ev:nth-child(3) p','The first bottling — 4,000 bottles — reaches the shelves of Athens under the LYRA label.'],
+      ['#istoria .tl-ev:nth-child(4) h3','Second generation'],
+      ['#istoria .tl-ev:nth-child(4) p','The family acquires a vineyard on Santorini — Assyrtiko grown on ancient basket-trained vines.'],
+      ['#istoria .tl-ev:nth-child(5) h3','Organic certification'],
+      ['#istoria .tl-ev:nth-child(5) p','All vineyards are now certified organic.'],
+      ['#istoria .tl-ev:nth-child(6) h3','Naoussa'],
+      ['#istoria .tl-ev:nth-child(6) p','The Xinomavro of the Vermio slopes joins the family.'],
+      ['#istoria .tl-ev:nth-child(7) h3','50 years'],
+      ['#istoria .tl-ev:nth-child(7) p','Half a century, three generations, three vineyards, one note.'],
+      ['#xenonas .eyebrow','Hospitality'],
+      ['#xenonas h2.big','The Estate<br>Guesthouse'],
+      ['#xenonas .lead','Right next to the winery, our whitewashed guesthouse has six rooms: breakfast made with estate produce, tables on the cobblestones under the bougainvillea, and <strong>a cellar open to our guests</strong> all year round.'],
+      ['#xenonas .btn span','Book a room'],
+      ['#xenonas .frame.main .cap','The guesthouse courtyard'],
+      ['#fiali .eyebrow','The bottle'],
+      ['#fiali h2.big','Lyra Red 2021'],
+      ['#fiali .n1 b','Sour cherry &amp; plum'],['#fiali .n1 span','on the nose'],
+      ['#fiali .n2 b','Sweet spice'],['#fiali .n2 span','on the palate'],
+      ['#fiali .n3 b','Velvet tannins'],['#fiali .n3 span','on the finish'],
+      ['#fiali .n4 b','12 months'],['#fiali .n4 span','in oak barrels'],
+      ['#fiali .lead','The Agiorgitiko of Nemea at its purest — twelve months in French oak, unfiltered, bottled at the estate.'],
+      ['.f-specs div:nth-child(1) i','Variety'],
+      ['.f-specs div:nth-child(2) i','Alcohol'],
+      ['.f-specs div:nth-child(3) i','Serve at'],
+      ['#etiketes .eyebrow','The labels'],
+      ['#etiketes h2.big','The Lyra<br>shelf'],
+      ['#etiketes .shelf-item:nth-child(1) h3','Red'],
+      ['#etiketes .shelf-item:nth-child(1) .sv','Agiorgitiko · Nemea'],
+      ['#etiketes .shelf-item:nth-child(1) .sn','Sour cherry, sweet spice, velvet finish · 13.8%'],
+      ['#etiketes .shelf-item:nth-child(2) h3','White'],
+      ['#etiketes .shelf-item:nth-child(2) .sv','Assyrtiko · Thira'],
+      ['#etiketes .shelf-item:nth-child(2) .sn','Citrus, volcanic minerality, razor-sharp acidity · 13.5%'],
+      ['#etiketes .shelf-item:nth-child(3) h3','Ros&eacute;'],
+      ['#etiketes .shelf-item:nth-child(3) .sv','Xinomavro · Naoussa'],
+      ['#etiketes .shelf-item:nth-child(3) .sn','Strawberry, rose petal, savoury finish · 12.5%'],
+      ['#faq .eyebrow','FAQ'],
+      ['#faq h2.big','Everything you<br>want to ask'],
+      ['#faq .fq:nth-child(1) .fq-q','Do I need a reservation for the tour?<i></i>'],
+      ['#faq .fq:nth-child(1) .fq-a p','We recommend booking, especially on weekends and during harvest. On weekdays a phone call usually finds you a spot same-day.'],
+      ['#faq .fq:nth-child(2) .fq-q','How long does the tasting last?<i></i>'],
+      ['#faq .fq:nth-child(2) .fq-a p','About 90 minutes: a walk in the vineyard, a visit to the cellar and a guided tasting of our three labels with estate meze.'],
+      ['#faq .fq:nth-child(3) .fq-q','Can I bring children?<i></i>'],
+      ['#faq .fq:nth-child(3) .fq-a p','Of course. The courtyard is family-friendly and younger guests get fresh grape juice from our own vines.'],
+      ['#faq .fq:nth-child(4) .fq-q','Do you ship across Greece?<i></i>'],
+      ['#faq .fq:nth-child(4) .fq-a p','Yes, safely packed, in 2–4 working days. Shipping is on us for orders of six bottles or more.'],
+      ['#faq .fq:nth-child(5) .fq-q','Do you host groups and events?<i></i>'],
+      ['#faq .fq:nth-child(5) .fq-a p','Up to 40 guests in the courtyard and cellar — tastings, corporate evenings, even small weddings. Message us through the booking form.'],
+      ['#stickyBook span','Book'],
+      ['#giantTitle','THE <em>VINEYARDS</em>'],
+      ['.pin[data-panel="2"] span','Naoussa'],['.pin[data-panel="0"] span','Nemea'],['.pin[data-panel="1"] span','Thira'],
+      ['.panel:nth-child(1) .p-vert','NEMEA'],['.panel:nth-child(1) .p-name','NEMEA'],
+      ['.panel:nth-child(1) .p-sub','Lyra Estate · Agiorgitiko'],
+      ['.panel:nth-child(2) .p-vert','THIRA'],['.panel:nth-child(2) .p-name','THIRA'],
+      ['.panel:nth-child(2) .p-sub','Thira Vineyard · Assyrtiko'],
+      ['.panel:nth-child(3) .p-vert','NAOUSSA'],['.panel:nth-child(3) .p-name','NAOUSSA'],
+      ['.panel:nth-child(3) .p-sub','Vermio Slopes · Xinomavro'],
+      ['.rose .huge','<span>LOVE</span><br><span class="l2">for the</span><br><span>CRAFT</span>'],
+      ['.rose .lead','Three vineyards in three corners of Greece — Nemea, Santorini, Naoussa. Together: 18 hectares farmed organically, hand-harvested, 45,000 bottles a year. Nothing rushed, nothing accidental.'],
+      ['.rose .btn span','Discover more'],
+      ['#gefsi .eyebrow','Restaurant'],
+      ['#gefsi h2.big','A Taste Experience'],
+      ['#gefsi .frame.main .cap','The estate table'],
+      ['.food-copy h3','From the garden to the table'],
+      ['.food-copy p','Our kitchen runs on what the estate gives: vegetables from the garden, our own olive oil and the wines of the year. Seasonal dishes at the estate table, each with the right glass beside it.'],
+      ['.food-copy .btn span','Book a table'],
+      ['.stats .stat:nth-child(1) .k','Founded'],
+      ['.stats .stat:nth-child(2) .k','Altitude'],
+      ['.stats .stat:nth-child(3) .k','Organic vineyards'],
+      ['.stats .stat:nth-child(4) .k','Bottles / year'],
+      ['#quiz .eyebrow','The game'],
+      ['#quiz h2.big','Which wine<br>suits you?'],
+      ['#nea .eyebrow','News &amp; events'],
+      ['#nea h2.big','Life at<br>the estate'],
+      ['#nea .news:nth-child(1) h3','Join the harvest: open days this September'],
+      ['#nea .news:nth-child(2) h3','Barrel tasting: every label of the year'],
+      ['#nea .news:nth-child(3) h3','A night of music in the courtyard: wine under the stars'],
+      ['#krathsi .eyebrow','Reservations'],
+      ['#krathsi h2.big','Book your<br>own visit'],
+      ['#krathsi .lead','A tour, a tasting or a table at the restaurant — tell us when you are coming and we will be waiting with a glass in hand.'],
+      ['#bookForm .btn span','Send request'],
+      ['.nl-side h3','News from the cellar'],
+      ['.nl-side p','One bottled letter a month: what is happening in the vines, which vintages are opening, when the harvest begins.'],
+      ['.f-col:nth-child(2) h4','Vineyards'],['.f-col:nth-child(3) h4','Experience'],['.f-col:nth-child(4) h4','Info'],
+      ['#cine .cine-line','Since 1974, one family has been tuning this land.'],
+      ['#vivlio .eyebrow','The guest book'],
+      ['#vivlio h2.big','A few words<br>from our guests'],
+      ['.f-specs div:nth-child(1) em','Agiorgitiko 100%'],
+      ['.f-specs div:nth-child(2) em','13.8% vol.'],
+      ['.f-brand p','Lyra Estate, Koutsi, Nemea 205 00, Greece<br>Wed – Sun · 11:00 – 19:00<br>+30 27460 20 300<br>info@lyrawinery.gr'],
+      ['.f-col:nth-child(2) li:nth-child(1) a','Lyra Estate · Nemea'],
+      ['.f-col:nth-child(2) li:nth-child(2) a','Thira Vineyard'],
+      ['.f-col:nth-child(2) li:nth-child(3) a','Vermio Slopes'],
+      ['.f-col:nth-child(2) li:nth-child(4) a','Our wines'],
+      ['.f-col:nth-child(3) li:nth-child(1) a','The Guesthouse'],
+      ['.f-col:nth-child(3) li:nth-child(2) a','The Restaurant'],
+      ['.f-col:nth-child(3) li:nth-child(3) a','Private tours'],
+      ['.f-col:nth-child(3) li:nth-child(4) a','Events'],
+      ['.f-col:nth-child(4) li:nth-child(1) a','Our philosophy'],
+      ['.f-col:nth-child(4) li:nth-child(2) a','News'],
+      ['.f-col:nth-child(4) li:nth-child(3) a','Contact'],
+      ['.f-bottom span:first-child','© 2026 Lyra Winery · Nemea, Greece'],
+      ['.f-bottom .warn','Enjoy responsibly']
+    ];
+    T.forEach(([sel,html])=>{const el=document.querySelector(sel);if(el)el.innerHTML=html;});
+    document.querySelector('#bookForm input[name="name"]').placeholder='Full name';
+    document.querySelector('#bookForm textarea').placeholder='Message (optional)';
+    const ppl=document.querySelector('#bookForm select');
+    [...ppl.options].forEach((o,i)=>{o.textContent=['2 people','3 people','4 people','5 people','6+ people'][i];});
+    document.querySelector('#nlForm input').placeholder='Your email';
+    const pm=document.querySelectorAll('.p-meta');
+    if(pm[0])pm[0].innerHTML='<b data-alt="620">620</b>m altitude';
+    if(pm[1])pm[1].innerHTML='<b data-alt="300">300</b> year-old vines';
+    if(pm[2])pm[2].innerHTML='<b data-alt="450">450</b>m altitude';
+  }
+
+  /* ---- awards: one at a time between laurels ---- */
+  const awB=document.getElementById('awB');
+  if(awB){
+    const AW=(LANG==='en')?[
+      ['Gold Medal','Thessaloniki International Wine Competition'],
+      ['92 / 100','International press score'],
+      ['PDO Nemea','Protected Designation of Origin'],
+      ['Organic farming','Certified organic (DIO)']
+    ]:[
+      ['Χρυσό Μετάλλιο','Διεθνης Διαγωνισμος Οινου Θεσσαλονικης'],
+      ['92 / 100','Βαθμολογια διεθνους τυπου'],
+      ['Π.Ο.Π. Νεμέα','Προστατευομενη ονομασια προελευσης'],
+      ['Βιολογική καλλιέργεια','Πιστοποιηση ΔΗΩ']
+    ];
+    const awI2=document.getElementById('awI'),awWrap=document.getElementById('awards'),awD=document.getElementById('awDots');
+    AW.forEach(()=>awD.appendChild(document.createElement('span')));
+    let awK=0;
+    const awPaint=()=>{awB.textContent=AW[awK][0];awI2.textContent=AW[awK][1];[...awD.children].forEach((sp,j)=>sp.classList.toggle('on',j===awK));};
+    awPaint();
+    if(!reduced)setInterval(()=>{
+      awWrap.classList.add('fade');
+      setTimeout(()=>{awK=(awK+1)%AW.length;awPaint();awWrap.classList.remove('fade');},520);
+    },3800);
+  }
+
+  /* ---- hero video: respect reduced motion ---- */
+  if(reduced){
+    const hv=document.getElementById('heroMedia');
+    if(hv&&hv.tagName==='VIDEO'){hv.removeAttribute('autoplay');hv.pause();}
+  }
+
+  /* ---- loader ---- */
+  document.getElementById('loader').classList.add('done');
+  const cine=document.getElementById('cine');
+  const cineYear=document.getElementById('cineYear');
+  let cineDone=false;
+  function endCine(){
+    if(cineDone)return;cineDone=true;
+    cine.classList.add('done');
+    document.body.classList.add('loaded');
+    setTimeout(()=>cine.remove(),950);
+  }
+  if(reduced||switched){cine.style.display='none';endCine();}
+  else{
+    const t0=performance.now();
+    (function yr(t){
+      const k=clamp((t-t0-400)/2100,0,1);
+      cineYear.textContent=String(Math.round(1974+(2026-1974)*(k<0?0:1-Math.pow(1-k,3))));
+      if(k<1&&!cineDone)requestAnimationFrame(yr);
+    })(t0);
+    setTimeout(endCine,4300);
+    cine.addEventListener('click',endCine);
+  }
+
+  /* ---- cursor ---- */
+  const cursor=document.getElementById('cursor');
+  if(!reduced&&matchMedia('(hover:hover)').matches){
+    let cx=0,cy=0,px=0,py=0;
+    addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;cursor.classList.add('on');});
+    (function cur(){px=lerp(px,cx,.2);py=lerp(py,cy,.2);cursor.style.left=px+'px';cursor.style.top=py+'px';requestAnimationFrame(cur);})();
+    document.querySelectorAll('a,.panel,.btn,.news,.pin,.q-opt,.tl-ev').forEach(el=>{
+      el.addEventListener('mouseenter',()=>cursor.classList.add('grow'));
+      el.addEventListener('mouseleave',()=>cursor.classList.remove('grow'));
+    });
+  }
+
+  /* ---- refs ---- */
+  const nav=document.getElementById('nav');
+  const glassWine=document.getElementById('glassWine');
+  const soundBtn=document.getElementById('soundBtn');
+  const giant=document.getElementById('giantTitle');
+  const heroMedia=document.getElementById('heroMedia');
+  const bandBg=document.getElementById('bandBg');
+  const band=document.querySelector('.band');
+  const fps=[...document.querySelectorAll('.f-photo')];
+  const roseSec=document.getElementById('agapi');
+
+  if(!reduced){
+    function loop(t){
+      const sc=window.scrollY, vh=innerHeight;
+      /* hero parallax (JS fallback when scroll-driven CSS is unsupported) */
+      if(!CSA&&sc<vh*1.2){
+        heroMedia.style.transform=`scale(1.06) translateY(${sc*.18}px)`;
+      }
+      /* band parallax */
+      const br=band.getBoundingClientRect();
+      if(!CSA&&br.top<vh&&br.bottom>0){
+        bandBg.style.transform=`translateY(${(br.top/vh)*-18}px)`;
+      }
+      /* floating photos in rose section */
+      const rr=roseSec.getBoundingClientRect();
+      if(!CSA&&rr.top<vh&&rr.bottom>0){
+        const rp=(vh-rr.top)/(vh+rr.height);
+        fps.forEach((b,i)=>{
+          const sp=[.55,.85,.4][i], rotb=[-7,6,-3][i];
+          b.style.transform=`translateY(${(rp-.5)*-150*sp}px) rotate(${rotb+rp*8}deg)`;
+        });
+      }
+      /* timeline rows fill with wine as they pass */
+      tlRows.forEach(r=>{
+        if(!r.classList.contains('lit')&&r.getBoundingClientRect().top<vh*.68)r.classList.add('lit');
+      });
+      /* shelf rise arm/re-arm */
+      if(shelfEl&&!reduced){
+        const shr=shelfEl.getBoundingClientRect();
+        if(shr.top<vh*.82&&shr.bottom>vh*.05){shelfEl.classList.add('on');}
+        else if(shr.bottom<-150||shr.top>vh+150){shelfEl.classList.remove('on');}
+      }
+      /* chrome */
+      nav.classList.toggle('scrolled',sc>innerHeight*.85);
+      const pr=clamp(sc/(document.body.scrollHeight-vh),0,1);
+      glassWine.setAttribute('y',String(27-19*pr));
+      const krr=krathsiEl.getBoundingClientRect();
+      stickyBook.classList.toggle('show',pr>0.3&&krr.top>vh);
+      if(sndFilter)sndFilter.frequency.value=16000*Math.pow(.06,pr);
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  }
+
+  /* ---- expanding vineyard panels ---- */
+  const estatesEl=document.querySelector('.estates');
+  const panels=[...document.querySelectorAll('.panel')];
+  function activatePanel(pn){
+    if(pn.classList.contains('active'))return;
+    if(document.body.classList.contains('loaded'))try{fxWind();}catch(_){}
+    panels.forEach(q=>q.classList.toggle('active',q===pn));
+    estatesEl.style.setProperty('--aura',pn.dataset.aura);
+    const b=pn.querySelector('[data-alt]');
+    if(b){
+      const target=+b.dataset.alt;
+      if(reduced){b.textContent=String(target);}
+      else{
+        const t0=performance.now();
+        (function tick(t){
+          const k=clamp((t-t0)/900,0,1);
+          b.textContent=String(Math.round(target*easeOut(k)));
+          if(k<1&&pn.classList.contains('active'))requestAnimationFrame(tick);
+        })(t0);
+      }
+    }
+  }
+  panels.forEach(pn=>{
+    pn.addEventListener('mouseenter',()=>{if(matchMedia('(hover:hover)').matches)activatePanel(pn);});
+    pn.addEventListener('click',()=>activatePanel(pn));
+    pn.addEventListener('focus',()=>activatePanel(pn));
+    const dust=pn.querySelector('.p-dust');
+    for(let k=0;k<14;k++){
+      const d=document.createElement('i');
+      d.style.left=(Math.random()*96+2)+'%';
+      d.style.top=(18+Math.random()*74)+'%';
+      const sz=2+Math.random()*3;
+      d.style.width=d.style.height=sz.toFixed(1)+'px';
+      d.style.animationDuration=(4+Math.random()*5).toFixed(1)+'s';
+      d.style.animationDelay=(Math.random()*4).toFixed(1)+'s';
+      dust.appendChild(d);
+    }
+  });
+  if(panels.length)activatePanel(panels[0]);
+
+  /* ---- wine stains ---- */
+  function spawnStain(x,y,size){
+    const st=document.createElement('div');
+    st.className='stain';
+    const r=()=> (42+Math.random()*18).toFixed(0);
+    st.style.borderRadius=`${r()}% ${r()}% ${r()}% ${r()}%/${r()}% ${r()}% ${r()}% ${r()}%`;
+    const w=size||(24+Math.random()*18);
+    st.style.width=w+'px';st.style.height=w*(0.85+Math.random()*.3)+'px';
+    st.style.left=(x-w/2)+'px';st.style.top=(y-w/2)+'px';
+    document.body.appendChild(st);
+    setTimeout(()=>st.remove(),950);
+  }
+  if(!reduced&&matchMedia('(hover:hover)').matches){
+    addEventListener('pointerdown',e=>{if(e.button===0)spawnStain(e.clientX,e.clientY);});
+    /* selection leaves little stains at its edges */
+    addEventListener('mouseup',()=>{
+      const sel=getSelection();
+      if(!sel||sel.isCollapsed||!sel.rangeCount)return;
+      const rects=sel.getRangeAt(0).getClientRects();
+      if(!rects.length)return;
+      const a=rects[0],b=rects[rects.length-1];
+      spawnStain(a.left,a.top+a.height/2,14);
+      spawnStain(b.right,b.top+b.height/2,14);
+    });
+  }
+
+  /* ---- magnetic buttons ---- */
+  if(!reduced&&matchMedia('(hover:hover)').matches){
+    document.querySelectorAll('.btn').forEach(b=>{
+      b.addEventListener('mousemove',e=>{
+        const r=b.getBoundingClientRect();
+        const dx=e.clientX-(r.left+r.width/2), dy=e.clientY-(r.top+r.height/2);
+        b.style.transform=`translate(${(dx*.18).toFixed(1)}px,${(dy*.35).toFixed(1)}px)`;
+      });
+      b.addEventListener('mouseleave',()=>{
+        b.style.transition='transform .45s cubic-bezier(.2,.7,.2,1),color .4s';
+        b.style.transform='';
+        setTimeout(()=>{b.style.transition='';},450);
+      });
+    });
+  }
+
+  /* ---- 3D tilt on the rose polaroids ---- */
+  if(!reduced&&matchMedia('(hover:hover)').matches){
+    roseSec.addEventListener('mousemove',e=>{
+      fps.forEach(fp=>{
+        const r=fp.getBoundingClientRect();
+        const dx=clamp((e.clientX-(r.left+r.width/2))/r.width,-1.2,1.2);
+        const dy=clamp((e.clientY-(r.top+r.height/2))/r.height,-1.2,1.2);
+        const img=fp.querySelector('img');
+        img.style.transform=`rotateY(${(dx*9).toFixed(1)}deg) rotateX(${(-dy*9).toFixed(1)}deg) scale(1.04)`;
+      });
+    });
+    roseSec.addEventListener('mouseleave',()=>{
+      fps.forEach(fp=>{fp.querySelector('img').style.transform='';});
+    });
+  }
+
+  /* ---- easter egg: type "λυρα" (or "lyra") for wine rain ---- */
+  let typedBuf='';
+  addEventListener('keydown',e=>{
+    if(e.key.length!==1)return;
+    typedBuf=(typedBuf+e.key.toLowerCase()).slice(-8);
+    if(typedBuf.includes('λυρα')||typedBuf.includes('lyra')){
+      typedBuf='';
+      if(reduced)return;
+      for(let k=0;k<55;k++){
+        const d=document.createElement('div');
+        d.className='rdrop';
+        d.style.left=(Math.random()*100)+'vw';
+        d.style.animationDuration=(0.9+Math.random()*0.9)+'s';
+        d.style.animationDelay=(Math.random()*1.4)+'s';
+        d.style.opacity=String(.5+Math.random()*.5);
+        d.style.transform=`rotate(45deg) scale(${.7+Math.random()*.8})`;
+        document.body.appendChild(d);
+        setTimeout(()=>d.remove(),3400);
+      }
+    }
+  });
+
+  /* ---- ambient sound: "Aegean Indie Folk Pop" (Pixabay, royalty-free) ---- */
+  let actx=null,sndMaster=null,sndFilter=null,soundOn=false,ambientEl=null;
+  function buildSound(){
+    actx=new (window.AudioContext||window.webkitAudioContext)();
+    sndMaster=actx.createGain();sndMaster.gain.value=0;sndMaster.connect(actx.destination);
+    sndFilter=actx.createBiquadFilter();sndFilter.type='lowpass';
+    sndFilter.frequency.value=16000;sndFilter.Q.value=.4;
+    sndFilter.connect(sndMaster);
+    ambientEl=new Audio('audio/ambient.mp3?v=2');
+    ambientEl.loop=true;
+    const src=actx.createMediaElementSource(ambientEl);
+    src.connect(sndFilter);
+  }
+  soundBtn.addEventListener('click',e=>{
+    e.stopPropagation();
+    if(!actx)buildSound();
+    actx.resume();
+    soundOn=!soundOn;
+    soundBtn.classList.toggle('on',soundOn);
+    soundBtn.setAttribute('aria-pressed',String(soundOn));
+    const t=actx.currentTime;
+    sndMaster.gain.cancelScheduledValues(t);
+    sndMaster.gain.setValueAtTime(sndMaster.gain.value,t);
+    sndMaster.gain.linearRampToValueAtTime(soundOn?.6:0,t+1.2);
+    if(soundOn){ambientEl.play().catch(()=>{});}
+    else{setTimeout(()=>{if(!soundOn&&ambientEl)ambientEl.pause();},1300);}
+  });
+
+  /* ---- refs for new sections ---- */
+  const tlSec=document.getElementById('istoria');
+  const tlFill=document.getElementById('tlFill');
+  const tlRows=[...document.querySelectorAll('.tl-ev')];
+
+  /* ---- map pins ---- */
+  document.querySelectorAll('.pin').forEach(pin=>{
+    pin.addEventListener('click',()=>{
+      const idx=+pin.dataset.panel;
+      activatePanel(panels[idx]);
+      document.querySelectorAll('.pin').forEach(q=>q.classList.toggle('on',q===pin));
+      document.getElementById('panels').scrollIntoView({block:'center',behavior:reduced?'auto':'smooth'});
+    });
+  });
+  document.querySelectorAll('.pin')[1].classList.add('on');
+  /* route line through the pins, in map coordinates */
+  const gmapEl=document.getElementById('gmap');
+  const routeEl=document.getElementById('routePath');
+  if(routeEl){
+    const pts=[...document.querySelectorAll('.pin')].map(pin=>{
+      const st=pin.getAttribute('style');
+      const x=parseFloat(st.match(/left:([\d.]+)%/)[1])/100*1024;
+      const y=parseFloat(st.match(/top:([\d.]+)%/)[1])/100*1024;
+      return [x,y];
+    });
+    routeEl.setAttribute('d',`M${pts[0][0]} ${pts[0][1]} L${pts[1][0]} ${pts[1][1]} L${pts[2][0]} ${pts[2][1]}`);
+  }
+  /* the map leans toward the cursor */
+  if(gmapEl&&!reduced&&matchMedia('(hover:hover)').matches){
+    const gsvg=document.getElementById('gmapSvg');
+    gmapEl.addEventListener('mousemove',e=>{
+      const r=gmapEl.getBoundingClientRect();
+      const dx=(e.clientX-(r.left+r.width/2))/r.width;
+      const dy=(e.clientY-(r.top+r.height/2))/r.height;
+      gsvg.style.transform=`rotateY(${(dx*14).toFixed(1)}deg) rotateX(${(-dy*10).toFixed(1)}deg) scale(1.03)`;
+    });
+    gmapEl.addEventListener('mouseleave',()=>{gsvg.style.transform='';});
+  }
+
+  /* ---- bottle tilt ---- */
+  const bStage=document.getElementById('bStage'),bTilt=document.getElementById('bTilt');
+  const bArt=document.querySelector('.bottle-art'),bGlow=document.querySelector('.b-glow'),bAura=document.querySelector('.b-aura');
+  if(bStage&&!reduced&&matchMedia('(hover:hover)').matches){
+    bStage.addEventListener('mousemove',e=>{
+      const r=bTilt.getBoundingClientRect();
+      const dx=clamp((e.clientX-(r.left+r.width/2))/r.width,-.6,.6);
+      const dy=clamp((e.clientY-(r.top+r.height/2))/r.height,-.6,.6);
+      bTilt.style.transition='transform .12s ease-out';
+      bTilt.style.transform=`perspective(1100px) rotateY(${(dx*7).toFixed(1)}deg) rotateX(${(-dy*4).toFixed(1)}deg) translate(${(dx*16).toFixed(0)}px,${(dy*9).toFixed(0)}px) scale(1.045)`;
+      bAura.style.transform=`translate(calc(-50% + ${(-dx*38).toFixed(0)}px),calc(-50% + ${(-dy*22).toFixed(0)}px))`;
+      bGlow.style.setProperty('--gx',((dx+.5)*100).toFixed(0)+'%');
+      bGlow.style.setProperty('--gy',((dy+.5)*100).toFixed(0)+'%');
+      bArt.style.filter=`drop-shadow(${(-dx*62).toFixed(0)}px ${36+dy*18}px 32px rgba(0,0,0,.6))`;
+    });
+    bStage.addEventListener('mouseleave',()=>{
+      bTilt.style.transition='transform .7s cubic-bezier(.2,.9,.25,1.25)';
+      bTilt.style.transform='';
+      bArt.style.filter='';
+      bAura.style.transform='translate(-50%,-50%)';
+    });
+  }
+
+  /* ---- wine wave page transitions ---- */
+  const wave=document.getElementById('wave');
+  let waving=false;
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const id=a.getAttribute('href').slice(1);
+      const target=document.getElementById(id);
+      if(!target)return;
+      e.preventDefault();
+      if(reduced||waving){target.scrollIntoView();return;}
+      waving=true;
+      if(typeof fxWhoosh==='function')fxWhoosh();
+      wave.classList.add('cover');
+      setTimeout(()=>{
+        target.scrollIntoView({behavior:'instant',block:'start'});
+        wave.classList.remove('cover');wave.classList.add('leave');
+        setTimeout(()=>{wave.classList.remove('leave');waving=false;},600);
+      },580);
+    });
+  });
+
+  /* ---- quiz ---- */
+  const quizBox=document.getElementById('quizBox');
+  if(quizBox){
+    const QD=(LANG==='en')?{
+      qs:[
+        {q:'What is on the table tonight?',o:['Slow-cooked beef & mushrooms','Seafood & fresh cheese','Spicy meze to share']},
+        {q:'Where are you drinking it?',o:['By the fireplace','In a courtyard by the sea','Around a long table, till late']},
+        {q:'What are you after in the glass?',o:['Deep & velvety','Crisp & mineral','Fruity & alive']}
+      ],
+      res:[
+        {t:'Lyra Red — Agiorgitiko of Nemea',d:'Sour cherry, sweet spice and velvet tannins. Twelve months in oak, made for slow evenings.',img:'images/nemea.jpg?v=3'},
+        {t:'Lyra White — Assyrtiko of Thira',d:'Citrus, volcanic minerality and a razor of acidity. The high, clear note of the Aegean.',img:'images/santorini.jpg?v=4'},
+        {t:'Lyra Xinomavro of Naoussa',d:'Strawberry, rose petals and a lively, savoury finish. The note that keeps the party going.',img:'images/naousa.jpg?v=4'}
+      ],
+      cta:'See the vineyard',again:'Play again',step:'Question'
+    }:{
+      qs:[
+        {q:'Τι θα έχει το τραπέζι απόψε;',o:['Μοσχαράκι κατσαρόλας & μανιτάρια','Θαλασσινά & φρέσκο τυρί','Πικάντικους μεζέδες για παρέα']},
+        {q:'Πού το πίνεις;',o:['Δίπλα στο τζάκι','Σε αυλή με θέα τη θάλασσα','Σε μακρύ τραπέζι, μέχρι αργά']},
+        {q:'Τι γυρεύεις στο ποτήρι;',o:['Κάτι βαθύ & βελούδινο','Κάτι φρέσκο & ορυκτό','Κάτι φρουτώδες & ζωντανό']}
+      ],
+      res:[
+        {t:'Λύρα Ερυθρή — Αγιωργίτικο Νεμέας',d:'Βύσσινο, γλυκά μπαχαρικά και βελούδινες ταννίνες. Δώδεκα μήνες σε βαρέλι, για βραδιές που δεν βιάζονται.',img:'images/nemea.jpg?v=3'},
+        {t:'Λύρα Λευκή — Ασύρτικο Θήρας',d:'Εσπεριδοειδή, ηφαιστειακή ορυκτότητα και κοφτερή οξύτητα. Η ψηλή, καθαρή νότα του Αιγαίου.',img:'images/santorini.jpg?v=4'},
+        {t:'Λύρα Ξινόμαυρο Νάουσας',d:'Φράουλα, ροδοπέταλα και ζωντανό, αλμυρό τελείωμα. Η νότα που κρατάει την παρέα ξύπνια.',img:'images/naousa.jpg?v=4'}
+      ],
+      cta:'Δες τον αμπελώνα',again:'Παίξε ξανά',step:'Ερώτηση'
+    };
+    let qi=0,votes=[0,0,0];
+    function renderQ(){
+      if(qi<QD.qs.length){
+        const q=QD.qs[qi];
+        quizBox.innerHTML=`<div class="q-step"><p class="q-count">${QD.step} ${qi+1} / ${QD.qs.length}</p><p class="q-q">${q.q}</p><div class="q-opts">${q.o.map((o,k)=>`<button class="q-opt" data-k="${k}">${o}</button>`).join('')}</div></div>`;
+        quizBox.querySelectorAll('.q-opt').forEach(b=>b.addEventListener('click',()=>{votes[+b.dataset.k]++;qi++;renderQ();}));
+      }else{
+        const w=votes.indexOf(Math.max(...votes));
+        const r=QD.res[w];
+        quizBox.innerHTML=`<div class="q-step q-res"><img src="${r.img}" alt=""><h3>${r.t}</h3><p>${r.d}</p><a class="btn" href="#ampelones"><span>${QD.cta}</span></a><button class="btn" id="qAgain"><span>${QD.again}</span></button></div>`;
+        quizBox.querySelectorAll('.btn').forEach(magnet);
+        document.getElementById('qAgain').addEventListener('click',()=>{qi=0;votes=[0,0,0];renderQ();});
+        const link=quizBox.querySelector('a[href="#ampelones"]');
+        link.addEventListener('click',e=>{e.preventDefault();activatePanel(panels[w]);document.getElementById('ampelones').scrollIntoView({behavior:reduced?'auto':'smooth'});});
+      }
+    }
+    renderQ();
+  }
+
+  /* ---- booking + newsletter forms ---- */
+  const FORMSPREE='';/* βάλε εδώ το Formspree ID σου (π.χ. 'xkgwabcd') για αποστολή χωρίς email client */
+  const bookForm=document.getElementById('bookForm');
+  if(bookForm){
+    bookForm.addEventListener('submit',e=>{
+      e.preventDefault();
+      if(!bookForm.reportValidity())return;
+      const f=new FormData(bookForm);
+      const note=document.getElementById('bookNote');
+      if(FORMSPREE){
+        fetch('https://formspree.io/f/'+FORMSPREE,{method:'POST',body:f,headers:{'Accept':'application/json'}})
+          .then(r=>{note.textContent=r.ok?(LANG==='en'?'Thank you! We will be in touch soon.':'Ευχαριστούμε! Θα επικοινωνήσουμε σύντομα.'):(LANG==='en'?'Something went wrong — please try again.':'Σφάλμα — δοκίμασε ξανά.');if(r.ok)bookForm.reset();});
+      }else{
+        const body=encodeURIComponent(`Όνομα: ${f.get('name')}\nEmail: ${f.get('email')}\nΗμερομηνία: ${f.get('date')}\nΆτομα: ${f.get('people')}\n\n${f.get('msg')||''}`);
+        location.href='mailto:info@lyrawinery.gr?subject='+encodeURIComponent(LANG==='en'?'Visit reservation':'Κράτηση επίσκεψης')+'&body='+body;
+        note.textContent=(LANG==='en')?'Your email app just opened — hit send!':'Άνοιξε το πρόγραμμα email σου — πάτα αποστολή!';
+      }
+    });
+  }
+  const nlForm=document.getElementById('nlForm');
+  if(nlForm){
+    nlForm.addEventListener('submit',e=>{
+      e.preventDefault();
+      const inp=nlForm.querySelector('input');
+      if(!inp.checkValidity()){inp.reportValidity();return;}
+      nlForm.classList.add('corked');
+      inp.disabled=true;
+      nlForm.querySelector('button').innerHTML='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 12.5l5 5L20 6.5"/></svg>';
+      document.getElementById('nlNote').textContent=(LANG==='en')?'Welcome to the cellar — your first letter is on its way.':'Καλώς ήρθες στο κελάρι μας — το πρώτο γράμμα έρχεται σύντομα.';
+      if(FORMSPREE){const f=new FormData();f.append('newsletter',inp.value);fetch('https://formspree.io/f/'+FORMSPREE,{method:'POST',body:f,headers:{'Accept':'application/json'}});}
+    });
+  }
+
+
+  /* ---- shelf smooth rise ---- */
+  const shelfEl=document.querySelector('.shelf');
+  if(shelfEl&&reduced)shelfEl.classList.add('on');
+
+  /* ---- faq accordion ---- */
+  document.querySelectorAll('.fq-q').forEach(q=>{
+    q.addEventListener('click',()=>{
+      const item=q.parentElement,wasOpen=item.classList.contains('open');
+      document.querySelectorAll('.fq.open').forEach(o=>{
+        o.classList.remove('open');
+        o.querySelector('.fq-q').setAttribute('aria-expanded','false');
+      });
+      if(!wasOpen){item.classList.add('open');q.setAttribute('aria-expanded','true');}
+    });
+  });
+
+  /* ---- sticky booking button ---- */
+  const stickyBook=document.getElementById('stickyBook');
+  const krathsiEl=document.getElementById('krathsi');
+
+  /* ---- mobile menu ---- */
+  const burger=document.getElementById('burger');
+  const mobileMenu=document.getElementById('mobileMenu');
+  function setMenu(open){
+    document.body.classList.toggle('menu-open',open);
+    burger.setAttribute('aria-expanded',String(open));
+    mobileMenu.setAttribute('aria-hidden',String(!open));
+  }
+  burger.addEventListener('click',()=>setMenu(!document.body.classList.contains('menu-open')));
+  mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+
+
+  /* ===== AURA: self-typing quote ===== */
+  const bandH3=document.querySelector('.band h3');
+  if(bandH3){
+    (function wrapWords(node){
+      [...node.childNodes].forEach(n=>{
+        if(n.nodeType===3){
+          const frag=document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(tok=>{
+            if(tok.trim()===''){frag.append(tok);return;}
+            const sp=document.createElement('span');sp.className='qw';sp.textContent=tok;
+            frag.append(sp);
+          });
+          n.replaceWith(frag);
+        }else if(n.nodeType===1){wrapWords(n);}
+      });
+    })(bandH3);
+    bandH3.querySelectorAll('.qw').forEach((w,i)=>w.style.transitionDelay=(i*.14)+'s');
+    const qio=new IntersectionObserver(es=>{
+      es.forEach(e=>{if(e.isIntersecting){
+        band.classList.add('qon');qio.disconnect();
+        setTimeout(()=>bandH3.querySelectorAll('.qw').forEach(w=>w.style.transitionDelay='0s'),2600);
+      }});
+    },{threshold:.45});
+    qio.observe(band);
+  }
+
+  /* ===== AURA: sound micro-fx (only while the music plays) ===== */
+  function ensureFx(){
+    if(!actx)buildSound();
+    if(actx&&actx.state==='suspended')actx.resume();
+    if(actx&&typeof loadFx==='function'){loadFx('clink');loadFx('whoosh');loadFx('wind');}
+    window.__lyraAudio={get state(){return actx&&actx.state},get bufs(){return {clink:typeof fxBuf.clink,whoosh:typeof fxBuf.whoosh,wind:typeof fxBuf.wind}}};
+  }
+  ['pointerdown','keydown','touchend','click'].forEach(ev=>addEventListener(ev,ensureFx,{once:true,capture:true}));
+  /* real recorded micro-fx (Pixabay, royalty-free) */
+  const FXS={clink:'audio/fx-clink.mp3?v=2',whoosh:'audio/fx-whoosh.mp3?v=1',wind:'audio/fx-wind.mp3?v=1'};
+  const fxBuf={};
+  const fxPending={};
+  function loadFx(name){
+    if(fxBuf[name]!==undefined||!actx)return;
+    fxBuf[name]='loading';
+    fetch(FXS[name]).then(r=>r.arrayBuffer()).then(ab=>actx.decodeAudioData(ab))
+      .then(b=>{
+        fxBuf[name]=b;
+        if(fxPending[name]){fxPending[name]=false;playFx.apply(null,fxPending[name+'Args']||[name,0.5]);}
+      })
+      .catch(()=>{delete fxBuf[name];});
+  }
+  const IS_FILE=location.protocol==='file:';
+  const fxEl={};
+  function playFxFile(name,vol,trim){
+    let base=fxEl[name];
+    if(!base){base=fxEl[name]=new Audio(FXS[name]);base.preload='auto';}
+    const el=base.cloneNode();
+    el.volume=Math.min(1,vol);
+    el.play().catch(()=>{});
+    if(trim)setTimeout(()=>{try{el.pause();}catch(e){}},trim*1000);
+  }
+  function playFx(name,vol,trim){
+    return playFxFile(name,vol,trim);
+    ensureFx();
+    if(!actx||actx.state!=='running')return;
+    const b=fxBuf[name];
+    if(!b||b==='loading'){fxPending[name]=true;fxPending[name+'Args']=[].slice.call(arguments);loadFx(name);return;}
+    const t=actx.currentTime;
+    const src=actx.createBufferSource();src.buffer=b;
+    const g=actx.createGain();
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.linearRampToValueAtTime(vol,t+0.02);
+    if(trim){
+      g.gain.setValueAtTime(vol,t+trim*0.62);
+      g.gain.linearRampToValueAtTime(0.0001,t+trim);
+      src.stop(t+trim+0.05);
+    }
+    src.connect(g);g.connect(actx.destination);src.start(t);
+  }
+  function fxTing(){playFx('clink',0.9,2.0);}
+  function fxWhoosh(){playFx('whoosh',1.0);}
+  function fxWind(){playFx('wind',6,1.7);}
+  document.querySelectorAll('.shelf-item').forEach(el=>el.addEventListener('mouseenter',fxTing));
+
+
+
+
+  /* ===== AURA: dust in the hero light ===== */
+  const heroEl=document.querySelector('.hero');
+  if(heroEl&&!reduced){
+    for(let k=0;k<16;k++){
+      const d=document.createElement('span');
+      d.className='hdust';
+      const sz=(1.5+Math.random()*2.6);
+      d.style.width=d.style.height=sz.toFixed(1)+'px';
+      d.style.left=(Math.random()*96+2)+'%';
+      d.style.top=(30+Math.random()*60)+'%';
+      d.style.setProperty('--o',(0.18+Math.random()*.3).toFixed(2));
+      d.style.setProperty('--sw',((Math.random()*46-23).toFixed(0))+'px');
+      d.style.animationDuration=(7+Math.random()*8).toFixed(1)+'s';
+      d.style.animationDelay=(Math.random()*8).toFixed(1)+'s';
+      heroEl.appendChild(d);
+    }
+  }
+
+
+  /* ===== guestbook rotator ===== */
+  const gbCard=document.getElementById('gbCard');
+  if(gbCard){
+    const GB=(LANG==='en')?[
+      {q:'The best tasting we have ever done — and the sunset from the guesthouse, unforgettable.',n:'Maria K. · Athens'},
+      {q:'We came for one glass and stayed three days.',n:'Nikos & Eleni · Thessaloniki'},
+      {q:'Their Xinomavro ros\u00e9 takes you places. We will be back for the harvest.',n:'Anna M. · Berlin'}
+    ]:[
+      {q:'Η καλύτερη γευσιγνωσία που έχουμε κάνει — και το ηλιοβασίλεμα από τον ξενώνα, αξέχαστο.',n:'Μαρία Κ. · Αθήνα'},
+      {q:'Ήρθαμε για ένα ποτήρι και μείναμε τρεις μέρες.',n:'Νίκος & Ελένη · Θεσσαλονίκη'},
+      {q:'Το ροζέ Ξινόμαυρο ταξιδεύει. Θα γυρίσουμε στον τρύγο.',n:'Anna M. · Βερολίνο'}
+    ];
+    const gq=document.getElementById('gbQuote'),gn2=document.getElementById('gbName'),gd=document.getElementById('gbDots');
+    let gi=0,gt;
+    GB.forEach((_,k)=>{
+      const b=document.createElement('button');b.type='button';
+      b.setAttribute('aria-label','Κριτική '+(k+1));
+      b.addEventListener('click',()=>{go(k);restart();});
+      gd.appendChild(b);
+    });
+    const db=[...gd.children];
+    function paint(){
+      gq.textContent=(LANG==='en')?('\u201C'+GB[gi].q+'\u201D'):('\u00AB'+GB[gi].q+'\u00BB');
+      gn2.textContent=GB[gi].n;
+      db.forEach((b,k)=>b.classList.toggle('on',k===gi));
+    }
+    function go(k){
+      gbCard.classList.add('fade');
+      setTimeout(()=>{gi=k;paint();gbCard.classList.remove('fade');},460);
+    }
+    function restart(){clearInterval(gt);gt=setInterval(()=>go((gi+1)%GB.length),5600);}
+    paint();restart();
+  }
+
+  /* ===== magnetic buttons ===== */
+  function magnet(el){
+    if(reduced||!matchMedia('(hover:hover)').matches)return;
+    el.style.transition='transform .35s cubic-bezier(.25,1.3,.35,1)';
+    el.addEventListener('mousemove',e=>{
+      const r=el.getBoundingClientRect();
+      el.style.transform='translate('+((e.clientX-r.left-r.width/2)*.22).toFixed(1)+'px,'+((e.clientY-r.top-r.height/2)*.3).toFixed(1)+'px)';
+    });
+    el.addEventListener('mouseleave',()=>{el.style.transform='';});
+  }
+  document.querySelectorAll('.btn').forEach(magnet);
+
+  /* ===== liquid title (SVG feTurbulence) — trial on ΟΙ ΑΜΠΕΛΩΝΕΣ ===== */
+  const liqDisp=document.getElementById('liquidDisp');
+  const giantEl=document.getElementById('giantTitle');
+  if(giantEl&&liqDisp&&!reduced&&matchMedia('(hover:hover)').matches){
+    let liqBusy=false;
+    giantEl.addEventListener('mouseenter',()=>{
+      if(liqBusy)return;liqBusy=true;
+      giantEl.style.filter='url(#liquidFx)';
+      const t0=performance.now(),DUR=750;
+      (function lq(t){
+        const k=Math.min(1,(t-t0)/DUR);
+        liqDisp.setAttribute('scale',String(Math.round(34*Math.sin(Math.PI*k))));
+        if(k<1)requestAnimationFrame(lq);
+        else{giantEl.style.filter='';liqBusy=false;}
+      })(t0);
+    });
+  }
+
+  /* ---- letter effects: a different one per title ---- */
+  const FX=[
+    ['#xenonas h2.big','fx-fall'],
+    ['#giantTitle','fx-pop'],
+    ['.rose .huge','fx-scatter'],
+    ['#gefsi h2.big','fx-flip'],
+    ['#nea h2.big','fx-rise'],
+    ['#istoria h2.big','fx-blur'],
+    ['#fiali h2.big','fx-swing'],
+    ['#etiketes h2.big','fx-slide'],
+    ['#quiz h2.big','fx-wave'],
+    ['#faq h2.big','fx-type'],
+    ['#krathsi h2.big','fx-grow'],
+    ['#vivlio h2.big','fx-slant']
+  ];
+  const ANIMS=['ldrop','lpop','lscatter','lflip','lrise2','lblur','lswing','lslide','lwave','ltype','lgrow','lslant'];
+  const DFACT={'fx-flip':0.07,'fx-wave':0.045,'fx-type':0.075,'fx-slide':0.04};
+  if(!reduced){
+    const letterEls=[];
+    FX.forEach(([sel,fx])=>{
+      const el=document.querySelector(sel);
+      if(!el)return;
+      el.classList.add(fx);
+      el.classList.remove('reveal','d1','d2','d3','in');
+      el.querySelectorAll(':scope span').forEach(sp=>sp.classList.remove('reveal','d1','d2','d3','in'));
+      (function walk(node){
+        [...node.childNodes].forEach(n=>{
+          if(n.nodeType===3){
+            const frag=document.createDocumentFragment();
+            n.textContent.split(/(\s+)/).forEach(tok=>{
+              if(tok==='')return;
+              if(tok.trim()===''){frag.append(tok);return;}
+              const w=document.createElement('span');
+              w.className='lword';
+              [...tok].forEach(ch=>{
+                const sp=document.createElement('span');
+                sp.className='ltr';sp.textContent=ch;
+                sp.style.setProperty('--rot',(Math.random()*26-13).toFixed(1)+'deg');
+                if(fx==='fx-scatter'){
+                  sp.style.setProperty('--dx',(Math.random()*240-120).toFixed(0)+'px');
+                  sp.style.setProperty('--dy',(Math.random()*160-80).toFixed(0)+'px');
+                }
+                w.append(sp);
+              });
+              frag.append(w);
+            });
+            n.replaceWith(frag);
+          }else if(n.nodeType===1&&n.tagName!=='BR'){walk(n);}
+        });
+      })(el);
+      [...el.querySelectorAll('.ltr')].forEach((sp,i)=>{
+        sp.style.setProperty('--d',(i*(DFACT[fx]||0.05)).toFixed(2)+'s');
+        sp.addEventListener('animationend',e=>{if(ANIMS.includes(e.animationName))sp.classList.add('stay');});
+        if(['fx-fall','fx-pop','fx-scatter','fx-flip','fx-rise'].includes(fx)){
+          sp.addEventListener('mouseenter',()=>{
+            if(!sp.classList.contains('stay'))return;
+            sp.style.animation='ljiggle .5s';
+            sp.addEventListener('animationend',()=>{sp.style.animation='';},{once:true});
+          });
+        }
+      });
+      letterEls.push(el);
+    });
+    const lio=new IntersectionObserver(es=>{
+      es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('letters-go');lio.unobserve(e.target);}});
+    },{threshold:.25});
+    const startLio=()=>letterEls.forEach(el=>lio.observe(el));
+    if(document.body.classList.contains('loaded'))startLio();
+    else{
+      const lmo=new MutationObserver(()=>{
+        if(document.body.classList.contains('loaded')){lmo.disconnect();startLio();}
+      });
+      lmo.observe(document.body,{attributes:true,attributeFilter:['class']});
+    }
+  }
+
+  /* ---- reveals ---- */
+  const io=new IntersectionObserver(es=>{
+    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  /* ---- counters ---- */
+  const cio=new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(!e.isIntersecting)return;
+      const el=e.target, target=+el.dataset.count, dur=1400, t0=performance.now();
+      (function tick(t){
+        const k=clamp((t-t0)/dur,0,1);
+        el.textContent=Math.round(target*easeOut(k)).toLocaleString('el-GR');
+        if(k<1)requestAnimationFrame(tick);
+      })(t0);
+      cio.unobserve(el);
+    });
+  },{threshold:.6});
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    if(reduced){el.textContent=(+el.dataset.count).toLocaleString('el-GR');}
+    else cio.observe(el);
+  });
+})();
+</script>
+</body>
+</html>

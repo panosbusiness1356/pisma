@@ -108,11 +108,12 @@ const faqItems = [
           </p>
           <div class="sp-cta-row">
             <a class="btn btn--orange" href="/times/">Δείτε τιμές για site →</a>
+            <a class="btn btn--ghost" href="/site-demo/lyra/index.html" target="_blank" rel="noopener">Ανοίξτε το δείγμα ↗</a>
           </div>
-          <p class="sp-note">Ενδεικτική απεικόνιση — το δικό σας site στήνεται για τη δική σας δουλειά.</p>
+          <p class="sp-note">Ζωντανό δείγμα δουλειάς μας — σκρολάρετε ελεύθερα μέσα στην οθόνη. Το δικό σας site στήνεται για τη δική σας δουλειά.</p>
         </div>
 
-        <div class="sp-stage" id="sp-stage" aria-hidden="true">
+        <div class="sp-stage" id="sp-stage">
           <div class="sp-laptop">
             <div class="sp-screen">
               <span class="sp-camdot"></span>
@@ -122,136 +123,7 @@ const faqItems = [
                   <span class="sp-url">lyra-wines.gr</span>
                 </div>
                 <div class="sp-view" id="sp-view">
-                  <div class="sp-scroll" id="sp-scroll">
-                    <!-- Οθόνη 1: full-bleed hero κτήματος — μεγάλα serif κεφαλαία
-                         στο κέντρο, λογότυπο στη μέση της μπάρας (στυλ ιταλικού
-                         wine estate) -->
-                    <section class="sp-s sp-s1">
-                      <img class="sp-photo" src="/site-demo/wine-estate.jpg" alt="" loading="lazy" width="720" height="460" />
-                      <span class="sp-shade" aria-hidden="true"></span>
-                      <span class="sp-frame" aria-hidden="true"></span>
-                      <div class="sp-s1-body">
-                        <div class="sp-top">
-                          <span class="sp-top-side">Est. 2012</span>
-                          <b class="sp-logo">ΛΥΡΑ</b>
-                          <span class="sp-top-side sp-top-side--r num">210 555 0142</span>
-                        </div>
-                        <div class="sp-heroine">
-                          <svg class="sp-vine" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M12 8.6V5.4" />
-                            <path d="M12 5.4C9.9 5.2 8.4 4.1 7.8 2.4" />
-                            <path d="M12 5.4c2.3-2.4 4.8-2.7 6.1-2.3-.4 2.3-2.5 3.9-6.1 2.3z" />
-                            <circle cx="8.1" cy="11.2" r="2.1" /><circle cx="12" cy="10.6" r="2.1" /><circle cx="15.9" cy="11.2" r="2.1" />
-                            <circle cx="10" cy="14.9" r="2.1" /><circle cx="14" cy="14.9" r="2.1" />
-                            <circle cx="12" cy="18.6" r="2.1" />
-                          </svg>
-                          <p class="sp-big sp-big-1">ΑΥΘΕΝΤΙΚΗ</p>
-                          <p class="sp-big sp-big-2">ΜΑΚΕΔΟΝΙΚΗ</p>
-                          <p class="sp-big sp-big-3">ΨΥΧΗ</p>
-                        </div>
-                        <div class="sp-heroet">
-                          <span class="sp-hersub">Οινοποιείο · Νάουσα</span>
-                          <span class="sp-cue" aria-hidden="true"><i></i></span>
-                        </div>
-                      </div>
-                    </section>
-                    <!-- Οθόνη 2: κρεμ editorial ενότητα «ΤΑ ΚΤΗΜΑΤΑ ΜΑΣ» με τρεις
-                         φωτογραφικές κάρτες (αμπελώνες / κτήμα / κελάρι) -->
-                    <section class="sp-s sp-s2">
-                      <p class="sp-kick2">Από το 2012 στη Νάουσα</p>
-                      <p class="sp-big2">ΤΑ ΚΤΗΜΑΤΑ ΜΑΣ</p>
-                      <div class="sp-cards">
-                        <figure class="sp-card">
-                          <img src="/site-demo/wine-rows.jpg" alt="" loading="lazy" width="320" height="400" />
-                          <figcaption>Αμπελώνες</figcaption>
-                        </figure>
-                        <figure class="sp-card">
-                          <img src="/site-demo/wine-hill.jpg" alt="" loading="lazy" width="320" height="400" />
-                          <figcaption>Το κτήμα</figcaption>
-                        </figure>
-                        <figure class="sp-card">
-                          <img src="/site-demo/wine-cellar.jpg" alt="" loading="lazy" width="720" height="460" />
-                          <figcaption>Το κελάρι</figcaption>
-                        </figure>
-                      </div>
-                      <p class="sp-vars">Ξινόμαυρο · Syrah · Μαλαγουζιά</p>
-                    </section>
-                    <!-- Οθόνη 3: dusty ροζ φινάλε — μεγάλη μπορντό τυπογραφία, η
-                         φιάλη αιωρείται πάνω από απαλό κύκλο (και η ετικέτα της
-                         γυρίζει), από κάτω το τηλέφωνο για γευσιγνωσία -->
-                    <section class="sp-s sp-s3">
-                      <div class="sp-s3-copy">
-                        <p class="sp-kick3">Το οινοποιείο μας</p>
-                        <p class="sp-big3">ΑΓΑΠΗ ΓΙΑ<br />ΤΟ ΚΡΑΣΙ</p>
-                        <svg class="sp-div3" viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M12 8.6V5.4" />
-                          <path d="M12 5.4C9.9 5.2 8.4 4.1 7.8 2.4" />
-                          <path d="M12 5.4c2.3-2.4 4.8-2.7 6.1-2.3-.4 2.3-2.5 3.9-6.1 2.3z" />
-                          <circle cx="8.1" cy="11.2" r="2.1" /><circle cx="12" cy="10.6" r="2.1" /><circle cx="15.9" cy="11.2" r="2.1" />
-                          <circle cx="10" cy="14.9" r="2.1" /><circle cx="14" cy="14.9" r="2.1" />
-                          <circle cx="12" cy="18.6" r="2.1" />
-                        </svg>
-                      </div>
-                      <span class="sp-corner sp-corner--l" aria-hidden="true">Νάουσα · 40.6°N</span>
-                      <span class="sp-corner sp-corner--r" aria-hidden="true">Est. 2012</span>
-                      <div class="sp-bl-wrap">
-                        <span class="sp-bl-disc" aria-hidden="true"></span>
-                        <span class="sp-bl-orbit" aria-hidden="true"></span>
-                        <svg class="sp-bl" viewBox="0 0 140 260" aria-hidden="true">
-                          <defs>
-                            <linearGradient id="sp-glass" x1="0" y1="0" x2="1" y2="0">
-                              <stop offset="0" stop-color="#1f1710" />
-                              <stop offset=".2" stop-color="#31241a" />
-                              <stop offset=".5" stop-color="#0b0806" />
-                              <stop offset=".82" stop-color="#060404" />
-                              <stop offset="1" stop-color="#191108" />
-                            </linearGradient>
-                            <linearGradient id="sp-foil" x1="0" y1="0" x2="1" y2="0">
-                              <stop offset="0" stop-color="#3a1019" />
-                              <stop offset=".45" stop-color="#6b1f2e" />
-                              <stop offset="1" stop-color="#2c0c14" />
-                            </linearGradient>
-                            <filter id="sp-soft" x="-40%" y="-40%" width="180%" height="180%">
-                              <feGaussianBlur stdDeviation=".8" />
-                            </filter>
-                            <clipPath id="sp-bl-clip">
-                              <path d="M62 6 H78 V58 C78 65 100 70 100 94 V226 A8 8 0 0 1 92 234 H48 A8 8 0 0 1 40 226 V94 C40 70 62 65 62 58 Z" />
-                            </clipPath>
-                          </defs>
-                          <!-- Σώμα φιάλης: σχεδόν μαύρο γυαλί -->
-                          <path d="M62 6 H78 V58 C78 65 100 70 100 94 V226 A8 8 0 0 1 92 234 H48 A8 8 0 0 1 40 226 V94 C40 70 62 65 62 58 Z" fill="url(#sp-glass)" />
-                          <g clip-path="url(#sp-bl-clip)">
-                            <!-- Η ετικέτα που γυρίζει γύρω από τη φιάλη -->
-                            <g class="sp-bl-label">
-                              <rect x="44" y="130" width="52" height="62" rx="1" fill="#f2e9d7" />
-                              <text x="70" y="151" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="11.5" letter-spacing="2.6" fill="#241a10">ΛΥΡΑ</text>
-                              <line x1="55" y1="158" x2="85" y2="158" stroke="#b08d4f" stroke-width=".7" />
-                              <text x="70" y="169" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="5.4" letter-spacing="1.5" fill="#4a3c2a">ΞΙΝΟΜΑΥΡΟ</text>
-                              <text x="70" y="181" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="7" letter-spacing="1" fill="#8a6a33">2019</text>
-                            </g>
-                            <!-- Ανταύγεια που κινείται αντίθετα από την ετικέτα -->
-                            <g class="sp-bl-sheen">
-                              <rect x="64" y="6" width="6" height="228" fill="#fff" opacity=".07" filter="url(#sp-soft)" />
-                            </g>
-                            <!-- Σταθερά rim lights -->
-                            <rect x="42.5" y="66" width="3.4" height="160" rx="1.7" fill="#fff" opacity=".15" filter="url(#sp-soft)" />
-                            <rect x="63.5" y="8" width="2.6" height="48" rx="1.3" fill="#fff" opacity=".2" filter="url(#sp-soft)" />
-                            <rect x="95.5" y="70" width="2.6" height="156" rx="1.3" fill="#d8b271" opacity=".3" filter="url(#sp-soft)" />
-                            <!-- Σκιά στη βάση του γυαλιού -->
-                            <ellipse cx="70" cy="231" rx="27" ry="5" fill="#000" opacity=".45" />
-                          </g>
-                          <!-- Καψύλιο σε βαθύ μπορντό -->
-                          <rect x="60" y="2" width="20" height="30" rx="3" fill="url(#sp-foil)" />
-                          <ellipse cx="70" cy="3.4" rx="9.6" ry="2.3" fill="#571a26" />
-                          <rect x="60" y="27" width="20" height="1.6" fill="#1e0810" opacity=".85" />
-                        </svg>
-                      </div>
-                      <div class="sp-cta">
-                        <p class="sp-ctal">Γευσιγνωσία με ραντεβού</p>
-                        <p class="sp-tel num">210 555 0142</p>
-                      </div>
-                    </section>
-                  </div>
+                  <iframe class="sp-iframe" id="sp-iframe" src="/site-demo/lyra/index.html" title="Ζωντανό δείγμα — Οινοποιείο Λύρα" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
                 </div>
               </div>
             </div>
@@ -348,65 +220,22 @@ const faqItems = [
   // οθονών, και η κίνηση είναι απλώς η περιήγηση — αργό scroll προς τα κάτω
   // με παύσεις σε κάθε ενότητα, και επιστροφή στην κορυφή. Χωρίς JS ή με
   // reduced motion: στατικό hero.
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const spStage = document.getElementById('sp-stage');
-  if (spStage && !reduce && 'IntersectionObserver' in window) {
-    const spView = document.getElementById('sp-view')!;
-    const spScroll = document.getElementById('sp-scroll')!;
-    const spPage = document.getElementById('sp-page')!;
-    let spTimers: number[] = [];
-    let spActive = false;
-    const spLater = (fn: () => void, ms: number) => spTimers.push(window.setTimeout(fn, ms));
-
-    // Χορογραφία εισόδου ανά οθόνη: το sp-anim «οπλίζει» τα κρυφά αρχικά
-    // states (μόνο με JS — χωρίς JS όλα είναι ορατά), και το sp-at-N
-    // αποκαλύπτει με σειρά τα στοιχεία της οθόνης N
-    spPage.classList.add('sp-anim');
-    const spAt = (n: number) => {
-      spPage.classList.remove('sp-at-0', 'sp-at-1', 'sp-at-2', 'sp-spin');
-      spPage.classList.add(`sp-at-${n}`);
+  // Μέσα στην οθόνη παίζει το πραγματικό δείγμα site (Οινοποιείο «Λύρα») σε
+  // desktop απόδοση 1180px με σμίκρυνση — ο επισκέπτης σκρολάρει μέσα του
+  // όπως σε κανονικό υπολογιστή.
+  const spView = document.getElementById('sp-view');
+  const spFrame = document.getElementById('sp-iframe') as HTMLIFrameElement | null;
+  if (spView && spFrame) {
+    const DESK = 1180;
+    const fit = () => {
+      const s = spView.clientWidth / DESK;
+      spFrame.style.width = `${DESK}px`;
+      spFrame.style.height = `${Math.round(spView.clientHeight / s)}px`;
+      spFrame.style.transform = `scale(${s})`;
     };
-
-    // Κύλισμα στην ενότητα i (0-2), σαν ήρεμος επισκέπτης — αργή,
-    // βελούδινη καμπύλη που «κάθεται» απαλά στην ενότητα
-    const spGlide = (i: number, ms = 1800) => {
-      const h = spView.clientHeight;
-      spScroll.style.transition = `transform ${ms}ms cubic-bezier(.77, 0, .18, 1)`;
-      spScroll.style.transform = `translateY(${-i * h}px)`;
-    };
-
-    const spTop = () => {
-      spScroll.style.transition = 'none';
-      spScroll.style.transform = 'translateY(0)';
-    };
-
-    const spCycle = () => {
-      spTimers.forEach(clearTimeout); spTimers = [];
-      spTop();
-      spAt(0);
-      spLater(() => { spGlide(1); spAt(1); }, 2400);
-      spLater(() => { spGlide(2); spAt(2); }, 6000);
-      // Η φιάλη δείχνει πρώτα την ετικέτα της· μετά αρχίζει να γυρνάει αργά
-      spLater(() => spPage.classList.add('sp-spin'), 8900);
-      spLater(() => { spGlide(0, 2200); spAt(0); }, 11600);
-      spLater(spCycle, 15400);
-    };
-
-    const spIo = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting && !spActive) { spActive = true; spCycle(); }
-          else if (!e.isIntersecting && spActive) {
-            spActive = false;
-            spTimers.forEach(clearTimeout); spTimers = [];
-            spTop();
-            spAt(0);
-          }
-        }
-      },
-      { threshold: 0.35 }
-    );
-    spIo.observe(spStage);
+    fit();
+    if ('ResizeObserver' in window) new ResizeObserver(fit).observe(spView);
+    else window.addEventListener('resize', fit);
   }
 </script>
 
@@ -423,7 +252,7 @@ const faqItems = [
   }
   .sp-copy .sec-head { margin-bottom: 0; }
   .sp-sub { color: var(--muted); max-width: 44ch; margin: 16px 0 26px; }
-  .sp-cta-row { display: flex; }
+  .sp-cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
   .sp-note { color: var(--muted); font-size: .78rem; margin: 14px 0 0; max-width: 42ch; }
   @media (max-width: 960px) {
     .sp-grid { grid-template-columns: 1fr; }
@@ -470,26 +299,15 @@ const faqItems = [
     position: relative;
     display: flex; flex-direction: column;
     aspect-ratio: 16 / 10;
-    background: #f2e9db;
+    background: #150C11;
     border-radius: 6px; overflow: hidden;
   }
   .sp-view { position: relative; flex: 1; overflow: hidden; }
-  /* Τρεις «οθόνες» στη σειρά — το JS τις κυλάει με translateY */
-  .sp-scroll { height: 300%; display: flex; flex-direction: column; will-change: transform; }
-  .sp-s { position: relative; height: calc(100% / 3); overflow: hidden; }
-  .sp-photo {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%; object-fit: cover;
-    /* Αργό κινηματογραφικό zoom (Ken Burns) */
-    animation: sp-kenburns 18s ease-in-out infinite alternate;
-  }
-  @keyframes sp-kenburns {
-    from { transform: scale(1) translateX(0); }
-    to { transform: scale(1.1) translateX(-2.5%); }
-  }
-  .sp-shade {
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(28, 22, 14, .5) 0%, rgba(28, 22, 14, .16) 45%, rgba(28, 22, 14, .48) 100%);
+  /* Το πραγματικό δείγμα-site μέσα στην οθόνη: desktop απόδοση σε σμίκρυνση */
+  .sp-iframe {
+    border: 0; display: block;
+    transform-origin: 0 0;
+    background: #150C11;
   }
   .sp-browser {
     display: flex; align-items: center; gap: 8px;
@@ -507,253 +325,9 @@ const faqItems = [
     color: #aeb6c2; font-size: .64rem; font-weight: 600;
   }
 
-  /* Οθόνη 1: hero κτήματος */
-  /* Λεπτή κορνίζα μέσα στο κάδρο — η «τυπωμένη ετικέτα» του hero */
-  .sp-frame {
-    position: absolute; inset: 7px;
-    border: 1px solid rgba(246, 241, 228, .32);
-    pointer-events: none;
-  }
-  .sp-vine {
-    display: inline-block;
-    width: 17px; height: 17px; margin-bottom: 4px;
-    fill: none; stroke: rgba(246, 241, 228, .9); stroke-width: 1.4;
-    stroke-linecap: round; stroke-linejoin: round;
-  }
-  .sp-s1-body {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column; justify-content: space-between;
-    padding: 11px 16px 12px;
-  }
-  .sp-top { display: flex; align-items: center; justify-content: space-between; }
-  .sp-top-side {
-    width: 92px;
-    color: rgba(246, 241, 228, .85); font-size: .5rem; font-weight: 600;
-    letter-spacing: .22em; text-transform: uppercase;
-  }
-  .sp-top-side--r { text-align: right; }
-  .sp-logo {
-    font-family: Georgia, 'Times New Roman', serif;
-    color: #f6f1e4; font-size: .92rem; font-weight: 400;
-    letter-spacing: .42em; margin-right: -.42em;
-  }
-  .sp-heroine { text-align: center; }
-  .sp-big {
-    font-family: Georgia, 'Times New Roman', serif;
-    margin: 0; max-width: none;
-    color: #f6f1e4; font-size: 1.56rem; line-height: 1.16; font-weight: 400;
-    letter-spacing: .14em;
-    text-shadow: 0 2px 26px rgba(0, 0, 0, .35);
-  }
-  .sp-heroet { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .sp-hersub {
-    color: rgba(246, 241, 228, .82); font-size: .5rem; font-weight: 600;
-    letter-spacing: .3em; text-transform: uppercase;
-  }
-  /* Ένδειξη scroll: λεπτή γραμμή με κουκκίδα που γλιστράει */
-  .sp-cue {
-    position: relative; width: 1px; height: 20px;
-    background: rgba(246, 241, 228, .4);
-  }
-  .sp-cue i {
-    position: absolute; left: -1.5px; top: 0;
-    width: 4px; height: 4px; border-radius: 50%;
-    background: #f6f1e4;
-    animation: sp-cue-slide 1.8s ease-in-out infinite;
-  }
-  @keyframes sp-cue-slide {
-    0% { top: 0; opacity: 0; }
-    25% { opacity: 1; }
-    75% { opacity: 1; }
-    100% { top: 16px; opacity: 0; }
-  }
-
-  /* Οθόνη 2: κρεμ editorial με τρεις φωτο-κάρτες */
-  .sp-s2 {
-    background: #f2e9db;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 0 18px;
-  }
-  .sp-kick2 {
-    margin: 0 0 4px; max-width: none;
-    color: rgba(75, 81, 31, .6); font-size: .46rem; font-weight: 700;
-    letter-spacing: .3em; text-transform: uppercase;
-  }
-  /* Τίτλος με λεπτές γραμμές εκατέρωθεν */
-  .sp-big2 {
-    display: flex; align-items: center; gap: 12px;
-    font-family: Georgia, 'Times New Roman', serif;
-    margin: 0 0 11px; max-width: none;
-    color: #4b511f; font-size: 1.28rem; font-weight: 400; letter-spacing: .16em;
-  }
-  .sp-big2::before, .sp-big2::after {
-    content: ''; height: 1px; width: 34px;
-    background: rgba(75, 81, 31, .4);
-  }
-  .sp-cards {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 10px; width: 100%;
-  }
-  .sp-card { margin: 0; }
-  /* Αψιδωτές κορυφές — μεσογειακός χαρακτήρας στις κάρτες */
-  .sp-card img {
-    display: block; width: 100%; height: 104px; object-fit: cover;
-    border-radius: 52px 52px 0 0;
-    box-shadow: 0 8px 18px rgba(60, 50, 30, .16);
-  }
-  .sp-card figcaption {
-    margin-top: 5px; text-align: center;
-    color: rgba(75, 81, 31, .85); font-size: .46rem; font-weight: 700;
-    letter-spacing: .22em; text-transform: uppercase;
-  }
-  .sp-vars {
-    margin: 9px 0 0; max-width: none;
-    color: rgba(75, 81, 31, .55); font-size: .44rem; font-weight: 700;
-    letter-spacing: .26em; text-transform: uppercase;
-  }
-
-  /* Οθόνη 3: τερακότα φινάλε με τη φιάλη */
-  .sp-s3 { background: #e6c8ae; }
-  .sp-s3-copy {
-    position: absolute; left: 0; right: 0; top: 41%; transform: translateY(-50%);
-    text-align: center;
-  }
-  .sp-kick3 {
-    margin: 0 0 4px; max-width: none;
-    color: rgba(125, 52, 24, .65); font-size: .46rem; font-weight: 700;
-    letter-spacing: .3em; text-transform: uppercase;
-  }
-  .sp-big3 {
-    margin: 0; max-width: none;
-    font-family: Georgia, 'Times New Roman', serif;
-    color: #7d3418; font-size: 1.6rem; line-height: 1.14; font-weight: 400;
-    letter-spacing: .1em;
-  }
-  .sp-div3 {
-    display: inline-block;
-    width: 15px; height: 15px; margin-top: 7px;
-    fill: none; stroke: rgba(125, 52, 24, .7); stroke-width: 1.4;
-    stroke-linecap: round; stroke-linejoin: round;
-  }
-  .sp-corner {
-    position: absolute; bottom: 12px; z-index: 2;
-    color: rgba(125, 52, 24, .6); font-size: .44rem; font-weight: 700;
-    letter-spacing: .2em; text-transform: uppercase;
-  }
-  .sp-corner--l { left: 14px; }
-  .sp-corner--r { right: 14px; }
-  .sp-bl-wrap {
-    position: absolute; right: 13%; top: calc(44% - 86px); z-index: 1;
-  }
-  /* Λεπτή διακεκομμένη «τροχιά» που περιστρέφεται αργά γύρω από τη φιάλη */
-  .sp-bl-orbit {
-    position: absolute; left: 50%; top: 50%; margin: -87px 0 0 -87px;
-    width: 174px; height: 174px; border-radius: 50%;
-    border: 1px dashed rgba(125, 52, 24, .38);
-    animation: sp-orbit 34s linear infinite;
-  }
-  @keyframes sp-orbit {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  .sp-bl-disc {
-    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-    width: 148px; height: 148px; border-radius: 50%;
-    background: radial-gradient(closest-side, rgba(120, 82, 52, .32), rgba(120, 82, 52, 0));
-  }
-  .sp-bl {
-    position: relative; z-index: 1; display: block;
-    width: 92px; height: 171px;
-    /* Η φιάλη αιωρείται απαλά */
-    animation: sp-float 6s ease-in-out infinite;
-  }
-  @keyframes sp-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-  }
-  /* Η ετικέτα στέκεται πρώτα μπροστά· όταν το JS δώσει .sp-spin, αρχίζει
-     να γυρνάει ΑΡΓΑ από το κέντρο: φεύγει αριστερά (πλάτη), ξαναμπαίνει
-     από δεξιά και επιστρέφει στο κέντρο. Η ανταύγεια κινείται αντίθετα. */
-  .sp-spin .sp-bl-label { animation: sp-bl-spin 12s linear infinite; }
-  @keyframes sp-bl-spin {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(-110px); }
-    50.001% { transform: translateX(110px); }
-    100% { transform: translateX(0); }
-  }
-  .sp-spin .sp-bl-sheen { animation: sp-bl-glint 12s linear infinite; }
-  @keyframes sp-bl-glint {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(24px); }
-    50.001% { transform: translateX(-24px); }
-    100% { transform: translateX(0); }
-  }
-  .sp-cta { position: absolute; left: 0; right: 0; bottom: 11px; text-align: center; z-index: 2; }
-  .sp-ctal {
-    margin: 0 0 3px; max-width: none;
-    color: #7d3418; font-size: .48rem; font-weight: 700;
-    letter-spacing: .3em; text-transform: uppercase;
-  }
-  .sp-tel {
-    margin: 0; max-width: none;
-    font-family: Georgia, 'Times New Roman', serif;
-    color: #5e250f; font-size: 1rem; font-weight: 400; letter-spacing: .1em;
-  }
-
-  /* ---- Χορογραφία εισόδου ανά οθόνη (στυλ luxury wine estate) ----
-     Οπλίζεται ΜΟΝΟ με JS (.sp-anim): χωρίς JS όλα μένουν ορατά. Τα serif
-     κεφαλαία μπαίνουν και με tracking-in (τα γράμματα «μαζεύουν»). */
-  .sp-anim .sp-top, .sp-anim .sp-vine, .sp-anim .sp-big, .sp-anim .sp-heroet,
-  .sp-anim .sp-kick2, .sp-anim .sp-big2, .sp-anim .sp-card, .sp-anim .sp-vars,
-  .sp-anim .sp-kick3, .sp-anim .sp-big3, .sp-anim .sp-div3,
-  .sp-anim .sp-bl-wrap, .sp-anim .sp-cta, .sp-anim .sp-corner {
-    opacity: 0; transform: translateY(10px);
-    transition:
-      opacity .7s ease, transform .8s cubic-bezier(.22, .61, .36, 1),
-      letter-spacing .9s cubic-bezier(.22, .61, .36, 1);
-  }
-  .sp-anim .sp-big { letter-spacing: .3em; }
-  .sp-anim .sp-big2 { letter-spacing: .32em; }
-  .sp-anim .sp-big3 { letter-spacing: .24em; }
-  /* Οθόνη 1 */
-  .sp-anim.sp-at-0 .sp-top { opacity: 1; transform: none; transition-delay: .15s; }
-  .sp-anim.sp-at-0 .sp-vine { opacity: 1; transform: none; transition-delay: .24s; }
-  .sp-anim.sp-at-0 .sp-big { opacity: 1; transform: none; letter-spacing: .14em; }
-  .sp-anim.sp-at-0 .sp-big-1 { transition-delay: .34s; }
-  .sp-anim.sp-at-0 .sp-big-2 { transition-delay: .48s; }
-  .sp-anim.sp-at-0 .sp-big-3 { transition-delay: .62s; }
-  .sp-anim.sp-at-0 .sp-heroet { opacity: 1; transform: none; transition-delay: .82s; }
-  /* Οθόνη 2 — οι καθυστερήσεις μετρούν από την έναρξη του glide (1.8s) */
-  .sp-anim.sp-at-1 .sp-kick2 { opacity: 1; transform: none; transition-delay: .75s; }
-  .sp-anim.sp-at-1 .sp-big2 { opacity: 1; transform: none; letter-spacing: .16em; transition-delay: .88s; }
-  .sp-anim.sp-at-1 .sp-card { opacity: 1; transform: none; }
-  .sp-anim.sp-at-1 .sp-card:nth-child(1) { transition-delay: 1.05s; }
-  .sp-anim.sp-at-1 .sp-card:nth-child(2) { transition-delay: 1.2s; }
-  .sp-anim.sp-at-1 .sp-card:nth-child(3) { transition-delay: 1.35s; }
-  .sp-anim.sp-at-1 .sp-vars { opacity: 1; transform: none; transition-delay: 1.52s; }
-  /* Οθόνη 3 */
-  .sp-anim.sp-at-2 .sp-kick3 { opacity: 1; transform: none; transition-delay: .85s; }
-  .sp-anim.sp-at-2 .sp-big3 { opacity: 1; transform: none; letter-spacing: .1em; transition-delay: 1s; }
-  .sp-anim.sp-at-2 .sp-div3 { opacity: 1; transform: none; transition-delay: 1.16s; }
-  .sp-anim.sp-at-2 .sp-bl-wrap { opacity: 1; transform: none; transition-delay: 1.25s; }
-  .sp-anim.sp-at-2 .sp-cta { opacity: 1; transform: none; transition-delay: 1.45s; }
-  .sp-anim.sp-at-2 .sp-corner { opacity: 1; transform: none; transition-delay: 1.6s; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .sp-photo, .sp-cue i, .sp-bl, .sp-bl-label, .sp-bl-sheen, .sp-bl-orbit { animation: none; }
-  }
   @media (max-width: 560px) {
     /* Η προεξοχή της βάσης μαζεύει ώστε να μη δημιουργεί οριζόντιο scroll */
     .sp-base { width: 106%; margin-left: -3%; }
-  }
-  @media (max-width: 460px) {
-    .sp-big { font-size: 1.14rem; }
-    .sp-big2 { font-size: .96rem; }
-    .sp-big3 { font-size: 1.2rem; }
-    .sp-card img { height: 78px; }
-    .sp-bl { width: 72px; height: 134px; }
-    .sp-bl-wrap { top: calc(44% - 67px); right: 9%; }
-    .sp-bl-disc { width: 112px; height: 112px; }
   }
 
   /* ---- Τιμή (ίδιο μοτίβο με τις άλλες σελίδες υπηρεσιών) ---- */
