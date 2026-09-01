@@ -1,9 +1,9 @@
 ---
-// Demo portfolio — εικονικό κομμωτήριο «ΜΕΤΑΞΙ hair atelier», εκδοχή 2.
-// Μίνιμαλ & αέρινο: απαλές κινήσεις (Lenis + scroll reveals),
-// «Δοκιμαστήριο» με φωτογραφία πελάτη (αλλαγή χρώματος μαλλιών με
-// on-device segmentation + σιλουέτες κουρέματος), και κράτηση-πρόταση
-// που συμπληρώνεται λέξη-λέξη. Όλα mock/τοπικά — κανένα backend.
+// Demo portfolio — εικονικό κομμωτήριο «ΜΕΤΑΞΙ hair atelier», εκδοχή 3.
+// Μίνιμαλ & αέρινο με βίντεο-hero (γυναίκα με λευκά σε χωράφι με ψηλά
+// χόρτα, ήλιος μέσα από τα μαλλιά — Pexels, δωρεάν άδεια, τοπικό αρχείο
+// /videos/metaxi-hero.mp4) και ζεστή παλέτα με περισσότερο χρώμα.
+// Κράτηση-πρόταση που συμπληρώνεται λέξη-λέξη. Όλα mock — κανένα backend.
 const title = 'ΜΕΤΑΞΙ · hair atelier';
 ---
 <!doctype html>
@@ -19,11 +19,15 @@ const title = 'ΜΕΤΑΞΙ · hair atelier';
   <style is:global>
     :root {
       --bone: #faf7f4;
-      --bone-2: #f4efea;
+      --bone-2: #f4ede6;
+      --blush: #f0e0d4;
       --ink: #221d1b;
       --soft: #8b7f78;
       --accent: #a98070;
-      --hair: #eae3dc;
+      --terra: #b05c38;
+      --terra-dark: #96461f;
+      --honey: #b98a4f;
+      --hair: #eadfd5;
       --didot: 'GFS Didot', 'Didot', serif;
       --sans: 'Commissioner', 'Helvetica Neue', sans-serif;
       --ease: cubic-bezier(.22, .8, .25, 1);
@@ -39,11 +43,11 @@ const title = 'ΜΕΤΑΞΙ · hair atelier';
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
-    ::selection { background: var(--accent); color: #fff; }
+    ::selection { background: var(--terra); color: #fff; }
     a { color: inherit; }
     button { font-family: inherit; cursor: pointer; }
-    button:focus-visible, a:focus-visible, input:focus-visible, label:focus-within {
-      outline: 1.5px solid var(--accent); outline-offset: 4px; border-radius: 2px;
+    button:focus-visible, a:focus-visible, input:focus-visible {
+      outline: 1.5px solid var(--terra); outline-offset: 4px; border-radius: 2px;
     }
 
     /* ---------- αέρινα reveals ---------- */
@@ -55,66 +59,82 @@ const title = 'ΜΕΤΑΞΙ · hair atelier';
       position: fixed; inset: 0 0 auto 0; z-index: 50;
       display: flex; justify-content: space-between; align-items: center;
       padding: 22px 6vw;
-      background: color-mix(in srgb, var(--bone) 78%, transparent);
+      background: color-mix(in srgb, var(--bone) 72%, transparent);
       backdrop-filter: blur(16px);
     }
     .brand { font-family: var(--didot); font-size: 21px; letter-spacing: .34em; }
+    .brand span { color: var(--terra); }
     .nav-links { display: flex; gap: 34px; align-items: center; }
     .nav-links a, .nav-links button {
       font-size: 13px; letter-spacing: .12em; color: var(--soft);
       text-decoration: none; background: none; border: none; text-transform: uppercase;
       transition: color .4s;
     }
-    .nav-links a:hover, .nav-links button:hover { color: var(--ink); }
-    .nav-links .cta { color: var(--ink); border-bottom: 1px solid var(--accent); padding-bottom: 3px; }
+    .nav-links a:hover, .nav-links button:hover { color: var(--terra); }
+    .nav-links .cta { color: var(--ink); border-bottom: 1px solid var(--terra); padding-bottom: 3px; }
 
-    /* ---------- hero ---------- */
+    /* ---------- hero με βίντεο ---------- */
     header {
       min-height: 100svh;
       display: grid; place-items: center; text-align: center;
-      position: relative; padding: 120px 6vw 80px;
+      position: relative; padding: 130px 6vw 90px;
       overflow: hidden;
     }
-    .blob {
-      position: absolute; border-radius: 50%; filter: blur(70px); pointer-events: none;
-      opacity: .5;
+    .hero-video {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: center 38%;
     }
-    .blob.a { width: 46vw; height: 46vw; left: -12vw; top: 4vh; background: radial-gradient(circle, #efdfd5, transparent 65%); animation: drift 22s ease-in-out infinite alternate; }
-    .blob.b { width: 38vw; height: 38vw; right: -10vw; bottom: -6vh; background: radial-gradient(circle, #e7d6cf, transparent 65%); animation: drift 26s ease-in-out -8s infinite alternate-reverse; }
-    @keyframes drift { from { transform: translate(0, 0) scale(1); } to { transform: translate(6vw, -5vh) scale(1.12); } }
-    .hero-inner { position: relative; max-width: 880px; }
+    .hero-veil {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg,
+        color-mix(in srgb, var(--bone) 55%, transparent) 0%,
+        color-mix(in srgb, var(--bone) 20%, transparent) 42%,
+        color-mix(in srgb, var(--bone) 42%, transparent) 72%,
+        var(--bone) 100%);
+    }
+    .hero-inner { position: relative; max-width: 900px; z-index: 1; }
+    .hero-inner::before {
+      content: ''; position: absolute; inset: -14% -16%; z-index: -1;
+      background: radial-gradient(closest-side,
+        color-mix(in srgb, var(--bone) 88%, transparent) 20%,
+        color-mix(in srgb, var(--bone) 55%, transparent) 62%,
+        transparent 100%);
+      filter: blur(6px);
+      pointer-events: none;
+    }
     .kicker {
-      font-size: 12px; letter-spacing: .5em; text-transform: uppercase; color: var(--soft);
+      font-size: 12px; letter-spacing: .5em; text-transform: uppercase; color: var(--terra-dark);
       margin-bottom: 34px;
     }
     h1 {
       font-family: var(--didot); font-weight: 400;
       font-size: clamp(44px, 7vw, 96px);
       line-height: 1.08; letter-spacing: .01em;
+      text-shadow: 0 1px 30px color-mix(in srgb, var(--bone) 70%, transparent);
     }
-    h1 em { font-style: italic; color: var(--accent); }
+    h1 em { font-style: italic; color: var(--terra-dark); }
     .hero-sub {
-      margin: 34px auto 0; max-width: 52ch;
-      color: var(--soft); font-size: 16.5px; line-height: 1.8;
+      margin: 30px auto 0; max-width: 50ch;
+      color: #4c413b; font-size: 16.5px; line-height: 1.8; font-weight: 400;
     }
-    .hero-actions { margin-top: 48px; display: flex; gap: 34px; justify-content: center; align-items: center; flex-wrap: wrap; }
+    .hero-actions { margin-top: 44px; display: flex; gap: 26px; justify-content: center; align-items: center; flex-wrap: wrap; }
     .btn {
       font: 400 13px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase;
-      background: var(--ink); color: var(--bone); border: none;
+      background: var(--terra); color: #fff; border: none;
       padding: 18px 38px; border-radius: 999px;
       transition: background .5s, transform .5s var(--ease), box-shadow .5s;
     }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 18px 34px -20px rgba(34,29,27,.5); }
-    .btn.quiet { background: none; color: var(--ink); border: 1px solid var(--hair); }
-    .btn.quiet:hover { border-color: var(--accent); box-shadow: none; }
+    .btn:hover { background: var(--terra-dark); transform: translateY(-2px); box-shadow: 0 18px 34px -20px rgba(150,70,31,.6); }
+    .btn.quiet { background: color-mix(in srgb, var(--bone) 72%, transparent); color: var(--ink); border: 1px solid color-mix(in srgb, var(--ink) 25%, transparent); backdrop-filter: blur(6px); }
+    .btn.quiet:hover { background: var(--bone); box-shadow: none; }
     .btn:disabled { opacity: .35; cursor: not-allowed; transform: none; box-shadow: none; }
     .scroll-hint {
       position: absolute; bottom: 34px; left: 50%; transform: translateX(-50%);
-      width: 1px; height: 56px; background: var(--hair); overflow: hidden;
+      width: 1px; height: 56px; background: var(--hair); overflow: hidden; z-index: 1;
     }
     .scroll-hint::after {
       content: ''; position: absolute; left: 0; top: -50%; width: 100%; height: 50%;
-      background: var(--accent); animation: fall 2.6s var(--ease) infinite;
+      background: var(--terra); animation: fall 2.6s var(--ease) infinite;
     }
     @keyframes fall { to { top: 110%; } }
 
@@ -122,135 +142,69 @@ const title = 'ΜΕΤΑΞΙ · hair atelier';
     section { padding: 130px 6vw; position: relative; }
     .measure { max-width: 1060px; margin: 0 auto; }
     .sec-label {
-      font-size: 12px; letter-spacing: .5em; text-transform: uppercase; color: var(--accent);
-      margin-bottom: 18px;
+      font-size: 12px; letter-spacing: .5em; text-transform: uppercase; color: var(--terra);
+      margin-bottom: 18px; display: flex; align-items: center; gap: 14px;
     }
+    .sec-label::before { content: ''; width: 34px; height: 1px; background: var(--terra); }
     .sec-title { font-family: var(--didot); font-weight: 400; font-size: clamp(30px, 3.8vw, 50px); line-height: 1.15; }
     .sec-sub { margin-top: 16px; color: var(--soft); font-size: 15.5px; line-height: 1.75; max-width: 52ch; }
 
-    /* υπηρεσίες: αραιή λίστα */
+    /* υπηρεσίες: αραιή λίστα με χρώμα ανά γραμμή */
     .svc-list { margin-top: 64px; border-top: 1px solid var(--hair); }
     .svc-row {
       width: 100%; background: none; border: none; border-bottom: 1px solid var(--hair);
-      display: grid; grid-template-columns: 1fr auto; gap: 4px 30px; align-items: baseline;
+      display: grid; grid-template-columns: 14px 1fr auto; gap: 4px 22px; align-items: baseline;
       text-align: left; color: var(--ink);
       padding: 30px 6px;
       transition: padding-left .5s var(--ease), background .5s;
     }
-    .svc-row:hover { padding-left: 26px; background: color-mix(in srgb, var(--bone-2) 60%, transparent); }
+    .svc-row:hover { padding-left: 22px; background: color-mix(in srgb, var(--row-c) 7%, transparent); }
+    .svc-row .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--row-c); align-self: center; }
     .svc-row .nm { font-family: var(--didot); font-size: clamp(20px, 2.2vw, 27px); }
-    .svc-row .pr { font-size: 15px; color: var(--accent); letter-spacing: .06em; white-space: nowrap; }
-    .svc-row .ds { grid-column: 1; color: var(--soft); font-size: 14px; line-height: 1.6; max-width: 62ch; }
+    .svc-row .pr { font-size: 15px; color: var(--row-c); letter-spacing: .06em; white-space: nowrap; font-weight: 400; }
+    .svc-row .ds { grid-column: 2; color: var(--soft); font-size: 14px; line-height: 1.6; max-width: 62ch; }
     .svc-row .bk {
-      grid-column: 2; grid-row: 2; font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+      grid-column: 3; grid-row: 2; font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
       color: var(--soft); opacity: 0; transform: translateX(-8px);
       transition: opacity .45s, transform .45s var(--ease);
     }
-    .svc-row:hover .bk { opacity: 1; transform: none; color: var(--ink); }
-
-    /* ---------- δοκιμαστήριο ---------- */
-    .fit-wrap { margin-top: 70px; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 60px; align-items: start; }
-    .fit-stage {
-      position: relative;
-      border: 1px solid var(--hair);
-      background: var(--bone-2);
-      aspect-ratio: 3 / 4;
-      max-width: 560px; margin: 0 auto; width: 100%;
-      overflow: hidden;
-    }
-    .fit-stage canvas { width: 100%; height: 100%; display: block; touch-action: none; }
-    .fit-empty {
-      position: absolute; inset: 0; display: grid; place-items: center; text-align: center;
-      padding: 30px; transition: opacity .6s;
-    }
-    .fit-empty.hide { opacity: 0; pointer-events: none; }
-    .fit-empty .oval {
-      width: 130px; height: 170px; border: 1px dashed var(--accent); border-radius: 50%;
-      margin: 0 auto 26px; opacity: .6;
-      animation: breathe 5s ease-in-out infinite;
-    }
-    @keyframes breathe { 50% { transform: scale(1.05); opacity: .9; } }
-    .fit-empty p { color: var(--soft); font-size: 14.5px; line-height: 1.7; max-width: 30ch; margin: 0 auto; }
-    .fit-hintbar {
-      position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 16px;
-      font-size: 12px; letter-spacing: .08em; color: var(--soft); text-align: center;
-      background: linear-gradient(transparent, color-mix(in srgb, var(--bone) 88%, transparent) 40%);
-      opacity: 0; transition: opacity .6s;
-    }
-    .fit-hintbar.show { opacity: 1; }
-    .fit-side h3 { font-size: 12px; letter-spacing: .34em; text-transform: uppercase; color: var(--soft); margin: 34px 0 16px; font-weight: 400; }
-    .fit-side h3:first-child { margin-top: 0; }
-    .upload-btn {
-      display: inline-block; font-size: 13px; letter-spacing: .16em; text-transform: uppercase;
-      border: 1px solid var(--ink); border-radius: 999px; padding: 15px 30px; cursor: pointer;
-      transition: background .5s, color .5s;
-    }
-    .upload-btn:hover { background: var(--ink); color: var(--bone); }
-    .privacy { margin-top: 12px; font-size: 12.5px; color: var(--soft); line-height: 1.6; }
-    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
-    .chip {
-      font-size: 13px; letter-spacing: .04em; color: var(--ink);
-      background: none; border: 1px solid var(--hair); border-radius: 999px;
-      padding: 10px 18px;
-      transition: border-color .4s, background .4s;
-    }
-    .chip:hover { border-color: var(--accent); }
-    .chip.sel { background: var(--ink); color: var(--bone); border-color: var(--ink); }
-    .shade-row { display: flex; flex-wrap: wrap; gap: 10px; }
-    .shade {
-      width: 34px; height: 34px; border-radius: 50%; border: none; cursor: pointer;
-      background: var(--c); position: relative;
-      transition: transform .35s var(--ease);
-    }
-    .shade:hover { transform: scale(1.15); }
-    .shade.sel::after {
-      content: ''; position: absolute; inset: -6px; border: 1px solid var(--accent); border-radius: 50%;
-    }
-    .shade[data-none] { background: var(--bone); border: 1px dashed var(--soft); }
-    .slider-row { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
-    .slider-row label { font-size: 13px; color: var(--soft); width: 70px; }
-    .slider-row input[type=range] {
-      flex: 1; appearance: none; height: 1px; background: var(--hair); outline-offset: 6px;
-    }
-    .slider-row input[type=range]::-webkit-slider-thumb {
-      appearance: none; width: 16px; height: 16px; border-radius: 50%;
-      background: var(--ink); border: 3px solid var(--bone); box-shadow: 0 0 0 1px var(--hair);
-      cursor: grab;
-    }
-    .fit-status { font-size: 13px; color: var(--soft); line-height: 1.6; min-height: 20px; }
-    .fit-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
-    .text-btn {
-      background: none; border: none; font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase;
-      color: var(--soft); text-decoration: underline; text-underline-offset: 5px; text-decoration-color: var(--hair);
-      transition: color .4s;
-    }
-    .text-btn:hover { color: var(--ink); }
-    .fit-note { margin-top: 26px; font-size: 12.5px; color: var(--soft); line-height: 1.7; border-top: 1px solid var(--hair); padding-top: 18px; }
+    .svc-row:hover .bk { opacity: 1; transform: none; color: var(--row-c); }
 
     /* ---------- ομάδα ---------- */
-    .team-list { margin-top: 60px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border-top: 1px solid var(--hair); }
-    .team-row { padding: 34px 20px 38px; border-bottom: 1px solid var(--hair); }
-    .team-row + .team-row { border-left: 1px solid var(--hair); }
-    .team-row .ini { font-family: var(--didot); font-size: 40px; color: var(--accent); }
-    .team-row h3 { font-size: 16px; font-weight: 400; letter-spacing: .06em; margin-top: 14px; }
+    #omada { background: linear-gradient(180deg, var(--bone), var(--bone-2)); }
+    .team-list { margin-top: 60px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .team-row {
+      padding: 38px 28px 40px; border-radius: 4px;
+      background: color-mix(in srgb, var(--tint) 10%, var(--bone));
+      border-top: 2px solid var(--tint);
+      transition: transform .5s var(--ease);
+    }
+    .team-row:hover { transform: translateY(-4px); }
+    .team-row .ini {
+      font-family: var(--didot); font-size: 34px; color: var(--tint);
+      width: 62px; height: 62px; border-radius: 50%;
+      background: color-mix(in srgb, var(--tint) 16%, var(--bone));
+      display: grid; place-items: center;
+    }
+    .team-row h3 { font-size: 16px; font-weight: 400; letter-spacing: .06em; margin-top: 18px; }
     .team-row p { margin-top: 8px; font-size: 13.5px; color: var(--soft); line-height: 1.65; }
 
     /* ---------- κράτηση-πρόταση ---------- */
-    .booking { background: var(--bone-2); }
+    .booking { background: linear-gradient(180deg, var(--bone-2), var(--blush)); }
     .sentence {
       margin-top: 70px;
       font-family: var(--didot); font-size: clamp(24px, 3.4vw, 44px); line-height: 1.9;
       max-width: 900px;
     }
     .blank {
-      background: none; border: none; font: inherit; color: var(--accent);
-      border-bottom: 1px solid var(--accent); padding: 0 6px 2px;
+      background: none; border: none; font: inherit; color: var(--terra);
+      border-bottom: 1px solid var(--terra); padding: 0 6px 2px;
       transition: background .4s, color .4s;
       white-space: nowrap;
     }
-    .blank:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+    .blank:hover { background: color-mix(in srgb, var(--terra) 10%, transparent); }
     .blank.empty { color: var(--soft); border-bottom: 1px dashed var(--soft); }
-    .blank.active { background: color-mix(in srgb, var(--accent) 14%, transparent); }
+    .blank.active { background: color-mix(in srgb, var(--terra) 14%, transparent); }
     .panel-zone { margin-top: 50px; min-height: 150px; }
     .panel { display: none; }
     .panel.on { display: block; animation: rise .6s var(--ease) both; }
@@ -262,9 +216,9 @@ const title = 'ΜΕΤΑΞΙ · hair atelier';
       padding: 14px 24px; font-size: 14.5px; color: var(--ink); text-align: left;
       transition: border-color .4s, transform .4s var(--ease), background .4s;
     }
-    .p-opt:hover { border-color: var(--accent); transform: translateY(-2px); }
-    .p-opt.sel { background: var(--ink); color: var(--bone); border-color: var(--ink); }
-    .p-opt small { color: inherit; opacity: .55; margin-left: 8px; font-size: 12.5px; }
+    .p-opt:hover { border-color: var(--terra); background: color-mix(in srgb, var(--terra) 6%, var(--bone)); transform: translateY(-2px); }
+    .p-opt.sel { background: var(--terra); color: #fff; border-color: var(--terra); }
+    .p-opt small { color: inherit; opacity: .6; margin-left: 8px; font-size: 12.5px; }
     .p-opt:disabled { opacity: .3; text-decoration: line-through; cursor: not-allowed; transform: none; }
     .details-zone {
       margin-top: 60px; display: none; gap: 16px; flex-wrap: wrap; align-items: flex-end;
@@ -273,36 +227,41 @@ const title = 'ΜΕΤΑΞΙ · hair atelier';
     .dfield { flex: 1; min-width: 220px; }
     .dfield label { display: block; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--soft); margin-bottom: 10px; }
     .dfield input {
-      width: 100%; background: none; border: none; border-bottom: 1px solid var(--hair);
+      width: 100%; background: none; border: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
       padding: 10px 2px; font: 300 17px var(--sans); color: var(--ink);
     }
-    .dfield input:focus { outline: none; border-bottom-color: var(--accent); }
+    .dfield input:focus { outline: none; border-bottom-color: var(--terra); }
     .booked {
       display: none; margin-top: 70px; text-align: center; padding: 20px 0;
     }
     .booked.on { display: block; animation: rise .8s var(--ease) both; }
     .booked .mark {
-      font-family: var(--didot); font-size: 30px; color: var(--accent);
-      width: 76px; height: 76px; border: 1px solid var(--accent); border-radius: 50%;
+      font-family: var(--didot); font-size: 30px; color: var(--terra);
+      width: 76px; height: 76px; border: 1px solid var(--terra); border-radius: 50%;
       display: grid; place-items: center; margin: 0 auto 30px;
+      background: color-mix(in srgb, var(--terra) 8%, transparent);
       animation: breathe 5s ease-in-out infinite;
     }
+    @keyframes breathe { 50% { transform: scale(1.06); } }
     .booked h3 { font-family: var(--didot); font-weight: 400; font-size: clamp(26px, 3vw, 38px); }
     .booked p { margin-top: 16px; color: var(--soft); font-size: 15.5px; line-height: 1.8; max-width: 52ch; margin-inline: auto; }
-    .booked .code { margin-top: 20px; font-size: 13px; letter-spacing: .3em; color: var(--accent); text-transform: uppercase; }
-    .booked .text-btn { margin-top: 30px; }
+    .booked .code { margin-top: 20px; font-size: 13px; letter-spacing: .3em; color: var(--terra); text-transform: uppercase; }
+    .text-btn {
+      background: none; border: none; font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--soft); text-decoration: underline; text-underline-offset: 5px; text-decoration-color: var(--hair);
+      transition: color .4s; margin-top: 30px;
+    }
+    .text-btn:hover { color: var(--terra); }
 
-    footer { padding: 90px 6vw 50px; }
+    footer { padding: 90px 6vw 50px; border-top: 1px solid var(--hair); }
     .foot-grid { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 36px; }
-    footer h4 { font-family: var(--didot); font-weight: 400; font-size: 17px; margin-bottom: 12px; letter-spacing: .08em; }
+    footer h4 { font-family: var(--didot); font-weight: 400; font-size: 17px; margin-bottom: 12px; letter-spacing: .08em; color: var(--terra-dark); }
     footer p, footer a { font-size: 13.5px; color: var(--soft); line-height: 1.9; text-decoration: none; }
     .demo-note { max-width: 1060px; margin: 44px auto 0; font-size: 11.5px; color: var(--soft); opacity: .6; border-top: 1px solid var(--hair); padding-top: 22px; }
 
     @media (max-width: 940px) {
-      .fit-wrap { grid-template-columns: 1fr; gap: 40px; }
       .nav-links a { display: none; }
       section { padding: 90px 6vw; }
-      .team-row + .team-row { border-left: none; }
     }
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
@@ -313,18 +272,19 @@ const title = 'ΜΕΤΑΞΙ · hair atelier';
 <body>
 
 <nav>
-  <div class="brand">ΜΕΤΑΞΙ</div>
+  <div class="brand">ΜΕΤΑ<span>Ξ</span>Ι</div>
   <div class="nav-links">
     <a href="#ypiresies">Υπηρεσίες</a>
-    <a href="#dokimastirio">Δοκιμαστήριο</a>
     <a href="#omada">Η ομάδα</a>
     <button class="cta" data-goto="#kratisi">Κράτηση</button>
   </div>
 </nav>
 
 <header>
-  <div class="blob a"></div>
-  <div class="blob b"></div>
+  <video class="hero-video" autoplay muted loop playsinline
+         poster="/videos/metaxi-hero.jpg" src="/videos/metaxi-hero.mp4"
+         aria-hidden="true"></video>
+  <div class="hero-veil" aria-hidden="true"></div>
   <div class="hero-inner">
     <p class="kicker rv">Hair atelier · Κολωνάκι</p>
     <h1 class="rv" style="--d:.12s">Μαλλιά ελαφριά<br />σαν <em>αέρας</em>.</h1>
@@ -334,7 +294,7 @@ const title = 'ΜΕΤΑΞΙ · hair atelier';
     </p>
     <div class="hero-actions rv" style="--d:.36s">
       <button class="btn" data-goto="#kratisi">Κλείσε ραντεβού</button>
-      <button class="btn quiet" data-goto="#dokimastirio">Δοκίμασε ένα χρώμα</button>
+      <button class="btn quiet" data-goto="#ypiresies">Δες τις υπηρεσίες</button>
     </div>
   </div>
   <div class="scroll-hint" aria-hidden="true"></div>
@@ -348,71 +308,14 @@ const title = 'ΜΕΤΑΞΙ · hair atelier';
   </div>
 </section>
 
-<section id="dokimastirio">
-  <div class="measure">
-    <p class="sec-label rv">Δοκιμαστήριο</p>
-    <h2 class="sec-title rv" style="--d:.1s">Δες το, πριν το ζήσεις.</h2>
-    <p class="sec-sub rv" style="--d:.18s">
-      Ανέβασε μια φωτογραφία σου και δοκίμασε αποχρώσεις πάνω στα δικά σου μαλλιά,
-      ή φόρεσε μια σιλουέτα κουρέματος για να δεις το μήκος που σου πάει.
-    </p>
-
-    <div class="fit-wrap rv" style="--d:.26s">
-      <div class="fit-stage">
-        <canvas id="fitCanvas" width="720" height="960" aria-label="Προεπισκόπηση φωτογραφίας"></canvas>
-        <div class="fit-empty" id="fitEmpty">
-          <div>
-            <div class="oval"></div>
-            <p>Μια φωτογραφία με το πρόσωπο μπροστά και καλό φως δουλεύει καλύτερα.</p>
-          </div>
-        </div>
-        <div class="fit-hintbar" id="fitHint">Σκίτσο μήκους — σύρε το πάνω στο κεφάλι σου και ρύθμισε το μέγεθος</div>
-      </div>
-
-      <div class="fit-side">
-        <h3>Η φωτογραφία σου</h3>
-        <label class="upload-btn" tabindex="0">Ανέβασε φωτογραφία
-          <input type="file" id="photoIn" accept="image/*" hidden />
-        </label>
-        <p class="privacy">Μένει στη συσκευή σου — δεν ανεβαίνει και δεν αποθηκεύεται πουθενά.</p>
-
-        <h3>Σιλουέτα κουρέματος</h3>
-        <div class="chip-row" id="styleRow"></div>
-
-        <h3>Απόχρωση</h3>
-        <div class="shade-row" id="shadeRow"></div>
-
-        <h3>Ρυθμίσεις</h3>
-        <div class="slider-row">
-          <label for="intenIn">Ένταση</label>
-          <input type="range" id="intenIn" min="0" max="100" value="75" />
-        </div>
-        <div class="slider-row">
-          <label for="sizeIn">Μέγεθος</label>
-          <input type="range" id="sizeIn" min="55" max="170" value="100" disabled />
-        </div>
-        <p class="fit-status" id="fitStatus"></p>
-        <div class="fit-actions">
-          <button class="text-btn" id="saveBtn" hidden>Αποθήκευση εικόνας</button>
-          <button class="text-btn" id="resetBtn" hidden>Επαναφορά</button>
-        </div>
-        <p class="fit-note">
-          Το δοκιμαστήριο είναι μια πρόβα, όχι υπόσχεση — το τελικό αποτέλεσμα
-          το σχεδιάζουμε μαζί στην καρέκλα, πάνω στον δικό σου φυσικό τόνο.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section id="omada">
   <div class="measure">
     <p class="sec-label rv">Η ομάδα</p>
     <h2 class="sec-title rv" style="--d:.1s">Τρία ζευγάρια χέρια.</h2>
     <div class="team-list rv" style="--d:.2s">
-      <div class="team-row"><div class="ini">Ζ</div><h3>Ζωή</h3><p>Χρώμα. Δεκατέσσερα χρόνια φόρμουλες, καμία βιασύνη.</p></div>
-      <div class="team-row"><div class="ini">Ι</div><h3>Ιάσονας</h3><p>Κούρεμα με ψαλίδι. Πιστεύει στο σχήμα, όχι στη μηχανή.</p></div>
-      <div class="team-row"><div class="ini">Ν</div><h3>Νεφέλη</h3><p>Θεραπείες και χτενίσματα. Τα χέρια της είναι μασάζ.</p></div>
+      <div class="team-row" style="--tint:#b05c38"><div class="ini">Ζ</div><h3>Ζωή</h3><p>Χρώμα. Δεκατέσσερα χρόνια φόρμουλες, καμία βιασύνη.</p></div>
+      <div class="team-row" style="--tint:#b98a4f"><div class="ini">Ι</div><h3>Ιάσονας</h3><p>Κούρεμα με ψαλίδι. Πιστεύει στο σχήμα, όχι στη μηχανή.</p></div>
+      <div class="team-row" style="--tint:#a98070"><div class="ini">Ν</div><h3>Νεφέλη</h3><p>Θεραπείες και χτενίσματα. Τα χέρια της είναι μασάζ.</p></div>
     </div>
   </div>
 </section>
@@ -478,7 +381,7 @@ const title = 'ΜΕΤΑΞΙ · hair atelier';
     <div><h4>Επικοινωνία</h4><p><a href="tel:+302100000000">210 000 0000</a><br /><a href="mailto:hello@metaxi.gr">hello@metaxi.gr</a></p></div>
     <div><h4>Ραντεβού</h4><p>Online, όλο το 24ωρο.<br />Ακύρωση ως 3 ώρες πριν, χωρίς χρέωση.</p></div>
   </div>
-  <p class="demo-note">Ενδεικτική σελίδα επίδειξης — το «ΜΕΤΑΞΙ» είναι φανταστικό κομμωτήριο· κρατήσεις και φωτογραφίες δεν αποθηκεύονται πουθενά.</p>
+  <p class="demo-note">Ενδεικτική σελίδα επίδειξης — το «ΜΕΤΑΞΙ» είναι φανταστικό κομμωτήριο και οι κρατήσεις δεν αποθηκεύονται πουθενά. Βίντεο: Pexels (δωρεάν άδεια).</p>
 </footer>
 
 <script is:inline type="module">
@@ -491,6 +394,7 @@ const title = 'ΜΕΤΑΞΙ · hair atelier';
     { id: 'updo',    name: 'Χτένισμα',           dur: 40,  price: 25,  desc: 'Για γάμο, γιορτή, ή απλώς επειδή είναι Σάββατο.' },
     { id: 'consult', name: 'Ραντεβού γνωριμίας', dur: 20,  price: 0,   desc: 'Κουβέντα πριν από μια μεγάλη αλλαγή. Δωρεάν.' },
   ];
+  const ROW_COLORS = ['#b05c38', '#b98a4f', '#a98070'];
   const STYLISTS = [
     { id: 'zoi',     name: 'τη Ζωή',     tag: 'χρώμα' },
     { id: 'iasonas', name: 'τον Ιάσονα', tag: 'κούρεμα' },
@@ -502,6 +406,7 @@ const title = 'ΜΕΤΑΞΙ · hair atelier';
   const hashCode = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) | 0; return Math.abs(h); };
 
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) document.querySelector('.hero-video')?.pause?.();
 
   /* ================= απαλή κίνηση: lenis + reveals ================= */
   let lenis = null;
@@ -528,278 +433,17 @@ const title = 'ΜΕΤΑΞΙ · hair atelier';
 
   /* ================= υπηρεσίες ================= */
   const svcList = document.getElementById('svcList');
-  SERVICES.forEach(s => {
+  SERVICES.forEach((s, i) => {
     const el = document.createElement('button');
     el.className = 'svc-row';
-    el.innerHTML = `<span class="nm">${s.name}</span>
+    el.style.setProperty('--row-c', ROW_COLORS[i % ROW_COLORS.length]);
+    el.innerHTML = `<span class="dot" aria-hidden="true"></span>
+      <span class="nm">${s.name}</span>
       <span class="pr">${s.price === 0 ? 'δωρεάν' : s.price + ' €'} · ${s.dur}′</span>
       <span class="ds">${s.desc}</span>
       <span class="bk">κλείσε ώρα →</span>`;
     el.addEventListener('click', () => { pickSvc(s); goto('#kratisi'); });
     svcList.appendChild(el);
-  });
-
-  /* ================= δοκιμαστήριο ================= */
-  const canvas = document.getElementById('fitCanvas');
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
-  const statusEl = document.getElementById('fitStatus');
-  const fit = {
-    img: null, rect: null,
-    maskCanvas: null, aiState: 'idle', // idle | loading | ready | off
-    shade: null, inten: .75,
-    style: 'none', wig: { x: 0, y: 0, s: 1 },
-  };
-  const SHADES = [
-    { name: 'Έβενος',  c: '#241d1a', light: false },
-    { name: 'Σοκολά',  c: '#4a332a', light: false },
-    { name: 'Καστανό', c: '#6b4a36', light: false },
-    { name: 'Μαόνι',   c: '#6e3240', light: false },
-    { name: 'Χάλκινο', c: '#a45b32', light: true },
-    { name: 'Μελί',    c: '#b98a4f', light: true },
-    { name: 'Σαντρέ',  c: '#8d8391', light: true },
-    { name: 'Πλατίνα', c: '#d6c9bd', light: true },
-  ];
-  const STYLES = [
-    { id: 'none', name: 'Τα δικά μου' },
-    { id: 'bob',  name: 'Καρέ' },
-    { id: 'long', name: 'Μακριά' },
-    { id: 'pixie',name: 'Πίξι' },
-    { id: 'curls',name: 'Μπούκλες' },
-  ];
-
-  /* κουμπιά στυλ + αποχρώσεων */
-  const styleRow = document.getElementById('styleRow');
-  STYLES.forEach(st => {
-    const b = document.createElement('button');
-    b.className = 'chip' + (st.id === 'none' ? ' sel' : '');
-    b.textContent = st.name;
-    b.addEventListener('click', () => {
-      fit.style = st.id;
-      styleRow.querySelectorAll('.chip').forEach(x => x.classList.toggle('sel', x === b));
-      document.getElementById('sizeIn').disabled = st.id === 'none';
-      document.getElementById('fitHint').classList.toggle('show', st.id !== 'none' && !!fit.img);
-      draw();
-    });
-    styleRow.appendChild(b);
-  });
-  const shadeRow = document.getElementById('shadeRow');
-  const noneShade = document.createElement('button');
-  noneShade.className = 'shade sel';
-  noneShade.setAttribute('data-none', '');
-  noneShade.setAttribute('aria-label', 'Φυσικό χρώμα');
-  noneShade.addEventListener('click', () => { fit.shade = null; selShade(noneShade); draw(); });
-  shadeRow.appendChild(noneShade);
-  SHADES.forEach(sh => {
-    const b = document.createElement('button');
-    b.className = 'shade';
-    b.style.setProperty('--c', sh.c);
-    b.setAttribute('aria-label', sh.name);
-    b.title = sh.name;
-    b.addEventListener('click', () => { fit.shade = sh; selShade(b); ensureMask(); draw(); });
-    shadeRow.appendChild(b);
-  });
-  function selShade(b) { shadeRow.querySelectorAll('.shade').forEach(x => x.classList.toggle('sel', x === b)); }
-
-  document.getElementById('intenIn').addEventListener('input', e => { fit.inten = e.target.value / 100; draw(); });
-  document.getElementById('sizeIn').addEventListener('input', e => { fit.wig.s = e.target.value / 100; draw(); });
-
-  /* φόρτωση φωτογραφίας */
-  document.getElementById('photoIn').addEventListener('change', e => {
-    const f = e.target.files[0];
-    if (!f) return;
-    const url = URL.createObjectURL(f);
-    const img = new Image();
-    img.onload = () => {
-      URL.revokeObjectURL(url);
-      fit.img = img;
-      const sc = Math.min(W / img.width, H / img.height);
-      const w = img.width * sc, h = img.height * sc;
-      fit.rect = { x: (W - w) / 2, y: (H - h) / 2, w, h };
-      fit.maskCanvas = null;
-      fit.wig = { x: W / 2, y: H * .42, s: 1 };
-      document.getElementById('sizeIn').value = 100;
-      document.getElementById('fitEmpty').classList.add('hide');
-      document.getElementById('saveBtn').hidden = false;
-      document.getElementById('resetBtn').hidden = false;
-      document.getElementById('fitHint').classList.toggle('show', fit.style !== 'none');
-      if (fit.shade) ensureMask();
-      draw();
-    };
-    img.src = url;
-    e.target.value = '';
-  });
-
-  /* on-device ανίχνευση μαλλιών (MediaPipe) — φορτώνει μόνο όταν χρειαστεί */
-  let segmenterPromise = null;
-  function loadSegmenter() {
-    if (!segmenterPromise) {
-      segmenterPromise = (async () => {
-        const v = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs');
-        const files = await v.FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
-        return v.ImageSegmenter.createFromOptions(files, {
-          baseOptions: { modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/image_segmenter/hair_segmenter/float32/latest/hair_segmenter.tflite' },
-          outputCategoryMask: true,
-          runningMode: 'IMAGE',
-        });
-      })();
-    }
-    return segmenterPromise;
-  }
-  async function ensureMask() {
-    if (!fit.img || fit.maskCanvas || fit.aiState === 'loading' || fit.aiState === 'off') return;
-    fit.aiState = 'loading';
-    statusEl.textContent = 'Βρίσκω τα μαλλιά στη φωτογραφία…';
-    try {
-      const seg = await loadSegmenter();
-      const photo = document.createElement('canvas');
-      photo.width = W; photo.height = H;
-      const pctx = photo.getContext('2d');
-      pctx.fillStyle = '#f4efea'; pctx.fillRect(0, 0, W, H);
-      pctx.drawImage(fit.img, fit.rect.x, fit.rect.y, fit.rect.w, fit.rect.h);
-      const res = seg.segment(photo);
-      const arr = res.categoryMask.getAsUint8Array();
-      const mw = res.categoryMask.width, mh = res.categoryMask.height;
-      const raw = document.createElement('canvas');
-      raw.width = mw; raw.height = mh;
-      const rctx = raw.getContext('2d');
-      const idata = rctx.createImageData(mw, mh);
-      for (let i = 0; i < arr.length; i++) idata.data[i * 4 + 3] = arr[i] > 0 ? 255 : 0;
-      rctx.putImageData(idata, 0, 0);
-      res.close?.();
-      const soft = document.createElement('canvas');
-      soft.width = W; soft.height = H;
-      const sctx = soft.getContext('2d');
-      sctx.filter = 'blur(3px)';
-      sctx.drawImage(raw, 0, 0, W, H);
-      fit.maskCanvas = soft;
-      fit.aiState = 'ready';
-      statusEl.textContent = 'Έτοιμο — διάλεξε αποχρώσεις με την ησυχία σου.';
-      draw();
-    } catch (err) {
-      console.warn('segmentation failed', err);
-      fit.aiState = 'off';
-      statusEl.textContent = 'Η αυτόματη ανίχνευση μαλλιών δεν φορτώθηκε εδώ — οι αποχρώσεις εφαρμόζονται στις σιλουέτες κουρέματος.';
-      draw();
-    }
-  }
-
-  /* σχέδιο */
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = '#f4efea';
-    ctx.fillRect(0, 0, W, H);
-    if (!fit.img) return;
-    ctx.drawImage(fit.img, fit.rect.x, fit.rect.y, fit.rect.w, fit.rect.h);
-
-    if (fit.shade && fit.maskCanvas && fit.inten > 0) {
-      const layer = document.createElement('canvas');
-      layer.width = W; layer.height = H;
-      const lctx = layer.getContext('2d');
-      lctx.drawImage(fit.maskCanvas, 0, 0);
-      lctx.globalCompositeOperation = 'source-in';
-      lctx.fillStyle = fit.shade.c;
-      lctx.fillRect(0, 0, W, H);
-      ctx.save();
-      ctx.globalCompositeOperation = 'color';
-      ctx.globalAlpha = fit.inten * .95;
-      ctx.drawImage(layer, 0, 0);
-      ctx.globalCompositeOperation = fit.shade.light ? 'screen' : 'multiply';
-      ctx.globalAlpha = fit.inten * (fit.shade.light ? .4 : .3);
-      ctx.drawImage(layer, 0, 0);
-      ctx.restore();
-    }
-    if (fit.style !== 'none') drawWig();
-  }
-
-  /* σκίτσο περιγράμματος: λεπτή γραμμή που δείχνει όγκο & μήκος */
-  function wigPath() {
-    const p = new Path2D();
-    if (fit.style === 'bob') {
-      p.moveTo(-30, 92);
-      p.bezierCurveTo(-74, 86, -92, 60, -92, 20);
-      p.bezierCurveTo(-94, -50, -70, -98, 0, -102);
-      p.bezierCurveTo(70, -98, 94, -50, 92, 20);
-      p.bezierCurveTo(92, 60, 74, 86, 30, 92);
-    } else if (fit.style === 'pixie') {
-      p.moveTo(-64, 26);
-      p.bezierCurveTo(-84, -20, -70, -84, 0, -96);
-      p.bezierCurveTo(70, -84, 84, -20, 64, 26);
-    } else if (fit.style === 'long') {
-      p.moveTo(-34, 230);
-      p.bezierCurveTo(-72, 214, -84, 160, -80, 110);
-      p.bezierCurveTo(-96, 60, -100, 10, -94, -30);
-      p.bezierCurveTo(-86, -86, -50, -104, 0, -104);
-      p.bezierCurveTo(50, -104, 86, -86, 94, -30);
-      p.bezierCurveTo(100, 10, 96, 60, 80, 110);
-      p.bezierCurveTo(84, 160, 72, 214, 34, 230);
-    } else if (fit.style === 'curls') {
-      let first = true;
-      for (let a = 205; a >= -25; a -= 4) {
-        const rad = a * Math.PI / 180;
-        const wob = 10 * Math.sin(a * .16) + 5 * Math.sin(a * .45);
-        const rx = 96 + wob, ry = 104 + wob;
-        const px = Math.cos(rad) * rx, py = -Math.sin(rad) * ry - 4;
-        if (first) { p.moveTo(px, py); first = false; } else p.lineTo(px, py);
-      }
-    }
-    return p;
-  }
-  function drawWig() {
-    const col = fit.shade ? fit.shade.c : '#a98070';
-    const { x, y, s } = fit.wig;
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.scale(s * 1.6, s * 1.6);
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    const p = wigPath();
-    /* απαλή «σκιά» της γραμμής */
-    ctx.filter = 'blur(5px)';
-    ctx.strokeStyle = col;
-    ctx.globalAlpha = .4;
-    ctx.lineWidth = 5;
-    ctx.stroke(p);
-    /* καθαρή γραμμή σκίτσου */
-    ctx.filter = 'none';
-    ctx.globalAlpha = .95;
-    ctx.lineWidth = 2.2;
-    ctx.setLineDash([1, 7]);
-    ctx.stroke(p);
-    ctx.restore();
-  }
-
-  /* σύρσιμο σιλουέτας */
-  let dragging = false;
-  canvas.addEventListener('pointerdown', e => {
-    if (fit.style === 'none' || !fit.img) return;
-    dragging = true;
-    canvas.setPointerCapture(e.pointerId);
-  });
-  canvas.addEventListener('pointermove', e => {
-    if (!dragging) return;
-    const r = canvas.getBoundingClientRect();
-    fit.wig.x = (e.clientX - r.left) * (W / r.width);
-    fit.wig.y = (e.clientY - r.top) * (H / r.height);
-    draw();
-  });
-  canvas.addEventListener('pointerup', () => { dragging = false; });
-
-  document.getElementById('resetBtn').addEventListener('click', () => {
-    fit.shade = null; selShade(noneShade);
-    fit.style = 'none';
-    styleRow.querySelectorAll('.chip').forEach((x, i) => x.classList.toggle('sel', i === 0));
-    document.getElementById('sizeIn').disabled = true;
-    document.getElementById('fitHint').classList.remove('show');
-    fit.wig = { x: W / 2, y: H * .42, s: 1 };
-    document.getElementById('sizeIn').value = 100;
-    draw();
-  });
-  document.getElementById('saveBtn').addEventListener('click', () => {
-    const a = document.createElement('a');
-    a.download = 'metaxi-dokimi.png';
-    a.href = canvas.toDataURL('image/png');
-    a.click();
   });
 
   /* ================= κράτηση-πρόταση ================= */
@@ -835,7 +479,6 @@ const title = 'ΜΕΤΑΞΙ · hair atelier';
     }
   }
 
-  /* επιλογές */
   const pSvc = document.getElementById('pSvc');
   SERVICES.forEach(s => {
     const b = document.createElement('button');
@@ -917,7 +560,6 @@ const title = 'ΜΕΤΑΞΙ · hair atelier';
     if (!any) wrap.innerHTML = '<p style="font-size:14px;color:var(--soft)">Γεμάτη μέρα — δοκίμασε την επόμενη.</p>';
   }
 
-  /* στοιχεία + επιβεβαίωση */
   const fName = document.getElementById('fName');
   const fPhone = document.getElementById('fPhone');
   function checkDetails() {
