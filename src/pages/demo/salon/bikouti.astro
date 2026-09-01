@@ -1,0 +1,605 @@
+---
+// Demo portfolio — εικονικό κομμωτήριο «Το Μπικουτί».
+// Εκδοχή Γ: ρετρό κομμωτήριο γειτονιάς· τέντα με ρίγες, τιμοκατάλογος
+// παλιάς εποχής, κράτηση σαν «καρτέλα πελάτη» που σφραγίζεται.
+// Όλα mock — κανένα backend.
+const title = 'Το Μπικουτί · κομμωτήριο από το 1974';
+---
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=GFS+Neohellenic:ital,wght@0,400;0,700;1,700&family=Didact+Gothic&display=swap" rel="stylesheet" />
+  <style is:global>
+    :root {
+      --mint: #d8ebe0;
+      --paper: #fff8ec;
+      --cherry: #c9273e;
+      --cherry-dark: #9c1e30;
+      --cocoa: #43302a;
+      --mustard: #dfa22e;
+      --pink: #f2b9c4;
+      --line: #e3d3bb;
+      --disp: 'GFS Neohellenic', sans-serif;
+      --body: 'Didact Gothic', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--body); background: var(--mint); color: var(--cocoa); -webkit-font-smoothing: antialiased; }
+    ::selection { background: var(--cherry); color: #fff; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ---------- τέντα ---------- */
+    .awning {
+      position: sticky; top: 0; z-index: 40;
+      background: linear-gradient(90deg, var(--cherry) 0 50%, var(--paper) 50% 100%);
+      background-size: calc(200% / 14) 100%;
+      padding-top: 14px;
+    }
+    .awning-scallop { display: flex; }
+    .awning-scallop i {
+      flex: 1; height: 22px;
+      border-radius: 0 0 50% 50%;
+      box-shadow: 0 3px 4px -2px rgba(67,48,42,.35);
+    }
+    .awning-scallop i:nth-child(odd) { background: var(--cherry); }
+    .awning-scallop i:nth-child(even) { background: var(--paper); }
+    .awning-bar {
+      background: var(--paper);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 5vw;
+      box-shadow: 0 8px 24px -14px rgba(67,48,42,.4);
+    }
+    .brand { font-family: var(--disp); font-weight: 700; font-size: 28px; letter-spacing: .04em; }
+    .brand .bi { color: var(--cherry); }
+    .nav-links { display: flex; gap: 22px; align-items: center; font-size: 15px; }
+    .nav-links a { color: var(--cocoa); text-decoration: none; border-bottom: 2px dotted var(--line); }
+    .nav-links a:hover { border-bottom-color: var(--cherry); }
+    .btn {
+      font: 700 16px var(--disp); letter-spacing: .06em;
+      background: var(--cherry); color: #fff; border: none;
+      padding: 12px 24px; border-radius: 4px;
+      box-shadow: 3px 3px 0 var(--cocoa);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--cocoa); }
+    .btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--cocoa); }
+    .btn.alt { background: var(--paper); color: var(--cocoa); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+    .btn:focus-visible, a:focus-visible { outline: 3px solid var(--mustard); outline-offset: 2px; }
+
+    /* ---------- hero ---------- */
+    header {
+      padding: 70px 5vw 90px;
+      display: grid; grid-template-columns: 1.1fr .9fr; gap: 5vw; align-items: center;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .kicker {
+      display: inline-block; font: 700 15px var(--disp); letter-spacing: .18em;
+      background: var(--mustard); color: var(--cocoa);
+      padding: 6px 14px; border-radius: 3px; transform: rotate(-2deg);
+      margin-bottom: 22px;
+    }
+    h1 {
+      font-family: var(--disp); font-weight: 700;
+      font-size: clamp(44px, 6.5vw, 88px); line-height: .98; letter-spacing: .01em;
+    }
+    h1 em { font-style: italic; color: var(--cherry); }
+    .hero-sub { margin-top: 22px; font-size: 18px; line-height: 1.6; max-width: 44ch; }
+    .hero-actions { margin-top: 30px; display: flex; gap: 14px; flex-wrap: wrap; }
+
+    /* μπικουτί που γυρίζει */
+    .curler-scene { display: grid; place-items: center; }
+    .curler {
+      width: min(300px, 70vw); aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, var(--paper) 0 26%, transparent 26%),
+        repeating-conic-gradient(var(--pink) 0deg 30deg, var(--paper) 30deg 60deg);
+      border: 10px solid var(--cocoa);
+      position: relative;
+      animation: spin 24s linear infinite;
+      box-shadow: 0 30px 50px -30px rgba(67,48,42,.5);
+    }
+    .curler::after {
+      content: ''; position: absolute; inset: 30%;
+      border-radius: 50%; border: 4px dashed var(--cherry);
+      background: var(--paper);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .curler-caption { margin-top: 20px; font-size: 14px; text-align: center; opacity: .75; }
+
+    /* ---------- κοινά sections ---------- */
+    section { padding: 80px 5vw; }
+    .inner { max-width: 1100px; margin: 0 auto; }
+    .sec-title {
+      font-family: var(--disp); font-weight: 700; font-size: clamp(32px, 4vw, 52px);
+      text-align: center; margin-bottom: 10px;
+    }
+    .sec-under { text-align: center; margin-bottom: 46px; font-size: 16px; opacity: .8; }
+    .squiggle { display: block; margin: 14px auto 0; }
+
+    /* ---------- τιμοκατάλογος ---------- */
+    .board {
+      background: var(--paper);
+      border: 3px solid var(--cocoa); border-radius: 10px;
+      max-width: 760px; margin: 0 auto;
+      padding: 46px clamp(22px, 6vw, 64px) 40px;
+      box-shadow: 8px 8px 0 rgba(67,48,42,.22);
+      position: relative;
+    }
+    .board::before {
+      content: 'ΤΙΜΟΚΑΤΑΛΟΓΟΣ'; position: absolute; top: -18px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+      font: 700 18px var(--disp); letter-spacing: .3em;
+      background: var(--cocoa); color: var(--paper); padding: 7px 22px; border-radius: 3px;
+    }
+    .price-row {
+      display: flex; align-items: baseline; gap: 10px; width: 100%;
+      background: none; border: none; text-align: left; color: var(--cocoa);
+      padding: 13px 4px; font-size: 18px;
+      border-radius: 6px;
+    }
+    .price-row:hover { background: var(--mint); }
+    .price-row .nm { font-family: var(--disp); font-weight: 700; font-size: 21px; white-space: nowrap; }
+    .price-row .dots { flex: 1; border-bottom: 3px dotted var(--line); transform: translateY(-4px); }
+    .price-row .pr { font-family: var(--disp); font-weight: 700; font-size: 22px; color: var(--cherry); white-space: nowrap; }
+    .price-row .note { display: block; width: 100%; font-size: 13.5px; opacity: .7; margin-top: 2px; }
+    .price-hint { text-align: center; margin-top: 26px; font-size: 14px; opacity: .7; }
+
+    /* ---------- ομάδα ---------- */
+    .staff { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 22px; max-width: 1000px; margin: 0 auto; }
+    .polaroid {
+      background: var(--paper); padding: 14px 14px 18px;
+      border: 1px solid var(--line);
+      box-shadow: 0 14px 30px -18px rgba(67,48,42,.5);
+      transform: rotate(var(--tilt, -1.5deg));
+      transition: transform .25s;
+    }
+    .polaroid:hover { transform: rotate(0) scale(1.03); }
+    .polaroid .photo {
+      aspect-ratio: 1; display: grid; place-items: center;
+      font-family: var(--disp); font-weight: 700; font-size: 72px; color: var(--paper);
+    }
+    .polaroid h3 { font-family: var(--disp); font-weight: 700; font-size: 22px; margin-top: 12px; }
+    .polaroid p { font-size: 14px; line-height: 1.5; margin-top: 4px; opacity: .85; }
+
+    /* ---------- λόγια της γειτονιάς ---------- */
+    .gossip { max-width: 900px; margin: 0 auto; display: grid; gap: 18px; }
+    .bubble {
+      background: var(--paper); border: 2px solid var(--cocoa); border-radius: 18px;
+      padding: 20px 26px; max-width: 78%; position: relative; font-size: 16.5px; line-height: 1.55;
+    }
+    .bubble cite { display: block; margin-top: 8px; font-style: normal; font-size: 13.5px; color: var(--cherry); font-weight: 700; }
+    .bubble.right { margin-left: auto; background: var(--pink); }
+    .bubble::after {
+      content: ''; position: absolute; bottom: -12px; left: 30px;
+      width: 18px; height: 18px; background: inherit;
+      border: 2px solid var(--cocoa); border-top: none; border-left: none;
+      transform: rotate(45deg);
+    }
+    .bubble.right::after { left: auto; right: 30px; transform: rotate(135deg); border: 2px solid var(--cocoa); border-bottom: none; border-left: none; }
+
+    /* ---------- καρτέλα πελάτη (κράτηση) ---------- */
+    .booking-wrap { background: var(--cherry); }
+    .booking-wrap .sec-title, .booking-wrap .sec-under { color: var(--paper); }
+    .card {
+      max-width: 660px; margin: 0 auto;
+      background: var(--paper);
+      border-radius: 6px;
+      box-shadow: 0 30px 60px -30px rgba(0,0,0,.5);
+      position: relative;
+      background-image: repeating-linear-gradient(var(--paper) 0 31px, #efe2cc 31px 32px);
+      padding: 34px clamp(20px, 5vw, 44px) 40px;
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; bottom: 0; left: 34px;
+      border-left: 2px solid rgba(201,39,62,.35);
+    }
+    .card-head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 3px double var(--cocoa); padding-bottom: 12px; margin-bottom: 22px; }
+    .card-head h3 { font-family: var(--disp); font-weight: 700; font-size: 26px; letter-spacing: .12em; }
+    .card-head span { font-size: 13px; opacity: .6; }
+    .card-step { display: none; }
+    .card-step.on { display: block; animation: cardIn .35s ease both; }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .card-label { font: 700 17px var(--disp); letter-spacing: .1em; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+    .card-label .no {
+      width: 26px; height: 26px; border-radius: 50%; background: var(--cocoa); color: var(--paper);
+      display: inline-grid; place-items: center; font-size: 14px;
+    }
+    .choice-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+    .choice {
+      background: #fff; border: 2px solid var(--line); border-radius: 6px;
+      padding: 13px 15px; text-align: left; color: var(--cocoa);
+      transition: border-color .15s, transform .15s;
+    }
+    .choice:hover { border-color: var(--mustard); transform: translateY(-2px); }
+    .choice.sel { border-color: var(--cherry); background: #fff2f0; }
+    .choice b { font-family: var(--disp); font-size: 18px; font-weight: 700; display: block; }
+    .choice small { font-size: 12.5px; opacity: .7; }
+    .choice .pr { color: var(--cherry); font-weight: 700; font-size: 14px; }
+    .day-strip { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 14px; }
+    .day-chip {
+      min-width: 60px; text-align: center; background: #fff; border: 2px solid var(--line);
+      border-radius: 6px; padding: 9px 5px; color: var(--cocoa);
+    }
+    .day-chip b { display: block; font-family: var(--disp); font-size: 19px; }
+    .day-chip small { font-size: 10.5px; letter-spacing: .1em; opacity: .7; }
+    .day-chip.sel { border-color: var(--cherry); background: #fff2f0; }
+    .slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 8px; }
+    .slot-chip { background: #fff; border: 2px solid var(--line); border-radius: 6px; padding: 10px 4px; font-size: 15px; color: var(--cocoa); }
+    .slot-chip.sel { border-color: var(--cherry); background: var(--cherry); color: #fff; }
+    .slot-chip:disabled { opacity: .3; text-decoration: line-through; cursor: not-allowed; }
+    .slot-empty { font-size: 14.5px; opacity: .7; padding: 6px 0; }
+    .card-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; }
+    .plain-link { background: none; border: none; font-size: 14.5px; color: var(--cocoa); text-decoration: underline; text-underline-offset: 3px; }
+    .fld { margin-bottom: 14px; }
+    .fld label { display: block; font: 700 15px var(--disp); letter-spacing: .08em; margin-bottom: 5px; }
+    .fld input {
+      width: 100%; background: #fff; border: 2px solid var(--line); border-radius: 6px;
+      padding: 12px 14px; font: 400 16px var(--body); color: var(--cocoa);
+    }
+    .fld input:focus { outline: none; border-color: var(--cherry); }
+    .fill-line { font-size: 16px; line-height: 2; }
+    .fill-line b { border-bottom: 2px solid var(--cocoa); padding: 0 6px; font-family: var(--disp); font-size: 18px; }
+
+    /* σφραγίδα */
+    .stamp-zone { text-align: center; padding: 12px 0 4px; position: relative; min-height: 170px; display: grid; place-items: center; }
+    .stamp {
+      font-family: var(--disp); font-weight: 700; font-size: 30px; letter-spacing: .14em;
+      color: var(--cherry-dark);
+      border: 5px solid var(--cherry-dark); border-radius: 10px;
+      padding: 14px 30px; transform: rotate(-8deg);
+      text-transform: uppercase;
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.55' /%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .82 0'/%3E%3C/filter%3E%3Crect width='240' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+      mask-size: cover;
+      animation: stampIn .45s cubic-bezier(.2,1.6,.35,1) both .25s;
+    }
+    @keyframes stampIn { from { transform: rotate(-8deg) scale(2.6); opacity: 0; } to { transform: rotate(-8deg) scale(1); opacity: 1; } }
+    .done-txt { text-align: center; font-size: 16px; line-height: 1.7; margin-top: 10px; }
+    .done-code { text-align: center; font: 700 18px var(--disp); letter-spacing: .2em; color: var(--cherry); margin-top: 8px; }
+
+    footer { background: var(--cocoa); color: var(--paper); padding: 56px 5vw 36px; }
+    .foot-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 28px; }
+    footer h4 { font-family: var(--disp); font-weight: 700; font-size: 20px; margin-bottom: 8px; letter-spacing: .06em; }
+    footer p, footer a { font-size: 14.5px; line-height: 1.8; color: #e8ddcf; text-decoration: none; }
+    .demo-note { grid-column: 1 / -1; font-size: 12px; opacity: .55; padding-top: 18px; }
+
+    @media (max-width: 800px) {
+      header { grid-template-columns: 1fr; padding-top: 50px; }
+      .curler-scene { order: -1; }
+      .curler { width: min(200px, 55vw); }
+      .nav-links a { display: none; }
+      .bubble { max-width: 95%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="awning">
+  <div class="awning-scallop" aria-hidden="true">
+    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+  <div class="awning-bar">
+    <div class="brand">Το <span class="bi">Μπικουτί</span></div>
+    <div class="nav-links">
+      <a href="#times">Τιμοκατάλογος</a>
+      <a href="#omada">Η ομάδα</a>
+      <a href="#geitonia">Η γειτονιά λέει</a>
+      <button class="btn" data-goto-card>Κλείσε ώρα</button>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div>
+    <span class="kicker">ΑΠΟ ΤΟ 1974 · ΠΑΓΚΡΑΤΙ</span>
+    <h1>Το κομμωτήριο<br />της <em>γειτονιάς</em>,<br />με βιβλίο ραντεβού<br />στο ίντερνετ.</h1>
+    <p class="hero-sub">
+      Η κυρα-Ρίτσα άνοιξε το μαγαζί το '74. Η εγγονή της το ανανέωσε —
+      αλλά ο καφές ψήνεται ακόμα στο μπρίκι και το ραντεβού σου γράφεται
+      σε καρτέλα. Απλώς τώρα τη συμπληρώνεις κι από το κινητό.
+    </p>
+    <div class="hero-actions">
+      <button class="btn" data-goto-card>Άνοιξε καρτέλα</button>
+      <button class="btn alt" data-goto="#times">Δες τις τιμές</button>
+    </div>
+  </div>
+  <div class="curler-scene">
+    <div>
+      <div class="curler" aria-hidden="true"></div>
+      <p class="curler-caption">Το μπικουτί μας γυρίζει από το 1974 και δεν σκοπεύει να σταματήσει.</p>
+    </div>
+  </div>
+</header>
+
+<section id="times">
+  <div class="inner">
+    <h2 class="sec-title">Ό,τι βλέπεις, αυτό πληρώνεις</h2>
+    <p class="sec-under">Οι τιμές στον πίνακα, όπως πάντα. Πάτησε μια γραμμή για να κλείσεις ώρα.</p>
+    <div class="board" id="priceBoard"></div>
+    <p class="price-hint">Συνταξιούχοι κάθε Τετάρτη πρωί: κούρεμα −5 €. Το κέρασμα, δικό μας.</p>
+  </div>
+</section>
+
+<section id="omada">
+  <div class="inner">
+    <h2 class="sec-title">Ποιος θα σε αναλάβει</h2>
+    <p class="sec-under">Τρεις γενιές χέρια — διάλεξε τα δικά σου.</p>
+    <div class="staff" id="staffGrid"></div>
+  </div>
+</section>
+
+<section id="geitonia">
+  <div class="inner">
+    <h2 class="sec-title">Η γειτονιά λέει…</h2>
+    <p class="sec-under">Ό,τι ακούγεται στις καρέκλες, μένει στις καρέκλες. Σχεδόν.</p>
+    <div class="gossip">
+      <div class="bubble">
+        «Πήγα για ρίζα, έφυγα με ψυχανάλυση και τέλειο χρώμα. Στο Μπικουτί τα πληρώνεις όλα σε ένα.»
+        <cite>— η Βούλα από τον 3ο</cite>
+      </div>
+      <div class="bubble right">
+        «Έκλεισα ώρα από το κινητό για τη μάνα μου. Εκείνη νόμιζε ότι τηλεφώνησα. Δεν τη χάλασα.»
+        <cite>— ο Στέλιος, εγγονός πελάτισσας</cite>
+      </div>
+      <div class="bubble">
+        «45 χρόνια πελάτισσα. Άλλαξαν όλα στη γειτονιά, το κούρεμά μου ποτέ.»
+        <cite>— η κυρία Ελπίδα</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="booking-wrap" id="kartela">
+  <h2 class="sec-title">Η καρτέλα σου</h2>
+  <p class="sec-under">Όπως τη συμπλήρωνε η κυρα-Ρίτσα — μόνο που τώρα γράφεις εσύ.</p>
+
+  <div class="card">
+    <div class="card-head">
+      <h3>ΚΑΡΤΕΛΑ ΠΕΛΑΤΗ</h3>
+      <span>Νο <span id="cardNo">—</span></span>
+    </div>
+
+    <div class="card-step on" data-cs="0">
+      <p class="card-label"><span class="no">1</span> Περιποίηση</p>
+      <div class="choice-grid" id="cSvc"></div>
+    </div>
+
+    <div class="card-step" data-cs="1">
+      <p class="card-label"><span class="no">2</span> Σε ποιο χέρι;</p>
+      <div class="choice-grid" id="cSty"></div>
+      <div class="card-nav"><button class="plain-link" data-cs-back>← πίσω</button><span></span></div>
+    </div>
+
+    <div class="card-step" data-cs="2">
+      <p class="card-label"><span class="no">3</span> Μέρα και ώρα</p>
+      <div class="day-strip" id="cDays"></div>
+      <div class="slot-grid" id="cSlots"></div>
+      <div class="card-nav">
+        <button class="plain-link" data-cs-back>← πίσω</button>
+        <button class="btn" id="cNext" disabled>Συνέχεια</button>
+      </div>
+    </div>
+
+    <div class="card-step" data-cs="3">
+      <p class="card-label"><span class="no">4</span> Στοιχεία</p>
+      <p class="fill-line" id="cRecap" style="margin-bottom:18px"></p>
+      <div class="fld">
+        <label for="cName">Ονοματεπώνυμο</label>
+        <input id="cName" type="text" autocomplete="name" placeholder="π.χ. Μαρία Οικονόμου" />
+      </div>
+      <div class="fld">
+        <label for="cPhone">Τηλέφωνο</label>
+        <input id="cPhone" type="tel" autocomplete="tel" placeholder="69..." />
+      </div>
+      <div class="card-nav">
+        <button class="plain-link" data-cs-back>← πίσω</button>
+        <button class="btn" id="cConfirm" disabled>Σφράγισέ την!</button>
+      </div>
+    </div>
+
+    <div class="card-step" data-cs="4">
+      <div class="stamp-zone"><div class="stamp" id="stampEl">Κλείστηκε</div></div>
+      <p class="done-txt" id="cDoneTxt"></p>
+      <p class="done-code" id="cDoneCode"></p>
+      <div class="card-nav" style="justify-content:center">
+        <button class="plain-link" id="cAgain">Νέα καρτέλα</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <div>
+      <h4>Το Μπικουτί</h4>
+      <p>Φιλολάου 88, Παγκράτι<br />Τρ–Παρ 9:00–20:00 · Σάβ 8:30–16:00</p>
+    </div>
+    <div>
+      <h4>Τηλέφωνο</h4>
+      <p><a href="tel:+302100000000">210 000 0000</a><br />Αν δεν το σηκώσουμε, στεγνώνουμε κάποια.</p>
+    </div>
+    <div>
+      <h4>Ραντεβού</h4>
+      <p>Από την καρτέλα εδώ, ή περνώντας απ' έξω.<br />Η πόρτα είναι πάντα ανοιχτή.</p>
+    </div>
+    <p class="demo-note">Ενδεικτική σελίδα επίδειξης — «Το Μπικουτί» είναι φανταστικό κομμωτήριο και οι κρατήσεις δεν αποθηκεύονται πουθενά.</p>
+  </div>
+</footer>
+
+<script>
+  const SERVICES = [
+    { id: 'cut-f',  name: 'Κούρεμα γυναικείο', dur: 45, price: 20, note: 'Με λούσιμο και χτένισμα.' },
+    { id: 'cut-m',  name: 'Κούρεμα αντρικό',   dur: 30, price: 12, note: 'Ψαλίδι ή μηχανή, ό,τι πει το κεφάλι.' },
+    { id: 'riza',   name: 'Βαφή ρίζας',        dur: 70, price: 30, note: 'Η φόρμουλά σου είναι γραμμένη στην καρτέλα.' },
+    { id: 'olikh',  name: 'Βαφή ολική',        dur: 100, price: 45, note: 'Καφές και περιοδικά περιλαμβάνονται.' },
+    { id: 'xteni',  name: 'Χτένισμα',          dur: 30, price: 12, note: 'Για κυριακάτικο τραπέζι ή χαρά.' },
+    { id: 'bikouti',name: 'Μιζανπλί με μπικουτί', dur: 50, price: 18, note: 'Η σπεσιαλιτέ του μαγαζιού από το \'74.' },
+    { id: 'manik',  name: 'Μανικιούρ απλό',    dur: 35, price: 12, note: 'Στην πολυθρόνα δίπλα στο παράθυρο.' },
+    { id: 'frydi',  name: 'Φρύδια με κλωστή',  dur: 15, price: 6,  note: 'Όπως το έκανε η γιαγιά — γιατί πιάνει.' },
+  ];
+  const STAFF = [
+    { id: 'ritsa', name: 'Κυρα-Ρίτσα', tint: '#c9273e', tilt: '-2deg', role: 'Ιδρύτρια. Πλέον μόνο μιζανπλί και ιστορίες — αλλά τι μιζανπλί.' },
+    { id: 'popi',  name: 'Πόπη', tint: '#dfa22e', tilt: '1.6deg', role: 'Η κόρη. 30 χρόνια ψαλίδι, βλέπει το σωστό μήκος με το μάτι.' },
+    { id: 'zeni',  name: 'Ζένια', tint: '#4a7d68', tilt: '-1deg', role: 'Η εγγονή. Χρώμα και μοντέρνα κοψίματα — και το site, δικό της.' },
+    { id: 'any',   name: 'Όποια αδειάσει', tint: '#7a6a91', tilt: '1deg', role: 'Πρώτη ελεύθερη καρέκλα, λιγότερη αναμονή.' },
+  ];
+  const DAY_NAMES = ['Κυρ','Δευ','Τρί','Τετ','Πέμ','Παρ','Σάβ'];
+  const MONTHS = ['Ιαν','Φεβ','Μαρ','Απρ','Μαΐ','Ιουν','Ιουλ','Αυγ','Σεπ','Οκτ','Νοε','Δεκ'];
+  const state = { step: 0, service: null, stylist: null, day: null, time: null };
+
+  document.getElementById('cardNo').textContent = String(1000 + Math.floor(Math.random() * 900));
+
+  /* τιμοκατάλογος */
+  const board = document.getElementById('priceBoard');
+  SERVICES.forEach(s => {
+    const row = document.createElement('button');
+    row.className = 'price-row';
+    row.style.flexWrap = 'wrap';
+    row.innerHTML = `<span class="nm">${s.name}</span><span class="dots"></span><span class="pr">${s.price} €</span><span class="note">${s.note} · ${s.dur}′</span>`;
+    row.addEventListener('click', () => { pickService(s); scrollToCard(); });
+    board.appendChild(row);
+  });
+
+  /* ομάδα */
+  const staffGrid = document.getElementById('staffGrid');
+  STAFF.filter(s => s.id !== 'any').forEach(s => {
+    const el = document.createElement('article');
+    el.className = 'polaroid';
+    el.style.setProperty('--tilt', s.tilt);
+    el.innerHTML = `<div class="photo" style="background:${s.tint}">${s.name.replace('Κυρα-','')[0]}</div><h3>${s.name}</h3><p>${s.role}</p>`;
+    staffGrid.appendChild(el);
+  });
+
+  /* καρτέλα: βήματα */
+  function csGo(n) {
+    state.step = n;
+    document.querySelectorAll('.card-step').forEach(s => s.classList.toggle('on', +s.dataset.cs === n));
+  }
+  document.querySelectorAll('[data-cs-back]').forEach(b => b.addEventListener('click', () => csGo(state.step - 1)));
+  function scrollToCard() { document.getElementById('kartela').scrollIntoView({ behavior: 'smooth' }); }
+  document.querySelectorAll('[data-goto-card]').forEach(b => b.addEventListener('click', scrollToCard));
+  document.querySelectorAll('[data-goto]').forEach(b => b.addEventListener('click', () => {
+    document.querySelector(b.dataset.goto).scrollIntoView({ behavior: 'smooth' });
+  }));
+
+  /* βήμα 1: υπηρεσία */
+  const cSvc = document.getElementById('cSvc');
+  SERVICES.forEach(s => {
+    const el = document.createElement('button');
+    el.className = 'choice';
+    el.dataset.svc = s.id;
+    el.innerHTML = `<b>${s.name}</b><small>${s.dur}′ · </small><span class="pr">${s.price} €</span>`;
+    el.addEventListener('click', () => pickService(s));
+    cSvc.appendChild(el);
+  });
+  function pickService(s) {
+    state.service = s;
+    cSvc.querySelectorAll('.choice').forEach(x => x.classList.toggle('sel', x.dataset.svc === s.id));
+    buildSty();
+    csGo(1);
+  }
+
+  /* βήμα 2: προσωπικό */
+  function buildSty() {
+    const wrap = document.getElementById('cSty');
+    wrap.innerHTML = '';
+    STAFF.forEach(s => {
+      const el = document.createElement('button');
+      el.className = 'choice';
+      el.innerHTML = `<b>${s.name}</b><small>${s.role}</small>`;
+      el.addEventListener('click', () => { state.stylist = s; buildDays(); csGo(2); });
+      wrap.appendChild(el);
+    });
+  }
+
+  /* βήμα 3: μέρες/ώρες */
+  function hashCode(str) { let h = 0; for (const c of str) h = (h * 31 + c.charCodeAt(0)) | 0; return Math.abs(h); }
+  function slotsFor(key, sty) {
+    const base = ['9:00','9:45','10:30','11:15','12:00','13:00','17:00','17:45','18:30','19:15'];
+    const h = hashCode(key + sty);
+    return base.map((t, i) => ({ t, free: ((h >> i) & 3) !== 0 }));
+  }
+  function buildDays() {
+    const row = document.getElementById('cDays');
+    row.innerHTML = '';
+    const today = new Date();
+    let first = null;
+    for (let i = 1; i <= 12; i++) {
+      const d = new Date(today); d.setDate(today.getDate() + i);
+      if (d.getDay() === 0 || d.getDay() === 1) continue; // Κυρ & Δευ κλειστά
+      const el = document.createElement('button');
+      el.className = 'day-chip';
+      el.innerHTML = `<small>${DAY_NAMES[d.getDay()]}</small><b>${d.getDate()}</b><small>${MONTHS[d.getMonth()]}</small>`;
+      el.addEventListener('click', () => pickDay(d, el));
+      row.appendChild(el);
+      if (!first) first = { d, el };
+    }
+    pickDay(first.d, first.el);
+  }
+  function pickDay(d, el) {
+    state.day = d; state.time = null;
+    document.getElementById('cNext').disabled = true;
+    document.querySelectorAll('.day-chip').forEach(x => x.classList.remove('sel'));
+    el.classList.add('sel');
+    const grid = document.getElementById('cSlots');
+    grid.innerHTML = '';
+    let any = false;
+    slotsFor(d.toISOString().slice(0, 10), state.stylist.id).forEach(s => {
+      const b = document.createElement('button');
+      b.className = 'slot-chip'; b.textContent = s.t; b.disabled = !s.free;
+      if (s.free) any = true;
+      b.addEventListener('click', () => {
+        state.time = s.t;
+        grid.querySelectorAll('.slot-chip').forEach(x => x.classList.remove('sel'));
+        b.classList.add('sel');
+        document.getElementById('cNext').disabled = false;
+      });
+      grid.appendChild(b);
+    });
+    if (!any) grid.innerHTML = '<p class="slot-empty">Γεμάτο το τεφτέρι εκείνη τη μέρα — δοκίμασε άλλη.</p>';
+  }
+  function fmtDay(d) { return DAY_NAMES[d.getDay()] + ' ' + d.getDate() + ' ' + MONTHS[d.getMonth()]; }
+  document.getElementById('cNext').addEventListener('click', () => {
+    document.getElementById('cRecap').innerHTML =
+      `Θα έρθω για <b>${state.service.name}</b> σε <b>${state.stylist.name}</b>, την <b>${fmtDay(state.day)}</b> στις <b>${state.time}</b>.`;
+    csGo(3);
+  });
+
+  /* βήμα 4: στοιχεία + σφραγίδα */
+  const cName = document.getElementById('cName');
+  const cPhone = document.getElementById('cPhone');
+  function checkOk() {
+    document.getElementById('cConfirm').disabled = !(cName.value.trim().length > 2 && cPhone.value.replace(/\D/g, '').length >= 10);
+  }
+  cName.addEventListener('input', checkOk);
+  cPhone.addEventListener('input', checkOk);
+  document.getElementById('cConfirm').addEventListener('click', () => {
+    const stamp = document.getElementById('stampEl');
+    stamp.style.animation = 'none';
+    void stamp.offsetWidth; // restart του stamp animation
+    stamp.style.animation = '';
+    const code = 'ΜΠ-' + String(hashCode(cName.value + state.time) % 900 + 100);
+    document.getElementById('cDoneTxt').textContent =
+      `${cName.value.trim().split(' ')[0]}, σε γράψαμε στο τεφτέρι: ${fmtDay(state.day)} στις ${state.time} για ${state.service.name.toLowerCase()}. Αν αργήσεις πέντε λεπτά, δεν πειράζει — ο καφές θα σε περιμένει.`;
+    document.getElementById('cDoneCode').textContent = 'Αρ. καρτέλας · ' + code;
+    csGo(4);
+  });
+  document.getElementById('cAgain').addEventListener('click', () => {
+    Object.assign(state, { step: 0, service: null, stylist: null, day: null, time: null });
+    cName.value = ''; cPhone.value = ''; checkOk();
+    cSvc.querySelectorAll('.choice').forEach(x => x.classList.remove('sel'));
+    csGo(0);
+  });
+</script>
+</body>
+</html>

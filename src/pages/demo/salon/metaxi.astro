@@ -1,0 +1,597 @@
+---
+// Demo portfolio — εικονικό κομμωτήριο «ΜΕΤΑΞΙ hair atelier», εκδοχή 3.
+// Μίνιμαλ & αέρινο με βίντεο-hero (γυναίκα με λευκά σε χωράφι με ψηλά
+// χόρτα, ήλιος μέσα από τα μαλλιά — Pexels, δωρεάν άδεια, τοπικό αρχείο
+// /videos/metaxi-hero.mp4) και ζεστή παλέτα με περισσότερο χρώμα.
+// Κράτηση-πρόταση που συμπληρώνεται λέξη-λέξη. Όλα mock — κανένα backend.
+const title = 'ΜΕΤΑΞΙ · hair atelier';
+---
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=GFS+Didot&family=Commissioner:wght@200;300;400;500&display=swap" rel="stylesheet" />
+  <style is:global>
+    :root {
+      --bone: #faf7f4;
+      --bone-2: #f4ede6;
+      --blush: #f0e0d4;
+      --ink: #221d1b;
+      --soft: #8b7f78;
+      --accent: #a98070;
+      --terra: #b05c38;
+      --terra-dark: #96461f;
+      --honey: #b98a4f;
+      --hair: #eadfd5;
+      --didot: 'GFS Didot', 'Didot', serif;
+      --sans: 'Commissioner', 'Helvetica Neue', sans-serif;
+      --ease: cubic-bezier(.22, .8, .25, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    body {
+      font-family: var(--sans);
+      font-weight: 300;
+      background: var(--bone);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--terra); color: #fff; }
+    a { color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+    button:focus-visible, a:focus-visible, input:focus-visible {
+      outline: 1.5px solid var(--terra); outline-offset: 4px; border-radius: 2px;
+    }
+
+    /* ---------- αέρινα reveals ---------- */
+    .rv { opacity: 0; transform: translateY(28px); transition: opacity 1.1s ease var(--d, 0s), transform 1.1s var(--ease) var(--d, 0s); }
+    .rv.in { opacity: 1; transform: none; }
+
+    /* ---------- nav ---------- */
+    nav {
+      position: fixed; inset: 0 0 auto 0; z-index: 50;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 22px 6vw;
+      background: color-mix(in srgb, var(--bone) 72%, transparent);
+      backdrop-filter: blur(16px);
+    }
+    .brand { font-family: var(--didot); font-size: 21px; letter-spacing: .34em; }
+    .brand span { color: var(--terra); }
+    .nav-links { display: flex; gap: 34px; align-items: center; }
+    .nav-links a, .nav-links button {
+      font-size: 13px; letter-spacing: .12em; color: var(--soft);
+      text-decoration: none; background: none; border: none; text-transform: uppercase;
+      transition: color .4s;
+    }
+    .nav-links a:hover, .nav-links button:hover { color: var(--terra); }
+    .nav-links .cta { color: var(--ink); border-bottom: 1px solid var(--terra); padding-bottom: 3px; }
+
+    /* ---------- hero με βίντεο ---------- */
+    header {
+      min-height: 100svh;
+      display: grid; place-items: center; text-align: center;
+      position: relative; padding: 130px 6vw 90px;
+      overflow: hidden;
+    }
+    .hero-video {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: center 38%;
+    }
+    .hero-veil {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg,
+        color-mix(in srgb, var(--bone) 55%, transparent) 0%,
+        color-mix(in srgb, var(--bone) 20%, transparent) 42%,
+        color-mix(in srgb, var(--bone) 42%, transparent) 72%,
+        var(--bone) 100%);
+    }
+    .hero-inner { position: relative; max-width: 900px; z-index: 1; }
+    .hero-inner::before {
+      content: ''; position: absolute; inset: -14% -16%; z-index: -1;
+      background: radial-gradient(closest-side,
+        color-mix(in srgb, var(--bone) 88%, transparent) 20%,
+        color-mix(in srgb, var(--bone) 55%, transparent) 62%,
+        transparent 100%);
+      filter: blur(6px);
+      pointer-events: none;
+    }
+    .kicker {
+      font-size: 12px; letter-spacing: .5em; text-transform: uppercase; color: var(--terra-dark);
+      margin-bottom: 34px;
+    }
+    h1 {
+      font-family: var(--didot); font-weight: 400;
+      font-size: clamp(44px, 7vw, 96px);
+      line-height: 1.08; letter-spacing: .01em;
+      text-shadow: 0 1px 30px color-mix(in srgb, var(--bone) 70%, transparent);
+    }
+    h1 em { font-style: italic; color: var(--terra-dark); }
+    .hero-sub {
+      margin: 30px auto 0; max-width: 50ch;
+      color: #4c413b; font-size: 16.5px; line-height: 1.8; font-weight: 400;
+    }
+    .hero-actions { margin-top: 44px; display: flex; gap: 26px; justify-content: center; align-items: center; flex-wrap: wrap; }
+    .btn {
+      font: 400 13px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase;
+      background: var(--terra); color: #fff; border: none;
+      padding: 18px 38px; border-radius: 999px;
+      transition: background .5s, transform .5s var(--ease), box-shadow .5s;
+    }
+    .btn:hover { background: var(--terra-dark); transform: translateY(-2px); box-shadow: 0 18px 34px -20px rgba(150,70,31,.6); }
+    .btn.quiet { background: color-mix(in srgb, var(--bone) 72%, transparent); color: var(--ink); border: 1px solid color-mix(in srgb, var(--ink) 25%, transparent); backdrop-filter: blur(6px); }
+    .btn.quiet:hover { background: var(--bone); box-shadow: none; }
+    .btn:disabled { opacity: .35; cursor: not-allowed; transform: none; box-shadow: none; }
+    .scroll-hint {
+      position: absolute; bottom: 34px; left: 50%; transform: translateX(-50%);
+      width: 1px; height: 56px; background: var(--hair); overflow: hidden; z-index: 1;
+    }
+    .scroll-hint::after {
+      content: ''; position: absolute; left: 0; top: -50%; width: 100%; height: 50%;
+      background: var(--terra); animation: fall 2.6s var(--ease) infinite;
+    }
+    @keyframes fall { to { top: 110%; } }
+
+    /* ---------- sections ---------- */
+    section { padding: 130px 6vw; position: relative; }
+    .measure { max-width: 1060px; margin: 0 auto; }
+    .sec-label {
+      font-size: 12px; letter-spacing: .5em; text-transform: uppercase; color: var(--terra);
+      margin-bottom: 18px; display: flex; align-items: center; gap: 14px;
+    }
+    .sec-label::before { content: ''; width: 34px; height: 1px; background: var(--terra); }
+    .sec-title { font-family: var(--didot); font-weight: 400; font-size: clamp(30px, 3.8vw, 50px); line-height: 1.15; }
+    .sec-sub { margin-top: 16px; color: var(--soft); font-size: 15.5px; line-height: 1.75; max-width: 52ch; }
+
+    /* υπηρεσίες: αραιή λίστα με χρώμα ανά γραμμή */
+    .svc-list { margin-top: 64px; border-top: 1px solid var(--hair); }
+    .svc-row {
+      width: 100%; background: none; border: none; border-bottom: 1px solid var(--hair);
+      display: grid; grid-template-columns: 14px 1fr auto; gap: 4px 22px; align-items: baseline;
+      text-align: left; color: var(--ink);
+      padding: 30px 6px;
+      transition: padding-left .5s var(--ease), background .5s;
+    }
+    .svc-row:hover { padding-left: 22px; background: color-mix(in srgb, var(--row-c) 7%, transparent); }
+    .svc-row .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--row-c); align-self: center; }
+    .svc-row .nm { font-family: var(--didot); font-size: clamp(20px, 2.2vw, 27px); }
+    .svc-row .pr { font-size: 15px; color: var(--row-c); letter-spacing: .06em; white-space: nowrap; font-weight: 400; }
+    .svc-row .ds { grid-column: 2; color: var(--soft); font-size: 14px; line-height: 1.6; max-width: 62ch; }
+    .svc-row .bk {
+      grid-column: 3; grid-row: 2; font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--soft); opacity: 0; transform: translateX(-8px);
+      transition: opacity .45s, transform .45s var(--ease);
+    }
+    .svc-row:hover .bk { opacity: 1; transform: none; color: var(--row-c); }
+
+    /* ---------- ομάδα ---------- */
+    #omada { background: linear-gradient(180deg, var(--bone), var(--bone-2)); }
+    .team-list { margin-top: 60px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .team-row {
+      padding: 38px 28px 40px; border-radius: 4px;
+      background: color-mix(in srgb, var(--tint) 10%, var(--bone));
+      border-top: 2px solid var(--tint);
+      transition: transform .5s var(--ease);
+    }
+    .team-row:hover { transform: translateY(-4px); }
+    .team-row .ini {
+      font-family: var(--didot); font-size: 34px; color: var(--tint);
+      width: 62px; height: 62px; border-radius: 50%;
+      background: color-mix(in srgb, var(--tint) 16%, var(--bone));
+      display: grid; place-items: center;
+    }
+    .team-row h3 { font-size: 16px; font-weight: 400; letter-spacing: .06em; margin-top: 18px; }
+    .team-row p { margin-top: 8px; font-size: 13.5px; color: var(--soft); line-height: 1.65; }
+
+    /* ---------- κράτηση-πρόταση ---------- */
+    .booking { background: linear-gradient(180deg, var(--bone-2), var(--blush)); }
+    .sentence {
+      margin-top: 70px;
+      font-family: var(--didot); font-size: clamp(24px, 3.4vw, 44px); line-height: 1.9;
+      max-width: 900px;
+    }
+    .blank {
+      background: none; border: none; font: inherit; color: var(--terra);
+      border-bottom: 1px solid var(--terra); padding: 0 6px 2px;
+      transition: background .4s, color .4s;
+      white-space: nowrap;
+    }
+    .blank:hover { background: color-mix(in srgb, var(--terra) 10%, transparent); }
+    .blank.empty { color: var(--soft); border-bottom: 1px dashed var(--soft); }
+    .blank.active { background: color-mix(in srgb, var(--terra) 14%, transparent); }
+    .panel-zone { margin-top: 50px; min-height: 150px; }
+    .panel { display: none; }
+    .panel.on { display: block; animation: rise .6s var(--ease) both; }
+    @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+    .panel .p-label { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--soft); margin-bottom: 20px; }
+    .p-opts { display: flex; flex-wrap: wrap; gap: 10px; }
+    .p-opt {
+      background: var(--bone); border: 1px solid var(--hair); border-radius: 999px;
+      padding: 14px 24px; font-size: 14.5px; color: var(--ink); text-align: left;
+      transition: border-color .4s, transform .4s var(--ease), background .4s;
+    }
+    .p-opt:hover { border-color: var(--terra); background: color-mix(in srgb, var(--terra) 6%, var(--bone)); transform: translateY(-2px); }
+    .p-opt.sel { background: var(--terra); color: #fff; border-color: var(--terra); }
+    .p-opt small { color: inherit; opacity: .6; margin-left: 8px; font-size: 12.5px; }
+    .p-opt:disabled { opacity: .3; text-decoration: line-through; cursor: not-allowed; transform: none; }
+    .details-zone {
+      margin-top: 60px; display: none; gap: 16px; flex-wrap: wrap; align-items: flex-end;
+    }
+    .details-zone.on { display: flex; animation: rise .6s var(--ease) both; }
+    .dfield { flex: 1; min-width: 220px; }
+    .dfield label { display: block; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--soft); margin-bottom: 10px; }
+    .dfield input {
+      width: 100%; background: none; border: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+      padding: 10px 2px; font: 300 17px var(--sans); color: var(--ink);
+    }
+    .dfield input:focus { outline: none; border-bottom-color: var(--terra); }
+    .booked {
+      display: none; margin-top: 70px; text-align: center; padding: 20px 0;
+    }
+    .booked.on { display: block; animation: rise .8s var(--ease) both; }
+    .booked .mark {
+      font-family: var(--didot); font-size: 30px; color: var(--terra);
+      width: 76px; height: 76px; border: 1px solid var(--terra); border-radius: 50%;
+      display: grid; place-items: center; margin: 0 auto 30px;
+      background: color-mix(in srgb, var(--terra) 8%, transparent);
+      animation: breathe 5s ease-in-out infinite;
+    }
+    @keyframes breathe { 50% { transform: scale(1.06); } }
+    .booked h3 { font-family: var(--didot); font-weight: 400; font-size: clamp(26px, 3vw, 38px); }
+    .booked p { margin-top: 16px; color: var(--soft); font-size: 15.5px; line-height: 1.8; max-width: 52ch; margin-inline: auto; }
+    .booked .code { margin-top: 20px; font-size: 13px; letter-spacing: .3em; color: var(--terra); text-transform: uppercase; }
+    .text-btn {
+      background: none; border: none; font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--soft); text-decoration: underline; text-underline-offset: 5px; text-decoration-color: var(--hair);
+      transition: color .4s; margin-top: 30px;
+    }
+    .text-btn:hover { color: var(--terra); }
+
+    footer { padding: 90px 6vw 50px; border-top: 1px solid var(--hair); }
+    .foot-grid { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 36px; }
+    footer h4 { font-family: var(--didot); font-weight: 400; font-size: 17px; margin-bottom: 12px; letter-spacing: .08em; color: var(--terra-dark); }
+    footer p, footer a { font-size: 13.5px; color: var(--soft); line-height: 1.9; text-decoration: none; }
+    .demo-note { max-width: 1060px; margin: 44px auto 0; font-size: 11.5px; color: var(--soft); opacity: .6; border-top: 1px solid var(--hair); padding-top: 22px; }
+
+    @media (max-width: 940px) {
+      .nav-links a { display: none; }
+      section { padding: 90px 6vw; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .rv { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">ΜΕΤΑ<span>Ξ</span>Ι</div>
+  <div class="nav-links">
+    <a href="#ypiresies">Υπηρεσίες</a>
+    <a href="#omada">Η ομάδα</a>
+    <button class="cta" data-goto="#kratisi">Κράτηση</button>
+  </div>
+</nav>
+
+<header>
+  <video class="hero-video" autoplay muted loop playsinline
+         poster="/videos/metaxi-hero.jpg" src="/videos/metaxi-hero.mp4"
+         aria-hidden="true"></video>
+  <div class="hero-veil" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <p class="kicker rv">Hair atelier · Κολωνάκι</p>
+    <h1 class="rv" style="--d:.12s">Μαλλιά ελαφριά<br />σαν <em>αέρας</em>.</h1>
+    <p class="hero-sub rv" style="--d:.24s">
+      Λιγότερα, καλύτερα. Ένα ήσυχο atelier, τρία ζευγάρια προσεκτικά χέρια,
+      και χρόνος για τα μαλλιά σου — όχι πάνω από ένα ραντεβού στην ίδια καρέκλα.
+    </p>
+    <div class="hero-actions rv" style="--d:.36s">
+      <button class="btn" data-goto="#kratisi">Κλείσε ραντεβού</button>
+      <button class="btn quiet" data-goto="#ypiresies">Δες τις υπηρεσίες</button>
+    </div>
+  </div>
+  <div class="scroll-hint" aria-hidden="true"></div>
+</header>
+
+<section id="ypiresies">
+  <div class="measure">
+    <p class="sec-label rv">Υπηρεσίες</p>
+    <h2 class="sec-title rv" style="--d:.1s">Ό,τι χρειάζεσαι.<br />Τίποτα παραπάνω.</h2>
+    <div class="svc-list rv" style="--d:.2s" id="svcList"></div>
+  </div>
+</section>
+
+<section id="omada">
+  <div class="measure">
+    <p class="sec-label rv">Η ομάδα</p>
+    <h2 class="sec-title rv" style="--d:.1s">Τρία ζευγάρια χέρια.</h2>
+    <div class="team-list rv" style="--d:.2s">
+      <div class="team-row" style="--tint:#b05c38"><div class="ini">Ζ</div><h3>Ζωή</h3><p>Χρώμα. Δεκατέσσερα χρόνια φόρμουλες, καμία βιασύνη.</p></div>
+      <div class="team-row" style="--tint:#b98a4f"><div class="ini">Ι</div><h3>Ιάσονας</h3><p>Κούρεμα με ψαλίδι. Πιστεύει στο σχήμα, όχι στη μηχανή.</p></div>
+      <div class="team-row" style="--tint:#a98070"><div class="ini">Ν</div><h3>Νεφέλη</h3><p>Θεραπείες και χτενίσματα. Τα χέρια της είναι μασάζ.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="booking" id="kratisi">
+  <div class="measure">
+    <p class="sec-label rv">Κράτηση</p>
+    <h2 class="sec-title rv" style="--d:.1s">Μία πρόταση, κι έκλεισες.</h2>
+
+    <div id="builder">
+      <p class="sentence rv" style="--d:.2s">
+        Θα ήθελα <button class="blank empty" id="bSvc" data-panel="svc">μια περιποίηση</button>
+        με <button class="blank empty" id="bSty" data-panel="sty">όποιον προτείνετε</button>,
+        την <button class="blank empty" id="bDay" data-panel="day">ημέρα που βολεύει</button>
+        στις <button class="blank empty" id="bTime" data-panel="time">…</button>.
+      </p>
+
+      <div class="panel-zone rv" style="--d:.28s">
+        <div class="panel" data-p="svc">
+          <p class="p-label">Η περιποίηση</p>
+          <div class="p-opts" id="pSvc"></div>
+        </div>
+        <div class="panel" data-p="sty">
+          <p class="p-label">Το άτομο</p>
+          <div class="p-opts" id="pSty"></div>
+        </div>
+        <div class="panel" data-p="day">
+          <p class="p-label">Η ημέρα — Κυριακή και Δευτέρα ξεκουραζόμαστε</p>
+          <div class="p-opts" id="pDay"></div>
+        </div>
+        <div class="panel" data-p="time">
+          <p class="p-label">Η ώρα</p>
+          <div class="p-opts" id="pTime"></div>
+        </div>
+      </div>
+
+      <div class="details-zone" id="detailsZone">
+        <div class="dfield">
+          <label for="fName">Ονοματεπώνυμο</label>
+          <input id="fName" type="text" autocomplete="name" />
+        </div>
+        <div class="dfield">
+          <label for="fPhone">Κινητό για την υπενθύμιση</label>
+          <input id="fPhone" type="tel" autocomplete="tel" />
+        </div>
+        <button class="btn" id="confirmBtn" disabled>Επιβεβαίωση</button>
+      </div>
+    </div>
+
+    <div class="booked" id="booked">
+      <div class="mark">✓</div>
+      <h3>Σε περιμένουμε.</h3>
+      <p id="bookedTxt"></p>
+      <p class="code" id="bookedCode"></p>
+      <button class="text-btn" id="againBtn">Νέα κράτηση</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-grid">
+    <div><h4>ΜΕΤΑΞΙ</h4><p>Σκουφά 41, Κολωνάκι<br />Τρ–Παρ 10:00–20:00 · Σάβ 9:00–17:00</p></div>
+    <div><h4>Επικοινωνία</h4><p><a href="tel:+302100000000">210 000 0000</a><br /><a href="mailto:hello@metaxi.gr">hello@metaxi.gr</a></p></div>
+    <div><h4>Ραντεβού</h4><p>Online, όλο το 24ωρο.<br />Ακύρωση ως 3 ώρες πριν, χωρίς χρέωση.</p></div>
+  </div>
+  <p class="demo-note">Ενδεικτική σελίδα επίδειξης — το «ΜΕΤΑΞΙ» είναι φανταστικό κομμωτήριο και οι κρατήσεις δεν αποθηκεύονται πουθενά. Βίντεο: Pexels (δωρεάν άδεια).</p>
+</footer>
+
+<script is:inline type="module">
+  /* ================= δεδομένα (mock) ================= */
+  const SERVICES = [
+    { id: 'cut',     name: 'Κούρεμα & styling', dur: 45,  price: 28,  desc: 'Συζήτηση, λούσιμο, κούρεμα, φινίρισμα. Φεύγεις έτοιμη.' },
+    { id: 'color',   name: 'Βαφή ρίζας',        dur: 75,  price: 45,  desc: 'Η φόρμουλά σου μένει στην καρτέλα σου — ίδια ρίζα κάθε φορά.' },
+    { id: 'balayage',name: 'Balayage',           dur: 150, price: 120, desc: 'Ανταύγειες με ελεύθερο χέρι, που μεγαλώνουν όμορφα.' },
+    { id: 'keratin', name: 'Θεραπεία κερατίνης', dur: 120, price: 90,  desc: 'Λείανση και λάμψη για τρεις με τέσσερις μήνες.' },
+    { id: 'updo',    name: 'Χτένισμα',           dur: 40,  price: 25,  desc: 'Για γάμο, γιορτή, ή απλώς επειδή είναι Σάββατο.' },
+    { id: 'consult', name: 'Ραντεβού γνωριμίας', dur: 20,  price: 0,   desc: 'Κουβέντα πριν από μια μεγάλη αλλαγή. Δωρεάν.' },
+  ];
+  const ROW_COLORS = ['#b05c38', '#b98a4f', '#a98070'];
+  const STYLISTS = [
+    { id: 'zoi',     name: 'τη Ζωή',     tag: 'χρώμα' },
+    { id: 'iasonas', name: 'τον Ιάσονα', tag: 'κούρεμα' },
+    { id: 'nefeli',  name: 'τη Νεφέλη',  tag: 'θεραπείες' },
+    { id: 'any',     name: 'όποιον προτείνετε', tag: 'πιο σύντομη αναμονή' },
+  ];
+  const DAY_NAMES = ['Κυριακή','Δευτέρα','Τρίτη','Τετάρτη','Πέμπτη','Παρασκευή','Σάββατο'];
+  const MONTHS = ['Ιανουαρίου','Φεβρουαρίου','Μαρτίου','Απριλίου','Μαΐου','Ιουνίου','Ιουλίου','Αυγούστου','Σεπτεμβρίου','Οκτωβρίου','Νοεμβρίου','Δεκεμβρίου'];
+  const hashCode = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) | 0; return Math.abs(h); };
+
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) document.querySelector('.hero-video')?.pause?.();
+
+  /* ================= απαλή κίνηση: lenis + reveals ================= */
+  let lenis = null;
+  if (!reduceMotion) {
+    try {
+      const { default: Lenis } = await import('https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.mjs');
+      lenis = new Lenis({ duration: 1.5, smoothWheel: true });
+      const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
+      requestAnimationFrame(raf);
+    } catch { /* χωρίς lenis, το scroll μένει native */ }
+  }
+  const goto = el => {
+    if (typeof el === 'string') el = document.querySelector(el);
+    if (!el) return;
+    if (lenis) lenis.scrollTo(el, { offset: -60, duration: 1.6 });
+    else el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+  };
+  document.querySelectorAll('[data-goto]').forEach(b => b.addEventListener('click', () => goto(b.dataset.goto)));
+
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { threshold: .12 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+  /* ================= υπηρεσίες ================= */
+  const svcList = document.getElementById('svcList');
+  SERVICES.forEach((s, i) => {
+    const el = document.createElement('button');
+    el.className = 'svc-row';
+    el.style.setProperty('--row-c', ROW_COLORS[i % ROW_COLORS.length]);
+    el.innerHTML = `<span class="dot" aria-hidden="true"></span>
+      <span class="nm">${s.name}</span>
+      <span class="pr">${s.price === 0 ? 'δωρεάν' : s.price + ' €'} · ${s.dur}′</span>
+      <span class="ds">${s.desc}</span>
+      <span class="bk">κλείσε ώρα →</span>`;
+    el.addEventListener('click', () => { pickSvc(s); goto('#kratisi'); });
+    svcList.appendChild(el);
+  });
+
+  /* ================= κράτηση-πρόταση ================= */
+  const bk = { service: null, stylist: null, day: null, time: null };
+  const blanks = { svc: document.getElementById('bSvc'), sty: document.getElementById('bSty'), day: document.getElementById('bDay'), time: document.getElementById('bTime') };
+  const ORDER = ['svc', 'sty', 'day', 'time'];
+
+  function showPanel(key) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.toggle('on', p.dataset.p === key));
+    Object.entries(blanks).forEach(([k, b]) => b.classList.toggle('active', k === key));
+    if (key === 'day') buildDays();
+    if (key === 'time') buildTimes();
+  }
+  Object.entries(blanks).forEach(([k, b]) => b.addEventListener('click', () => showPanel(k)));
+
+  function nextEmpty(after) {
+    const map = { svc: bk.service, sty: bk.stylist, day: bk.day, time: bk.time };
+    const start = ORDER.indexOf(after) + 1;
+    for (let i = 0; i < ORDER.length; i++) {
+      const k = ORDER[(start + i) % ORDER.length];
+      if (!map[k]) return k;
+    }
+    return null;
+  }
+  function advance(from) {
+    const nxt = nextEmpty(from);
+    if (nxt) showPanel(nxt);
+    else {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+      Object.values(blanks).forEach(b => b.classList.remove('active'));
+      document.getElementById('detailsZone').classList.add('on');
+      checkDetails();
+    }
+  }
+
+  const pSvc = document.getElementById('pSvc');
+  SERVICES.forEach(s => {
+    const b = document.createElement('button');
+    b.className = 'p-opt';
+    b.dataset.id = s.id;
+    b.innerHTML = `${s.name}<small>${s.price === 0 ? 'δωρεάν' : s.price + ' €'} · ${s.dur}′</small>`;
+    b.addEventListener('click', () => pickSvc(s));
+    pSvc.appendChild(b);
+  });
+  function pickSvc(s) {
+    bk.service = s;
+    pSvc.querySelectorAll('.p-opt').forEach(x => x.classList.toggle('sel', x.dataset.id === s.id));
+    blanks.svc.textContent = s.name.toLowerCase();
+    blanks.svc.classList.remove('empty');
+    bk.time = null; blanks.time.textContent = '…'; blanks.time.classList.add('empty');
+    advance('svc');
+  }
+  const pSty = document.getElementById('pSty');
+  STYLISTS.forEach(s => {
+    const b = document.createElement('button');
+    b.className = 'p-opt';
+    b.dataset.id = s.id;
+    b.innerHTML = `${s.name}<small>${s.tag}</small>`;
+    b.addEventListener('click', () => {
+      bk.stylist = s;
+      pSty.querySelectorAll('.p-opt').forEach(x => x.classList.toggle('sel', x.dataset.id === s.id));
+      blanks.sty.textContent = s.name;
+      blanks.sty.classList.remove('empty');
+      bk.time = null; blanks.time.textContent = '…'; blanks.time.classList.add('empty');
+      advance('sty');
+    });
+    pSty.appendChild(b);
+  });
+  function buildDays() {
+    const wrap = document.getElementById('pDay');
+    wrap.innerHTML = '';
+    const today = new Date();
+    for (let i = 1; i <= 14; i++) {
+      const d = new Date(today); d.setDate(today.getDate() + i);
+      if (d.getDay() === 0 || d.getDay() === 1) continue;
+      const b = document.createElement('button');
+      b.className = 'p-opt' + (bk.day && bk.day.toDateString() === d.toDateString() ? ' sel' : '');
+      b.textContent = DAY_NAMES[d.getDay()] + ' ' + d.getDate() + ' ' + MONTHS[d.getMonth()].slice(0, 3) + '.';
+      b.addEventListener('click', () => {
+        bk.day = d;
+        blanks.day.textContent = DAY_NAMES[d.getDay()] + ' ' + d.getDate() + ' ' + MONTHS[d.getMonth()];
+        blanks.day.classList.remove('empty');
+        bk.time = null; blanks.time.textContent = '…'; blanks.time.classList.add('empty');
+        advance('day');
+      });
+      wrap.appendChild(b);
+    }
+  }
+  function buildTimes() {
+    const wrap = document.getElementById('pTime');
+    wrap.innerHTML = '';
+    if (!bk.day || !bk.stylist) {
+      wrap.innerHTML = '<p style="font-size:14px;color:var(--soft)">Διάλεξε πρώτα άτομο και ημέρα.</p>';
+      return;
+    }
+    const base = ['10:00', '10:45', '11:30', '12:15', '13:00', '16:00', '16:45', '17:30', '18:15', '19:00'];
+    const h = hashCode(bk.day.toISOString().slice(0, 10) + bk.stylist.id);
+    let any = false;
+    base.forEach((t, i) => {
+      const free = ((h >> i) & 3) !== 0;
+      if (free) any = true;
+      const b = document.createElement('button');
+      b.className = 'p-opt' + (bk.time === t ? ' sel' : '');
+      b.textContent = t;
+      b.disabled = !free;
+      b.addEventListener('click', () => {
+        bk.time = t;
+        blanks.time.textContent = t;
+        blanks.time.classList.remove('empty');
+        advance('time');
+      });
+      wrap.appendChild(b);
+    });
+    if (!any) wrap.innerHTML = '<p style="font-size:14px;color:var(--soft)">Γεμάτη μέρα — δοκίμασε την επόμενη.</p>';
+  }
+
+  const fName = document.getElementById('fName');
+  const fPhone = document.getElementById('fPhone');
+  function checkDetails() {
+    document.getElementById('confirmBtn').disabled =
+      !(bk.service && bk.stylist && bk.day && bk.time &&
+        fName.value.trim().length > 2 && fPhone.value.replace(/\D/g, '').length >= 10);
+  }
+  fName.addEventListener('input', checkDetails);
+  fPhone.addEventListener('input', checkDetails);
+  document.getElementById('confirmBtn').addEventListener('click', () => {
+    const code = 'MX-' + String(hashCode(fName.value + bk.time) % 9000 + 1000);
+    document.getElementById('bookedTxt').textContent =
+      `${fName.value.trim().split(' ')[0]}, ${DAY_NAMES[bk.day.getDay()]} ${bk.day.getDate()} ${MONTHS[bk.day.getMonth()]} στις ${bk.time}, για ${bk.service.name.toLowerCase()} με ${bk.stylist.id === 'any' ? 'την ομάδα μας' : bk.stylist.name}. Θα λάβεις SMS υπενθύμιση μία μέρα πριν.`;
+    document.getElementById('bookedCode').textContent = 'Κωδικος · ' + code;
+    document.getElementById('builder').style.display = 'none';
+    document.getElementById('booked').classList.add('on');
+    goto('#kratisi');
+  });
+  document.getElementById('againBtn').addEventListener('click', () => {
+    Object.assign(bk, { service: null, stylist: null, day: null, time: null });
+    fName.value = ''; fPhone.value = '';
+    blanks.svc.textContent = 'μια περιποίηση';
+    blanks.sty.textContent = 'όποιον προτείνετε';
+    blanks.day.textContent = 'ημέρα που βολεύει';
+    blanks.time.textContent = '…';
+    Object.values(blanks).forEach(b => b.classList.add('empty'));
+    document.querySelectorAll('.p-opt').forEach(x => x.classList.remove('sel'));
+    document.getElementById('detailsZone').classList.remove('on');
+    document.getElementById('booked').classList.remove('on');
+    document.getElementById('builder').style.display = '';
+    checkDetails();
+  });
+</script>
+</body>
+</html>
