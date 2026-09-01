@@ -1,0 +1,540 @@
+---
+// ΝΕΑ ΑΡΧΙΚΗ — πρόταση επανασχεδιασμού (dev preview, noindex, εκτός sitemap).
+// Κανόνες: σπασμένο λευκό (όχι #FFF/#000), 60/30/10, 3 ζώνες φόντου, μία
+// γραμματοσειρά (Inter), body 19px, ένα κύριο CTA, διπλάσια padding,
+// αντίθεση ≥4.5:1 παντού, πραγματικές φωτογραφίες, LCP = μικρό webp με preload.
+import '../styles/fonts.css';
+import { SITE, ELEGXOS, PROMISE, eur } from '../config';
+import { optionById, sumOf } from '../data/pricing';
+
+const sitePriceFrom = optionById('web-basic')!.price;
+
+const pkgIds = ['web-standard', 'gbp-setup', 'auto-reviews', 'care-web'];
+const pkgLabels: Record<string, string> = { 'web-standard': 'Ιστοσελίδα — Standard', 'gbp-setup': 'Προφίλ Google — Στήσιμο' };
+const pkg = pkgIds.map((id) => { const o = optionById(id)!; return { label: pkgLabels[id] ?? o.label, price: o.price, type: o.type }; });
+const totals = sumOf(pkgIds);
+
+const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θα ήθελα μια δωρεάν εκτίμηση για την επιχείρησή μου.')}`;
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>PISMA — Να σας βρίσκουν οι πελάτες</title>
+<meta name="description" content="Ιστοσελίδα, Google, AI και αυτοματισμοί γραφείου για μικρές επιχειρήσεις. Δημόσιες τιμές, μέτρηση πριν και μετά." />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="theme-color" content="#FAFAF8" />
+<link rel="preload" href="/fonts/inter-var-greek.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/photos/w/vitrina-800.webp" as="image" fetchpriority="high" />
+<style>
+/* ============ tokens ============ */
+:root {
+  /* 60% — ουδέτερο φόντο (σπασμένο λευκό) */
+  --bg: #FAFAF8;
+  /* 30% — δευτερεύον: κάρτες, ζώνη 2 */
+  --bg-2: #F1EFE9;
+  --card: #F4F2ED;
+  --card-on-2: #FBFAF7;
+  --line: #E1DED6;
+  --line-2: #D5D1C7;
+  /* κείμενο — ποτέ καθαρό μαύρο */
+  --ink: #16181D;      /* 17:1 στο bg */
+  --ink-2: #555B68;    /* 6.5:1 στο bg, 5.9:1 στο bg-2 */
+  /* 10% — accent, ΜΟΝΟ κουμπιά & links. 5.2:1 στο bg, 5.5:1 με λευκό κείμενο */
+  --accent: #BF3A12;
+  --accent-hover: #A8320F;
+  --accent-ink: #FFF7F3;
+  /* ζώνη 3 — σκούρο γκρι-μπλε (όχι μαύρο) */
+  --dark: #111318;
+  --dark-2: #171A20;
+  --dark-line: #2A2E36;
+  --dark-ink: #ECEAE4;   /* 15:1 */
+  --dark-ink-2: #B4B8C0; /* 9.3:1 */
+  --dark-accent: #FFA07A; /* 9.3:1 — accent κειμένου στο σκούρο */
+
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --r: 14px;
+  --wrap: 1120px;
+  --gutter: clamp(24px, 5vw, 48px);
+  --sec: clamp(96px, 12vw, 168px);   /* διπλάσιο από το συνηθισμένο */
+}
+
+/* ============ βάση ============ */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font); font-size: 1.1875rem; line-height: 1.6;
+  -webkit-font-smoothing: antialiased; overflow-x: clip;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+p { max-width: 62ch; }
+h1, h2, h3 { line-height: 1.08; letter-spacing: -.025em; text-wrap: balance; font-weight: 700; }
+h1 { font-size: clamp(2.3rem, 4.9vw, 3.7rem); letter-spacing: -.035em; }
+h2 { font-size: clamp(2rem, 4.2vw, 3rem); }
+h3 { font-size: 1.35rem; line-height: 1.25; letter-spacing: -.015em; }
+::selection { background: rgba(191, 58, 18, .2); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
+.sec { padding-block: var(--sec); }
+.kicker {
+  font-size: .95rem; font-weight: 600; color: var(--ink-2);
+  letter-spacing: .01em; margin-bottom: 22px;
+}
+.sec-head { max-width: 640px; margin-bottom: clamp(44px, 6vw, 72px); }
+.sec-head p { margin-top: 18px; color: var(--ink-2); }
+.skip { position: absolute; left: -999px; top: 12px; background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 8px; z-index: 100; }
+.skip:focus { left: 12px; }
+
+/* links: ο μόνος άλλος φορέας του accent */
+.lnk {
+  color: var(--accent); font-weight: 600; text-decoration: underline;
+  text-underline-offset: 5px; text-decoration-thickness: 1.5px;
+}
+.lnk:hover { color: var(--accent-hover); }
+
+/* κουμπί: ΕΝΑ στυλ, ένα χρώμα */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  background: var(--accent); color: var(--accent-ink);
+  border: 0; border-radius: 12px; padding: 18px 30px;
+  font: inherit; font-weight: 700; font-size: 1.125rem; line-height: 1.2;
+  text-decoration: none; cursor: pointer;
+  transition: background .18s ease, transform .18s ease;
+}
+.btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+.btn:active { transform: none; }
+.btn-note { margin-top: 14px; font-size: .95rem; color: var(--ink-2); }
+
+/* ============ nav ============ */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(250, 250, 248, .88);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: border-color .25s ease;
+}
+.nav.on { border-bottom-color: var(--line); }
+.nav-in { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 76px; }
+.logo { font-weight: 800; font-size: 1.35rem; letter-spacing: -.02em; text-decoration: none; }
+.logo b { color: var(--accent); }
+.nav-links { display: flex; gap: clamp(18px, 3vw, 36px); list-style: none; padding: 0; }
+.nav-links a { text-decoration: none; font-size: 1rem; font-weight: 500; color: var(--ink-2); }
+.nav-links a:hover { color: var(--ink); }
+/* Στην πρώτη οθόνη υπάρχει ΕΝΑ κουμπί (του hero). Το nav-CTA γίνεται
+   γεμάτο μόνο αφού το hero φύγει από την οθόνη. */
+.nav .btn { padding: 12px 20px; font-size: 1rem; background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line-2); }
+.nav .btn:hover { background: var(--card); transform: none; }
+.nav.on .btn { background: var(--accent); color: var(--accent-ink); box-shadow: none; }
+.nav.on .btn:hover { background: var(--accent-hover); }
+@media (max-width: 820px) { .nav-links { display: none; } }
+.nav .btn { white-space: nowrap; }
+@media (max-width: 480px) {
+  .nav .btn { padding: 10px 14px; font-size: .86rem; }
+  /* Στο κινητό το nav-CTA εμφανίζεται μόνο αφού φύγει το hero (εκεί υπάρχει ήδη το κουμπί) */
+  .nav:not(.on) .btn { visibility: hidden; }
+}
+
+/* ============ ζώνη 1: hero ============ */
+.hero { padding-block: clamp(40px, 6vw, 84px) clamp(48px, 6vw, 80px); }
+.hero-grid {
+  display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  gap: clamp(40px, 6vw, 88px); align-items: center;
+}
+.hero h1 { margin-bottom: 26px; }
+.hero .sub { color: var(--ink-2); font-size: 1.25rem; max-width: 34ch; }
+.hero-cta { margin-top: 40px; display: grid; gap: 4px; justify-items: start; }
+.hero-alt { margin-top: 22px; font-size: 1rem; color: var(--ink-2); }
+.hero-photo { position: relative; }
+.hero-photo img {
+  width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+  border-radius: 20px; background: var(--card);
+}
+.hero-photo figcaption {
+  margin-top: 12px; font-size: .95rem; color: var(--ink-2);
+}
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero .sub { max-width: 52ch; }
+}
+@media (max-width: 600px) {
+  body { font-size: 1.125rem; }
+  .hero { padding-top: 32px; }
+  .hero .sub { font-size: 1.125rem; }
+  .hero-cta, .hero-cta .btn { width: 100%; }
+  .hero-cta .btn { padding-inline: 16px; font-size: 1.05rem; white-space: nowrap; }
+}
+
+/* αριθμοί-δεσμεύσεις: απλή γραμμή, χωρίς κουτιά */
+.proof {
+  display: flex; flex-wrap: wrap; gap: 18px 44px;
+  list-style: none; padding: 28px 0 0; margin: 0;
+  border-top: 1px solid var(--line);
+}
+.proof li { display: grid; gap: 2px; }
+.proof strong { font-size: 1.45rem; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.proof span { font-size: .95rem; color: var(--ink-2); }
+
+/* λωρίδα πραγματικών φωτογραφιών */
+.strip { padding-top: clamp(48px, 6vw, 80px); }
+.strip-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.strip figure { margin: 0; }
+.strip img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 14px; background: var(--card); }
+.strip figcaption { margin-top: 10px; font-size: .95rem; color: var(--ink-2); }
+.strip-note { margin-top: 26px; color: var(--ink-2); font-size: 1rem; }
+@media (max-width: 700px) { .strip-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* υπηρεσίες */
+.svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.svc {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--r);
+  padding: clamp(28px, 3.5vw, 40px); display: flex; flex-direction: column; gap: 14px;
+}
+.svc-n { font-size: .95rem; font-weight: 600; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.svc ul { list-style: none; padding: 0; display: grid; gap: 9px; color: var(--ink-2); font-size: 1.05rem; }
+.svc li { padding-left: 18px; position: relative; }
+.svc li::before { content: ''; position: absolute; left: 0; top: .72em; width: 7px; height: 7px; border-radius: 50%; background: var(--line-2); }
+.svc .lnk { margin-top: auto; padding-top: 10px; font-size: 1.05rem; align-self: start; }
+@media (max-width: 900px) { .svc-grid { grid-template-columns: 1fr; } }
+
+/* ============ ζώνη 2: δευτερεύον φόντο ============ */
+.zone2 { background: var(--bg-2); }
+
+/* βήματα */
+.steps { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(24px, 4vw, 48px); counter-reset: step; }
+.steps li { border-top: 2px solid var(--line-2); padding-top: 22px; }
+.steps li::before {
+  counter-increment: step; content: counter(step, decimal-leading-zero);
+  display: block; font-size: 2rem; font-weight: 700; letter-spacing: -.03em; margin-bottom: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.steps h3 { margin-bottom: 8px; }
+.steps p { color: var(--ink-2); font-size: 1.05rem; }
+@media (max-width: 900px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+
+/* πριν → μετά */
+.ba { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.ba-col { background: var(--card-on-2); border: 1px solid var(--line); border-radius: var(--r); padding: clamp(28px, 3.5vw, 40px); }
+.ba-col--after { background: var(--ink); color: var(--dark-ink); border-color: var(--ink); }
+.ba-label { font-size: .95rem; font-weight: 600; color: var(--ink-2); margin-bottom: 18px; }
+.ba-col--after .ba-label { color: var(--dark-ink-2); }
+.ba ul { list-style: none; padding: 0; display: grid; gap: 14px; font-size: 1.1rem; }
+.ba-col li { padding-left: 30px; position: relative; color: var(--ink-2); }
+.ba-col li::before { content: '—'; position: absolute; left: 0; color: var(--line-2); }
+.ba-col--after li { color: var(--dark-ink); }
+.ba-col--after li::before { content: '✓'; color: var(--dark-accent); font-weight: 700; }
+.ba-note { margin-top: 24px; color: var(--ink-2); font-size: 1rem; }
+@media (max-width: 760px) { .ba { grid-template-columns: 1fr; } }
+
+/* τιμές — δείγμα πακέτου */
+.price { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 88px); align-items: center; }
+.price-text p { color: var(--ink-2); margin-top: 18px; }
+.price-text .lnk { display: inline-block; margin-top: 28px; font-size: 1.1rem; }
+.pkg { background: var(--card-on-2); border: 1px solid var(--line); border-radius: var(--r); padding: clamp(24px, 3vw, 34px); }
+.pkg-title { font-size: .95rem; font-weight: 600; color: var(--ink-2); margin-bottom: 8px; }
+.pkg ul { list-style: none; padding: 0; }
+.pkg li { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 1.05rem; }
+.pkg li span:last-child { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pkg li em { font-style: normal; color: var(--ink-2); font-size: .9em; }
+.pkg-total { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; padding-top: 18px; align-items: baseline; }
+.pkg-total span { color: var(--ink-2); font-size: 1rem; }
+.pkg-total b { text-align: right; font-size: 1.6rem; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.pkg-total b.sm { font-size: 1.15rem; }
+@media (max-width: 800px) { .price { grid-template-columns: 1fr; } }
+
+/* ============ φωτογραφικό band ============ */
+.band { position: relative; min-height: clamp(360px, 46vw, 560px); display: grid; place-items: center; overflow: hidden; background: var(--dark); }
+.band img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+.band blockquote { position: relative; margin: 0; padding: 40px var(--gutter); text-align: center; }
+.band p {
+  color: var(--dark-ink); font-weight: 700; letter-spacing: -.025em;
+  font-size: clamp(1.9rem, 4.6vw, 3.2rem); line-height: 1.12; max-width: 18ch; margin-inline: auto;
+}
+
+/* ============ ζώνη 3: σκούρο ============ */
+.zone3 { background: var(--dark); color: var(--dark-ink); }
+.final { text-align: center; padding-block: var(--sec); }
+.final h2 { max-width: 20ch; margin-inline: auto; }
+.final p { color: var(--dark-ink-2); margin: 22px auto 40px; max-width: 48ch; }
+.final .btn-note { color: var(--dark-ink-2); }
+.final .btn { font-size: 1.2rem; padding: 20px 36px; }
+
+.foot { border-top: 1px solid var(--dark-line); padding-block: clamp(48px, 6vw, 72px) 36px; }
+.foot-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.2fr; gap: 36px; }
+.foot .logo { color: var(--dark-ink); }
+.foot .logo b { color: var(--dark-accent); }
+.foot-tag { margin-top: 12px; color: var(--dark-ink-2); font-size: 1rem; max-width: 26ch; }
+.foot h4 { font-size: .9rem; font-weight: 600; color: var(--dark-ink-2); margin-bottom: 16px; letter-spacing: .02em; }
+.foot ul { list-style: none; padding: 0; display: grid; gap: 10px; }
+.foot ul a { text-decoration: none; color: var(--dark-ink); font-size: 1rem; }
+.foot ul a:hover { color: var(--dark-accent); }
+.foot-bottom { margin-top: 48px; padding-top: 22px; border-top: 1px solid var(--dark-line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; color: var(--dark-ink-2); font-size: .95rem; }
+@media (max-width: 860px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .foot-grid { grid-template-columns: 1fr; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn, .nav { transition: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Μετάβαση στο περιεχόμενο</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="/">PISMA<b>.</b></a>
+    <ul class="nav-links">
+      <li><a href="#ypiresies">Υπηρεσίες</a></li>
+      <li><a href="/times/">Τιμές</a></li>
+      <li><a href="/apotelesmata/">Αποτελέσματα</a></li>
+      <li><a href="/odigoi/">Οδηγοί</a></li>
+      <li><a href="/epikoinonia/">Επικοινωνία</a></li>
+    </ul>
+    <a class="btn" href="/tablo/">Μετρήστε την επιχείρησή σας</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ζώνη 1 -->
+  <section class="hero" aria-labelledby="h1" id="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="kicker">Για καφέ, κομμωτήρια, φούρνους, ταβέρνες και κάθε μικρή επιχείρηση</p>
+          <h1 id="h1">Να σας βρίσκουν οι πελάτες. Στη Google, στο site σας, στο AI.</h1>
+          <p class="sub">Στήνουμε την παρουσία της επιχείρησής σας online και αυτοματοποιούμε τη ρουτίνα του γραφείου. Με δημόσιες τιμές και μέτρηση πριν και μετά.</p>
+          <div class="hero-cta">
+            <a class="btn" href="/tablo/">Μετρήστε την επιχείρησή σας</a>
+            <p class="btn-note">2 λεπτά · χωρίς email · χωρίς δέσμευση</p>
+          </div>
+          <p class="hero-alt">ή <a class="lnk" href="/elegxos/">κλείστε δωρεάν αξιολόγηση {ELEGXOS.minutes} λεπτών</a></p>
+        </div>
+        <figure class="hero-photo">
+          <img
+            src="/photos/w/vitrina-800.webp"
+            srcset="/photos/w/vitrina-800.webp 800w"
+            sizes="(max-width: 900px) 100vw, 480px"
+            width="800" height="600"
+            fetchpriority="high" decoding="async"
+            alt="Βιτρίνα καφέ σε πεζόδρομο, με μαυροπίνακα τιμών στο πλακόστρωτο"
+          />
+          <figcaption>Το καφέ της γωνίας. Ένα από τα μαγαζιά που δουλεύουμε μαζί.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" aria-label="Δεσμεύσεις">
+    <ul class="proof">
+      <li><strong>από {eur(sitePriceFrom)}</strong><span>ιστοσελίδα</span></li>
+      <li><strong>{PROMISE.previewHours} ώρες</strong><span>πρώτο preview</span></li>
+      <li><strong>{ELEGXOS.reportHours} ώρες</strong><span>γραπτή πρόταση</span></li>
+      <li><strong>100%</strong><span>δημόσιες τιμές</span></li>
+    </ul>
+  </section>
+
+  <section class="strip" aria-label="Μαγαζιά που δουλεύουμε μαζί">
+    <div class="wrap">
+      <div class="strip-grid">
+        <figure><img src="/photos/w/kafe-640.webp" width="640" height="439" loading="lazy" decoding="async" alt="Μπαρίστα πίσω από τον πάγκο καφέ" /><figcaption>Καφέ</figcaption></figure>
+        <figure><img src="/photos/w/barber-640.webp" width="640" height="427" loading="lazy" decoding="async" alt="Μπαρμπέρης κουρεύει πελάτη" /><figcaption>Μπαρμπέρικο</figcaption></figure>
+        <figure><img src="/photos/w/fournos-640.webp" width="640" height="426" loading="lazy" decoding="async" alt="Φρεσκοψημένα καρβέλια ψωμί" /><figcaption>Φούρνος</figcaption></figure>
+        <figure><img src="/photos/w/kafedes-640.webp" width="640" height="427" loading="lazy" decoding="async" alt="Τρία ποτήρια καφέ τσουγκρίζουν πάνω από ξύλινο τραπέζι" /><figcaption>Ταβέρνα</figcaption></figure>
+      </div>
+      <p class="strip-note">Δουλεύουμε με μαγαζιά σαν το δικό σας, στα νότια προάστια και online σε όλη την Ελλάδα.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="ypiresies" aria-labelledby="svc-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="kicker">Υπηρεσίες</p>
+        <h2 id="svc-h">Τρεις δουλειές. Ένα αποτέλεσμα: περισσότεροι πελάτες, λιγότερες ώρες γραφείου.</h2>
+      </div>
+      <div class="svc-grid">
+        <article class="svc">
+          <span class="svc-n">01</span>
+          <h3>Ψηφιακή προβολή</h3>
+          <ul>
+            <li>Ιστοσελίδα που σας ταιριάζει και φέρνει πελάτες</li>
+            <li>Προφίλ Google στους Χάρτες και στην αναζήτηση</li>
+            <li>Να σας προτείνει το ChatGPT και το AI</li>
+            <li>Social media που μένουν ζωντανά</li>
+          </ul>
+          <a class="lnk" href="/se-vriskoun/">Δείτε πώς →</a>
+        </article>
+        <article class="svc">
+          <span class="svc-n">02</span>
+          <h3>Κριτικές Google</h3>
+          <ul>
+            <li>Οι ευχαριστημένοι πελάτες σας αφήνουν κριτική</li>
+            <li>Απλά, μέσα στο μαγαζί, χωρίς να τους κυνηγάτε</li>
+            <li>Η βαθμολογία ανεβαίνει, εμφανίζεστε ψηλότερα</li>
+          </ul>
+          <a class="lnk" href="/kritikes/">Δείτε πώς →</a>
+        </article>
+        <article class="svc">
+          <span class="svc-n">03</span>
+          <h3>Αυτοματισμοί γραφείου</h3>
+          <ul>
+            <li>Αυτόματο ταίριασμα πληρωμών με τιμολόγια</li>
+            <li>Υπενθυμίσεις εισπράξεων χωρίς τηλέφωνα</li>
+            <li>Η εικόνα της ημέρας σε ένα μήνυμα</li>
+          </ul>
+          <a class="lnk" href="/doulevei-mono-tou/">Δείτε πώς →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ζώνη 2 -->
+  <div class="zone2">
+    <section class="sec" aria-labelledby="how-h">
+      <div class="wrap">
+        <div class="sec-head">
+          <p class="kicker">Πώς δουλεύουμε</p>
+          <h2 id="how-h">Καθαρά βήματα, μετρήσιμο αποτέλεσμα.</h2>
+        </div>
+        <ol class="steps">
+          <li><h3>Αξιολόγηση</h3><p>{ELEGXOS.minutes} λεπτά, δωρεάν. Μαθαίνουμε την επιχείρησή σας και καταγράφουμε το «πριν».</p></li>
+          <li><h3>Πρόταση</h3><p>Σε {ELEGXOS.reportHours} ώρες, γραπτά και με τελική τιμή. Καμία δέσμευση.</p></li>
+          <li><h3>Υλοποίηση</h3><p>Έτοιμο σε 2 έως 4 εβδομάδες, χωρίς να σταματήσει η δουλειά σας.</p></li>
+          <li><h3>Ξαναμετράμε</h3><p>Μηνιαία αναφορά με νούμερα. Στους 3 μήνες συγκρίνουμε πού ήσασταν και πού είστε.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec" style="padding-top:0" aria-labelledby="ba-h">
+      <div class="wrap">
+        <div class="sec-head">
+          <p class="kicker">Πριν → Μετά</p>
+          <h2 id="ba-h">Τι αλλάζει όταν συνεργαστούμε</h2>
+        </div>
+        <div class="ba">
+          <div class="ba-col">
+            <p class="ba-label">Πριν</p>
+            <ul>
+              <li>Λίγες κριτικές</li>
+              <li>Δύσκολα σας βρίσκουν στη Google</li>
+              <li>Χαμένες ώρες σε δουλειές ρουτίνας</li>
+              <li>Το AI δεν σας εμφανίζει</li>
+            </ul>
+          </div>
+          <div class="ba-col ba-col--after">
+            <p class="ba-label">Με την PISMA</p>
+            <ul>
+              <li>Καθημερινά καινούργιες κριτικές</li>
+              <li>Σας βρίσκουν στη Google και στους Χάρτες</li>
+              <li>Η ρουτίνα γίνεται αυτόματα</li>
+              <li>Σας προτείνει το AI</li>
+            </ul>
+          </div>
+        </div>
+        <p class="ba-note">Μετράμε μαζί πού είστε σήμερα και πού θα φτάσετε σε 3 μήνες.</p>
+      </div>
+    </section>
+
+    <section class="sec" style="padding-top:0" aria-labelledby="price-h">
+      <div class="wrap price">
+        <div class="price-text">
+          <p class="kicker">Τιμές</p>
+          <h2 id="price-h">Φανερές τιμές. Φτιάχνετε το δικό σας πακέτο.</h2>
+          <p>Κανένα έτοιμο πακέτο. Διαλέγετε μόνο ό,τι χρειάζεστε, βλέπετε το σύνολο ζωντανά και παίρνετε την προσφορά γραπτώς.</p>
+          <a class="lnk" href="/times/">Δείτε όλες τις τιμές →</a>
+        </div>
+        <div class="pkg" aria-label="Δείγμα πακέτου">
+          <p class="pkg-title">Δείγμα πακέτου</p>
+          <ul>
+            {pkg.map((o) => (
+              <li><span>{o.label}</span><span>{eur(o.price)}{o.type === 'monthly' && <em> / μήνα</em>}</span></li>
+            ))}
+          </ul>
+          <div class="pkg-total">
+            <span>Αρχικό κόστος</span><b>{eur(totals.once)}</b>
+            <span>Μηνιαίο</span><b class="sm">{eur(totals.monthly)}</b>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="band" aria-label="Μέσα σε ένα καφέ που δουλεύει">
+    <img src="/photos/w/kafe-1600.webp" width="900" height="617" loading="lazy" decoding="async" alt="" />
+    <blockquote><p>Εσείς κρατάτε το μαγαζί. Εμείς το κάνουμε ορατό.</p></blockquote>
+  </section>
+
+  <!-- ζώνη 3 -->
+  <div class="zone3">
+    <section class="final wrap" aria-labelledby="final-h">
+      <h2 id="final-h">Δείτε σε 2 λεπτά πόσο ορατή είναι η επιχείρησή σας</h2>
+      <p>10 απλές ερωτήσεις, ένα σκορ, και βλέπετε ακριβώς τι σας λείπει.</p>
+      <a class="btn" href="/tablo/">Μετρήστε την επιχείρησή σας</a>
+      <p class="btn-note">Χωρίς email · χωρίς δέσμευση</p>
+    </section>
+
+    <footer class="foot">
+      <div class="wrap">
+        <div class="foot-grid">
+          <div>
+            <a class="logo" href="/">PISMA<b>.</b></a>
+            <p class="foot-tag">{SITE.tagline}</p>
+          </div>
+          <nav aria-label="Λύσεις">
+            <h4>Λύσεις</h4>
+            <ul>
+              <li><a href="/se-vriskoun/">Ψηφιακή προβολή</a></li>
+              <li><a href="/kritikes/">Κριτικές Google</a></li>
+              <li><a href="/doulevei-mono-tou/">Αυτοματισμοί</a></li>
+              <li><a href="/aftokollita/">Αυτοκόλλητα QR</a></li>
+            </ul>
+          </nav>
+          <nav aria-label="Εργαλεία">
+            <h4>Εργαλεία</h4>
+            <ul>
+              <li><a href="/tablo/">Το Ταμπλό</a></li>
+              <li><a href="/elegxos/">Δωρεάν αξιολόγηση</a></li>
+              <li><a href="/times/">Τιμές</a></li>
+              <li><a href="/odigoi/">Οδηγοί</a></li>
+            </ul>
+          </nav>
+          <div>
+            <h4>Επικοινωνία</h4>
+            <ul>
+              <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+              <li><a href={`tel:${SITE.phone.replace(/\s/g, '')}`}>{SITE.phone}</a></li>
+              <li><a href={waHref} target="_blank" rel="noopener">WhatsApp — απαντάμε την ίδια μέρα</a></li>
+              <li><a href={SITE.viber}>Viber</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="foot-bottom">
+          <p>© {year} PISMA</p>
+          <p>{SITE.region} · online σε όλη την Ελλάδα</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+</main>
+
+<script is:inline>
+  // Το nav-CTA γεμίζει με accent μόνο αφού το hero βγει από την οθόνη.
+  const nav = document.getElementById('nav');
+  const hero = document.getElementById('hero');
+  let raf = 0;
+  const update = () => { raf = 0; nav.classList.toggle('on', window.scrollY > hero.offsetTop + hero.offsetHeight - 80); };
+  addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
+  update();
+</script>
+</body>
+</html>
