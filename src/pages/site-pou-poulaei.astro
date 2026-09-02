@@ -46,7 +46,7 @@ const why = [
     icon: 'target',
   },
   {
-    t: 'Μετρήσιμο — ξέρεις τι απέδωσε',
+    t: 'Μετρήσιμο — ξέρετε τι απέδωσε',
     d: 'Πόσοι μπήκαν, πόσοι πάτησαν «Κάλεσε», από πού ήρθαν. Το site λογοδοτεί με νούμερα, κάθε μήνα.',
     icon: 'chart',
   },
@@ -59,19 +59,19 @@ const faqItems = [
   },
   {
     q: 'Τι χρειάζεται να φέρω εγώ;',
-    a: 'Ό,τι έχεις: λογότυπο, φωτογραφίες, τιμοκατάλογο, δυο λόγια για τη δουλειά σου. Τα υπόλοιπα — δομή, κείμενα, στήσιμο — τα αναλαμβάνουμε εμείς.',
+    a: 'Ό,τι έχετε: λογότυπο, φωτογραφίες, τιμοκατάλογο, δυο λόγια για τη δουλειά σας. Τα υπόλοιπα — δομή, κείμενα, στήσιμο — τα αναλαμβάνουμε εμείς.',
   },
   {
     q: 'Το site θα είναι δικό μου;',
-    a: 'Ναι, εξ ολοκλήρου. Domain, περιεχόμενο και αρχεία ανήκουν στην επιχείρησή σου — ό,τι κι αν γίνει με τη συνεργασία μας.',
+    a: 'Ναι, εξ ολοκλήρου. Domain, περιεχόμενο και αρχεία ανήκουν στην επιχείρησή σας — ό,τι κι αν γίνει με τη συνεργασία μας.',
   },
   {
     q: 'Πόσο κοστίζει;',
-    a: `Τρεις καθαρές βαθμίδες, εφάπαξ: Basic ${eur(basic.price)}, Standard ${eur(standard.price)}, Pro ${eur(pro.price)}. Ό,τι μηνιαίο (π.χ. συντήρηση) είναι προαιρετικό και δημόσια τιμολογημένο στο /times/.`,
+    a: `Τρεις καθαρές βαθμίδες, εφάπαξ: Basic ${eur(basic.price)}, Standard ${eur(standard.price)}, Pro ${eur(pro.price)}. Ό,τι μηνιαίο (π.χ. συντήρηση) είναι προαιρετικό και δημόσια τιμολογημένο στη σελίδα τιμών.`,
   },
   {
     q: 'Θα με βρίσκουν στη Google με αυτό;',
-    a: 'Το site χτίζεται τεχνικά σωστό για τη Google από την πρώτη μέρα. Αν θες και ενεργή άνοδο θέσεων (SEO), είναι ξεχωριστή υπηρεσία — τη βλέπεις στη σελίδα της Ψηφιακής Προβολής.',
+    a: 'Το site χτίζεται τεχνικά σωστό για τη Google από την πρώτη μέρα. Αν θέλετε και ενεργή άνοδο θέσεων (SEO), είναι ξεχωριστή υπηρεσία — τη βλέπετε στη σελίδα της Ψηφιακής Προβολής.',
   },
 ];
 ---
@@ -123,7 +123,7 @@ const faqItems = [
                   <span class="sp-url">lyra-wines.gr</span>
                 </div>
                 <div class="sp-view" id="sp-view">
-                  <iframe class="sp-iframe" id="sp-iframe" src="/site-demo/lyra/index.html" title="Ζωντανό δείγμα — Οινοποιείο Λύρα" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+                  <iframe class="sp-iframe" id="sp-iframe" src="/site-demo/lyra/index.html" title="Ζωντανό δείγμα — Οινοποιείο Λύρα" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
                 </div>
               </div>
             </div>
@@ -199,7 +199,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">Συχνές ερωτήσεις</p>
-        <h2 id="faq-title">Πριν ρωτήσεις, ρώτησαν άλλοι.</h2>
+        <h2 id="faq-title">Πριν ρωτήσετε, ρώτησαν άλλοι.</h2>
       </div>
       <Faq items={faqItems} withSchema />
     </div>
@@ -255,7 +255,7 @@ const faqItems = [
   .sp-cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
   .sp-note { color: var(--muted); font-size: .78rem; margin: 14px 0 0; max-width: 42ch; }
   @media (max-width: 960px) {
-    .sp-grid { grid-template-columns: 1fr; }
+    .sp-grid { grid-template-columns: minmax(0, 1fr); }
     .sp-stage { margin-inline: auto; }
   }
 

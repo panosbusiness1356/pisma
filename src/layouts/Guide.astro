@@ -68,7 +68,7 @@ const T = {
 
 const url = `${SITE.url}${T.base}${slug}/`;
 const homeUrl = lang === 'en' ? `${SITE.url}/en/` : `${SITE.url}/`;
-const updatedHuman = new Date(updated).toLocaleDateString(T.locale, {
+const updatedHuman = new Date(updated + 'T12:00:00').toLocaleDateString(T.locale, {
   day: 'numeric', month: 'long', year: 'numeric',
 });
 
@@ -81,7 +81,7 @@ const schema = [
     inLanguage: lang,
     datePublished: updated,
     dateModified: updated,
-    image: `${SITE.url}/og.png`,
+    image: `${SITE.url}${lang === 'en' ? '/og-en.png' : '/og.png'}`,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     author: { '@type': 'Organization', name: SITE.name, url: SITE.url },
     publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },

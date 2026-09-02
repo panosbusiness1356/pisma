@@ -124,7 +124,7 @@ const faqItems = [
       <div class="card offer-card reveal">
         <h2 id="offer-title">Λάβετε την προσφορά σας γραπτώς</h2>
         <p class="offer-sub">Σας απαντάμε εντός {ELEGXOS.reportHours} ωρών — χωρίς καμία δέσμευση.</p>
-        <form id="offer-form" novalidate>
+        <form id="offer-form" action={`https://formsubmit.co/${SITE.email}`} method="POST" novalidate>
           <label class="f-field">
             <span>Ονοματεπώνυμο ή επωνυμία</span>
             <input type="text" name="name" required autocomplete="name" />
@@ -406,7 +406,7 @@ const faqItems = [
   .f-field input, .f-field textarea {
     width: 100%; padding: 12px 14px;
     background: var(--bg-soft); color: var(--ink);
-    border: 1px solid var(--line-strong); border-radius: 10px; outline: none;
+    border: 1px solid var(--line-strong); border-radius: 10px;
   }
   .f-field input:focus, .f-field textarea:focus { border-color: var(--orange); }
   .f-field textarea { resize: vertical; font-family: var(--font-mono); font-size: .85rem; line-height: 1.6; }

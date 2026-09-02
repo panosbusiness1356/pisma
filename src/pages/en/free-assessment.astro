@@ -157,7 +157,6 @@ const steps = [
         <p>Fill in your details and we'll offer you 2–3 time slots later this week.</p>
       </div>
 
-      <!-- TODO: Μελλοντικά, εδώ μπαίνει embed Cal.com / Calendly αντί για τη φόρμα. -->
       <form class="card booking reveal" id="booking-form" data-email={SITE.email} novalidate>
         <div class="field">
           <label for="f-name">Full name</label>
@@ -399,7 +398,7 @@ const steps = [
   /* Εφέ επιτυχίας φόρμας (Δ): τικ που ζωγραφίζεται + κομφετί μέσα στην κάρτα */
   #booking-form { position: relative; overflow: hidden; }
   .form-done { display: none; }
-  #booking-form.is-done > :not(.form-done) { display: none; }
+  #booking-form.is-done > :not(.form-done):not(.fd-confetti) { display: none; }
   #booking-form.is-done .form-done {
     display: block; text-align: center; padding: 26px 0 10px;
     animation: fd-pop .45s cubic-bezier(.3, 1.4, .5, 1) both;

@@ -10,6 +10,7 @@ const optionById = (id: string) =>
 const basic = optionById('web-basic')!;
 const standard = optionById('web-standard')!;
 const pro = optionById('web-pro')!;
+const bookings = optionById('web-bookings')!;
 const care = optionById('care-web')!;
 const gbp = optionById('gbp-setup')!;
 
@@ -139,6 +140,11 @@ const faq = [
         <td><strong>{pro.label}</strong></td>
         <td>{pro.detail}</td>
         <td>{eur(pro.price)} one-off</td>
+      </tr>
+      <tr>
+        <td><strong>{bookings.label}</strong></td>
+        <td>{bookings.detail}</td>
+        <td>{eur(bookings.price)} one-off</td>
       </tr>
     </tbody>
   </table>

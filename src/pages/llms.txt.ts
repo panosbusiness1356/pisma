@@ -6,6 +6,7 @@ import type { APIRoute } from 'astro';
 import { SITE, ELEGXOS, eur } from '../config';
 import { CATEGORIES } from '../data/pricing';
 import { GUIDES } from '../data/guides';
+import { GUIDES_EN } from '../data/guides.en';
 
 const line = (o: { label: string; detail?: string; price: number; type: string }) =>
   `- ${o.label}${o.detail ? ` (${o.detail})` : ''}: ${eur(o.price)} ${o.type === 'monthly' ? 'τον μήνα' : 'εφάπαξ'}`;
@@ -58,6 +59,8 @@ ${GUIDES.map((g) => `- [${g.q}](${SITE.url}/odigoi/${g.slug}/): ${g.blurb}`).joi
 - [Site που πουλάει](${SITE.url}/site-pou-poulaei/): γρήγορο site με ένα ξεκάθαρο επόμενο βήμα — ο επισκέπτης γίνεται τηλεφώνημα
 - [Τιμές](${SITE.url}/times/): όλες οι τιμές δημόσια, builder πακέτου
 - [Αποτελέσματα](${SITE.url}/apotelesmata/): πώς μετριέται κάθε συνεργασία
+- [Το Ταμπλό](${SITE.url}/tablo/): δωρεάν quiz 2 λεπτών — σκορ ορατότητας και αυτοματισμού
+- [Επικοινωνία](${SITE.url}/epikoinonia/): φόρμα, email, τηλέφωνο, WhatsApp/Viber
 - [Ο Έλεγχος PISMA](${SITE.url}/elegxos/): δωρεάν αξιολόγηση ${ELEGXOS.minutes} λεπτών
 
 ## English version
@@ -65,6 +68,9 @@ ${GUIDES.map((g) => `- [${g.q}](${SITE.url}/odigoi/${g.slug}/): ${g.blurb}`).joi
 Το site διατίθεται και στα αγγλικά, με πλήρη αντιστοιχία σελίδων:
 - [Home](${SITE.url}/en/) · [Pricing](${SITE.url}/en/pricing/) · [The Reviews Tool](${SITE.url}/en/reviews/) · [Guides](${SITE.url}/en/guides/) · [Contact](${SITE.url}/en/contact/)
 - Free ${ELEGXOS.minutes}-minute assessment: [The PISMA Check](${SITE.url}/en/free-assessment/)
+
+English guides:
+${GUIDES_EN.map((g) => `- [${g.q}](${SITE.url}/en/guides/${g.slug}/): ${g.blurb}`).join('\n')}
 `;
 
 export const GET: APIRoute = () =>
