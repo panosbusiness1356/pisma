@@ -186,23 +186,6 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
         <li><strong>{ELEGXOS.reportHours} hours</strong><span>written proposal</span></li>
         <li><strong>100%</strong><span>public pricing</span></li>
       </ul>
-
-      <!-- Snapshots: shop photos "taped" onto the notebook -->
-      <div class="snapshots blur-in" style="--d:.74s">
-        <figure class="snap">
-          <img src="/photos/vitrina.jpg" alt="Café storefront on a pedestrian street, with a chalkboard price list on the pavement" width="900" height="600" loading="lazy" />
-          <figcaption>the corner café</figcaption>
-        </figure>
-        <figure class="snap">
-          <img src="/photos/barber.jpg" alt="Barber cutting a customer's hair inside the barbershop" width="900" height="600" loading="lazy" />
-          <figcaption>the barbershop</figcaption>
-        </figure>
-        <figure class="snap">
-          <img src="/photos/fournos.jpg" alt="Freshly baked loaves of bread dusted with flour" width="900" height="599" loading="lazy" />
-          <figcaption>the bakery</figcaption>
-        </figure>
-        <p class="snap-note">We work with shops like yours.</p>
-      </div>
     </div>
 
     <!-- Πριν → Μετά -->
@@ -485,15 +468,6 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- 6b. Photo break: inside a shop at work -->
-  <section class="photo-band" aria-label="Inside a café at work">
-    <img src="/photos/kafe.jpg" alt="Café interior with a barista behind the counter and chairs in front" width="900" height="617" loading="lazy" />
-    <div class="photo-band-shade" aria-hidden="true"></div>
-    <blockquote>
-      <p>You run the shop.<br />We make it visible.</p>
-    </blockquote>
   </section>
 
   <!-- 7. Η εταιρία -->
@@ -948,45 +922,6 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   .chat-note { font-size: .85rem; color: var(--muted); flex-basis: auto; }
 
   /* Αριθμοί-δεσμεύσεις κάτω από τα CTAs */
-  /* Στιγμιότυπα μαγαζιών: «κολλημένες» φωτογραφίες με ταινία, ελαφρά στραβές */
-  .snapshots {
-    display: flex; justify-content: center; align-items: flex-start;
-    gap: clamp(14px, 3vw, 30px); flex-wrap: wrap;
-    margin-top: clamp(32px, 5vw, 52px);
-    order: 9; /* το hero σε κινητό διατάσσεται με order — οι φωτογραφίες πάνε τελευταίες */
-  }
-  .snap {
-    position: relative; width: clamp(118px, 22vw, 230px); margin: 0;
-    background: var(--card); padding: 8px 8px 10px;
-    border: 1px solid var(--line); border-radius: 4px;
-    box-shadow: var(--shadow);
-    transform: rotate(-2.5deg);
-    transition: transform .25s ease;
-  }
-  .snap:nth-child(2) { transform: rotate(1.8deg) translateY(10px); }
-  .snap:nth-child(3) { transform: rotate(-1.2deg); }
-  .snap:hover { transform: rotate(0) translateY(-4px); }
-  .snap::before {
-    content: ''; position: absolute; top: -9px; left: 50%;
-    width: 56px; height: 17px; transform: translateX(-50%) rotate(-2deg);
-    background: rgba(229, 163, 59, .55); border-radius: 2px;
-  }
-  .snap img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 2px; }
-  .snap figcaption { margin-top: 7px; font-size: .78rem; color: var(--muted); text-align: center; letter-spacing: .02em; }
-  .snap-note { flex-basis: 100%; text-align: center; margin-top: 16px; font-size: .9rem; color: var(--muted); }
-  @media (prefers-reduced-motion: reduce) { .snap { transition: none; } }
-
-  /* Φωτογραφικό διάλειμμα πλήρους πλάτους με ρήση */
-  .photo-band { position: relative; overflow: hidden; min-height: clamp(300px, 44vw, 460px); display: grid; place-items: center; }
-  .photo-band > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .photo-band-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(18, 28, 23, .30), rgba(18, 28, 23, .62)); }
-  .photo-band blockquote { position: relative; z-index: 1; margin: 0; padding: 28px 20px; text-align: center; }
-  .photo-band blockquote p {
-    font-size: clamp(1.7rem, 4.2vw, 2.8rem); line-height: 1.18; font-weight: 700;
-    color: #F6F4EA; max-width: 20ch; margin-inline: auto;
-    text-shadow: 0 2px 26px rgba(0, 0, 0, .4);
-  }
-
   .hero-stats {
     list-style: none; padding: 0;
     display: flex; flex-wrap: wrap; justify-content: center;
