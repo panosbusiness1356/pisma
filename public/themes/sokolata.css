@@ -1,0 +1,50 @@
+/* ΔΟΚΙΜΗ ΠΑΛΕΤΑΣ Β4 — «Παστέλ πρωί»: ΦΩΤΕΙΝΟ απαλό — ζεστό ιβουάρ, σκούρο
+   δαμασκηνί κείμενο, βατόμουρο CTA, λεβάντα/μέντα δευτερεύοντα. Dev port 4334. Προσωρινό. */
+:root:root {
+  --bg: #FAF3EE;
+  --bg-soft: #F3EAF0;
+  --card: #FFFFFF;
+  --card-2: #FBF6F1;
+  --navy: #33203A;
+  --ink: #4A3A50;
+  --muted: #8A7A8E;
+  --orange: #E85D75;
+  --orange-cta: #D8455F;
+  --orange-hi: #F07087;
+  --orange-soft: rgba(232, 93, 117, .10);
+  --orange-text: #C43552;
+  --orange-rgb: 232, 93, 117;
+  --cta-rgb: 216, 69, 95;
+  --peach-rgb: 240, 150, 165;
+  --grad-1: #D8455F; --grad-2: #C93A55; --grad-3: #B52F49;
+  --gt-1: #E85D75; --gt-2: #B52F49; --shine: #F5AFBD;
+  --cta-deep: #9E2740; --cta-lite: #EE7288;
+  --cta-ink: #fff;
+  --nav-rgb: 250, 243, 238;
+  --purple: #8D7BC7;
+  --purple-soft: rgba(141, 123, 199, .12);
+  --purple-text: #6A57A8;
+  --blue: #4FA98F;
+  --blue-soft: rgba(79, 169, 143, .11);
+  --blue-text: #357E69;
+  --yellow: #C08A2E;
+  --yellow-soft: rgba(192, 138, 46, .12);
+  --yellow-text: #8F6A1C;
+  --line: rgba(51, 32, 58, .10);
+  --line-strong: rgba(51, 32, 58, .20);
+  --ok: #3E9B6E;
+  --ok-soft: rgba(62, 155, 110, .12);
+  --ok-text: #2C7350;
+  --red: #CE4433;
+  --red-soft: rgba(206, 68, 51, .10);
+  --red-text: #AD3425;
+  --shadow: 0 2px 8px rgba(50, 30, 40, .06), 0 14px 40px rgba(50, 30, 40, .09);
+  --shadow-hover: 0 4px 12px rgba(50, 30, 40, .09), 0 22px 52px rgba(50, 30, 40, .13);
+  --glow-orange: 0 0 44px rgba(216, 69, 95, .20);
+}
+/* Διορθώσεις για φωτεινό φόντο */
+.card--navy { color: var(--ink); }
+.card--navy h2, .card--navy h3 { color: var(--navy); }
+.card--navy p { color: var(--ink); }
+.card--navy .muted { color: var(--muted); }
+.skip-link { color: var(--navy); }

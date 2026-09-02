@@ -7,7 +7,7 @@ const lang = langOf(Astro.url.pathname);
 const T = {
   el: {
     tagline: SITE.tagline,
-    cta: 'Κλείστε δωρεάν αξιολόγηση',
+    cta: 'Κλείστε τον δωρεάν Έλεγχο',
     ctaHref: '/elegxos/',
     solutionsTitle: 'Λύσεις',
     toolsTitle: 'Εργαλεία',
@@ -32,7 +32,7 @@ const T = {
   },
   en: {
     tagline: SITE.taglineEn,
-    cta: 'Book a free assessment',
+    cta: 'Book the free PISMA Check',
     ctaHref: '/en/free-assessment/',
     solutionsTitle: 'Solutions',
     toolsTitle: 'Tools',
@@ -41,7 +41,7 @@ const T = {
     solutions: [
       { href: '/en/get-found/', label: 'Digital Visibility' },
       { href: '/en/runs-by-itself/', label: 'Office automations' },
-      { href: '/en/reviews/', label: 'The Reviews Tool' },
+      { href: '/en/reviews/', label: 'Google Reviews' },
       { href: '/en/qr-stickers/', label: 'QR Stickers' },
     ],
     tools: [
@@ -119,7 +119,7 @@ const { solutions, tools, company } = T;
   .footer {
     border-top: 1px solid var(--line);
     background:
-      radial-gradient(70% 90% at 50% 120%, rgba(255, 122, 80, .06), transparent 70%),
+      radial-gradient(70% 90% at 50% 120%, rgba(var(--orange-rgb), .06), transparent 70%),
       var(--bg-soft);
     margin-top: clamp(40px, 7vw, 80px);
   }

@@ -63,7 +63,7 @@ const schema = {
 };
 
 const steps = [
-  { t: 'Αξιολόγηση', d: `${ELEGXOS.minutes} λεπτά, δωρεάν. Μαθαίνουμε για την επιχείρησή σας και πώς μπορείτε να τη βελτιώσετε.` },
+  { t: 'Έλεγχος', d: `${ELEGXOS.minutes} λεπτά, δωρεάν. Μαθαίνουμε για την επιχείρησή σας και πώς μπορείτε να τη βελτιώσετε.` },
   { t: 'Πρόταση', d: `Σε ${ELEGXOS.reportHours} ώρες, γραπτά και με τελική τιμή.` },
   { t: 'Υλοποίηση', d: 'Έτοιμο σε 2–4 εβδομάδες, χωρίς να σταματήσει η δουλειά σας.' },
   { t: 'Υποστήριξη', d: 'Είμαστε δίπλα σας και μετά. Μηνιαία αναφορά με νούμερα, όχι με λόγια.' },
@@ -75,7 +75,7 @@ const steps = [
    Τα labels των generic βαθμίδων («Standard», «Setup») παίρνουν το όνομα της
    κατηγορίας τους για να στέκουν μόνα τους. */
 const bdDefs: { id: string; label?: string }[] = [
-  { id: 'web-standard', label: 'Ιστοσελίδα — Βασική' },
+  { id: 'web-standard', label: 'Ιστοσελίδα — Standard' },
   { id: 'gbp-setup', label: 'Προφίλ Google — Στήσιμο' },
   { id: 'auto-reviews' },
   { id: 'care-web' },
@@ -131,7 +131,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
 
       <h1 id="hero-title" class="blur-in" style="--d:.22s">
         Η επιχείρησή σας, ορατή στους πελάτες.<br />
-        Η λειτουργία της, <span class="hero-hl">χωρίς χαμένες ώρες<svg class="hl-stroke" viewBox="0 0 320 30" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="hlGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF8A50" /><stop offset="1" stop-color="#D63E1B" /></linearGradient></defs><path d="M6 15 C 60 9, 130 21, 200 14 C 245 10, 285 12, 314 13 C 260 18, 200 22, 120 21 C 90 20.5, 72 19, 58 18" fill="none" stroke="url(#hlGrad)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" opacity=".95" /></svg></span>.
+        Η λειτουργία της, <span class="hero-hl">χωρίς χαμένες ώρες<svg class="hl-stroke" viewBox="0 0 320 30" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="hlGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--cta-lite)" /><stop offset="1" stop-color="var(--cta-deep)" /></linearGradient></defs><path d="M6 15 C 60 9, 130 21, 200 14 C 245 10, 285 12, 314 13 C 260 18, 200 22, 120 21 C 90 20.5, 72 19, 58 18" fill="none" stroke="url(#hlGrad)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" opacity=".95" /></svg></span>.
       </h1>
       <script is:inline>
         // Κρύβει την υπογράμμιση πριν το πρώτο paint — θα τη «ζωγραφίσει» ο Ντοτ.
@@ -152,9 +152,9 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
 
       <div class="hero-ctas blur-in" style="--d:.46s">
         <span class="btn-frame">
-          <a class="btn btn--orange" href="/tablo/">Μετρήστε την επιχείρησή σας — Quiz</a>
+          <a class="btn btn--orange" href="/tablo/">Μετρήστε την επιχείρησή σας — 2 λεπτά</a>
         </span>
-        <a class="btn btn--ghost" href="/elegxos/">Κλείστε δωρεάν αξιολόγηση</a>
+        <a class="btn btn--ghost" href="/elegxos/">Κλείστε τον δωρεάν Έλεγχο</a>
       </div>
       <p class="btn-note blur-in" style="--d:.54s">Χωρίς email · χωρίς δέσμευση · 2 λεπτά και βλέπετε το σκορ</p>
 
@@ -178,6 +178,23 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
         <li><strong>{ELEGXOS.reportHours} ώρες</strong><span>γραπτή πρόταση</span></li>
         <li><strong>100%</strong><span>δημόσιες τιμές</span></li>
       </ul>
+
+      <!-- Στιγμιότυπα: φωτογραφίες μαγαζιών «κολλημένες» με ταινία στο τεφτέρι -->
+      <div class="snapshots blur-in" style="--d:.74s">
+        <figure class="snap">
+          <img src="/photos/vitrina.jpg" alt="Βιτρίνα καφέ σε πεζόδρομο, με μαυροπίνακα τιμών στο πλακόστρωτο" width="900" height="600" loading="lazy" />
+          <figcaption>το καφέ της γωνίας</figcaption>
+        </figure>
+        <figure class="snap">
+          <img src="/photos/barber.jpg" alt="Μπαρμπέρης κουρεύει πελάτη μέσα στο μπαρμπέρικο" width="900" height="600" loading="lazy" />
+          <figcaption>το μπαρμπέρικο</figcaption>
+        </figure>
+        <figure class="snap">
+          <img src="/photos/fournos.jpg" alt="Φρεσκοψημένα καρβέλια ψωμί πασπαλισμένα με αλεύρι" width="900" height="599" loading="lazy" />
+          <figcaption>ο φούρνος</figcaption>
+        </figure>
+        <p class="snap-note">Δουλεύουμε με μαγαζιά σαν το δικό σας.</p>
+      </div>
     </div>
 
     <!-- Πριν → Μετά -->
@@ -234,11 +251,11 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
             <span class="svc-art">
               <svg viewBox="0 0 96 72">
                 <rect x="8" y="8" width="80" height="56" rx="7" fill="#FBF2EA"/>
-                <path d="M8 15a7 7 0 0 1 7-7h66a7 7 0 0 1 7 7v7H8z" fill="#FF7A50"/>
+                <path d="M8 15a7 7 0 0 1 7-7h66a7 7 0 0 1 7 7v7H8z" style="fill:var(--orange)"/>
                 <circle cx="17" cy="15" r="2.2" fill="#fff" opacity=".85"/><circle cx="24" cy="15" r="2.2" fill="#fff" opacity=".6"/><circle cx="31" cy="15" r="2.2" fill="#fff" opacity=".35"/>
                 <rect x="16" y="30" width="32" height="5" rx="2.5" fill="#33254A"/>
                 <rect x="16" y="39" width="24" height="4" rx="2" fill="#C0B4D2"/>
-                <rect x="16" y="49" width="27" height="10" rx="5" fill="#EE4F27"/>
+                <rect x="16" y="49" width="27" height="10" rx="5" style="fill:var(--orange-cta)"/>
                 <rect x="21" y="53" width="17" height="2.4" rx="1.2" fill="#fff" opacity=".9"/>
                 <path d="M54 56l9-9 7 5 11-13" stroke="#2FA36B" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
                 <circle cx="81" cy="39" r="3.4" fill="#2FA36B"/>
@@ -266,12 +283,12 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
                 <rect x="32" y="10" width="30" height="52" rx="5" fill="#FBF2EA"/>
                 <rect x="42" y="6.5" width="10" height="2.6" rx="1.3" fill="#171221"/>
                 <rect x="22" y="22" width="52" height="26" rx="7" fill="#fff"/>
-                <circle cx="31" cy="31" r="4" fill="#FF7A50"/>
+                <circle cx="31" cy="31" r="4" style="fill:var(--orange)"/>
                 <rect x="39" y="27" width="22" height="3.6" rx="1.8" fill="#33254A"/>
                 <rect x="39" y="33" width="16" height="3" rx="1.5" fill="#C0B4D2"/>
                 <rect x="39" y="40" width="4" height="5" rx="1" fill="#2FA36B"/>
                 <rect x="45" y="38" width="4" height="7" rx="1" fill="#2FA36B"/>
-                <rect x="51" y="35" width="4" height="10" rx="1" fill="#FF7A50"/>
+                <rect x="51" y="35" width="4" height="10" rx="1" style="fill:var(--orange)"/>
                 <rect x="57" y="39" width="4" height="6" rx="1" fill="#C0B4D2"/>
                 <circle cx="68" cy="24" r="6.5" fill="#FF5C41"/>
                 <rect x="66" y="22.6" width="4" height="2.8" rx="1.4" fill="#fff"/>
@@ -370,7 +387,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
     aria-labelledby="method-title"
     data-mascot-stop
     data-mascot-side="right"
-    data-mascot-say={`Κάθε συνεργασία ξεκινά με δωρεάν αξιολόγηση ${ELEGXOS.minutes} λεπτών — παραλαμβάνετε τα ευρήματα γραπτώς.`}
+    data-mascot-say={`Κάθε συνεργασία ξεκινά με τον δωρεάν Έλεγχο PISMA (${ELEGXOS.minutes} λεπτά) — παραλαμβάνετε τα ευρήματα γραπτώς.`}
   >
     <span class="flogo sflogo" aria-hidden="true" style="right:4%;top:40px;--w:24px;--dur:5.9s"><img src="/logos/google-maps.svg" alt="" loading="lazy" /></span>
     <div class="container">
@@ -460,6 +477,15 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
     </div>
   </section>
 
+  <!-- 6β. Φωτογραφικό διάλειμμα: μέσα σε ένα μαγαζί που δουλεύει -->
+  <section class="photo-band" aria-label="Μέσα σε ένα καφέ που δουλεύει">
+    <img src="/photos/kafe.jpg" alt="Εσωτερικό καφέ με μπαρίστα πίσω από τον πάγκο και καρέκλες μπροστά" width="900" height="617" loading="lazy" />
+    <div class="photo-band-shade" aria-hidden="true"></div>
+    <blockquote>
+      <p>Εσείς κρατάτε το μαγαζί.<br />Εμείς το κάνουμε ορατό.</p>
+    </blockquote>
+  </section>
+
   <!-- 7. Η εταιρία -->
   <section class="section section--tight" aria-labelledby="who-title">
     <span class="flogo sflogo" aria-hidden="true" style="right:5%;top:4px;--w:22px;--dur:6.6s"><img class="chip" src="/logos/tiktok-icon.svg" alt="" loading="lazy" /></span>
@@ -488,7 +514,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
     aria-labelledby="final-title"
     data-mascot-stop
     data-mascot-side="right"
-    data-mascot-say={`Ξεκινήστε με τη δωρεάν αξιολόγηση — ${ELEGXOS.minutes} λεπτά, χωρίς δέσμευση.`}
+    data-mascot-say={`Ξεκινήστε με τον δωρεάν Έλεγχο — ${ELEGXOS.minutes} λεπτά, χωρίς δέσμευση.`}
   >
     <span class="flogo sflogo" aria-hidden="true" style="left:5%;top:12px;--w:24px;--dur:5.4s"><img src="/logos/viber.svg" alt="" loading="lazy" /></span>
     <div class="container">
@@ -496,7 +522,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
       <p>
         Βλέπουμε μαζί πού βρίσκεστε και τι μπορεί να βελτιωθεί. Καμία υποχρέωση να συνεχίσουμε.
       </p>
-      <a class="btn btn--orange" href="/elegxos/">Κλείστε δωρεάν αξιολόγηση</a>
+      <a class="btn btn--orange" href="/elegxos/">Κλείστε τον δωρεάν Έλεγχο</a>
       <p class="btn-note">{ELEGXOS.minutes} λεπτά · χωρίς χρέωση · χωρίς δέσμευση</p>
     </div>
   </section>
@@ -910,6 +936,45 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
   .chat-btn--vb { background: linear-gradient(160deg, #8B7DF9, #5B4AC8); }
   .chat-note { font-size: .85rem; color: var(--muted); flex-basis: auto; }
 
+  /* Στιγμιότυπα μαγαζιών: «κολλημένες» φωτογραφίες με ταινία, ελαφρά στραβές */
+  .snapshots {
+    display: flex; justify-content: center; align-items: flex-start;
+    gap: clamp(14px, 3vw, 30px); flex-wrap: wrap;
+    margin-top: clamp(32px, 5vw, 52px);
+    order: 9; /* το hero σε κινητό διατάσσεται με order — οι φωτογραφίες πάνε τελευταίες */
+  }
+  .snap {
+    position: relative; width: clamp(118px, 22vw, 230px); margin: 0;
+    background: var(--card); padding: 8px 8px 10px;
+    border: 1px solid var(--line); border-radius: 4px;
+    box-shadow: var(--shadow);
+    transform: rotate(-2.5deg);
+    transition: transform .25s ease;
+  }
+  .snap:nth-child(2) { transform: rotate(1.8deg) translateY(10px); }
+  .snap:nth-child(3) { transform: rotate(-1.2deg); }
+  .snap:hover { transform: rotate(0) translateY(-4px); }
+  .snap::before {
+    content: ''; position: absolute; top: -9px; left: 50%;
+    width: 56px; height: 17px; transform: translateX(-50%) rotate(-2deg);
+    background: rgba(229, 163, 59, .55); border-radius: 2px;
+  }
+  .snap img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 2px; }
+  .snap figcaption { margin-top: 7px; font-size: .78rem; color: var(--muted); text-align: center; letter-spacing: .02em; }
+  .snap-note { flex-basis: 100%; text-align: center; margin-top: 16px; font-size: .9rem; color: var(--muted); }
+  @media (prefers-reduced-motion: reduce) { .snap { transition: none; } }
+
+  /* Φωτογραφικό διάλειμμα πλήρους πλάτους με ρήση */
+  .photo-band { position: relative; overflow: hidden; min-height: clamp(300px, 44vw, 460px); display: grid; place-items: center; }
+  .photo-band > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .photo-band-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(18, 28, 23, .30), rgba(18, 28, 23, .62)); }
+  .photo-band blockquote { position: relative; z-index: 1; margin: 0; padding: 28px 20px; text-align: center; }
+  .photo-band blockquote p {
+    font-size: clamp(1.7rem, 4.2vw, 2.8rem); line-height: 1.18; font-weight: 700;
+    color: #F6F4EA; max-width: 20ch; margin-inline: auto;
+    text-shadow: 0 2px 26px rgba(0, 0, 0, .4);
+  }
+
   /* Αριθμοί-δεσμεύσεις κάτω από τα CTAs */
   .hero-stats {
     list-style: none; padding: 0;
@@ -1061,8 +1126,8 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
 
   /* Μεθοδολογία: κλιμάκωση αποχρώσεων πορτοκαλί, από ανοιχτό στο βαθύ (1→4) */
   .steps li:nth-child(1) .step-num { background: #FFB27A; color: #4A1B0C; }
-  .steps li:nth-child(2) .step-num { background: #FF9159; color: #3A1408; }
-  .steps li:nth-child(3) .step-num { background: #EE4F27; color: #fff; }
+  .steps li:nth-child(2) .step-num { background: var(--gt-1); color: #3A1408; }
+  .steps li:nth-child(3) .step-num { background: var(--orange-cta); color: #fff; }
   .steps li:nth-child(4) .step-num { background: #C13A20; color: #fff; }
 
   /* ---------- Πορτοκαλί panel ---------- */
@@ -1070,7 +1135,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
     border-radius: calc(var(--r) + 6px); overflow: hidden;
     background:
       radial-gradient(120% 160% at 90% 110%, rgba(255, 210, 150, .35), transparent 55%),
-      linear-gradient(115deg, #D63E1B 0%, #EE4F27 45%, #FF8A3D 100%);
+      linear-gradient(115deg, var(--cta-deep) 0%, var(--orange-cta) 45%, var(--cta-lite) 100%);
     padding: clamp(28px, 5vw, 56px);
     display: grid; gap: clamp(26px, 5vw, 56px);
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
@@ -1196,7 +1261,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
   .final-cta::before {
     content: ''; position: absolute; inset: 0; pointer-events: none;
     /* Το φωτοστέφανο σβήνει ΜΕΣΑ στο section — όχι κομμένο στο όριο με το footer */
-    background: radial-gradient(46% 52% at 50% 60%, rgba(238, 79, 39, .13), transparent 72%);
+    background: radial-gradient(46% 52% at 50% 60%, rgba(var(--cta-rgb), .13), transparent 72%);
   }
   .final-cta h2 { font-size: clamp(1.9rem, 4.6vw, 3.2rem); max-width: 24ch; margin-inline: auto; }
   .final-cta p { margin: 18px auto 28px; color: var(--muted); max-width: 58ch; }
@@ -1332,7 +1397,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
   .fx-on .grid-3 .plan-mini:nth-child(2) { animation: fxPulse 2.2s ease-in-out .7s; }
   @keyframes fxPulse {
     40% {
-      box-shadow: var(--shadow), 0 0 0 3px rgba(255, 122, 80, .4), 0 0 46px rgba(238, 79, 39, .42);
+      box-shadow: var(--shadow), 0 0 0 3px rgba(var(--orange-rgb), .4), 0 0 46px rgba(var(--cta-rgb), .42);
       transform: translateY(-3px);
     }
   }
@@ -1347,7 +1412,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
   @keyframes fxChip { 50% { transform: scale(1.09); } }
 
   .fx-armed .grad-text {
-    background: linear-gradient(92deg, #FF9159 0%, #FF5C2E 42%, #FFD9A8 50%, #FF5C2E 58%, #FF9159 100%);
+    background: linear-gradient(92deg, var(--gt-1) 0%, var(--gt-2) 42%, var(--shine) 50%, var(--gt-2) 58%, var(--gt-1) 100%);
     background-size: 280% 100%;
     background-position: 100% 0;
     -webkit-background-clip: text;

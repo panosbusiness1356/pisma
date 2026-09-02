@@ -1,0 +1,44 @@
+/* ΔΟΚΙΜΗ ΠΑΛΕΤΑΣ Β2 — «Μπλε μπλοκ»: ΟΛΟ το φόντο ζωηρό κοβαλτί μπλε,
+   λευκά γράμματα, ηλεκτρίκ κίτρινο CTA (στυλ bold brand). Dev port 4332. Προσωρινό. */
+:root:root {
+  --bg: #1226A4;
+  --bg-soft: #1730B4;
+  --card: #1D36BE;
+  --card-2: #2542CB;
+  --navy: #FFFFFF;
+  --ink: #E6EBFF;
+  --muted: #AAB6F2;
+  --orange: #FFD43A;
+  --orange-cta: #FFC61A;
+  --orange-hi: #FFE066;
+  --orange-soft: rgba(255, 212, 58, .14);
+  --orange-text: #FFDD66;
+  --orange-rgb: 255, 212, 58;
+  --cta-rgb: 255, 198, 26;
+  --peach-rgb: 255, 224, 102;
+  --grad-1: #F5BC0F; --grad-2: #E8AF0A; --grad-3: #D6A006;
+  --gt-1: #FFE066; --gt-2: #FFC61A; --shine: #FFF3BF;
+  --cta-deep: #C99806; --cta-lite: #FFD84D;
+  --cta-ink: #221A00;
+  --nav-rgb: 18, 38, 164;
+  --purple: #93A3F5;
+  --purple-soft: rgba(147, 163, 245, .14);
+  --purple-text: #C3CDFA;
+  --blue: #7FD1F0;
+  --blue-soft: rgba(127, 209, 240, .13);
+  --blue-text: #B8E6F7;
+  --yellow: #FFC61A;
+  --yellow-soft: rgba(255, 198, 26, .15);
+  --yellow-text: #FFDD66;
+  --line: rgba(255, 255, 255, .16);
+  --line-strong: rgba(255, 255, 255, .28);
+  --ok: #57D9A0;
+  --ok-soft: rgba(87, 217, 160, .15);
+  --ok-text: #B5F0D6;
+  --red: #FF7B66;
+  --red-soft: rgba(255, 123, 102, .14);
+  --red-text: #FFB3A6;
+  --shadow: 0 2px 8px rgba(5, 10, 60, .35), 0 14px 40px rgba(5, 10, 60, .35);
+  --shadow-hover: 0 4px 12px rgba(5, 10, 60, .4), 0 22px 52px rgba(5, 10, 60, .5);
+  --glow-orange: 0 0 44px rgba(255, 198, 26, .35);
+}

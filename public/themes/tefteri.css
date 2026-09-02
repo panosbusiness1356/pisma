@@ -1,0 +1,173 @@
+/* ============================================================
+   ΔΟΚΙΜΗ «ΤΟ ΤΕΦΤΕΡΙ» — dev port 4331 (προσωρινό αρχείο)
+   Χαρτί κατάστιχου, βαθύ πράσινο μελάνι λογιστή, κεχριμπαρένια
+   «τελεία-σφραγίδα». Τίτλοι σε GFS Neohellenic (ελληνική γεωμετρική
+   του '30, self-hosted). Κουμπιά-καραμέλες χωρίς gradients,
+   χάρτινες κάρτες, στρογγυλές σφραγίδες στα βήματα.
+   ============================================================ */
+
+@font-face {
+  font-family: 'GFS Neohellenic';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/gfs-neohellenic-700-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'GFS Neohellenic';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/gfs-neohellenic-700-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+2000-206F, U+20AC;
+}
+
+:root:root {
+  /* Χαρτί */
+  --bg: #F5F3E7;
+  --bg-soft: #ECE9DA;
+  --card: #FDFCF6;
+  --card-2: #F0EDDF;
+  /* Μελάνι */
+  --navy: #1E3128;
+  --ink: #33443A;
+  --muted: #67766B;
+  /* Accent συστήματος: πράσινο λογιστή (στις θέσεις της «orange» οικογένειας) */
+  --orange: #2F7A54;
+  --orange-cta: #1F6B47;
+  --orange-hi: #2E7E55;
+  --orange-soft: rgba(47, 122, 84, .10);
+  --orange-text: #1D5E3F;
+  --orange-rgb: 47, 122, 84;
+  --cta-rgb: 31, 107, 71;
+  --peach-rgb: 229, 163, 59;
+  --grad-1: #1F6B47; --grad-2: #1C6142; --grad-3: #17543A;
+  --gt-1: #2F7A54; --gt-2: #17543A; --shine: #8FC7A8;
+  --cta-deep: #134631; --cta-lite: #4C9A70;
+  --cta-ink: #F7F8F2;
+  --nav-rgb: 246, 243, 233;
+  /* Κεχριμπάρι (η «σφραγίδα») στις θέσεις purple/yellow */
+  --purple: #C98F2E;
+  --purple-soft: rgba(201, 143, 46, .14);
+  --purple-text: #8A5F14;
+  --blue: #5E8D83;
+  --blue-soft: rgba(94, 141, 131, .12);
+  --blue-text: #3E6A60;
+  --yellow: #C98F2E;
+  --yellow-soft: rgba(201, 143, 46, .13);
+  --yellow-text: #8A5F14;
+  --line: rgba(30, 49, 40, .12);
+  --line-strong: rgba(30, 49, 40, .22);
+  --ok: #2F7A54;
+  --ok-soft: rgba(47, 122, 84, .12);
+  --ok-text: #1D5E3F;
+  --red: #C24B31;
+  --red-soft: rgba(194, 75, 49, .10);
+  --red-text: #9E3A24;
+  --shadow: 0 1px 2px rgba(38, 42, 32, .05), 0 12px 32px rgba(38, 42, 32, .09);
+  --shadow-hover: 0 2px 4px rgba(38, 42, 32, .06), 0 18px 44px rgba(38, 42, 32, .13);
+  --glow-orange: 0 0 44px rgba(31, 107, 71, .16);
+}
+
+/* ---------- Τυπογραφία: ελληνικοί τίτλοι του '30 ----------
+   (:root:root μπροστά σε κάθε κανόνα: κερδίζει το global.css
+   ανεξαρτήτως σειράς φόρτωσης των stylesheets στο dev) */
+:root:root h1, :root:root h2 {
+  font-family: 'GFS Neohellenic', 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: .012em;
+  line-height: 1.06;
+}
+:root:root h1 { font-size: clamp(2.6rem, 6.2vw, 4.6rem); }
+:root:root h2 { font-size: clamp(2rem, 4vw, 3.1rem); }
+
+/* ---------- Κουμπιά: «καραμέλες», όχι gradients ---------- */
+:root:root .btn { border-radius: 999px; }
+:root:root .btn--orange {
+  background: var(--orange-cta);
+  box-shadow: 0 2px 0 rgba(19, 70, 49, .35), 0 10px 24px rgba(31, 107, 71, .20);
+}
+:root:root .btn--orange:hover {
+  background: var(--orange-hi); filter: none;
+  box-shadow: 0 3px 0 rgba(19, 70, 49, .35), 0 14px 30px rgba(31, 107, 71, .26);
+}
+:root:root .btn--navy, :root:root .btn--ghost {
+  background: transparent; color: var(--navy);
+  box-shadow: inset 0 0 0 1.5px var(--line-strong);
+}
+:root:root .btn--navy:hover, :root:root .btn--ghost:hover {
+  box-shadow: inset 0 0 0 1.5px var(--navy), var(--shadow);
+}
+
+/* ---------- Κάρτες: χαρτί με απαλή σκιά ---------- */
+:root:root .card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+/* Η «γεμάτη» κάρτα γίνεται πράσινο μελάνι με χάρτινα γράμματα */
+:root:root .card--navy { background: var(--navy); border-color: transparent; color: #EAF0E7; }
+:root:root .card--navy h2, :root:root .card--navy h3 { color: #F5F8F1; }
+:root:root .card--navy p { color: #D9E4D6; }
+:root:root .card--navy .muted { color: #B9CBBB; }
+
+/* ---------- Kickers: ήσυχες ετικέτες χωρίς περίγραμμα ---------- */
+:root:root .kicker, :root:root .kicker--blue,
+:root:root .kicker--yellow, :root:root .kicker--ok { border-color: transparent; }
+
+/* ---------- Cookie banner σε μελάνι-πράσινο ---------- */
+:root:root .consent { background: rgba(30, 49, 40, .96); }
+:root:root .consent p { color: #D9E4D6; }
+:root:root .consent-decline { color: #B9CBBB; }
+:root:root .consent-decline:hover { color: #F5F8F1; }
+
+/* ---------- Βήματα: στρογγυλές σφραγίδες κεχριμπάρι ---------- */
+.step-num, .steps li .step-num {
+  border-radius: 50% !important;
+  background: #E5A33B !important;
+  color: #4A3208 !important;
+  box-shadow: 0 2px 0 rgba(122, 82, 15, .30);
+}
+
+/* ---------- Chips εικονιδίων σε χάρτινους τόνους ---------- */
+.icon-chip--navy { background: rgba(201, 143, 46, .16); color: #8A5F14; }
+.icon-chip--blue { background: rgba(94, 141, 131, .14); color: #3E6A60; }
+
+/* ---------- Ατμόσφαιρα: αχνή ανάσα κεχριμπαριού + πράσινου, όχι neon ---------- */
+body::before {
+  background:
+    radial-gradient(58% 34% at 82% -4%, rgba(229, 163, 59, .12), transparent 62%),
+    radial-gradient(46% 30% at 8% 0%, rgba(47, 122, 84, .07), transparent 60%);
+}
+
+/* ---------- «Πριν → Μετά»: φωτεινά accents μέσα στη σκούρα κάρτα ---------- */
+:root:root .ba-label--after { color: #E8C685 !important; }
+:root:root .ba-list--after li strong { color: #F0C878 !important; }
+:root:root .ba-list--after li::before { color: #8FC7A8 !important; }
+
+/* ---------- Τελικό CTA band: πράσινη «σφραγίδα» με κεχριμπαρένιο κουμπί ---------- */
+:root:root .band {
+  background:
+    radial-gradient(80% 130% at 85% -20%, rgba(229, 163, 59, .16), transparent 60%),
+    radial-gradient(60% 120% at 10% 120%, rgba(143, 199, 168, .10), transparent 65%),
+    var(--navy);
+  border-color: transparent;
+}
+:root:root .band .btn--orange {
+  background: #E5A33B; color: #3A2A06;
+  box-shadow: 0 2px 0 rgba(122, 82, 15, .35), 0 10px 24px rgba(229, 163, 59, .25);
+}
+:root:root .band .btn--orange:hover { background: #EFB250; }
+
+/* ---------- Φωτογραφικό band: η ρήση σε ελληνικούς τίτλους ---------- */
+:root:root .photo-band blockquote p {
+  font-family: 'GFS Neohellenic', 'Inter', system-ui, sans-serif;
+  letter-spacing: .015em;
+}
+
+/* ---------- Λεπτομέρειες ---------- */
+::selection { background: rgba(31, 107, 71, .85); color: #F5F3E7; }
+.skip-link { color: var(--navy); }
+/* Η τελεία του λογότυπου: κεχριμπάρι — η «σφραγίδα» της PISMA */
+.logo span { color: #E5A33B !important; }

@@ -1,0 +1,546 @@
+---
+// ΣΕΛΙΔΑ-CONCEPT «ΑΝΟΙΧΤΑ» — πλήρης σχεδιαστική πρόταση από το μηδέν (dev preview).
+// Δεν μπαίνει στο sitemap, noindex. Αν εγκριθεί, το σύστημα περνάει στο κανονικό site.
+import '../styles/fonts.css';
+---
+
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>PISMA — Ανάβουμε τα φώτα του μαγαζιού σας</title>
+<style>
+:root {
+  --night: #0A141B;
+  --night-2: #0D1A23;
+  --panel: #10202B;
+  --glass: rgba(16, 32, 43, .55);
+  --linefx: rgba(244, 238, 225, .10);
+  --creamfx: #F4EEE1;
+  --mutedfx: #9AADB3;
+  --amber: #FFB454;
+  --amber-deep: #E8942A;
+  --amber-ink: #2A1B04;
+  --teal: #7FD1C8;
+  --disp: 'Noto Sans Display', 'Inter', system-ui, sans-serif;
+  --bodyf: 'Inter', system-ui, sans-serif;
+  --monof: 'JetBrains Mono', ui-monospace, monospace;
+}
+* { margin: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--night);
+  color: var(--creamfx);
+  font-family: var(--bodyf);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+::selection { background: rgba(255, 180, 84, .85); color: #201503; }
+
+/* ---------- κόκκος φιλμ + βινιέτα ---------- */
+.grain {
+  position: fixed; inset: -60px; z-index: 60; pointer-events: none; opacity: .07;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="220" height="220" filter="url(%23n)"/></svg>');
+  background-size: 220px 220px;
+  animation: grainshift 1.1s steps(4) infinite;
+}
+@keyframes grainshift {
+  0% { transform: translate(0, 0); } 25% { transform: translate(-26px, 16px); }
+  50% { transform: translate(18px, -22px); } 75% { transform: translate(-12px, -10px); }
+  100% { transform: translate(0, 0); }
+}
+.vignette {
+  position: fixed; inset: 0; z-index: 59; pointer-events: none;
+  background: radial-gradient(120% 120% at 50% 42%, transparent 60%, rgba(4, 9, 13, .5) 100%);
+}
+
+/* ---------- nav ---------- */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 80;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 18px clamp(18px, 4vw, 44px);
+  transition: background .4s ease, box-shadow .4s ease, padding .3s ease;
+}
+.nav.on {
+  background: rgba(10, 20, 27, .8);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 var(--linefx);
+  padding-block: 12px;
+}
+.logo {
+  font-family: 'Unbounded', var(--disp); font-weight: 800; font-size: 1.15rem;
+  letter-spacing: .04em; text-decoration: none;
+}
+.logo b {
+  color: var(--amber);
+  text-shadow: 0 0 10px rgba(255, 180, 84, .9), 0 0 26px rgba(255, 180, 84, .5);
+  animation: dotpulse 3.2s ease-in-out infinite;
+}
+@keyframes dotpulse {
+  0%, 100% { text-shadow: 0 0 10px rgba(255,180,84,.9), 0 0 26px rgba(255,180,84,.5); }
+  50% { text-shadow: 0 0 4px rgba(255,180,84,.6), 0 0 12px rgba(255,180,84,.3); }
+}
+.nav-links { display: flex; align-items: center; gap: clamp(14px, 2.6vw, 30px); list-style: none; padding: 0; }
+.nav-links a {
+  text-decoration: none; font-size: .93rem; font-weight: 600; color: var(--mutedfx);
+  transition: color .25s;
+}
+.nav-links a:hover { color: var(--creamfx); }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  border: 0; border-radius: 999px; cursor: pointer; text-decoration: none;
+  padding: 14px 26px; font-weight: 700; font-size: .98rem; font-family: var(--bodyf);
+  transition: transform .18s ease, box-shadow .25s ease, background .25s ease;
+  white-space: nowrap;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-amber {
+  background: linear-gradient(180deg, var(--amber), var(--amber-deep));
+  color: var(--amber-ink);
+  box-shadow: 0 0 0 1px rgba(255, 200, 120, .4) inset, 0 6px 22px rgba(255, 160, 50, .35);
+}
+.btn-amber:hover { box-shadow: 0 0 0 1px rgba(255, 210, 140, .6) inset, 0 10px 34px rgba(255, 160, 50, .5); }
+.btn-ghost {
+  background: rgba(244, 238, 225, .06); color: var(--creamfx);
+  box-shadow: inset 0 0 0 1.5px rgba(244, 238, 225, .28);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.btn-ghost:hover { box-shadow: inset 0 0 0 1.5px rgba(244, 238, 225, .55); }
+.nav .btn { padding: 11px 20px; font-size: .9rem; }
+@media (max-width: 760px) { .nav-links { display: none; } }
+
+/* ---------- hero ---------- */
+.hero { position: relative; min-height: 100svh; display: grid; place-items: center; overflow: hidden; }
+.hero-bg { position: absolute; inset: -6%; }
+.hero-bg img {
+  width: 100%; height: 100%; object-fit: cover;
+  animation: kenburns 26s ease-in-out infinite alternate;
+  filter: saturate(.92);
+}
+@keyframes kenburns { from { transform: scale(1.02) translateY(0); } to { transform: scale(1.13) translateY(-2.2%); } }
+.hero-shade {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 20, 27, .78) 0%, rgba(10, 20, 27, .55) 45%, var(--night) 96%),
+    radial-gradient(70% 60% at 50% 40%, rgba(10, 26, 35, .1), rgba(8, 16, 22, .55));
+}
+.hero-in {
+  position: relative; z-index: 2; text-align: center;
+  padding: 120px 20px 90px; max-width: 900px;
+}
+.kicker {
+  display: inline-block; font-size: .78rem; font-weight: 700;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--teal);
+  margin-bottom: 20px;
+}
+h1 {
+  font-family: var(--disp); font-weight: 900;
+  font-size: clamp(2.4rem, 6.6vw, 4.9rem);
+  line-height: 1.04; letter-spacing: -.01em; text-wrap: balance;
+}
+h1 .fos {
+  color: var(--amber);
+  text-shadow: 0 0 16px rgba(255, 180, 84, .75), 0 0 52px rgba(255, 160, 50, .4);
+  animation: flicker 5s linear 1.2s 1;
+}
+@keyframes flicker {
+  0%, 6%, 10%, 100% { opacity: 1; }
+  3%, 8% { opacity: .35; text-shadow: none; }
+}
+.hero-sub { margin: 26px auto 0; max-width: 56ch; color: var(--mutedfx); font-size: 1.08rem; }
+.hero-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 38px; }
+.hero-note { margin-top: 16px; font-size: .85rem; color: rgba(154, 173, 179, .8); }
+
+/* η ταμπέλα «ΑΝΟΙΧΤΑ» που κρέμεται και λικνίζεται */
+.sign {
+  position: absolute; top: 84px; right: clamp(14px, 7vw, 120px); z-index: 3;
+  transform-origin: 50% -26px;
+  animation: swing 5.5s ease-in-out infinite;
+}
+@keyframes swing { 0%, 100% { rotate: 2.4deg; } 50% { rotate: -2.4deg; } }
+.sign::before {
+  content: ''; position: absolute; left: 50%; top: -26px; width: 1.5px; height: 26px;
+  background: rgba(244, 238, 225, .35);
+}
+.sign-body {
+  border: 2px solid var(--amber); border-radius: 12px;
+  padding: 10px 18px 8px; text-align: center;
+  color: var(--amber); background: rgba(10, 20, 27, .55);
+  box-shadow: 0 0 18px rgba(255, 180, 84, .35), inset 0 0 14px rgba(255, 180, 84, .12);
+  text-shadow: 0 0 10px rgba(255, 180, 84, .8);
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+}
+.sign-body strong { font-family: var(--disp); font-weight: 900; font-size: 1.1rem; letter-spacing: .28em; text-indent: .28em; display: block; }
+.sign-body span { display: block; font-size: .62rem; letter-spacing: .34em; text-indent: .34em; color: rgba(255, 200, 130, .8); margin-top: 2px; }
+@media (max-width: 640px) { .sign { top: 74px; scale: .82; right: 8px; } }
+
+.scrolldown {
+  position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 2;
+  font-size: .68rem; letter-spacing: .3em; text-transform: uppercase; color: rgba(244,238,225,.55);
+  display: grid; justify-items: center; gap: 8px;
+}
+.scrolldown i {
+  width: 1.5px; height: 38px; background: linear-gradient(180deg, var(--amber), transparent);
+  transform-origin: top; animation: dropline 2.1s ease-in-out infinite;
+}
+@keyframes dropline { 0% { transform: scaleY(0); } 55% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
+
+/* ---------- μαρκίζα-ticker ---------- */
+.marquee {
+  border-block: 1px solid var(--linefx);
+  padding: 16px 0; overflow: hidden; white-space: nowrap;
+  background: var(--night-2); position: relative; z-index: 2;
+}
+.marq-track { display: inline-flex; gap: 0; animation: marq 30s linear infinite; }
+.marq-track span {
+  font-family: var(--disp); font-weight: 900; font-size: 1.05rem; letter-spacing: .12em;
+  text-transform: uppercase; color: rgba(244, 238, 225, .82); padding: 0 26px; position: relative;
+}
+.marq-track span::after {
+  content: '•'; position: absolute; right: -7px; color: var(--amber);
+  text-shadow: 0 0 8px rgba(255, 180, 84, .8);
+}
+@keyframes marq { to { transform: translateX(-50%); } }
+
+/* ---------- κοινά sections ---------- */
+.wrap { max-width: 1120px; margin-inline: auto; padding-inline: clamp(20px, 4vw, 36px); }
+.sec { padding-block: clamp(64px, 10vw, 120px); position: relative; }
+.sec-head { text-align: center; max-width: 640px; margin: 0 auto clamp(34px, 5vw, 56px); }
+h2 {
+  font-family: var(--disp); font-weight: 900;
+  font-size: clamp(1.8rem, 4.2vw, 3rem); line-height: 1.1; letter-spacing: -.008em;
+  text-wrap: balance;
+}
+.sec-head p { color: var(--mutedfx); margin-top: 14px; }
+.amb { color: var(--amber); text-shadow: 0 0 14px rgba(255, 180, 84, .45); }
+
+/* λάμψεις φόντου ανά section */
+.glow-r::before, .glow-l::after {
+  content: ''; position: absolute; z-index: 0; pointer-events: none; filter: blur(10px);
+}
+.glow-r::before {
+  right: -180px; top: 8%; width: 480px; height: 480px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 160, 50, .13), transparent 65%);
+}
+.glow-l::after {
+  left: -200px; bottom: 4%; width: 520px; height: 520px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(127, 209, 200, .09), transparent 65%);
+}
+
+/* ---------- αριθμοί ---------- */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 18px; position: relative; z-index: 1; }
+.stat {
+  text-align: center; padding: 26px 12px; border-radius: 16px;
+  background: var(--glass); border: 1px solid var(--linefx);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.stat b {
+  display: block; font-family: var(--monof); font-weight: 700;
+  font-size: clamp(1.7rem, 3.2vw, 2.4rem); color: var(--amber);
+  text-shadow: 0 0 16px rgba(255, 180, 84, .35);
+}
+.stat span { font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; color: var(--mutedfx); }
+
+/* ---------- υπηρεσίες: glass κάρτες με φωτογραφία ---------- */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 22px; position: relative; z-index: 1; }
+.pcard {
+  border-radius: 20px; overflow: hidden; text-decoration: none;
+  background: var(--glass); border: 1px solid var(--linefx);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  transition: transform .25s ease, border-color .3s, box-shadow .3s;
+  display: flex; flex-direction: column;
+}
+.pcard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 180, 84, .45);
+  box-shadow: 0 24px 50px -18px rgba(0, 0, 0, .6), 0 0 34px rgba(255, 160, 50, .12);
+}
+.pcard-media { position: relative; aspect-ratio: 16 / 10; overflow: hidden; }
+.pcard-media img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: saturate(.85) brightness(.82);
+  transition: transform .6s cubic-bezier(.2, .7, .2, 1), filter .5s ease;
+}
+.pcard:hover .pcard-media img { transform: scale(1.06); filter: saturate(1) brightness(1); }
+.pcard-media::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(10, 20, 27, .05) 40%, rgba(10, 20, 27, .82));
+}
+.pcard-body { padding: 22px 24px 26px; display: grid; gap: 8px; }
+.pcard h3 { font-family: var(--disp); font-weight: 900; font-size: 1.25rem; letter-spacing: .01em; }
+.pcard p { color: var(--mutedfx); font-size: .95rem; }
+.pcard-go { margin-top: 6px; font-weight: 700; font-size: .92rem; color: var(--amber); }
+.pcard-go::after { content: ' →'; }
+
+/* ---------- φωτογραφικό διάλειμμα με parallax ---------- */
+.bandfx { position: relative; min-height: clamp(320px, 52vw, 520px); display: grid; place-items: center; overflow: hidden; }
+.bandfx img {
+  position: absolute; left: 0; right: 0; top: -12%; height: 124%; width: 100%;
+  object-fit: cover; will-change: transform;
+}
+.bandfx-shade { position: absolute; inset: 0; background: linear-gradient(180deg, var(--night) 0%, rgba(10, 20, 27, .35) 30%, rgba(10, 20, 27, .45) 70%, var(--night) 100%); }
+.bandfx blockquote { position: relative; z-index: 1; margin: 0; padding: 30px 20px; text-align: center; }
+.bandfx blockquote p {
+  font-family: var(--disp); font-weight: 900;
+  font-size: clamp(1.7rem, 4.4vw, 3rem); line-height: 1.15; max-width: 21ch;
+  text-shadow: 0 3px 30px rgba(0, 0, 0, .55);
+}
+
+/* ---------- βήματα: τα φώτα ανάβουν ένα-ένα ---------- */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 22px; position: relative; z-index: 1; }
+.stepx { padding: 26px 24px; border-radius: 18px; background: var(--night-2); border: 1px solid var(--linefx); }
+.stepx i {
+  display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%;
+  font-style: normal; font-family: var(--monof); font-weight: 700; font-size: 1.1rem;
+  border: 1.5px solid rgba(244, 238, 225, .25); color: var(--mutedfx);
+  margin-bottom: 16px; transition: all .6s ease;
+}
+.stepx.lit i {
+  border-color: var(--amber); color: var(--amber-ink); background: var(--amber);
+  box-shadow: 0 0 22px rgba(255, 180, 84, .55);
+}
+.stepx h3 { font-family: var(--disp); font-weight: 900; font-size: 1.12rem; margin-bottom: 6px; }
+.stepx p { color: var(--mutedfx); font-size: .94rem; }
+
+/* ---------- τελικό κάλεσμα ---------- */
+.cta-card {
+  position: relative; overflow: hidden; text-align: center;
+  border-radius: 24px; border: 1px solid rgba(255, 180, 84, .25);
+  padding: clamp(44px, 7vw, 80px) 24px;
+  background:
+    radial-gradient(60% 90% at 50% 115%, rgba(255, 160, 50, .22), transparent 65%),
+    var(--panel);
+}
+.cta-card h2 { max-width: 22ch; margin-inline: auto; }
+.cta-card p { color: var(--mutedfx); margin: 14px auto 30px; max-width: 46ch; }
+.pulse { animation: ctapulse 3s ease-in-out infinite; }
+@keyframes ctapulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(255,200,120,.4) inset, 0 6px 22px rgba(255,160,50,.35); }
+  50% { box-shadow: 0 0 0 1px rgba(255,210,140,.6) inset, 0 10px 40px rgba(255,160,50,.55); }
+}
+
+/* ---------- footer ---------- */
+.foot { border-top: 1px solid var(--linefx); padding: 42px 0 90px; }
+.foot-in { display: flex; flex-wrap: wrap; gap: 22px; align-items: center; justify-content: space-between; }
+.foot p { color: var(--mutedfx); font-size: .92rem; font-style: italic; }
+.foot-links { display: flex; gap: 20px; list-style: none; padding: 0; }
+.foot-links a { color: var(--mutedfx); font-size: .9rem; text-decoration: none; }
+.foot-links a:hover { color: var(--creamfx); }
+
+/* ---------- reveals ---------- */
+.rv { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1); }
+.rv.in { opacity: 1; transform: none; }
+.rv.d1 { transition-delay: .1s; } .rv.d2 { transition-delay: .2s; } .rv.d3 { transition-delay: .3s; }
+
+/* hero load χορογραφία */
+.hi { opacity: 0; transform: translateY(18px); animation: hin .9s cubic-bezier(.2, .7, .2, 1) forwards; }
+.hi1 { animation-delay: .15s; } .hi2 { animation-delay: .3s; } .hi3 { animation-delay: .5s; }
+.hi4 { animation-delay: .7s; } .hi5 { animation-delay: .85s; }
+@keyframes hin { to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .grain, .vignette { display: none; }
+  .hero-bg img, .sign, .marq-track, .logo b, .pulse, .scrolldown i { animation: none; }
+  .hi { animation: none; opacity: 1; transform: none; }
+  .rv { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+
+<nav class="nav" id="nav">
+  <a class="logo" href="/">PISMA<b>.</b></a>
+  <ul class="nav-links">
+    <li><a href="/times/">Τιμές</a></li>
+    <li><a href="/apotelesmata/">Αποτελέσματα</a></li>
+    <li><a href="/odigoi/">Οδηγοί</a></li>
+  </ul>
+  <a class="btn btn-amber" href="/tablo/">Μετρήστε την επιχείρησή σας</a>
+</nav>
+
+<header class="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <img src="/photos/night-lampes.jpg" alt="" width="1400" height="787" />
+  </div>
+  <div class="hero-shade" aria-hidden="true"></div>
+
+  <div class="sign hi hi5" aria-hidden="true">
+    <div class="sign-body"><strong>ΑΝΟΙΧΤΑ</strong><span>ΟΛΟ ΤΟ 24ΩΡΟ</span></div>
+  </div>
+
+  <div class="hero-in">
+    <p class="kicker hi hi1">Ψηφιακή παρουσία &amp; αυτοματοποίηση</p>
+    <h1 class="hi hi2">Ανάβουμε τα <span class="fos">φώτα</span> του μαγαζιού&nbsp;σας στο&nbsp;ίντερνετ.</h1>
+    <p class="hero-sub hi hi3">Στην PISMA φτιάχνουμε την παρουσία της επιχείρησής σας σε ιστοσελίδα, Google και AI, και αυτοματοποιούμε τις καθημερινές διαδικασίες σας — για να σας βρίσκουν οι πελάτες, ακόμα κι όταν έχετε κατεβάσει ρολά.</p>
+    <div class="hero-ctas hi hi4">
+      <a class="btn btn-amber" href="/tablo/">Μετρήστε την επιχείρησή σας — Quiz</a>
+      <a class="btn btn-ghost" href="/elegxos/">Κλείστε δωρεάν αξιολόγηση</a>
+    </div>
+    <p class="hero-note hi hi4">Χωρίς email · χωρίς δέσμευση · 2 λεπτά και βλέπετε το σκορ</p>
+  </div>
+
+  <div class="scrolldown" aria-hidden="true"><i></i>δειτε</div>
+</header>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marq-track" id="marq">
+    <span>Ιστοσελίδες</span><span>Κριτικές Google</span><span>Google Maps</span><span>ChatGPT &amp; AI</span><span>Αυτοματισμοί γραφείου</span><span>Social media</span>
+  </div>
+</div>
+
+<section class="sec glow-r">
+  <div class="wrap">
+    <ul class="stats rv" style="list-style:none;padding:0">
+      <li class="stat"><b><span class="num" data-n="220" data-pre="από ">από 220</span>€</b><span>ιστοσελίδα</span></li>
+      <li class="stat"><b><span class="num" data-n="72">72</span> ώρες</b><span>πρώτο preview</span></li>
+      <li class="stat"><b><span class="num" data-n="48">48</span> ώρες</b><span>γραπτή πρόταση</span></li>
+      <li class="stat"><b><span class="num" data-n="100">100</span>%</b><span>δημόσιες τιμές</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec glow-l" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2>Τι <span class="amb">αναλαμβάνουμε</span></h2>
+      <p>Τρεις δουλειές, ένα αποτέλεσμα: περισσότεροι πελάτες, λιγότερες ώρες γραφείου.</p>
+    </div>
+    <div class="cards">
+      <a class="pcard rv" href="/se-vriskoun/">
+        <div class="pcard-media"><img src="/photos/vitrina.jpg" alt="Βιτρίνα καφέ σε πεζόδρομο με μαυροπίνακα τιμών" loading="lazy" width="900" height="600" /></div>
+        <div class="pcard-body">
+          <h3>Ψηφιακή προβολή</h3>
+          <p>Ιστοσελίδα που σας ταιριάζει, θέση στη Google και στους Χάρτες, και να σας προτείνει το AI.</p>
+          <span class="pcard-go">Δείτε πώς</span>
+        </div>
+      </a>
+      <a class="pcard rv d1" href="/doulevei-mono-tou/">
+        <div class="pcard-media"><img src="/photos/grafeio.jpg" alt="Γραφείο με laptop, καφέ και σημειωματάριο" loading="lazy" width="900" height="600" /></div>
+        <div class="pcard-body">
+          <h3>Αυτοματισμοί γραφείου</h3>
+          <p>Η ρουτίνα — Excel, οφειλές, καθημερινή εικόνα — γίνεται αυτόματα, χωρίς χαμένες ώρες.</p>
+          <span class="pcard-go">Δείτε πώς</span>
+        </div>
+      </a>
+      <a class="pcard rv d2" href="/times/">
+        <div class="pcard-media"><img src="/photos/kafedes.jpg" alt="Τρία χέρια τσουγκρίζουν ποτήρια καφέ πάνω από ξύλινο τραπέζι" loading="lazy" width="900" height="600" /></div>
+        <div class="pcard-body">
+          <h3>Κριτικές Google</h3>
+          <p>Οι ευχαριστημένοι πελάτες σας αφήνουν κριτική — με τρόπο απλό, στο μαγαζί.</p>
+          <span class="pcard-go">Δείτε πώς</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="bandfx" aria-label="Ταβέρνα το βράδυ, στρωμένο τραπέζι στο φως του κεριού">
+  <img id="parallaxImg" src="/photos/night-taverna.jpg" alt="" loading="lazy" width="1400" height="933" />
+  <div class="bandfx-shade" aria-hidden="true"></div>
+  <blockquote class="rv">
+    <p>Εσείς κλείνετε το βράδυ.<br />Το <span class="amb">προφίλ</span> σας ποτέ.</p>
+  </blockquote>
+</section>
+
+<section class="sec glow-r">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2>Πώς <span class="amb">δουλεύουμε</span></h2>
+      <p>Καθαρά βήματα, μετρήσιμο αποτέλεσμα, καμία δέσμευση στα μηνιαία.</p>
+    </div>
+    <div class="steps">
+      <div class="stepx rv"><i>1</i><h3>Μετράμε πού είστε</h3><p>Δωρεάν έλεγχος: τηλέφωνα, κριτικές, θέση σε Google και AI — καταγράφουμε το «πριν».</p></div>
+      <div class="stepx rv d1"><i>2</i><h3>Στήνουμε &amp; ανάβουμε</h3><p>Ιστοσελίδα, προφίλ, αυτοματισμοί — με δημόσιες τιμές και γραπτή πρόταση σε 48 ώρες.</p></div>
+      <div class="stepx rv d2"><i>3</i><h3>Ξαναμετράμε μαζί</h3><p>Στους 3 μήνες συγκρίνουμε: πού ήσασταν, πού είστε. Αν δεν ανέβηκαν τα νούμερα, σας το λέμε πρώτοι.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="cta-card rv">
+      <h2>Δείτε σε 2 λεπτά <span class="amb">πόσο ορατή</span> είναι η επιχείρησή σας</h2>
+      <p>10 απλές ερωτήσεις, ένα σκορ — και βλέπετε ακριβώς τι σας λείπει. Χωρίς email, χωρίς δέσμευση.</p>
+      <a class="btn btn-amber pulse" href="/tablo/">Μετρήστε την επιχείρησή σας — Quiz</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <a class="logo" href="/">PISMA<b>.</b></a>
+    <p>Με πείσμα, μέχρι να δουλεύει μόνο του.</p>
+    <ul class="foot-links">
+      <li><a href="/times/">Τιμές</a></li>
+      <li><a href="/epikoinonia/">Επικοινωνία</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script is:inline>
+  // nav: γυαλί μετά το πρώτο scroll
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', () => nav.classList.toggle('on', scrollY > 40), { passive: true });
+
+  // marquee: διπλασιασμός περιεχομένου για αδιάκοπο loop
+  const marq = document.getElementById('marq');
+  marq.innerHTML += marq.innerHTML;
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // reveals + «άναμμα» βημάτων
+  const io = new IntersectionObserver((es) => {
+    for (const e of es) if (e.isIntersecting) {
+      e.target.classList.add('in');
+      if (e.target.classList.contains('stepx')) {
+        const i = [...document.querySelectorAll('.stepx')].indexOf(e.target);
+        setTimeout(() => e.target.classList.add('lit'), 350 + i * 420);
+      }
+      io.unobserve(e.target);
+    }
+  }, { threshold: .2 });
+  document.querySelectorAll('.rv, .stepx').forEach((el) => io.observe(el));
+
+  // αριθμοί που μετράνε
+  const fmt = (el, v) => { el.textContent = (el.dataset.pre || '') + v; };
+  const nio = new IntersectionObserver((es) => {
+    for (const e of es) if (e.isIntersecting) {
+      const el = e.target, target = +el.dataset.n, t0 = performance.now();
+      if (reduced) { fmt(el, target); nio.unobserve(el); continue; }
+      const tick = (t) => {
+        const p = Math.min(1, (t - t0) / 1100);
+        fmt(el, Math.round(target * (1 - Math.pow(1 - p, 3))));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      nio.unobserve(el);
+    }
+  }, { threshold: .6 });
+  document.querySelectorAll('.num').forEach((el) => nio.observe(el));
+
+  // parallax στο φωτογραφικό διάλειμμα
+  const pimg = document.getElementById('parallaxImg');
+  if (pimg && !reduced) {
+    const loop = () => {
+      const r = pimg.parentElement.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < innerHeight) {
+        const p = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
+        pimg.style.transform = `translateY(${(-p * 46).toFixed(1)}px)`;
+      }
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }
+</script>
+</body>
+</html>

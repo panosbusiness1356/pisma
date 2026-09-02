@@ -209,7 +209,7 @@ const questions = [
                 Build your package →
               </a>
               <a class="btn btn--ghost" href="/en/free-assessment/">
-                Free {ELEGXOS.minutes}-minute assessment with us
+                Free {ELEGXOS.minutes}-minute PISMA Check with us
               </a>
             </div>
             <p class="btn-note result-note">In the assessment we work out together what you actually need — no commitment.</p>
@@ -292,20 +292,32 @@ const questions = [
     return v < 40 ? 'c-red' : v < 70 ? 'c-orange' : 'c-ok';
   }
 
+  // Ενεργά count-ups ανά στοιχείο — ακυρώνονται σε restart, αλλιώς το παλιό σκορ ξαναγράφεται.
+  const counters = new Map();
+  function stopCount(el) {
+    const c = counters.get(el);
+    if (!c) return;
+    cancelAnimationFrame(c.raf);
+    window.clearTimeout(c.failSafe);
+    counters.delete(el);
+  }
   function countUp(el, target, fmt) {
+    stopCount(el);
     if (reduce) { el.textContent = fmt(target); return; }
     const t0 = performance.now();
     const dur = 1000;
+    const c = { raf: 0, failSafe: 0 };
+    counters.set(el, c);
     // Δίχτυ ασφαλείας: αν το rAF δεν τρέξει (throttled webviews), η τελική τιμή γράφεται ούτως ή άλλως.
-    const failSafe = window.setTimeout(() => { el.textContent = fmt(target); }, dur + 200);
+    c.failSafe = window.setTimeout(() => { el.textContent = fmt(target); counters.delete(el); }, dur + 200);
     function tick(t) {
       const p = Math.min((t - t0) / dur, 1);
       const e = 1 - Math.pow(1 - p, 3); // ease-out
       el.textContent = fmt(target * e);
-      if (p < 1) requestAnimationFrame(tick);
-      else window.clearTimeout(failSafe);
+      if (p < 1) c.raf = requestAnimationFrame(tick);
+      else { window.clearTimeout(c.failSafe); counters.delete(el); }
     }
-    requestAnimationFrame(tick);
+    c.raf = requestAnimationFrame(tick);
   }
 
   function setRing(circle, numEl, v) {
@@ -359,7 +371,7 @@ const questions = [
   copyBtn.addEventListener('click', async () => {
     if (!last) return;
     const text =
-      'The PISMA Dashboard — Visibility: ' + last.visibility + '/100 · Automation: ' + last.automation + '/100';
+      'The Dashboard — Visibility: ' + last.visibility + '/100 · Automation: ' + last.automation + '/100';
     try {
       await navigator.clipboard.writeText(text);
       copyBtn.textContent = 'Copied ✓';
@@ -378,6 +390,8 @@ const questions = [
       c.classList.remove('c-red', 'c-orange', 'c-ok');
       c.style.strokeDashoffset = CIRC;
     });
+    stopCount(numVis);
+    stopCount(numAuto);
     numVis.textContent = '0';
     numAuto.textContent = '0';
     resultSr.textContent = '';

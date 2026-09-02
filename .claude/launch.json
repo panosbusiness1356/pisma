@@ -87,6 +87,78 @@
         "4325"
       ],
       "port": 4325
+    },
+    {
+      "name": "pisma-tefteri-4331",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4331"
+      ],
+      "port": 4331
+    },
+    {
+      "name": "pisma-petrol-4332",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4332"
+      ],
+      "port": 4332
+    },
+    {
+      "name": "pisma-melani-4333",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4333"
+      ],
+      "port": 4333
+    },
+    {
+      "name": "pisma-sokolata-4334",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4334"
+      ],
+      "port": 4334
+    },
+    {
+      "name": "pisma-elia-4335",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4335"
+      ],
+      "port": 4335
+    },
+    {
+      "name": "pisma-nea-4340",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4340"
+      ],
+      "port": 4340
     }
   ]
 }

@@ -29,7 +29,7 @@ const steps = [
   {
     num: '01',
     title: 'Before we start',
-    desc: 'In the Check we measure where you stand today: calls, reviews, position on Google and AI, office hours.',
+    desc: 'In the PISMA Check we measure where you stand today: calls, reviews, position on Google and AI, office hours.',
   },
   {
     num: '02',
@@ -123,14 +123,14 @@ const steps = [
         <svg id="rise-svg" viewBox="0 0 560 260" role="img" aria-labelledby="rise-svg-title rise-svg-desc">
           <title id="rise-svg-title">Your business's trajectory</title>
           <desc id="rise-svg-desc">
-            An upward chart from today to 6 months out: calls, reviews and visits go up,
+            An upward chart from today to 3 months out: calls, reviews and visits go up,
             and hours at the office go down.
           </desc>
           <line x1="20" y1="218" x2="540" y2="218" class="rise-axis" />
           <path
             id="rise-area"
             d="M30 208 C 120 204, 180 190, 250 164 C 320 138, 400 96, 460 60 L 512 34 L 512 218 L 30 218 Z"
-            fill="rgba(255,122,80,.10)"
+            style="fill:rgba(var(--orange-rgb),.10)"
             opacity="0"
           />
           <path
@@ -171,7 +171,7 @@ const steps = [
           </g>
           <g id="rise-conf"></g>
           <text x="30" y="242" class="rise-label">today</text>
-          <text x="512" y="242" class="rise-label" text-anchor="end">in 6 months</text>
+          <text x="512" y="242" class="rise-label" text-anchor="end">in 3 months</text>
         </svg>
         <p class="rise-final" id="rise-final">
           <span>And you? Fewer hours at the office ✓</span>
@@ -182,8 +182,8 @@ const steps = [
 
   <CtaBand
     title="We start by measuring."
-    sub="In the Check we measure where you stand today — and show you, live, the systems we run for ourselves."
-    ctaText="Book the Check"
+    sub="In the PISMA Check we measure where you stand today — and show you, live, the systems we run for ourselves."
+    ctaText="Book the PISMA Check"
     ctaHref="/en/free-assessment/"
     note={`${ELEGXOS.priceEn} · ${ELEGXOS.minutes} minutes · no commitment`}
   />

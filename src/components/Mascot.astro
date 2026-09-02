@@ -238,11 +238,22 @@ const cloudB = dots.slice(half);
     /* Η κίνηση κανονικοποιείται στον πραγματικό χρόνο κάθε καρέ (delta time),
        αλλιώς σε οθόνες 120/144Hz ο Ντοτ ταξιδεύει 2-3x πιο γρήγορα απ' ό,τι στα 60Hz. */
     let lastT = performance.now();
+    /* Οι στάσεις μετρώνται (getBoundingClientRect) μόνο όταν αλλάξει scroll/viewport
+       ή κάθε 250ms — όχι σε κάθε καρέ, που έκανε layout thrash σε κινητά. */
+    let tCache: ReturnType<typeof targetPos> | null = null;
+    let tKey = '';
+    let tAt = 0;
+    const targetCached = (nowT: number) => {
+      const key = `${window.scrollY}|${window.innerWidth}|${window.innerHeight}`;
+      if (tCache && key === tKey && nowT - tAt < 250) return tCache;
+      tCache = targetPos(); tKey = key; tAt = nowT;
+      return tCache;
+    };
     const loop = (nowT: number) => {
       const f = Math.min(3, (nowT - lastT) / 16.667);
       lastT = nowT;
       const smooth = (k: number) => 1 - Math.pow(1 - k, f);
-      let t = targetPos();
+      let t = targetCached(nowT);
 
       /* Φάσεις εισόδου: πάνω από το «μόνο του», τραβώντας τη γραμμή. */
       if (phase !== 'tour') {
@@ -395,7 +406,7 @@ const cloudB = dots.slice(half);
     position: fixed; left: 0; top: 0; z-index: 90;
     width: 110px; opacity: 0; cursor: pointer;
     will-change: transform;
-    filter: drop-shadow(0 10px 26px rgba(238, 79, 39, .22));
+    filter: drop-shadow(0 10px 26px rgba(var(--cta-rgb), .22));
     transition: opacity .7s ease;
     /* Μόνο οι ζωγραφισμένες κουκίδες πιάνουν κλικ — οι άδειες γωνίες του
        κουτιού αφήνουν τα taps να περνούν στο περιεχόμενο από κάτω. */

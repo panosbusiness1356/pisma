@@ -1,0 +1,36 @@
+/* ΔΟΚΙΜΗ ΠΑΛΕΤΑΣ Β3 — «Γραφίτης & Lime»: ουδέτερος σκούρος γραφίτης με
+   ηλεκτρικό lime accent (μοντέρνο fintech). Dev port 4333. Προσωρινό αρχείο. */
+:root:root {
+  --bg: #0F110F;
+  --bg-soft: #141714;
+  --card: #171A17;
+  --card-2: #1E221E;
+  --navy: #F1F4EE;
+  --ink: #DCE1D8;
+  --muted: #8F9689;
+  --orange: #BEF23A;
+  --orange-cta: #A4DC1F;
+  --orange-hi: #CDF95C;
+  --orange-soft: rgba(190, 242, 58, .12);
+  --orange-text: #CDEF6A;
+  --orange-rgb: 190, 242, 58;
+  --cta-rgb: 164, 220, 31;
+  --peach-rgb: 205, 249, 92;
+  --grad-1: #8FC01B; --grad-2: #7FB015; --grad-3: #6E9D0F;
+  --gt-1: #D3F95C; --gt-2: #A4DC1F; --shine: #ECFFC2;
+  --cta-deep: #5F890B; --cta-lite: #B7E93B;
+  --cta-ink: #161F00;
+  --nav-rgb: 15, 17, 15;
+  --purple: #9AA39B;
+  --purple-soft: rgba(154, 163, 155, .12);
+  --purple-text: #C4CBC4;
+  --blue: #79C6B5;
+  --blue-soft: rgba(121, 198, 181, .12);
+  --blue-text: #AFE0D5;
+  --yellow: #D8C63F;
+  --yellow-soft: rgba(216, 198, 63, .13);
+  --yellow-text: #E8DC7F;
+  --line: rgba(240, 244, 235, .09);
+  --line-strong: rgba(240, 244, 235, .17);
+  --glow-orange: 0 0 44px rgba(164, 220, 31, .30);
+}

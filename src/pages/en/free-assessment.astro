@@ -174,6 +174,7 @@ const steps = [
           <label for="f-email">Email</label>
           <input type="email" id="f-email" name="email" autocomplete="email" required />
         </div>
+        <input type="text" name="_honey" class="f-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
         <fieldset class="mode">
           <legend>How would you prefer to do it?</legend>
@@ -193,7 +194,7 @@ const steps = [
         <input type="hidden" name="_template" value="box" />
         <input type="hidden" name="_captcha" value="false" />
 
-        <button type="submit" class="btn btn--orange booking-btn" id="booking-btn">Book the Check</button>
+        <button type="submit" class="btn btn--orange booking-btn" id="booking-btn">Book the PISMA Check</button>
         <span class="btn-note">{ELEGXOS.priceEn} · {ELEGXOS.minutes} minutes · no commitment at all</span>
 
         <p class="booking-msg" id="booking-msg" role="status" aria-live="polite"></p>
@@ -257,6 +258,7 @@ const steps = [
     }
 
     const data = new FormData(form);
+    if ((data.get('_honey') as string)?.trim()) return; // bot — σιωπηλή απόρριψη
     btn.disabled = true;
     btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span>Sending…';
     try {
@@ -270,7 +272,7 @@ const steps = [
       if (!res.ok || !json || String(json.success) !== 'true') throw new Error('form failed');
       form.classList.add('is-done');
       btn.disabled = false;
-      btn.textContent = 'Book the Check';
+      btn.textContent = 'Book the PISMA Check';
       form.reset();
       msg.textContent = '';
       msg.classList.remove('is-error', 'is-ok');
@@ -279,7 +281,7 @@ const steps = [
       setTimeout(() => form.classList.remove('is-done'), 6000);
     } catch {
       btn.disabled = false;
-      btn.textContent = 'Book the Check';
+      btn.textContent = 'Book the PISMA Check';
       msg.innerHTML =
         'Something went wrong. Try again, or email us directly at ' +
         '<a href="mailto:' + form.dataset.email + '">' + form.dataset.email + '</a>.';
@@ -371,6 +373,7 @@ const steps = [
 </script>
 
 <style>
+  .f-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
   /* Φόρμα κράτησης */
   .booking { max-width: 640px; margin-inline: auto; }
   .booking-btn { width: 100%; margin-top: 6px; }

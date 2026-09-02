@@ -250,7 +250,7 @@ const faqItems = [
         </div>
         <div class="price-cta">
           <a class="btn btn--orange" href="/en/pricing/">Build your package →</a>
-          <a class="btn btn--ghost" href="/en/free-assessment/">Free {ELEGXOS.minutes}-minute assessment</a>
+          <a class="btn btn--ghost" href="/en/free-assessment/">Free {ELEGXOS.minutes}-minute PISMA Check</a>
           <span class="btn-note">No online payment — we close it over the phone.</span>
         </div>
       </div>
@@ -271,8 +271,8 @@ const faqItems = [
   <!-- 6. CTA -->
   <CtaBand
     title="Your menu, digital by tomorrow."
-    sub={`We start with a free ${ELEGXOS.minutes}-minute assessment — we look at your menu and show you how it will look.`}
-    ctaText="Book the free assessment"
+    sub={`We start with the free ${ELEGXOS.minutes}-minute PISMA Check — we look at your menu and show you how it will look.`}
+    ctaText="Book the free PISMA Check"
     ctaHref="/en/free-assessment/"
     note="No online payment · no commitment"
   />
@@ -446,7 +446,7 @@ const faqItems = [
     background:
       radial-gradient(90% 120% at 88% -10%, rgba(255, 214, 160, .5), transparent 55%),
       radial-gradient(60% 90% at 0% 110%, rgba(90, 12, 0, .35), transparent 60%),
-      linear-gradient(118deg, #FF6A3D 0%, #EE4F27 55%, #C23917 100%);
+      linear-gradient(118deg, var(--orange-hi) 0%, var(--orange-cta) 55%, var(--grad-2) 100%);
     border-radius: 18px; padding: 12px 15px 11px;
     box-shadow: 0 10px 26px rgba(198, 58, 24, .32);
   }
@@ -494,7 +494,7 @@ const faqItems = [
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .05);
   }
   .dm-pills span.is-on {
-    background: linear-gradient(92deg, #FF6A3D, #D63E1B); color: #fff;
+    background: linear-gradient(92deg, var(--orange-hi), var(--cta-deep)); color: #fff;
     box-shadow: 0 4px 12px rgba(214, 62, 27, .4);
   }
   .dm-row {
@@ -546,7 +546,7 @@ const faqItems = [
   .dm-order {
     display: flex; align-items: center; justify-content: center; gap: 6px;
     margin-top: 9px; padding: 10px;
-    background: linear-gradient(92deg, #FF6A3D 0%, #EE4F27 55%, #D63E1B 100%);
+    background: linear-gradient(92deg, var(--orange-hi) 0%, var(--orange-cta) 55%, var(--cta-deep) 100%);
     color: #fff; border-radius: 14px;
     font-size: .76rem; font-weight: 800; letter-spacing: .01em;
     box-shadow: 0 8px 20px rgba(214, 62, 27, .32);

@@ -17,6 +17,16 @@
   --orange-hi: #FF6A3D;
   --orange-soft: rgba(255, 122, 80, .13);
   --orange-text: #FFA284; /* πορτοκαλί ΚΕΙΜΕΝΟ πάνω σε σκούρο — AA */
+  /* RGB τριάδες των παραπάνω, για rgba() με μεταβλητό άλφα (glows, σκιές, halos) */
+  --orange-rgb: 255, 122, 80;
+  --cta-rgb: 238, 79, 39;
+  --peach-rgb: 255, 170, 120;
+  /* Στάσεις των gradients του accent — τα components τις καταναλώνουν μέσω var */
+  --grad-1: #CC431C; --grad-2: #BE3A17; --grad-3: #AC3213;
+  --gt-1: #FF9159; --gt-2: #FF5C2E; --shine: #FFD9A8;
+  --cta-deep: #D63E1B; --cta-lite: #FF8A3D;
+  --cta-ink: #fff;        /* κείμενο πάνω στο CTA gradient */
+  --nav-rgb: 23, 21, 20;  /* φόντο της κάψουλας του Nav (rgba με blur) */
   --purple: #B09A8C;      /* πρώην μωβ — τώρα ζεστό taupe, δένει με το ανθρακί */
   --purple-soft: rgba(176, 154, 140, .12);
   --purple-text: #D1BFB3;
@@ -36,13 +46,13 @@
   --red-soft: rgba(255, 92, 65, .13);
   --red-text: #FF9B8A;
   /* Στοπ ≥4.5:1 με λευκό κείμενο (WCAG AA) — μην τα ανοίξεις χωρίς νέο έλεγχο αντίθεσης */
-  --grad: linear-gradient(92deg, #CC431C 0%, #BE3A17 55%, #AC3213 100%);
-  --grad-text: linear-gradient(92deg, #FF9159 0%, #FF5C2E 100%);
+  --grad: linear-gradient(92deg, var(--grad-1) 0%, var(--grad-2) 55%, var(--grad-3) 100%);
+  --grad-text: linear-gradient(92deg, var(--gt-1) 0%, var(--gt-2) 100%);
   --r: 16px;
 
   --shadow: 0 2px 8px rgba(0, 0, 0, .35), 0 14px 40px rgba(0, 0, 0, .35);
   --shadow-hover: 0 4px 12px rgba(0, 0, 0, .4), 0 22px 52px rgba(0, 0, 0, .5);
-  --glow-orange: 0 0 44px rgba(238, 79, 39, .35);
+  --glow-orange: 0 0 44px rgba(var(--cta-rgb), .35);
 
   --pisma-font: 'Inter', system-ui, sans-serif;
   --font-display: 'Unbounded', 'Inter', sans-serif;
@@ -77,8 +87,8 @@ body::before {
   position: absolute; left: 0; right: 0; top: 0; height: 100vh;
   z-index: -1; pointer-events: none;
   background:
-    radial-gradient(58% 34% at 82% -4%, rgba(255, 122, 80, .11), transparent 62%),
-    radial-gradient(46% 30% at 8% 0%, rgba(255, 170, 120, .05), transparent 60%);
+    radial-gradient(58% 34% at 82% -4%, rgba(var(--orange-rgb), .11), transparent 62%),
+    radial-gradient(46% 30% at 8% 0%, rgba(var(--peach-rgb), .05), transparent 60%);
 }
 img, svg { display: block; max-width: 100%; }
 input, button, textarea, select { font: inherit; color: inherit; }
@@ -106,7 +116,7 @@ p { max-width: 62ch; }
 .num { font-family: var(--font-mono); font-weight: 500; letter-spacing: -.02em; }
 .muted { color: var(--muted); }
 
-::selection { background: rgba(238, 79, 39, .45); color: #fff; }
+::selection { background: rgba(var(--cta-rgb), .45); color: #fff; }
 
 /* ---------- Layout ---------- */
 .container { max-width: 1120px; margin-inline: auto; padding-inline: clamp(20px, 4vw, 36px); }
@@ -142,7 +152,7 @@ main section:nth-of-type(even) {
 .kicker {
   display: inline-flex; align-items: center; gap: 8px;
   background: var(--orange-soft); color: var(--orange-text);
-  border: 1px solid rgba(255, 122, 80, .25);
+  border: 1px solid rgba(var(--orange-rgb), .25);
   font-size: .76rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
   padding: 7px 14px; border-radius: 999px;
 }
@@ -178,8 +188,8 @@ main section:nth-of-type(even) {
 }
 .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
 .btn:active { transform: translateY(0); }
-.btn--orange { background: var(--grad); color: #fff; box-shadow: 0 6px 24px rgba(238, 79, 39, .35); }
-.btn--orange:hover { filter: brightness(1.08); box-shadow: 0 10px 32px rgba(238, 79, 39, .45); }
+.btn--orange { background: var(--grad); color: var(--cta-ink); box-shadow: 0 6px 24px rgba(var(--cta-rgb), .35); }
+.btn--orange:hover { filter: brightness(1.08); box-shadow: 0 10px 32px rgba(var(--cta-rgb), .45); }
 .btn--navy {
   background: var(--card-2); color: var(--navy);
   box-shadow: inset 0 0 0 1px var(--line-strong);
@@ -202,7 +212,7 @@ main section:nth-of-type(even) {
 .card--link:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--line-strong); }
 .card--navy {
   background:
-    radial-gradient(90% 100% at 50% 0%, rgba(255, 122, 80, .10), transparent 70%),
+    radial-gradient(90% 100% at 50% 0%, rgba(var(--orange-rgb), .10), transparent 70%),
     var(--card-2);
   border-color: var(--line-strong); color: #fff;
 }
@@ -240,8 +250,8 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
 .svc-big {
   grid-column: span 2;
   background:
-    radial-gradient(120% 130% at 20% -10%, rgba(238, 79, 39, .18), transparent 60%),
-    radial-gradient(110% 120% at 95% 110%, rgba(255, 122, 80, .09), transparent 55%),
+    radial-gradient(120% 130% at 20% -10%, rgba(var(--cta-rgb), .18), transparent 60%),
+    radial-gradient(110% 120% at 95% 110%, rgba(var(--orange-rgb), .09), transparent 55%),
     var(--card-2);
   border-color: var(--line-strong);
   padding: clamp(24px, 3vw, 32px);
@@ -297,7 +307,7 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
 .step-num {
   display: inline-flex; align-items: center; justify-content: center;
   width: 40px; height: 40px; border-radius: 12px;
-  background: var(--grad); color: #fff; font-weight: 700;
+  background: var(--grad); color: var(--cta-ink); font-weight: 700;
   margin-bottom: 14px;
 }
 .step h3 { margin-bottom: 6px; }
@@ -354,5 +364,6 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
   padding: 13px 16px; width: 100%;
   transition: border-color .15s ease;
 }
-.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--orange); outline: none; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--orange); }
+.field input:focus:not(:focus-visible), .field select:focus:not(:focus-visible), .field textarea:focus:not(:focus-visible) { outline: none; }
 .field .hint { font-size: .82rem; color: var(--muted); }

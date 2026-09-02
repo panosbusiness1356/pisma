@@ -1,0 +1,780 @@
+---
+// ΠΡΟΣΩΡΙΝΗ σελίδα δοκιμών — ΔΕΝ γίνεται commit / deploy.
+// Β΄ γύρος: η χρήστρια διάλεξε το Ε (bento) — εναλλακτικές πάνω στο bento.
+import '../styles/fonts.css';
+import '../styles/global.css';
+
+const services = [
+  {
+    t: 'Site που πουλάει',
+    d: 'Γρήγορο, καθαρό, με ένα ξεκάθαρο επόμενο βήμα σε κάθε σελίδα. Όχι βιτρίνα — εργαλείο δουλειάς. Και με προαιρετική μηνιαία συντήρηση, τρέχει χωρίς να το σκέφτεστε.',
+    icon: 'site',
+    href: '/site-pou-poulaei/',
+  },
+  {
+    t: 'Site με online κρατήσεις',
+    d: 'Οι πελάτες σας κλείνουν ραντεβού ή τραπέζι online και παίρνουν αυτόματη υπενθύμιση — τέλος τα «μου έστησε».',
+    icon: 'cal',
+    href: '/site-kratiseis/',
+  },
+  {
+    t: 'Google Business Profile',
+    d: 'Στήσιμο και βελτιστοποίηση του προφίλ σας στους Χάρτες και την αναζήτηση Google — σωστά στοιχεία, κατηγορίες, φωτογραφίες.',
+    icon: 'pin',
+    href: '/odigoi/profil-google-maps/',
+  },
+  {
+    t: 'Πρώτος στη Google (SEO)',
+    d: 'Όταν ψάχνουν ό,τι κάνετε στην περιοχή σας, να βγαίνετε στα πρώτα αποτελέσματα. Με μηνιαία αναφορά θέσεων.',
+    icon: 'seo',
+  },
+  {
+    t: 'Να σε προτείνει το AI (GEO/AEO)',
+    d: 'Ολοένα περισσότεροι ρωτάνε το ChatGPT «πού να πάω;». Φροντίζουμε η απάντηση να έχει το όνομά σας.',
+    icon: 'ai',
+  },
+  {
+    t: 'Social media',
+    d: 'Προφίλ που δείχνουν ζωντανά: ξεκαθάρισμα και στήσιμο ή μηνιαία διαχείριση με posts και stories.',
+    icon: 'social',
+    href: '/odigoi/diaxeirisi-social-media/',
+  },
+  {
+    t: 'Το Εργαλείο Κριτικών',
+    d: 'Το εργαλείο μας που κάνει τις κριτικές Google να μαζεύονται μόνες τους. Πώς; Αυτό το δείχνουμε μόνο ζωντανά.',
+    icon: 'star',
+    href: '/kritikes/',
+  },
+  {
+    t: 'Ψηφιακό Μενού με QR',
+    d: 'QR στο τραπέζι: ο πελάτης σκανάρει και βλέπει το μενού στο κινητό του. Αλλάζετε τιμές όποτε θέλετε.',
+    icon: 'menu',
+    href: '/psifiako-menou/',
+  },
+  {
+    t: 'Μάτι στον ανταγωνισμό',
+    d: 'Βλέπετε πού βγαίνει ο απέναντι και πού εσείς. Κάθε μήνα, στην ίδια αναφορά.',
+    icon: 'eye',
+  },
+];
+
+// inner-SVG ανά εικονίδιο (ίδια paths με τη ζωντανή σελίδα)
+const icons: Record<string, string> = {
+  site: '<rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="M3 9.5h18M6.4 7h.01M9.4 7h.01"/>',
+  cal: '<rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.8h17M8 2.8V6M16 2.8V6M8.5 14.5l2.3 2.3 4.4-4.6"/>',
+  pin: '<path d="M12 21.5s-7-6.2-7-11.3A7 7 0 0 1 19 10.2c0 5.1-7 11.3-7 11.3z"/><circle cx="12" cy="10" r="2.6"/>',
+  social: '<circle cx="6" cy="12" r="2.8"/><circle cx="17.5" cy="5.5" r="2.8"/><circle cx="17.5" cy="18.5" r="2.8"/><path d="M8.6 10.7l6.3-3.7M8.6 13.3l6.3 3.7"/>',
+  seo: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/><path d="M7.4 12.4l2-2 1.7 1.5 2.5-2.8"/>',
+  ai: '<path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-2.9-.4-4.1-1L3 20l1-5.4A8.5 8.5 0 1 1 21 11.5z"/><path d="M12 8.5v5M9.5 11h5"/>',
+  star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>',
+  menu: '<rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M10 7.5h4M10 11h4M10 14.5h2.5"/>',
+  eye: '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
+};
+
+// Ε5: χρωματιστά «αντικείμενα» ανά υπηρεσία — μίνι flat εικονογραφήσεις (viewBox 0 0 96 72)
+const art: Record<string, string> = {
+  site: `
+    <rect x="8" y="8" width="80" height="56" rx="7" fill="#FBF2EA"/>
+    <path d="M8 15a7 7 0 0 1 7-7h66a7 7 0 0 1 7 7v7H8z" style="fill:var(--orange)"/>
+    <circle cx="17" cy="15" r="2.2" fill="#fff" opacity=".85"/><circle cx="24" cy="15" r="2.2" fill="#fff" opacity=".6"/><circle cx="31" cy="15" r="2.2" fill="#fff" opacity=".35"/>
+    <rect x="16" y="30" width="32" height="5" rx="2.5" fill="#33254A"/>
+    <rect x="16" y="39" width="24" height="4" rx="2" fill="#C0B4D2"/>
+    <rect x="16" y="49" width="27" height="10" rx="5" style="fill:var(--orange-cta)"/>
+    <rect x="21" y="53" width="17" height="2.4" rx="1.2" fill="#fff" opacity=".9"/>
+    <path d="M54 56l9-9 7 5 11-13" stroke="#2FA36B" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="81" cy="39" r="3.4" fill="#2FA36B"/>`,
+  cal: `
+    <rect x="16" y="13" width="52" height="49" rx="7" fill="#FBF2EA"/>
+    <path d="M16 20a7 7 0 0 1 7-7h38a7 7 0 0 1 7 7v8H16z" fill="#FF5C41"/>
+    <rect x="26" y="8" width="5" height="11" rx="2.5" fill="#33254A"/><rect x="53" y="8" width="5" height="11" rx="2.5" fill="#33254A"/>
+    <circle cx="27" cy="38" r="2.6" fill="#C0B4D2"/><circle cx="38" cy="38" r="2.6" fill="#C0B4D2"/><circle cx="49" cy="38" r="2.6" fill="#C0B4D2"/>
+    <circle cx="27" cy="49" r="2.6" fill="#C0B4D2"/><circle cx="38" cy="49" r="2.6" fill="#C0B4D2"/>
+    <circle cx="49" cy="49" r="6.5" style="fill:var(--orange)"/>
+    <circle cx="72" cy="52" r="12" fill="#2FA36B"/>
+    <path d="M66.5 52l4 4 7-7.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+  pin: `
+    <rect x="10" y="14" width="68" height="48" rx="8" fill="#E7F0E4"/>
+    <path d="M10 42h68" stroke="#fff" stroke-width="6"/><path d="M38 14v48" stroke="#fff" stroke-width="6"/>
+    <rect x="15" y="19" width="16" height="14" rx="3" fill="#BFE0BC"/>
+    <rect x="46" y="48" width="24" height="10" rx="3" fill="#BFE0BC"/>
+    <path d="M56 18c-7.5 0-13 5.4-13 12 0 9 13 21 13 21s13-12 13-21c0-6.6-5.5-12-13-12z" style="fill:var(--orange-cta)"/>
+    <circle cx="56" cy="30" r="5" fill="#fff"/>
+    <rect x="62" y="12" width="24" height="12" rx="6" fill="#EFB93C"/>
+    <path d="M70 15.5l1.3 2.6 2.9.4-2.1 2 .5 2.9-2.6-1.4-2.6 1.4.5-2.9-2.1-2 2.9-.4z" fill="#fff"/>`,
+  seo: `
+    <rect x="8" y="10" width="80" height="15" rx="7.5" fill="#FBF2EA"/>
+    <circle cx="19" cy="17.5" r="4.2" stroke="#5B7FA6" stroke-width="2.6" fill="none"/>
+    <path d="M22.5 21l4 4" stroke="#5B7FA6" stroke-width="2.6" stroke-linecap="round"/>
+    <rect x="34" y="14.5" width="34" height="5.5" rx="2.75" fill="#C0B4D2"/>
+    <rect x="8" y="33" width="80" height="15" rx="7.5" fill="#2FA36B" opacity=".22"/>
+    <rect x="8" y="33" width="80" height="15" rx="7.5" fill="none" stroke="#2FA36B" stroke-width="2"/>
+    <circle cx="18" cy="40.5" r="6.5" fill="#EFB93C"/>
+    <path d="M16.2 38.7l2.3-1.9v7.6" stroke="#7A5A12" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="30" y="37.8" width="40" height="5.4" rx="2.7" fill="#CFE9DA"/>
+    <rect x="8" y="54" width="62" height="11" rx="5.5" fill="#ffffff" opacity=".09"/>
+  `,
+  ai: `
+    <rect x="10" y="10" width="54" height="34" rx="13" fill="#4E8FD9"/>
+    <path d="M22 44l-2 9 11-9z" fill="#4E8FD9"/>
+    <path d="M32 20l2.6 6 6 2.6-6 2.6-2.6 6-2.6-6-6-2.6 6-2.6z" fill="#fff"/>
+    <path d="M47 17l1.6 3.6 3.6 1.6-3.6 1.6-1.6 3.6-1.6-3.6-3.6-1.6 3.6-1.6z" fill="#fff" opacity=".75"/>
+    <rect x="46" y="46" width="40" height="18" rx="9" style="fill:var(--orange-cta)"/>
+    <circle cx="58" cy="55" r="2.4" fill="#fff"/><circle cx="66" cy="55" r="2.4" fill="#fff" opacity=".75"/><circle cx="74" cy="55" r="2.4" fill="#fff" opacity=".5"/>`,
+  social: `
+    <circle cx="30" cy="26" r="16" fill="#E84D7A"/>
+    <path d="M30 33s-8.5-5.1-8.5-10.6c0-2.9 2.3-5 5-5 1.8 0 3 .9 3.5 1.9.5-1 1.7-1.9 3.5-1.9 2.7 0 5 2.1 5 5C38.5 27.9 30 33 30 33z" fill="#fff"/>
+    <circle cx="62" cy="20" r="13" fill="#4E8FD9"/>
+    <rect x="53.5" y="18.5" width="4" height="9.5" rx="1.2" fill="#fff"/>
+    <path d="M59.5 28h8c1 0 1.9-.7 2.1-1.7l1.3-5.2c.3-1.3-.7-2.5-2-2.5h-4.3l.9-3.1c.3-1-.3-2.1-1.3-2.4-.8-.2-1.7.2-2.1 1l-2.6 4.9z" fill="#fff"/>
+    <circle cx="56" cy="49" r="15" fill="#2FA36B"/>
+    <path d="M48 46.5a8 8 0 0 1 8-5.5c4.6 0 8.3 3 8.3 6.8s-3.7 6.8-8.3 6.8c-1 0-2-.1-2.9-.4L49 56l1.6-3.6a6.4 6.4 0 0 1-2.6-5.9z" fill="#fff"/>`,
+  star: `
+    <path d="M18 40l2.3 4.7 5.2.8-3.8 3.7.9 5.2-4.6-2.4-4.6 2.4.9-5.2-3.8-3.7 5.2-.8z" fill="#EFB93C"/>
+    <path d="M38 34l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" fill="#EFB93C"/>
+    <path d="M60 26l3.2 6.5 7.2 1-5.2 5 1.2 7.2-6.4-3.4-6.4 3.4 1.2-7.2-5.2-5 7.2-1z" fill="#F6C34C"/>
+    <path d="M60 14v5M74 20l-3.4 3.4M46 20l3.4 3.4" stroke="#F6C34C" stroke-width="2.6" stroke-linecap="round"/>
+    <rect x="70" y="46" width="18" height="12" rx="6" fill="#2FA36B"/>
+    <path d="M75.5 52h7M79 48.5v7" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>`,
+  menu: `
+    <rect x="12" y="12" width="34" height="34" rx="6" fill="#FBF2EA"/>
+    <rect x="17" y="17" width="9" height="9" rx="1.5" fill="#33254A"/><rect x="32" y="17" width="9" height="9" rx="1.5" fill="#33254A"/><rect x="17" y="32" width="9" height="9" rx="1.5" fill="#33254A"/>
+    <rect x="20" y="20" width="3" height="3" fill="#FBF2EA"/><rect x="35" y="20" width="3" height="3" fill="#FBF2EA"/><rect x="20" y="35" width="3" height="3" fill="#FBF2EA"/>
+    <rect x="32" y="32" width="4" height="4" fill="#33254A"/><rect x="38" y="36" width="3" height="3" fill="#33254A"/><rect x="34" y="40" width="3" height="3" fill="#33254A"/>
+    <circle cx="63" cy="45" r="17" fill="#F3E4D3"/>
+    <path d="M63 31a14 14 0 0 1 12.8 8.4L63 45z" fill="#EFB93C"/>
+    <path d="M75.8 39.4A14 14 0 1 1 55 34.6L63 45z" fill="#E8593A"/>
+    <circle cx="60" cy="52" r="2.4" fill="#7A2A17"/><circle cx="68" cy="49" r="2.4" fill="#7A2A17"/><circle cx="56" cy="44" r="2.2" fill="#7A2A17"/>`,
+  eye: `
+    <rect x="10" y="10" width="76" height="52" rx="8" fill="#FBF2EA"/>
+    <path d="M18 52l14-12 10 7 16-16 10 5" style="stroke:var(--orange-cta)" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="68" cy="31" r="3.6" style="fill:var(--orange-cta)"/>
+    <path d="M18 44l14-7 10 3 16-9 10 2" stroke="#9AA7B8" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".8" stroke-dasharray="1 6"/>
+    <rect x="58" y="14" width="24" height="11" rx="5.5" fill="#2FA36B"/>
+    <path d="M64 19.5h9M69.8 16.5l3.6 3-3.6 3" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+};
+
+// Πρόταση για τη σελίδα Αυτοματισμών (doulevei-mono-tou) — ίδιο στυλ Ε6.
+// Νέα αντικείμενα: match (παζλ πληρωμή+τιμολόγιο), chase (φούσκα οφειλών),
+// day (κινητό με μήνυμα ημέρας), loyal (κάρτα πιστότητας με σφραγίδες).
+const autArt: Record<string, string> = {
+  match: `
+    <rect x="8" y="16" width="34" height="40" rx="6" fill="#FBF2EA"/>
+    <circle cx="25" cy="30" r="7" style="fill:var(--orange)"/>
+    <path d="M23 30h4M25 28v4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+    <rect x="15" y="42" width="20" height="4" rx="2" fill="#C0B4D2"/>
+    <rect x="15" y="49" width="14" height="3.4" rx="1.7" fill="#C0B4D2" opacity=".7"/>
+    <rect x="54" y="16" width="34" height="40" rx="6" fill="#FBF2EA"/>
+    <path d="M80 16l8 8h-8z" fill="#E4D5C2"/>
+    <rect x="60" y="28" width="18" height="4" rx="2" fill="#33254A"/>
+    <rect x="60" y="36" width="22" height="3.4" rx="1.7" fill="#C0B4D2"/>
+    <rect x="60" y="43" width="16" height="3.4" rx="1.7" fill="#C0B4D2" opacity=".7"/>
+    <circle cx="48" cy="36" r="11" fill="#2FA36B" stroke="#171221" stroke-width="3"/>
+    <path d="M43 36l3.6 3.6 6.4-7" stroke="#fff" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+  chase: `
+    <rect x="8" y="10" width="52" height="28" rx="12" style="fill:var(--orange-cta)"/>
+    <path d="M18 38l-2 8 10-8z" style="fill:var(--orange-cta)"/>
+    <circle cx="24" cy="24" r="8" fill="#fff"/>
+    <text x="24" y="28.5" font-size="12.5" font-weight="800" style="fill:var(--orange-cta)" text-anchor="middle" font-family="Arial, sans-serif">€</text>
+    <rect x="36" y="20" width="18" height="4" rx="2" fill="#fff" opacity=".9"/>
+    <rect x="36" y="27" width="12" height="3.4" rx="1.7" fill="#fff" opacity=".6"/>
+    <rect x="42" y="44" width="44" height="20" rx="10" fill="#2FA36B"/>
+    <circle cx="54" cy="54" r="6" fill="#fff"/>
+    <path d="M51.5 54l2 2 3.4-3.8" stroke="#2FA36B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="64" y="51" width="16" height="4" rx="2" fill="#fff" opacity=".9"/>`,
+  day: `
+    <rect x="28" y="4" width="38" height="64" rx="9" fill="#33254A"/>
+    <rect x="32" y="10" width="30" height="52" rx="5" fill="#FBF2EA"/>
+    <rect x="42" y="6.5" width="10" height="2.6" rx="1.3" fill="#171221"/>
+    <rect x="22" y="22" width="52" height="26" rx="7" fill="#fff"/>
+    <circle cx="31" cy="31" r="4" style="fill:var(--orange)"/>
+    <rect x="39" y="27" width="22" height="3.6" rx="1.8" fill="#33254A"/>
+    <rect x="39" y="33" width="16" height="3" rx="1.5" fill="#C0B4D2"/>
+    <rect x="39" y="40" width="4" height="5" rx="1" fill="#2FA36B"/>
+    <rect x="45" y="38" width="4" height="7" rx="1" fill="#2FA36B"/>
+    <rect x="51" y="35" width="4" height="10" rx="1" style="fill:var(--orange)"/>
+    <rect x="57" y="39" width="4" height="6" rx="1" fill="#C0B4D2"/>
+    <circle cx="68" cy="24" r="6.5" fill="#FF5C41"/>
+    <rect x="66" y="22.6" width="4" height="2.8" rx="1.4" fill="#fff"/>`,
+  loyal: `
+    <rect x="8" y="14" width="62" height="42" rx="8" fill="#FBF2EA"/>
+    <path d="M8 22a8 8 0 0 1 8-8h46a8 8 0 0 1 8 8v6H8z" style="fill:var(--orange)"/>
+    <rect x="14" y="18" width="24" height="4.6" rx="2.3" fill="#fff" opacity=".9"/>
+    <circle cx="18" cy="43" r="5.5" style="fill:var(--orange-cta)"/><path d="M15.7 43l1.7 1.7 3-3.2" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="32" cy="43" r="5.5" style="fill:var(--orange-cta)"/><path d="M29.7 43l1.7 1.7 3-3.2" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="46" cy="43" r="5.5" style="fill:var(--orange-cta)"/><path d="M43.7 43l1.7 1.7 3-3.2" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="60" cy="43" r="5.5" fill="none" stroke="#C0B4D2" stroke-width="1.6" stroke-dasharray="2.4 2.6"/>
+    <rect x="62" y="36" width="26" height="24" rx="5" fill="#E84D7A"/>
+    <rect x="73" y="36" width="4" height="24" fill="#fff" opacity=".85"/>
+    <rect x="62" y="45" width="26" height="4" fill="#fff" opacity=".85"/>
+    <path d="M75 36c-2-4-7-6-8-3s3 4 8 3zM75 36c2-4 7-6 8-3s-3 4-8 3z" fill="#E84D7A" stroke="#fff" stroke-width="1.4"/>`,
+};
+
+// Οι 8 κάρτες της σελίδας «Δουλεύει μόνο του» με τα λεκτικά της (πληθυντικός, live κείμενα)
+const aut = [
+  { t: 'Αυτόματο ταίριασμα πληρωμών', d: 'Κάθε πληρωμή που μπαίνει βρίσκει μόνη της το τιμολόγιό της. Τέλος το ψάξιμο ένα-ένα με το χέρι.', art: 'match', cls: 'aut-big' },
+  { t: 'Οργανωμένο Excel', d: 'Οι κινήσεις σας σε ένα καθαρό Excel που ενημερώνεται μόνο του — η εικόνα της επιχείρησης πάντα φρέσκια.', logos: ['excel.svg'] },
+  { t: 'Αυτόματος Κυνηγός Οφειλών', d: 'Ευγενικές υπενθυμίσεις στέλνονται αυτόματα, τη σωστή στιγμή. Εσείς βλέπετε μόνο ποιος πλήρωσε.', art: 'chase', logos: ['whatsapp-icon.svg', 'viber.svg'] },
+  { t: 'Η Ημέρα σας σε Ένα Μήνυμα', d: 'Κάθε απόγευμα, ένα μήνυμα: τι μπήκε, τι βγήκε, τι εκκρεμεί. Η επιχείρηση σε μία ματιά.', art: 'day', logos: ['whatsapp-icon.svg'] },
+  { t: 'Το Εργαλείο Κριτικών', d: 'Το εργαλείο μας που κάνει τις κριτικές Google να μαζεύονται μόνες τους, κάθε μέρα. Τον μηχανισμό του τον δείχνουμε μόνο ζωντανά.', logos: ['google-icon.svg'], stars: true, cls: 'aut-big', href: '/kritikes/' },
+  { t: 'Κάρτα Πιστότητας', d: 'QR στο ταμείο: ο πελάτης μαζεύει σφραγίδες σε κάθε επίσκεψη και κερδίζει δώρο. Οι καλοί πελάτες ξανάρχονται — μετρημένα.', art: 'loyal' },
+  { t: 'Ψηφιακό Μενού', d: 'QR στο τραπέζι: ο πελάτης βλέπει το μενού στο κινητό του. Αλλάζετε τιμές και πιάτα όποτε θέλετε — χωρίς επανεκτυπώσεις.', art: 'menu', href: '/psifiako-menou/' },
+  { t: 'Ο Κατάσκοπός σας', d: 'Βλέπετε τι κάνει ο ανταγωνισμός — τιμές, προσφορές, παρουσία — σε μια τακτική αναφορά. Χωρίς να ψάχνετε.', art: 'eye', cls: 'aut-strip' },
+];
+
+// Ε6: πραγματικά λογότυπα (από public/logos/) όπου υπάρχει brand — αλλιώς μένει το αντικείμενο του Ε5
+const e6logos: Record<string, string[]> = {
+  pin: ['google-maps.svg'],
+  seo: ['google-icon.svg'],
+  ai: ['openai-icon.svg'],
+  social: ['instagram-icon.svg', 'facebook.svg', 'tiktok-icon.svg'],
+  star: ['google-icon.svg'],
+};
+
+// Ε7: αντικείμενο Ε5 + μικρό στρογγυλό badge με το πραγματικό λογότυπο
+const e7badge: Record<string, string> = {
+  pin: 'google-maps.svg',
+  seo: 'google-icon.svg',
+  ai: 'openai-icon.svg',
+  social: 'instagram-icon.svg',
+  star: 'google-icon.svg',
+};
+
+const goldStar =
+  '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" fill="#F6C34C"/>';
+
+const hues = ['orange', 'blue', 'ok', 'yellow'];
+const hue = (i: number) => hues[i % hues.length];
+const big = (s: { icon: string }) => s.icon === 'site' || s.icon === 'star';
+const flagship = services[0];
+const rest = services.slice(1);
+
+// Σειρά εμφάνισης για τέλειο tiling σε 4 στήλες:
+// [site(2), cal, pin] [seo, ai, star(2)] [social, menu, eye(λωρίδα 2)]
+const byIcon = Object.fromEntries(services.map((s) => [s.icon, s]));
+const ordered = ['site', 'cal', 'pin', 'seo', 'ai', 'star', 'social', 'menu', 'eye'].map((k) => byIcon[k]);
+const veClass = (s: { icon: string }) =>
+  big(s) ? 've-card--big' : s.icon === 'eye' ? 've-card--strip' : '';
+
+// Ε4 ψηφιδωτό 6 στηλών: 3+3 / 2+2+2 / 2+2+2 / 6 — κλείνει ακριβώς
+const e4list = [
+  { s: byIcon.site, c: 'e4-big' },
+  { s: byIcon.star, c: 'e4-big' },
+  { s: byIcon.cal, c: 'e4-mid' },
+  { s: byIcon.pin, c: 'e4-mid' },
+  { s: byIcon.social, c: 'e4-mid' },
+  { s: byIcon.menu, c: 'e4-mid' },
+  { s: byIcon.seo, c: 'e4-mid' },
+  { s: byIcon.ai, c: 'e4-mid' },
+  { s: byIcon.eye, c: 'e4-strip' },
+];
+---
+
+<html lang="el">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Δοκιμές Β΄ — bento κάρτες</title>
+  </head>
+  <body>
+    <header class="dk-top">
+      <div class="container">
+        <p class="kicker">Δοκιμές Β΄</p>
+        <h1>Το Ε σε τέσσερις παραλλαγές</h1>
+        <p class="muted">Πάνω: το Ε όπως το είδες. Από κάτω: Ε1–Ε4, όλα bento με άλλη «γεύση». Πες μου ποιο (ή συνδυασμό).</p>
+        <nav class="dk-nav">
+          <a href="#e">Ε (βάση)</a><a href="#e1">Ε1</a><a href="#e2">Ε2</a><a href="#e3">Ε3</a><a href="#e4">Ε4</a><a href="#e5">Ε5</a><a href="#e6">Ε6 — λογότυπα</a><a href="#e7">Ε7 — μεικτό</a><a href="#aut">ΑΥΤΟΜΑΤΙΣΜΟΙ — νέο</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Ε — η βάση που διάλεξες -->
+    <section class="section section--tight" id="e">
+      <div class="container">
+        <div class="dk-label"><strong>Ε — η βάση</strong> — όπως στο πρώτο γύρο: δύο μεγάλες «ναυαρχίδες», οι υπόλοιπες συμπαγείς, και το «Μάτι στον ανταγωνισμό» κλείνει σαν φαρδιά λωρίδα</div>
+        <div class="ve-grid">
+          {ordered.map((s) => (
+            <article class={`ve-card ${veClass(s)}`}>
+              <span class={`icon-chip ${''}`}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[s.icon]} /></span>
+              {s.icon === 'eye' ? (
+                <div>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                </div>
+              ) : (
+                <>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                  {s.href && <a class="card-arrow" href="#">Μάθε τι κάνει →</a>}
+                </>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Ε1 — bento + χρώμα ανά υπηρεσία -->
+    <section class="section section--tight" id="e1">
+      <div class="container">
+        <div class="dk-label"><strong>Ε1 — Bento με χρώμα</strong> — ίδια διάταξη, αλλά κάθε υπηρεσία παίρνει δική της απόχρωση στο chip, και στο hover «ανάβει» περίγραμμα στο χρώμα της</div>
+        <div class="ve-grid">
+          {ordered.map((s, i) => (
+            <article class={`ve-card e1-${hue(i)} ${veClass(s)}`}>
+              <span class="icon-chip e1-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[s.icon]} /></span>
+              {s.icon === 'eye' ? (
+                <div>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                </div>
+              ) : (
+                <>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                  {s.href && <a class="card-arrow e1-arrow" href="#">Μάθε τι κάνει →</a>}
+                </>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Ε2 — ναυαρχίδα ολόπλατη πρώτη -->
+    <section class="section section--tight" id="e2">
+      <div class="container">
+        <div class="dk-label"><strong>Ε2 — Ναυαρχίδα ολόπλατη</strong> — το «Site που πουλάει» γίνεται μία μεγάλη οριζόντια κάρτα πάνω-πάνω με μεγαλύτερο τίτλο, το «Εργαλείο Κριτικών» κρατά διπλό πλάτος, τα υπόλοιπα συμπαγή από κάτω</div>
+        <div class="e2-grid">
+          <article class="ve-card e2-hero">
+            <div>
+              <span class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons.site} /></span>
+              <h3 class="e2-hero-t">{flagship.t}</h3>
+              <p>{flagship.d}</p>
+              <a class="card-arrow" href="#">Μάθε τι κάνει →</a>
+            </div>
+            <div class="e2-hero-art" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" set:html={icons.site} />
+            </div>
+          </article>
+          {rest.map((s) => (
+            <article class={`ve-card ${s.icon === 'star' ? 've-card--big' : s.icon === 'eye' ? 've-card--strip e2-strip' : ''}`}>
+              <span class={`icon-chip ${''}`}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[s.icon]} /></span>
+              {s.icon === 'eye' ? (
+                <div>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                </div>
+              ) : (
+                <>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                  {s.href && <a class="card-arrow" href="#">Μάθε τι κάνει →</a>}
+                </>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Ε3 — bento με υδατογράφημα-εικονίδιο -->
+    <section class="section section--tight" id="e3">
+      <div class="container">
+        <div class="dk-label"><strong>Ε3 — Υδατογράφημα</strong> — όπως το Ε, αλλά οι δύο μεγάλες έχουν το εικονίδιό τους τεράστιο και αχνό στη γωνία, σαν σφραγίδα — δίνει βάθος χωρίς φασαρία</div>
+        <div class="ve-grid">
+          {ordered.map((s) => (
+            <article class={`ve-card ${veClass(s)} ${big(s) ? 'e3-big' : ''}`}>
+              {big(s) && (
+                <span class="e3-mark" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" set:html={icons[s.icon]} />
+                </span>
+              )}
+              <span class={`icon-chip ${''}`}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[s.icon]} /></span>
+              {s.icon === 'eye' ? (
+                <div>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                </div>
+              ) : (
+                <>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                  {s.href && <a class="card-arrow" href="#">Μάθε τι κάνει →</a>}
+                </>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Ε4 — ψηφιδωτό με τρία μεγέθη -->
+    <section class="section section--tight" id="e4">
+      <div class="container">
+        <div class="dk-label"><strong>Ε4 — Ψηφιδωτό</strong> — οι δύο ναυαρχίδες δίπλα-δίπλα πάνω-πάνω, από κάτω δύο σειρές των τριών, και το «Μάτι στον ανταγωνισμό» κλείνει σαν ολόπλατη λεπτή λωρίδα</div>
+        <div class="e4-grid">
+          {e4list.map(({ s, c }) => (
+            <article class={`ve-card ${c}`}>
+              <span class={`icon-chip ${''}`}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[s.icon]} /></span>
+              {s.icon === 'eye' ? (
+                <div>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                </div>
+              ) : (
+                <>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                  {s.href && <a class="card-arrow" href="#">Μάθε τι κάνει →</a>}
+                </>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Ε5 — χρωματιστά αντικείμενα ανά κάρτα -->
+    <section class="section section--tight" id="e5">
+      <div class="container">
+        <div class="dk-label"><strong>Ε5 — Χρωματιστά αντικείμενα</strong> — κάθε κάρτα έχει ένα μικρό έγχρωμο «αντικείμενο» αντί για το μονόχρωμο εικονίδιο: μίνι site με κουμπί και γράφημα, ημερολόγιο με πράσινο ✓, χάρτης με κόκκινη πινέζα, αποτέλεσμα Google με χρυσό «1ο», συννεφάκι AI, καρδιά/like/σχόλιο, χρυσά αστέρια, QR με πίτσα, γράφημα εσύ-vs-απέναντι</div>
+        <div class="ve-grid">
+          {ordered.map((s) => (
+            <article class={`ve-card e5-card ${veClass(s)}`}>
+              <span class={`e5-art ${s.icon === 'eye' ? 'e5-art--sm' : ''}`} aria-hidden="true">
+                <svg viewBox="0 0 96 72" set:html={art[s.icon]} />
+              </span>
+              {s.icon === 'eye' ? (
+                <div>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                </div>
+              ) : (
+                <>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                  {s.href && <a class="card-arrow" href="#">Μάθε τι κάνει →</a>}
+                </>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Ε6 — πραγματικά λογότυπα -->
+    <section class="section section--tight" id="e6">
+      <div class="container">
+        <div class="dk-label"><strong>Ε6 — Κανονικά λογότυπα</strong> — όπου υπάρχει πραγματικό brand μπαίνει το επίσημο λογότυπό του: Google Maps στο προφίλ, το G της Google στο SEO, ChatGPT στο AI, Instagram/Facebook/TikTok στα social, G + χρυσά αστέρια στις κριτικές. Όπου δεν υπάρχει brand (site, κρατήσεις, μενού, ανταγωνισμός) μένει το χρωματιστό αντικείμενο του Ε5</div>
+        <div class="ve-grid">
+          {ordered.map((s) => (
+            <article class={`ve-card e5-card ${veClass(s)}`}>
+              {e6logos[s.icon] ? (
+                <span class={`e6-logos ${s.icon === 'eye' ? 'e6-logos--strip' : ''}`} aria-hidden="true">
+                  {e6logos[s.icon].map((f) => (
+                    <span class="e6-chip"><img src={`/logos/${f}`} alt="" loading="lazy" /></span>
+                  ))}
+                  {s.icon === 'star' && (
+                    <span class="e6-stars">
+                      {[0, 1, 2, 3, 4].map(() => (
+                        <svg viewBox="0 0 24 24" set:html={goldStar} />
+                      ))}
+                    </span>
+                  )}
+                </span>
+              ) : (
+                <span class={`e5-art ${s.icon === 'eye' ? 'e5-art--sm' : ''}`} aria-hidden="true">
+                  <svg viewBox="0 0 96 72" set:html={art[s.icon]} />
+                </span>
+              )}
+              {s.icon === 'eye' ? (
+                <div>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                </div>
+              ) : (
+                <>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                  {s.href && <a class="card-arrow" href="#">Μάθε τι κάνει →</a>}
+                </>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Ε7 — αντικείμενα Ε5 + badge λογότυπου -->
+    <section class="section section--tight" id="e7">
+      <div class="container">
+        <div class="dk-label"><strong>Ε7 — Μεικτό</strong> — τα χρωματιστά αντικείμενα του Ε5, και πάνω τους ένα μικρό στρογγυλό badge με το πραγματικό λογότυπο στη γωνία: Maps στον χάρτη, G στην αναζήτηση και στα αστέρια, ChatGPT στο συννεφάκι, Instagram στα social</div>
+        <div class="ve-grid">
+          {ordered.map((s) => (
+            <article class={`ve-card e5-card ${veClass(s)}`}>
+              <span class={`e7-wrap ${s.icon === 'eye' ? 'e7-wrap--sm' : ''}`} aria-hidden="true">
+                <span class={`e5-art ${s.icon === 'eye' ? 'e5-art--sm' : ''}`}>
+                  <svg viewBox="0 0 96 72" set:html={art[s.icon]} />
+                </span>
+                {e7badge[s.icon] && (
+                  <span class="e7-badge"><img src={`/logos/${e7badge[s.icon]}`} alt="" loading="lazy" /></span>
+                )}
+              </span>
+              {s.icon === 'eye' ? (
+                <div>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                </div>
+              ) : (
+                <>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                  {s.href && <a class="card-arrow" href="#">Μάθε τι κάνει →</a>}
+                </>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ΑΥΤΟΜΑΤΙΣΜΟΙ — πρόταση για τη σελίδα «Δουλεύει μόνο του», στυλ Ε6 -->
+    <section class="section section--tight" id="aut">
+      <div class="container">
+        <div class="sec-head">
+          <p class="kicker kicker--ok">Πρόταση</p>
+          <h2>Οκτώ δουλειές ρουτίνας που φεύγουν από το κεφάλι σας.</h2>
+        </div>
+        <div class="dk-label"><strong>Αυτοματισμοί σε στυλ Ε6</strong> — ναυαρχίδες το «Ταίριασμα πληρωμών» (παζλ που κουμπώνει με ✓) και το «Εργαλείο Κριτικών» (G + αστέρια)· Excel/WhatsApp/Viber ως πραγματικά λογότυπα· κάρτα με σφραγίδες και δωράκι στην Πιστότητα· ο «Κατάσκοπος» κλείνει ως λωρίδα με το ίδιο γράφημα του «Ματιού» της Προβολής</div>
+        <div class="ve-grid">
+          {aut.map((s) => (
+            <article class={`ve-card e5-card ${s.cls === 'aut-big' ? 've-card--big' : s.cls === 'aut-strip' ? 've-card--strip aut-strip3' : ''}`}>
+              <span class={`aut-viz ${s.cls === 'aut-strip' ? 'aut-viz--strip' : ''}`} aria-hidden="true">
+                {s.art && (
+                  <span class={`e5-art ${s.cls === 'aut-strip' ? 'e5-art--sm' : ''}`}>
+                    <svg viewBox="0 0 96 72" set:html={autArt[s.art] || art[s.art]} />
+                  </span>
+                )}
+                {s.logos && s.logos.map((f) => (
+                  <span class="e6-chip"><img src={`/logos/${f}`} alt="" loading="lazy" /></span>
+                ))}
+                {s.stars && (
+                  <span class="e6-stars">
+                    {[0, 1, 2, 3, 4].map(() => (
+                      <svg viewBox="0 0 24 24" set:html={goldStar} />
+                    ))}
+                  </span>
+                )}
+              </span>
+              {s.cls === 'aut-strip' ? (
+                <div>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                </div>
+              ) : (
+                <>
+                  <h3>{s.t}</h3>
+                  <p>{s.d}</p>
+                  {s.href && <a class="card-arrow" href="#">Μάθετε τι κάνει →</a>}
+                </>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <footer class="dk-foot">
+      <div class="container"><p class="muted">Προσωρινή σελίδα — δεν μπαίνει στο live site.</p></div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  /* ---------- σκελετός σελίδας δοκιμών ---------- */
+  .dk-top { padding: clamp(40px, 7vw, 72px) 0 8px; }
+  .dk-top h1 { margin: 14px 0 10px; }
+  .dk-nav { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .dk-nav a {
+    display: inline-flex; padding: 8px 16px; border-radius: 999px;
+    background: var(--card); border: 1px solid var(--line);
+    text-decoration: none; font-weight: 700; font-size: .92rem;
+  }
+  .dk-nav a:hover { border-color: var(--line-strong); }
+  .dk-label {
+    margin-bottom: 22px; padding: 12px 16px; border-radius: 12px;
+    background: var(--orange-soft); border: 1px solid rgba(var(--orange-rgb), .3);
+    color: var(--ink); font-size: .95rem; max-width: none;
+  }
+  .dk-label strong { color: var(--orange-text); }
+  .dk-foot { padding: 40px 0 60px; }
+
+  /* ---------- Ε βάση: bento ---------- */
+  .ve-grid { display: grid; gap: 18px; grid-template-columns: repeat(4, 1fr); }
+  .ve-card {
+    background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0) 60%), var(--card);
+    border: 1px solid var(--line); border-radius: var(--r);
+    box-shadow: var(--shadow); padding: 22px 20px;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .ve-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--line-strong); }
+  .ve-card h3 { margin-bottom: 8px; color: var(--navy); }
+  .ve-card p { font-size: .94rem; color: var(--muted); }
+  .ve-card--big {
+    grid-column: span 2;
+    background:
+      radial-gradient(120% 130% at 20% -10%, rgba(var(--cta-rgb), .18), transparent 60%),
+      radial-gradient(110% 120% at 95% 110%, rgba(var(--orange-rgb), .09), transparent 55%),
+      var(--card-2);
+    border-color: var(--line-strong);
+    padding: clamp(24px, 3vw, 32px);
+  }
+  .ve-card--big p { font-size: .99rem; }
+  /* λωρίδα-κλείσιμο: φαρδιά και ρηχή, εικονίδιο αριστερά */
+  .ve-card--strip {
+    grid-column: span 2;
+    display: flex; align-items: center; gap: 18px;
+    padding: 18px 22px;
+  }
+  .ve-card--strip .icon-chip { margin-bottom: 0; flex: 0 0 auto; }
+  .ve-card--strip h3 { margin-bottom: 4px; }
+  .ve-card--strip p { font-size: .92rem; }
+  @media (max-width: 980px) { .ve-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) {
+    .ve-grid { grid-template-columns: 1fr; }
+    .ve-card--big, .ve-card--strip { grid-column: span 1; }
+    .ve-card--strip { flex-direction: column; align-items: flex-start; gap: 12px; }
+  }
+
+  /* ---------- Ε1: bento + χρώμα ---------- */
+  .e1-orange { --e1: var(--orange); --e1-soft: var(--orange-soft); --e1-icon: var(--orange); --e1-text: var(--orange-text); }
+  .e1-blue   { --e1: var(--blue);   --e1-soft: var(--blue-soft);   --e1-icon: #8FAECB; --e1-text: var(--blue-text); }
+  .e1-ok     { --e1: var(--ok);     --e1-soft: var(--ok-soft);     --e1-icon: var(--ok);     --e1-text: var(--ok-text); }
+  .e1-yellow { --e1: var(--yellow); --e1-soft: var(--yellow-soft); --e1-icon: var(--yellow); --e1-text: var(--yellow-text); }
+  .e1-chip { background: var(--e1-soft); color: var(--e1-icon); }
+  .e1-arrow { color: var(--e1-text); }
+  .ve-card[class*='e1-']:hover { border-color: color-mix(in srgb, var(--e1) 55%, transparent); }
+
+  /* ---------- Ε2: ναυαρχίδα ολόπλατη ---------- */
+  .e2-grid { display: grid; gap: 18px; grid-template-columns: repeat(4, 1fr); }
+  .e2-hero {
+    grid-column: 1 / -1;
+    display: flex; align-items: center; gap: clamp(20px, 4vw, 48px);
+    background:
+      radial-gradient(120% 160% at 12% -20%, rgba(var(--cta-rgb), .2), transparent 55%),
+      radial-gradient(100% 140% at 100% 120%, rgba(var(--orange-rgb), .1), transparent 55%),
+      var(--card-2);
+    border-color: var(--line-strong);
+    padding: clamp(26px, 4vw, 40px);
+  }
+  .e2-hero-t { font-size: clamp(1.35rem, 2.6vw, 1.8rem); }
+  .e2-hero p { max-width: 56ch; font-size: 1rem; }
+  .e2-hero-art { flex: 0 0 auto; margin-left: auto; color: var(--orange); opacity: .5; }
+  .e2-hero-art svg { width: clamp(90px, 14vw, 150px); height: auto; }
+  .e2-grid .ve-card--big { grid-column: span 2; }
+  .e2-strip { grid-column: 1 / -1; }
+  @media (max-width: 980px) {
+    .e2-grid { grid-template-columns: repeat(2, 1fr); }
+    .e2-hero-art { display: none; }
+  }
+  @media (max-width: 560px) {
+    .e2-grid { grid-template-columns: 1fr; }
+    .e2-grid .ve-card--big { grid-column: span 1; }
+  }
+
+  /* ---------- Ε3: υδατογράφημα ---------- */
+  .e3-big { position: relative; overflow: hidden; }
+  .e3-big > * { position: relative; }
+  .e3-mark {
+    position: absolute; right: -28px; bottom: -34px;
+    color: var(--orange); opacity: .1;
+    transform: rotate(-8deg);
+    transition: opacity .25s ease, transform .25s ease;
+    pointer-events: none;
+  }
+  .e3-mark svg { width: 170px; height: 170px; }
+  .e3-big:hover .e3-mark { opacity: .17; transform: rotate(-4deg) scale(1.04); }
+
+  /* ---------- Ε5: χρωματιστά αντικείμενα ---------- */
+  .e5-art { display: block; width: 96px; margin-bottom: 14px; }
+  .e5-art svg { width: 100%; height: auto; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .3)); }
+  .e5-card { overflow: hidden; }
+  .e5-card:hover .e5-art { transform: translateY(-3px) rotate(-1.5deg); }
+  .e5-art { transition: transform .22s ease; }
+  .ve-card--big .e5-art { width: 118px; }
+  .e5-art--sm { width: 76px; margin-bottom: 0; flex: 0 0 auto; }
+
+  /* ---------- ΑΥΤΟΜΑΤΙΣΜΟΙ: συνδυασμός αντικειμένου + λογότυπων στην ίδια σειρά ---------- */
+  .aut-viz { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .aut-viz .e5-art, .aut-viz .e6-chip { margin-bottom: 0; }
+  .aut-viz--strip { margin-bottom: 0; flex: 0 0 auto; }
+  .aut-strip3 { grid-column: span 3; }
+  @media (max-width: 980px) { .aut-strip3 { grid-column: span 2; } }
+  @media (max-width: 560px) { .aut-strip3 { grid-column: span 1; } }
+
+  /* ---------- Ε6: πραγματικά λογότυπα ---------- */
+  .e6-logos { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; min-height: 54px; }
+  .e6-logos--strip { margin-bottom: 0; flex: 0 0 auto; }
+  .e6-chip {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 54px; height: 54px; border-radius: 15px;
+    background: #FBF2EA;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .3);
+  }
+  .e6-chip img { width: 30px; height: 30px; }
+  .e6-stars { display: flex; gap: 2px; margin-left: 4px; }
+  .e6-stars svg { width: 19px; height: 19px; }
+  .e5-card:hover .e6-chip { transform: translateY(-3px); }
+  .e6-chip { transition: transform .22s ease; }
+  .e6-chip:nth-child(2) { transition-delay: .04s; }
+  .e6-chip:nth-child(3) { transition-delay: .08s; }
+
+  /* ---------- Ε7: αντικείμενο + badge λογότυπου ---------- */
+  .e7-wrap { position: relative; display: inline-block; margin-bottom: 14px; }
+  .e7-wrap .e5-art { margin-bottom: 0; }
+  .e7-wrap--sm { margin-bottom: 0; flex: 0 0 auto; }
+  .e7-badge {
+    position: absolute; right: -12px; top: -12px;
+    display: flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .4);
+  }
+  .e7-badge img { width: 21px; height: 21px; }
+
+  /* ---------- Ε4: ψηφιδωτό τριών μεγεθών ---------- */
+  .e4-grid { display: grid; gap: 18px; grid-template-columns: repeat(6, 1fr); }
+  .e4-big {
+    grid-column: span 3;
+    background:
+      radial-gradient(120% 130% at 20% -10%, rgba(var(--cta-rgb), .18), transparent 60%),
+      radial-gradient(110% 120% at 95% 110%, rgba(var(--orange-rgb), .09), transparent 55%),
+      var(--card-2);
+    border-color: var(--line-strong);
+    padding: clamp(24px, 3vw, 32px);
+  }
+  .e4-big p { font-size: .99rem; }
+  .e4-mid { grid-column: span 2; padding: 20px 18px; }
+  .e4-mid p { font-size: .92rem; }
+  .e4-mid .icon-chip { width: 40px; height: 40px; border-radius: 11px; margin-bottom: 12px; }
+  .e4-mid .icon-chip svg { width: 21px; height: 21px; }
+  .e4-mid h3 { font-size: 1.02rem; }
+  .e4-strip {
+    grid-column: 1 / -1;
+    display: flex; align-items: center; gap: 18px;
+    padding: 16px 22px;
+  }
+  .e4-strip .icon-chip { margin-bottom: 0; flex: 0 0 auto; }
+  .e4-strip h3 { margin-bottom: 4px; }
+  .e4-strip p { font-size: .92rem; }
+  @media (max-width: 980px) {
+    .e4-grid { grid-template-columns: repeat(2, 1fr); }
+    .e4-big { grid-column: span 2; }
+    .e4-mid { grid-column: span 1; }
+  }
+  @media (max-width: 560px) {
+    .e4-grid { grid-template-columns: 1fr; }
+    .e4-big, .e4-mid, .e4-strip { grid-column: span 1; }
+    .e4-strip { flex-direction: column; align-items: flex-start; gap: 12px; }
+  }
+</style>

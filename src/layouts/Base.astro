@@ -38,6 +38,11 @@ const siteSchema = {
   publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url, email: SITE.email },
 };
 const schemas = [siteSchema, ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])];
+
+// ΔΟΚΙΜΕΣ ΠΑΛΕΤΑΣ (προσωρινό — αφαιρείται μόλις επιλεγεί θέμα): στο dev,
+// κάθε port φορτώνει διαφορετικό override παλέτας από το public/themes/.
+const THEME_PORTS: Record<string, string> = { '4331': 'tefteri', '4332': 'petrol', '4333': 'melani', '4334': 'sokolata', '4335': 'elia' };
+const themePreview = import.meta.env.DEV ? (THEME_PORTS[Astro.url.port] ?? null) : null;
 ---
 
 <!doctype html>
@@ -60,6 +65,7 @@ const schemas = [siteSchema, ...(schema ? (Array.isArray(schema) ? schema : [sch
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#171514" />
+    {themePreview && <link rel="stylesheet" href={`/themes/${themePreview}.css`} />}
 
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

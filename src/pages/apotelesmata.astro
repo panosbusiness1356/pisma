@@ -18,8 +18,8 @@ const schema = {
 /** Οι μετρικές που παρακολουθούμε — trend: up = θέλουμε να ανέβει, down = να πέσει. */
 const metrics = [
   { title: 'Πελάτες από Google & AI', desc: 'Σας βρίσκουν στην αναζήτηση και στις απαντήσεις του ChatGPT — και σας παίρνουν τηλέφωνο.', trend: 'up' },
-  { title: 'Θέση στην αναζήτηση', desc: 'Στο Google και στις απαντήσεις των εργαλείων AI.', trend: 'up' },
-  { title: 'Κριτικές στο Google', desc: 'Συνεχώς νέες κριτικές, μήνα με τον μήνα.', trend: 'up' },
+  { title: 'Θέση στην αναζήτηση', desc: 'Στη Google και στις απαντήσεις των εργαλείων AI.', trend: 'up' },
+  { title: 'Κριτικές στη Google', desc: 'Συνεχώς νέες κριτικές, μήνα με τον μήνα.', trend: 'up' },
   { title: 'Ώρες στο γραφείο', desc: 'Ό,τι γίνεται μηχανικά, το κάνει ο αυτοματισμός.', trend: 'down' },
   { title: 'Επισκέψεις στο site', desc: 'Περισσότερος κόσμος βλέπει τη δουλειά σας.', trend: 'up' },
   { title: 'Παρουσία στα social', desc: 'Σταθερά posts κάθε εβδομάδα, χωρίς δικό σας χρόνο.', trend: 'up' },
@@ -46,7 +46,7 @@ const steps = [
 
 <Base
   title="Αποτελέσματα: μετρημένα πριν και μετά | PISMA"
-  description="Πώς ξέρετε ότι δουλεύει; Μετράμε πού είστε σήμερα, ξαναμετράμε στους 3 μήνες, και σας δείχνουμε τι άλλαξε — τηλέφωνα, κριτικές, θέση στο Google, ώρες γραφείου."
+  description="Πώς ξέρετε ότι δουλεύει; Μετράμε πού είστε σήμερα, ξαναμετράμε στους 3 μήνες, και σας δείχνουμε τι άλλαξε — τηλέφωνα, κριτικές, θέση στη Google, ώρες γραφείου."
   schema={schema}
 >
   <PageHero
@@ -123,14 +123,14 @@ const steps = [
         <svg id="rise-svg" viewBox="0 0 560 260" role="img" aria-labelledby="rise-svg-title rise-svg-desc">
           <title id="rise-svg-title">Η πορεία της επιχείρησής σας</title>
           <desc id="rise-svg-desc">
-            Ανοδικό γράφημα από το σήμερα προς τους 6 μήνες: ανεβαίνουν τα τηλέφωνα, οι κριτικές και
+            Ανοδικό γράφημα από το σήμερα προς τους 3 μήνες: ανεβαίνουν τα τηλέφωνα, οι κριτικές και
             οι επισκέψεις, και πέφτουν οι ώρες στο γραφείο.
           </desc>
           <line x1="20" y1="218" x2="540" y2="218" class="rise-axis" />
           <path
             id="rise-area"
             d="M30 208 C 120 204, 180 190, 250 164 C 320 138, 400 96, 460 60 L 512 34 L 512 218 L 30 218 Z"
-            fill="rgba(255,122,80,.10)"
+            style="fill:rgba(var(--orange-rgb),.10)"
             opacity="0"
           />
           <path
@@ -171,7 +171,7 @@ const steps = [
           </g>
           <g id="rise-conf"></g>
           <text x="30" y="242" class="rise-label">σήμερα</text>
-          <text x="512" y="242" class="rise-label" text-anchor="end">σε 6 μήνες</text>
+          <text x="512" y="242" class="rise-label" text-anchor="end">σε 3 μήνες</text>
         </svg>
         <p class="rise-final" id="rise-final">
           <span>Κι εσείς με λιγότερες ώρες στο γραφείο ✓</span>

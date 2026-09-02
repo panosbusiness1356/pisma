@@ -1,5 +1,5 @@
 ---
-// Showroom αυτοκόλλητων QR — ο φυσικός «διακόπτης» του Τροχού των Κριτικών.
+// Showroom αυτοκόλλητων QR — ο φυσικός «διακόπτης» του Εργαλείου Κριτικών.
 // Σκόπιμα σκούρο και αυτόνομο (δεν χρησιμοποιεί το Base): λειτουργεί ως
 // showroom προϊόντος, τύπου car configurator. Η τιμή της πλατφόρμας έρχεται
 // από το pricing.ts (auto-reviews) — μία πηγή αλήθειας.
@@ -81,8 +81,8 @@ const schema = [
 :root{
   --bg0:#171514;--bg1:#1D1A18;--card:#1F1C1A;--card2:#262220;--line:rgba(255,255,255,.09);--line2:rgba(255,255,255,.16);
   --txt:#E6E1F0;--head:#F5F2FB;--dim:#A79DBB;
-  --acc:#FF7A50;--acc-text:#FFA284;--acc-soft:rgba(255,122,80,.13);
-  --grad:linear-gradient(92deg,#CC431C 0%,#BE3A17 55%,#AC3213 100%);
+  --acc:var(--orange);--acc-text:var(--orange-text);--acc-soft:rgba(var(--orange-rgb),.13);
+  --grad:linear-gradient(92deg,var(--grad-1) 0%,var(--grad-2) 55%,var(--grad-3) 100%);
   --ok:#55A874;--ok-text:#A5D6B8;--err:#FF5C41;
   --disp:'Inter',system-ui,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
@@ -133,7 +133,7 @@ input{font-family:inherit}
 .artwrap{display:flex;flex-direction:column;align-items:center;min-width:0}
 .spot{position:relative;display:grid;place-items:center;width:100%}
 .spot::before{content:"";position:absolute;width:min(64vh,560px);height:min(64vh,560px);border-radius:50%;
-  background:radial-gradient(circle,rgba(238,79,39,.16),transparent 62%);pointer-events:none}
+  background:radial-gradient(circle,rgba(var(--cta-rgb),.16),transparent 62%);pointer-events:none}
 .art{position:relative;display:flex;flex-direction:column;align-items:center}
 .art svg{max-height:min(44vh,430px);max-width:min(86vw,620px);width:auto;height:auto;
   filter:drop-shadow(0 30px 50px rgba(0,0,0,.6))}
@@ -152,8 +152,8 @@ input{font-family:inherit}
 .price small{font-size:12px;color:var(--dim);font-weight:600;font-family:var(--disp);letter-spacing:0;margin-left:5px}
 .badd{background:var(--grad);color:#fff;border:0;border-radius:10px;padding:14px 27px;
   font-size:14px;font-weight:700;cursor:pointer;transition:filter .15s,box-shadow .15s,transform .15s;letter-spacing:.01em;
-  box-shadow:0 6px 24px rgba(238,79,39,.35)}
-.badd:hover{filter:brightness(1.08);box-shadow:0 10px 32px rgba(238,79,39,.45);transform:translateY(-2px)}
+  box-shadow:0 6px 24px rgba(var(--cta-rgb),.35)}
+.badd:hover{filter:brightness(1.08);box-shadow:0 10px 32px rgba(var(--cta-rgb),.45);transform:translateY(-2px)}
 .badd:active{transform:none}
 .stq{display:inline-flex;align-items:center;border:1.5px solid var(--acc);border-radius:10px;overflow:hidden}
 .stq button{width:42px;height:44px;border:0;background:none;font-size:19px;cursor:pointer;transition:.12s}
@@ -175,7 +175,7 @@ input{font-family:inherit}
 .wchips button{border:1px solid var(--line2);background:var(--card);border-radius:999px;padding:6px 13px;
   font-size:11.5px;font-weight:700;cursor:pointer;letter-spacing:.04em;color:var(--dim);transition:.14s}
 .wchips button:hover{color:var(--txt);border-color:rgba(255,255,255,.3)}
-.wchips button[aria-pressed="true"]{background:var(--acc-soft);border-color:rgba(255,122,80,.5);color:var(--acc-text)}
+.wchips button[aria-pressed="true"]{background:var(--acc-soft);border-color:rgba(var(--orange-rgb),.5);color:var(--acc-text)}
 
 /* ================= filmstrip ================= */
 .deck{border-top:1px solid var(--line);padding:12px 0 16px;background:rgba(0,0,0,.22)}
@@ -250,14 +250,14 @@ input{font-family:inherit}
 .cfoot input{width:100%;background:rgba(255,255,255,.06);border:1.5px solid var(--line2);border-radius:10px;
   padding:11px 13px;font:600 13px var(--disp);color:var(--txt);margin-bottom:8px;transition:border-color .15s}
 .cfoot input::placeholder{color:var(--dim)}
-.cfoot input:focus{border-color:var(--acc);outline:none}
+.cfoot input:focus{border-color:var(--acc)}.cfoot input:focus:not(:focus-visible){outline:none}
 .cfoot input.err{border-color:var(--err)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .send{width:100%;background:var(--grad);color:#fff;border:0;border-radius:10px;padding:14px;
   font-size:14px;font-weight:700;cursor:pointer;transition:filter .15s,box-shadow .15s;margin-top:3px;
-  box-shadow:0 6px 24px rgba(238,79,39,.35)}
-.send:hover:not(:disabled){filter:brightness(1.08);box-shadow:0 10px 32px rgba(238,79,39,.45)}
+  box-shadow:0 6px 24px rgba(var(--cta-rgb),.35)}
+.send:hover:not(:disabled){filter:brightness(1.08);box-shadow:0 10px 32px rgba(var(--cta-rgb),.45)}
 .send:disabled{background:rgba(255,255,255,.12);color:var(--dim);cursor:not-allowed}
 .senderr{display:none;color:var(--err);font-size:12px;font-weight:600;text-align:center;margin-top:9px;line-height:1.5}
 .senderr.on{display:block}
@@ -306,7 +306,7 @@ input{font-family:inherit}
   <div class="top">
     <a class="logo" href="/"><b>PISMA<i>.</i></b><em>SHOWROOM</em></a>
     <a class="whatlink" href="/kritikes/">Τι είναι το Εργαλείο; →</a>
-    <span class="bizwrap"><input class="biz" id="f-biz" value="CAFÉ KYMA" maxlength="22" placeholder="ΤΟ ΜΑΓΑΖΙ ΣΑΣ" aria-label="Όνομα μαγαζιού"></span>
+    <span class="bizwrap"><input class="biz" id="f-biz" maxlength="22" placeholder="ΤΟ ΜΑΓΑΖΙ ΣΑΣ" aria-label="Όνομα μαγαζιού"></span>
     <a class="langlink" href="/en/qr-stickers/" aria-label="English version">EN</a>
     <button class="cartbtn" id="cartbtn"><span>Καλάθι</span>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h13l-1.5 9h-10L6 7ZM6 7 5 4H3"/><circle cx="9.5" cy="20" r="1.4"/><circle cx="15.5" cy="20" r="1.4"/></svg>
@@ -390,7 +390,7 @@ input{font-family:inherit}
 import { FORM_ENDPOINT, optionById } from '../data/pricing';
 import { STICKER_PRICES as SP, STICKER_EXTRA_PRICES as XP } from '../data/stickers';
 
-/* Η πλατφόρμα του Τροχού τιμολογείται από το pricing.ts — μία πηγή αλήθειας. */
+/* Η πλατφόρμα του Εργαλείου Κριτικών τιμολογείται από το pricing.ts — μία πηγή αλήθειας. */
 const PLATFORM_PRICE = optionById('auto-reviews')?.price ?? 39;
 
 /* ================= PURE ================= */
@@ -441,8 +441,8 @@ const PALS=[
  {id:'ammos', n:'Άμμος',      paper:'#F1E9DC',ink:'#1E1A15',acc:'#B4552C',fr:'#3E3226'},
  {id:'mavro', n:'Ασπρόμαυρο', paper:'#F2F1EE',ink:'#141414',acc:'#141414',fr:'#141414'}
 ];
-const WORDS=['ΣΚΑΝΑΡΕ','ΠΑΙΞΕ','ΚΕΡΔΙΣΕ','ΔΩΡΟ'];
-const S={cart:{},extras:{platform:1},pal:PALS[0],word:'ΣΚΑΝΑΡΕ',biz:'CAFÉ KYMA',cat:'all',cur:0,showAll:false,dir:1};
+const WORDS=['ΣΚΑΝΑΡΕ','ΠΑΙΞΕ','ΚΕΡΔΙΣΕ'];
+const S={cart:{},extras:{platform:1},pal:PALS[0],word:'ΣΚΑΝΑΡΕ',biz:'ΤΟ ΜΑΓΑΖΙ ΣΑΣ',cat:'all',cur:0,showAll:false,dir:1};
 
 const FF="'Noto Sans Display','Arial Black',Arial,sans-serif";
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -471,7 +471,7 @@ function sticker(f,st){
   const PIS=(x,y,a)=>T(x,y,'PISMA',u*.028,ink,{w:700,ls:u*.009,o:.42,a:a||'middle'});
   if(f.L==='stack'){
     o+=T(W/2,H*.13,st.biz,Math.min(W*.052,H*.042),ink,{w:700,ls:u*.008,o:.6});
-    o+=T(W/2,H*.335,'−40%',Math.min(W*.26,H*.20),acc,{ls:-u*.008});
+    o+=T(W/2,H*.335,'ΔΩΡΟ',Math.min(W*.26,H*.20),acc,{ls:-u*.008});
     o+=T(W/2,H*.42,st.word,Math.min(W*.072,H*.05),ink,{ls:u*.007});
     o+=QR(W/2,H*.66,Math.min(W*.66,H*.40));o+=PIS(W/2,H-u*.045);
   }else if(f.L==='mini'){
@@ -480,17 +480,17 @@ function sticker(f,st){
     o+=T(W/2,H*.915,st.biz,W*.048,ink,{w:700,ls:u*.007,o:.55});
   }else if(f.L==='circle'){
     o+=T(W/2,H*.20,st.biz,u*.044,ink,{w:700,ls:u*.008,o:.6});
-    o+=T(W/2,H*.375,'−40%',u*.195,acc,{ls:-u*.006});
+    o+=T(W/2,H*.375,'ΔΩΡΟ',u*.195,acc,{ls:-u*.006});
     o+=QR(W/2,H*.60,u*.33);o+=T(W/2,H*.845,st.word,u*.068,ink,{ls:u*.006});o+=PIS(W/2,H*.925);
   }else if(f.L==='split'){
     o+=QR(H*.52,H/2,H*.70);
     o+=T(H*1.02,H*.36,st.word,H*.15,ink,{ls:H*.02,a:'start'});
-    o+=T(H*1.02,H*.80,'−40%',H*.44,acc,{ls:-H*.02,a:'start'});
+    o+=T(H*1.02,H*.80,'ΔΩΡΟ',H*.44,acc,{ls:-H*.02,a:'start'});
     o+=T(W-H*.20,H*.42,st.biz,H*.11,ink,{w:700,ls:H*.015,a:'end',o:.6});o+=PIS(W-H*.20,H*.72,'end');
   }else if(f.L==='ticket'){
     const cut=W*.615;
     o+=T(W*.10,H*.24,st.biz,H*.062,ink,{w:700,ls:H*.012,a:'start',o:.6});
-    o+=T(W*.10,H*.60,'−40%',H*.30,acc,{ls:-H*.014,a:'start'});
+    o+=T(W*.10,H*.60,'ΔΩΡΟ',H*.30,acc,{ls:-H*.014,a:'start'});
     o+=T(W*.10,H*.79,st.word,H*.10,ink,{ls:H*.014,a:'start'});
     o+=`<path d="M${cut} ${H*.12}V${H*.88}" stroke="${ink}" stroke-width="${sw*.8}" stroke-dasharray="${H*.05} ${H*.04}" opacity=".7"/>`;
     o+=QR((cut+W)/2,H/2,Math.min(H*.66,(W-cut)*.72));o+=PIS(W*.10,H*.92,'start');
@@ -505,7 +505,7 @@ function sticker(f,st){
     o+=`<path d="M${sw*2.8} ${sw*2.8}H${W-sw*2.8}V${hh}H${sw*2.8}Z" fill="${fr}"/>`;
     o+=T(W/2,hh*.42,st.biz,W*.055,'#fff',{w:700,ls:W*.012,o:.85});
     o+=T(W/2,hh*.88,'07',W*.24,'#fff');
-    o+=T(W/2,H*.475,'−40%',W*.20,acc,{ls:-W*.008});
+    o+=T(W/2,H*.475,'ΔΩΡΟ',W*.20,acc,{ls:-W*.008});
     o+=QR(W/2,H*.70,Math.min(W*.60,H*.32));
     o+=T(W/2,H*.905,st.word,W*.062,ink,{ls:W*.008});o+=PIS(W/2,H*.965);
   }
@@ -532,7 +532,7 @@ $('words').querySelectorAll('button').forEach(b=>b.onclick=()=>{
   S.word=b.dataset.w;$('words').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.w===S.word));draw()});
 /* Debounce: το draw() ξαναχτίζει 17 SVG — όχι σε κάθε πάτημα πλήκτρου */
 let bizT;
-$('f-biz').addEventListener('input',e=>{S.biz=e.target.value||' ';clearTimeout(bizT);bizT=setTimeout(draw,140)});
+$('f-biz').addEventListener('input',e=>{S.biz=e.target.value||'ΤΟ ΜΑΓΑΖΙ ΣΑΣ';clearTimeout(bizT);bizT=setTimeout(draw,140)});
 
 /* nav */
 function step(d){const v=visible();S.dir=d;S.cur=(S.cur+d+v.length)%v.length;draw(true)}
@@ -645,7 +645,7 @@ $('send').onclick=async()=>{
     setTimeout(()=>{$('f-tel').classList.remove('err');$('f-mail').classList.remove('err')},2200);return;
   }
   const P=S.pal,it=items(),xt=xitems();
-  const design={word:S.word,biz:S.biz,head:'−40%',link:'',showBiz:true,showLink:false,frame:true,brackets:true,pisma:true,
+  const design={word:S.word,biz:S.biz,head:'ΔΩΡΟ',link:'',showBiz:true,showLink:false,frame:true,brackets:true,pisma:true,
     paper:P.paper,ink:P.ink,acc:P.acc,frameCol:P.fr,stroke:9,radius:54,qr:43,shape:'square',variant:'full'};
   const code=btoa(unescape(encodeURIComponent(JSON.stringify(design))));
   $('code').textContent=code;
@@ -662,9 +662,9 @@ $('send').onclick=async()=>{
       method:'POST',
       headers:{'Content-Type':'application/json',Accept:'application/json'},
       body:JSON.stringify({
-        _subject:`Αυτοκόλλητα QR — ${S.biz.trim()||'—'} (${once()} € + ${month()} €/μήνα)`,
+        _subject:`Αυτοκόλλητα QR — ${$('f-biz').value.trim()||'—'} (${once()} € + ${month()} €/μήνα)`,
         'Είδος':'Παραγγελία αυτοκόλλητων QR (Το Εργαλείο Κριτικών)',
-        'Μαγαζί':S.biz.trim(),
+        'Μαγαζί':$('f-biz').value.trim(),
         'Ονοματεπώνυμο':name,
         'Τηλέφωνο':tel,
         'Email':mail,
