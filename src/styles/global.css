@@ -127,31 +127,14 @@ p { max-width: 62ch; }
 .section { padding-block: clamp(56px, 9vw, 104px); }
 .section--tight { padding-block: clamp(36px, 6vw, 64px); }
 
-/* Νοητός διαχωρισμός sections: κάθε δεύτερο section παίρνει ελαφρώς πιο
-   ανοιχτό φόντο (bg-soft) με ΜΑΚΡΥ σβήσιμο στις άκρες, ώστε να μη φαίνεται
-   «ζωνάρι» — χρώμα στο φόντο, όχι σε μικρο-στοιχεία. */
-main section:nth-of-type(even) {
-  background: linear-gradient(
-    180deg,
-    var(--bg) 0,
-    var(--bg-soft) clamp(90px, 12vw, 160px),
-    var(--bg-soft) calc(100% - clamp(90px, 12vw, 160px)),
-    var(--bg) 100%
-  );
-}
-
-/* Ραφή ενοτήτων: στο όριο κάθε section (εκτός του πρώτου) μια λεπτή γραμμή
-   που σβήνει στις άκρες, με φωτεινό κέντρο στο accent, και από κάτω ένα
-   πολύ απαλό φωτοστέφανο — σαν φως που περνά από τη ραφή του υφάσματος. */
+/* Διαχωρισμός ενοτήτων: επίπεδες, καθαρές επιφάνειες. Κάθε δεύτερο section
+   είναι ένα ενιαίο μπλοκ bg-soft με κοφτές άκρες και λεπτή γραμμή full-width
+   πάνω και κάτω — χωρίς gradients, λάμψεις ή διακοσμητικά. */
 main > :is(section, article) { position: relative; }
-main > :is(section, article) + :is(section, article)::after {
-  content: '';
-  position: absolute; left: 50%; top: 0; translate: -50% 0;
-  width: min(1120px, 100% - 40px); height: clamp(90px, 10vw, 140px);
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, transparent 0, var(--line-strong) 22%, rgba(var(--peach-rgb), .7) 50%, var(--line-strong) 78%, transparent 100%) top / 100% 1px no-repeat,
-    radial-gradient(50% 100% at 50% 0%, rgba(var(--orange-rgb), .12), transparent 72%);
+main section:nth-of-type(even) {
+  background: var(--bg-soft);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 
 /* Κεφαλή ενότητας: kicker + h2 + προαιρετικό sub */
