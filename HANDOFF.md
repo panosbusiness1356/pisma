@@ -57,7 +57,8 @@
    - Η λίστα οδηγών πλέον στο **src/data/guides.ts** (μία πηγή για /odigoi/ + llms.txt).
    - robots.txt: ρητά Allow για GPTBot/ClaudeBot/PerplexityBot/Google-Extended κ.ά.
 4γ. **ΝΕΟΣ ΚΑΝΟΝΑΣ COPY (28/07, μνήμη no-small-business-wording):** ΠΟΤΕ
-   «μικρή/μικρομεσαία επιχείρηση», «ΜμΕ», «SMB» πουθενά στο site — γράφουμε
+   «μικρή/μικρομεσαία επιχείρηση», «ΜμΕ», «SMB», «ελληνικές επιχειρήσεις»,
+   «Greek businesses» πουθενά στο site (η γεωγραφία μόνο ως areaServed) — γράφουμε
    «επιχείρηση / η επιχείρησή σου / ιδιοκτήτες επιχειρήσεων». Καθαρίστηκαν 11 αρχεία.
 4δ΄. **Ταμπλό: νέες ερωτήσεις με μεθοδολογία** — 1 ερώτηση ανά εργαλείο του pricing.ts,
    ερωτήσεις-γεγονότα (όχι αυτοβαθμολόγηση), ενιαία σκάλα 4 επιλογών
@@ -150,7 +151,7 @@ underscore + link στο footer), «Τιμολόγια χωρίς πληκτρο
 ## Το έργο
 
 - **Τι είναι:** Site της PISMA — ψηφιακή παρουσία (site/Google/AI) και αυτοματοποίηση
-  διαδικασιών για ελληνικές ΜμΕ.
+  διαδικασιών για επιχειρήσεις.
 - **Stack:** Astro (static), καθαρό CSS/TS, χωρίς React/Tailwind. Μόνη dependency: `lenis`.
 - **Repo:** `~/Desktop/pisma` → GitHub `panosbusiness1356/pisma` (branch `main`).
   ΠΡΟΣΟΧΗ: `dist/` και `node_modules/` είναι tracked στο git (μην το «διορθώσεις»).
