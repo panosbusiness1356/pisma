@@ -11,11 +11,13 @@ interface Props {
   note?: string;
 }
 const { title, sub, ctaText, ctaHref, note } = Astro.props;
+import Silk from './Silk.astro';
 ---
 
 <section class="section section--tight">
   <div class="container">
     <div class="band reveal">
+      <Silk variant="band" bgVar="--card-2" />
       <div class="band-text">
         <h2>{title}</h2>
         {sub && <p>{sub}</p>}
@@ -40,6 +42,7 @@ const { title, sub, ctaText, ctaHref, note } = Astro.props;
     padding: clamp(30px, 5vw, 52px);
     display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap;
   }
+  .band-text, .band-cta { position: relative; z-index: 1; }
   .band h2 { color: #fff; max-width: 24ch; }
   .band p { color: rgba(255, 255, 255, .78); margin-top: 10px; }
   .band-cta { text-align: center; }

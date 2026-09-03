@@ -358,12 +358,17 @@ const themePreview = import.meta.env.DEV ? (THEME_PORTS[Astro.url.port] ?? null)
           },
           { threshold: 0.12 }
         );
-        els.forEach((el) => io.observe(el));
+        // Stagger: αδέλφια .reveal μέσα στον ίδιο γονέα μπαίνουν με 70ms διαφορά (max 6).
+        els.forEach((el) => {
+          const sibs = Array.from(el.parentElement?.children ?? []).filter((c) => c.classList.contains('reveal'));
+          if (sibs.length > 1) (el as HTMLElement).style.setProperty('--i', String(Math.min(sibs.indexOf(el), 5)));
+          io.observe(el);
+        });
       }
     </script>
 
     <style>
-      .page-in { animation: pageIn .5s ease both; }
+      .page-in { animation: pageIn .7s var(--ease) both; }
       @keyframes pageIn {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: none; }

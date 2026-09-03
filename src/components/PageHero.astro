@@ -7,9 +7,11 @@ interface Props {
   sub?: string;
 }
 const { kicker, sub } = Astro.props;
+import Silk from './Silk.astro';
 ---
 
 <section class="section hero">
+  <Silk variant="soft" />
   <div class="container container--narrow">
     {kicker && <p class="kicker">{kicker}</p>}
     <h1><slot /></h1>
@@ -19,7 +21,8 @@ const { kicker, sub } = Astro.props;
 </section>
 
 <style>
-  .hero { padding-bottom: clamp(28px, 4vw, 48px); text-align: center; }
+  .hero { padding-bottom: clamp(28px, 4vw, 48px); text-align: center; position: relative; overflow: hidden; }
+  .hero > .container { position: relative; z-index: 1; }
   .hero .kicker { margin-bottom: 18px; }
   .hero .sub { margin: 18px auto 0; color: var(--muted); font-size: 1.15rem; max-width: 54ch; }
 </style>

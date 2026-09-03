@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Silk from '../../components/Silk.astro';
 import { SITE, ELEGXOS, PROMISE, eurEn } from '../../config';
 import { sumOf } from '../../data/pricing';
 import { CATEGORIES_EN } from '../../data/pricing.en';
@@ -113,6 +114,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     data-mascot-anchor="#hero-title"
     data-mascot-say="Welcome to PISMA. Keep scrolling — I'll show you the essentials."
   >
+    <Silk variant="hero" />
     <div class="beams" aria-hidden="true">
       <span class="beam beam--a"></span>
       <span class="beam beam--b"></span>

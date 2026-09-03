@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Silk from '../components/Silk.astro';
 import { SITE, ELEGXOS, PROMISE, eur } from '../config';
 import { CATEGORIES, optionById, sumOf } from '../data/pricing';
 
@@ -105,6 +106,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
     data-mascot-anchor="#hero-title"
     data-mascot-say="Καλώς ήρθατε στην PISMA. Συνεχίστε προς τα κάτω — θα σας δείξω τα βασικά."
   >
+    <Silk variant="hero" />
     <div class="beams" aria-hidden="true">
       <span class="beam beam--a"></span>
       <span class="beam beam--b"></span>
