@@ -341,11 +341,6 @@ const themePreview = import.meta.env.DEV ? (THEME_PORTS[Astro.url.port] ?? null)
     </script>
 
     <script>
-      // Μετάξι: hero/CTA canvases + λωρίδες ανάμεσα στις ενότητες (src/scripts/silk.ts)
-      import '../scripts/silk';
-    </script>
-
-    <script>
       // Reveal on scroll — σεβασμός στο prefers-reduced-motion.
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const els = document.querySelectorAll('.reveal');

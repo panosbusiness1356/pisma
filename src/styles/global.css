@@ -127,34 +127,15 @@ p { max-width: 62ch; }
 .section { padding-block: clamp(56px, 9vw, 104px); }
 .section--tight { padding-block: clamp(36px, 6vw, 64px); }
 
-/* Διαχωρισμός ενοτήτων: «Λωρίδα μεταξιού». Ανάμεσα σε κάθε ζεύγος ενοτήτων
-   κρατιέται ένα κενό (margin-top) και μέσα του ζωγραφίζεται από το JS
-   (src/scripts/silk.ts) μια λωρίδα από το ίδιο Μετάξι του hero, με μια λεπτή
-   φωτεινή κλωστή στη μέση. Ο χώρος είναι κρατημένος από το CSS, άρα καμία
-   μετατόπιση layout· χωρίς JS/WebGL μένει απλώς το κενό. Όλες οι ενότητες
-   στο ίδιο φόντο — τον διαχωρισμό τον κάνει η λωρίδα, όχι το χρώμα. */
-:root { --ribbon-gap: clamp(72px, 9vw, 120px); --ribbon-bleed: 56px; }
+/* Διαχωρισμός ενοτήτων: επίπεδες, καθαρές επιφάνειες. Κάθε δεύτερο section
+   είναι ένα ενιαίο μπλοκ bg-soft με κοφτές άκρες και λεπτή γραμμή full-width
+   πάνω και κάτω — χωρίς gradients, λάμψεις ή διακοσμητικά. */
 main > :is(section, article) { position: relative; }
-main > :is(section, article) + :is(section, article) { margin-top: var(--ribbon-gap); }
-.silk-ribbon {
-  position: absolute; left: 0; right: 0; z-index: 0; pointer-events: none;
-  top: calc(-1 * (var(--ribbon-gap) + var(--ribbon-bleed)));
-  height: calc(var(--ribbon-gap) + 2 * var(--ribbon-bleed));
-  overflow: hidden;
+main section:nth-of-type(even) {
+  background: var(--bg-soft);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
-.silk-ribbon .silk {
-  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
-  opacity: 0; transition: opacity 1.4s ease;
-}
-.silk-ribbon .silk.is-ready { opacity: 1; }
-.silk-thread {
-  position: absolute; left: 0; right: 0; top: 50%; height: 1px; opacity: .75;
-  background: linear-gradient(90deg, transparent, rgba(var(--peach-rgb), .55) 30%, rgba(var(--peach-rgb), .9) 50%, rgba(var(--peach-rgb), .55) 70%, transparent);
-}
-/* Το περιεχόμενο των ενοτήτων πάνω από τη λωρίδα που «μπαίνει» 56px στο padding τους */
-main > :is(section, article) > .container { position: relative; z-index: 1; }
-@media (max-width: 680px) { :root { --ribbon-gap: 56px; --ribbon-bleed: 36px; } }
-@media (prefers-reduced-motion: reduce) { .silk-ribbon .silk { transition: none; } }
 
 /* Κεφαλή ενότητας: kicker + h2 + προαιρετικό sub */
 .sec-head { max-width: 680px; margin-bottom: clamp(28px, 5vw, 48px); }
