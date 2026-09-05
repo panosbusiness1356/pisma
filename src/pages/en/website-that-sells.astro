@@ -238,6 +238,95 @@ const faqItems = [
     fit();
     if ('ResizeObserver' in window) new ResizeObserver(fit).observe(spView);
     else window.addEventListener('resize', fit);
+
+    // Αυτόματη περιήγηση (αίτημα χρήστριας): μόλις φορτώσει το δείγμα και το
+    // laptop είναι ορατό, η οθόνη σκρολάρει μόνη της — μία «οθόνη» τη φορά,
+    // με παύση σε κάθε ενότητα, και στο τέλος γυρνά ομαλά στην κορυφή και
+    // ξαναρχίζει. Σταματά οριστικά μόλις ο επισκέπτης πιάσει την οθόνη
+    // (ρόδα, αφή, κλικ, πληκτρολόγιο). Με reduced motion δεν τρέχει.
+    const spStage = document.getElementById('sp-stage');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (spStage && !reduce) {
+      let visible = false, loaded = false, stopped = false, running = false;
+      const STEP_MS = 1400, PAUSE_MS = 2000, HOME_MS = 1600, HOME_PAUSE_MS = 2600;
+      const ease = (t: number) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+      const frameWin = () => spFrame.contentWindow;
+      const scrollTo = (y: number) => {
+        const w = frameWin(); if (!w) return;
+        try { w.scrollTo({ top: y, behavior: 'instant' as ScrollBehavior }); } catch { w.scrollTo(0, y); }
+      };
+      const maxY = () => {
+        const w = frameWin(); const d = w?.document.documentElement;
+        return w && d ? Math.max(0, d.scrollHeight - w.innerHeight) : 0;
+      };
+      const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+      const glide = (from: number, to: number, ms: number) => new Promise<void>((res) => {
+        const t0 = performance.now();
+        const tick = (now: number) => {
+          if (stopped || !visible) return res();
+          const t = Math.min(1, (now - t0) / ms);
+          scrollTo(from + (to - from) * ease(t));
+          t < 1 ? requestAnimationFrame(tick) : res();
+        };
+        requestAnimationFrame(tick);
+      });
+      // Στάσεις = η αρχή κάθε ενότητας του δείγματος (header / section / footer),
+      // ώστε κάθε ενότητα να «κάθεται» σωστά στην οθόνη. Σε πολύ ψηλές ενότητες
+      // μπαίνει και ενδιάμεση στάση για να μη χάνεται περιεχόμενο.
+      const stops = () => {
+        const w = frameWin(); const d = w?.document; if (!w || !d) return [];
+        const vh = w.innerHeight, max = maxY();
+        const els = Array.from(d.querySelectorAll('header, section, footer'))
+          .filter((el) => !el.parentElement?.closest('header, section, footer'));
+        const tops = els.map((el) => Math.round(el.getBoundingClientRect().top + w.scrollY)).filter((t) => t > 0 && t < max + vh);
+        const out = new Set<number>([0]);
+        tops.sort((a, b) => a - b).forEach((t, i) => {
+          out.add(Math.min(t, max));
+          const next = tops[i + 1] ?? max + vh;
+          for (let y = t + vh * .9; y < next - vh * .5 && y < max; y += vh * .9) out.add(Math.round(y));
+        });
+        out.add(max);
+        return Array.from(out).sort((a, b) => a - b);
+      };
+      const tour = async () => {
+        if (running) return; running = true;
+        while (!stopped && visible && loaded) {
+          const w = frameWin(); if (!w) break;
+          let y = w.scrollY || 0;
+          await wait(y === 0 ? PAUSE_MS : 400);
+          for (;;) {
+            if (stopped || !visible) break;
+            const next = stops().find((s) => s > y + 4);
+            if (next === undefined) break;
+            await glide(y, next, STEP_MS); y = next;
+            await wait(PAUSE_MS);
+          }
+          if (stopped || !visible) break;
+          await glide(y, 0, HOME_MS);
+          await wait(HOME_PAUSE_MS);
+        }
+        running = false;
+      };
+      const stop = () => { stopped = true; };
+      const armStop = () => {
+        const w = frameWin(); if (!w) return;
+        for (const ev of ['wheel', 'touchstart', 'pointerdown', 'keydown']) w.addEventListener(ev, stop, { passive: true, once: true });
+      };
+      // Δεν περιμένουμε το «load» της iframe (καθυστερεί όσο κατεβαίνουν τα
+      // βίντεο του δείγματος) — ξεκινάμε μόλις είναι έτοιμο το DOM του.
+      const ready = () => {
+        const w = frameWin(); const d = w?.document;
+        return !!(w && d && w.location.href !== 'about:blank' && d.readyState !== 'loading' && d.body && maxY() > 0);
+      };
+      const poll = setInterval(() => {
+        if (!ready()) return;
+        clearInterval(poll); loaded = true; armStop(); tour();
+      }, 250);
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver((es) => { visible = es[0].isIntersecting; if (visible) tour(); }, { threshold: .35 }).observe(spStage);
+      } else { visible = true; tour(); }
+      document.addEventListener('visibilitychange', () => { if (!document.hidden && visible) tour(); });
+    }
   }
 </script>
 
