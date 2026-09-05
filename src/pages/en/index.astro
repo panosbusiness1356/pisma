@@ -523,6 +523,26 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
 
 <script>
   import '../../scripts/smoke';
+
+  // Hover «Προβολέας» στο μεγάλο PISMA (εφέ 2, επιλογή χρήστριας): ένα φως
+  // ακολουθεί το ποντίκι μέσα στα γράμματα. Ομαλό (rAF + lerp), ξεκινά από το
+  // σημείο εισόδου, σβήνει με ξεθώριασμα, μόνο με πραγματικό ποντίκι, και όχι
+  // πριν ολοκληρωθεί η είσοδος των γραμμάτων.
+  const hw = document.querySelector<HTMLElement>('.hero-word');
+  if (hw && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let tx = 50, ty = 50, cx = 50, cy = 50, raf = 0, over = false;
+    setTimeout(() => hw.classList.add('ready'), 2300);
+    const pos = (e: PointerEvent) => { const r = hw.getBoundingClientRect(); return [((e.clientX - r.left) / r.width) * 100, ((e.clientY - r.top) / r.height) * 100]; };
+    const tick = () => {
+      cx += (tx - cx) * .16; cy += (ty - cy) * .16;
+      hw.style.setProperty('--mx', cx.toFixed(2) + '%'); hw.style.setProperty('--my', cy.toFixed(2) + '%');
+      raf = (over || Math.abs(tx - cx) > .05 || Math.abs(ty - cy) > .05) ? requestAnimationFrame(tick) : 0;
+    };
+    const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
+    hw.addEventListener('pointerenter', (e) => { [cx, cy] = pos(e); tx = cx; ty = cy; over = true; hw.classList.add('spot-on'); kick(); });
+    hw.addEventListener('pointermove', (e) => { [tx, ty] = pos(e); kick(); });
+    hw.addEventListener('pointerleave', () => { over = false; hw.classList.remove('spot-on'); });
+  }
   // Parallax λογοτύπων στο scroll + μετρητής κριτικών — σέβονται το reduced motion.
   const reduceFx = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1056,7 +1076,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     display: block; margin: clamp(4px, 1.5vw, 16px) auto clamp(10px, 2.5vw, 26px);
     font-family: var(--font-display, 'Unbounded', 'Inter', sans-serif); font-weight: 800;
     font-size: clamp(4.6rem, 16vw, 15rem); line-height: .95; letter-spacing: .01em;
-    white-space: nowrap; user-select: none; pointer-events: none;
+    white-space: nowrap; user-select: none; cursor: default;
     /* Συμπαγή γράμματα, όπως το logo — ο καπνός φαίνεται μέσα από αυτά */
     color: rgba(255,255,255,.17); text-shadow: 0 0 80px rgba(255,255,255,.22);
   }
@@ -1094,6 +1114,17 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   @media (prefers-reduced-motion: reduce) {
     .hero-word span { animation: none; opacity: 1; filter: none; transform: none; }
     .hero-word::after { animation: none; }
+  }
+  /* Hover «Προβολέας»: στρώμα ::before με το ίδιο κείμενο, φως στο σημείο του ποντικιού
+     (--mx/--my από το JS), background-clip: text — ευθυγραμμισμένο ακριβώς με τα γράμματα. */
+  @media (hover: hover) and (pointer: fine) {
+    .hero-word::before {
+      content: attr(data-text); position: absolute; left: 0; right: 0; top: 0;
+      color: transparent; pointer-events: none; opacity: 0; transition: opacity .45s ease;
+      background: radial-gradient(clamp(170px, 24vw, 320px) circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.98) 0%, rgba(255,255,255,.6) 32%, rgba(255,255,255,.18) 58%, rgba(255,255,255,0) 74%);
+      -webkit-background-clip: text; background-clip: text;
+    }
+    .hero-word.ready.spot-on::before { opacity: 1; }
   }
   .stg-smoke { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: .95; }
   .stg:has(.stg-smoke.is-on) .stg-fog { opacity: .35; }
