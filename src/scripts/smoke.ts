@@ -3,7 +3,7 @@
  * «φτιάξε τον εσύ τον καπνό, όχι βίντεο»). Fractal noise με domain warping
  * που κυλά αργά· μοιάζει με βίντεο καπνού, χωρίς αρχείο (0 KB media).
  *
- * Ζωγραφίζει σε κάθε <canvas class="stg-smoke"> (μισή ανάλυση, τρίτο σε κινητό).
+ * Ζωγραφίζει σε κάθε <canvas class="stg-smoke"> (~85% ανάλυση, ~55% σε κινητό).
  * Σταματά εκτός οθόνης/κρυφής καρτέλας, παγώνει σε ένα καρέ με reduced motion,
  * αφαιρείται χωρίς WebGL (μένει ο CSS καπνός από κάτω).
  */
@@ -44,9 +44,10 @@ function setup(canvas: HTMLCanvasElement) {
   gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   const strength = Number(canvas.dataset.strength || '.55');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const scale = () => (innerWidth < 720 ? 1 / 3 : 1 / 2);
+  // Πλήρης-ish ανάλυση για καθαρό (όχι «pixel») καπνό — 5 οκτάβες μένουν φθηνές.
+  const scale = () => (innerWidth < 720 ? .55 : .85);
   const fit = () => {
-    const r = canvas.getBoundingClientRect(); const s = scale() * Math.min(devicePixelRatio, 2);
+    const r = canvas.getBoundingClientRect(); const s = scale() * Math.min(devicePixelRatio, 1.5);
     canvas.width = Math.max(2, Math.round(r.width * s)); canvas.height = Math.max(2, Math.round(r.height * s));
     gl.viewport(0, 0, canvas.width, canvas.height); gl.uniform2f(uRes, canvas.width, canvas.height);
   };
