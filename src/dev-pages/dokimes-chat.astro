@@ -1,0 +1,307 @@
+---
+// ΠΡΟΣΩΡΙΝΗ σελίδα δοκιμών — ΜΟΝΟ dev, δεν μπαίνει στο build.
+// Παραλλαγές για τα κουμπιά WhatsApp / Viber της αρχικής (κάτω από τα CTA του hero).
+import '../styles/fonts.css';
+import '../styles/global.css';
+import { SITE } from '../config';
+
+const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θα ήθελα μια δωρεάν εκτίμηση για την επιχείρησή μου.')}`;
+const vbHref = SITE.viber;
+
+const variants = [
+  { id: 'v0', t: '0 — Τωρινό', d: 'Όπως είναι live: δύο κάρτες με έγχρωμο δίσκο, όνομα και υπότιτλο.' },
+  { id: 'v1', t: '1 — Μία ενιαία κάρτα', d: 'Τίτλος και υπότιτλος μία φορά αριστερά, δύο στρογγυλά κουμπιά δεξιά.' },
+  { id: 'v2', t: '2 — Φυσαλίδα μηνύματος', d: 'Chat bubble με ουρίτσα, και τα δύο κανάλια ως «απαντήσεις» από κάτω.' },
+  { id: 'v3', t: '3 — Γραμμή κειμένου', d: 'Καθόλου κάρτα: μια πρόταση με τα εικονίδια inline.' },
+  { id: 'v4', t: '4 — Λωρίδα στο πλάι', d: 'Κάρτες χωρίς δίσκο, με 3px χρωματιστό border αριστερά.' },
+  { id: 'v5', t: '5 — Κουκκίδα «online»', d: 'Παλλόμενη κουκκίδα στο εικονίδιο, υπότιτλος «συνήθως απαντάμε σε λίγες ώρες».' },
+  { id: 'v6', t: '6 — Split-button', d: 'Ένα pill χωρισμένο στη μέση: WhatsApp αριστερά, Viber δεξιά.' },
+  { id: 'v7', t: '7 — Γέμισμα στο hover', d: 'Ουδέτερες σε ηρεμία· στο hover γεμίζουν με το χρώμα του brand. Περάστε το ποντίκι.' },
+  { id: 'v8', t: '8 — Πέμπτο «στατιστικό»', d: 'Τα κανάλια μπαίνουν στη σειρά των αριθμών, χωρίς ξεχωριστό μπλοκ.' },
+  { id: 'v9', t: '9 — Σταθερό κουμπί (floating)', d: 'Τίποτα στο hero. Κάτω δεξιά σε αυτή τη σελίδα υπάρχει το κουμπί — πατήστε το.' },
+  { id: 'v10', t: '10 — Κάρτα με QR (desktop)', d: 'Στον υπολογιστή δείχνει και QR που ανοίγει τη συνομιλία στο κινητό. Στο κινητό μένουν απλά links.' },
+];
+
+// ενδεικτικό «QR» (ψευδο-μοτίβο, όχι πραγματικός κώδικας) — μόνο για την αίσθηση
+function fakeQr(seed: number) {
+  const n = 21; let s = seed; const cells: string[] = [];
+  const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
+  const finder = (x: number, y: number) => `<rect x="${x}" y="${y}" width="7" height="7" fill="currentColor"/><rect x="${x + 1}" y="${y + 1}" width="5" height="5" fill="var(--card)"/><rect x="${x + 2}" y="${y + 2}" width="3" height="3" fill="currentColor"/>`;
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+    const inFinder = (x < 8 && y < 8) || (x > n - 9 && y < 8) || (x < 8 && y > n - 9);
+    if (!inFinder && rnd() > 0.55) cells.push(`<rect x="${x}" y="${y}" width="1" height="1" fill="currentColor"/>`);
+  }
+  return `<svg viewBox="0 0 ${n} ${n}" shape-rendering="crispEdges" aria-hidden="true">${cells.join('')}${finder(0, 0)}${finder(n - 7, 0)}${finder(0, n - 7)}</svg>`;
+}
+const qrWa = fakeQr(7); const qrVb = fakeQr(23);
+---
+
+<html lang="el">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Δοκιμές — κουμπιά WhatsApp / Viber</title>
+  </head>
+  <body>
+    <header class="dk-top">
+      <div class="container">
+        <p class="kicker">Δοκιμές</p>
+        <h1>Κουμπιά WhatsApp / Viber — 10 παραλλαγές</h1>
+        <p class="muted">Κάθε μπλοκ δείχνει το κάτω μέρος του hero (τα δύο CTA, τα κανάλια, οι αριθμοί) όπως θα φαινόταν με την κάθε ιδέα. Στενέψτε το παράθυρο για το κινητό.</p>
+        <nav class="dk-nav">
+          {variants.map((v) => <a href={`#${v.id}`}>{v.t.split(' — ')[0]}</a>)}
+        </nav>
+      </div>
+    </header>
+
+    {variants.map((v) => (
+      <section class="section section--tight" id={v.id}>
+        <div class="container">
+          <div class="dk-label"><strong>{v.t}</strong> — {v.d}</div>
+          <div class="stage">
+            <div class="hero-ctas">
+              <span class="btn-frame"><a class="btn btn--orange" href="#">Μετρήστε την επιχείρησή σας — 2 λεπτά</a></span>
+              <a class="btn btn--ghost" href="#">Κλείστε τον δωρεάν Έλεγχο</a>
+            </div>
+            <p class="btn-note">Χωρίς email · χωρίς δέσμευση · 2 λεπτά και βλέπετε το σκορ</p>
+
+            {v.id === 'v0' && (
+              <div class="hero-chat">
+                <a class="chat-btn chat-btn--wa" href={waHref} target="_blank" rel="noopener"><span class="ic"><img src="/logos/whatsapp-icon.svg" alt="" width="20" height="20" /></span><span><strong>WhatsApp</strong><span class="sub">απάντηση την ίδια μέρα</span></span></a>
+                <a class="chat-btn chat-btn--vb" href={vbHref}><span class="ic"><img src="/logos/viber.svg" alt="" width="20" height="20" /></span><span><strong>Viber</strong><span class="sub">απάντηση την ίδια μέρα</span></span></a>
+              </div>
+            )}
+
+            {v.id === 'v1' && (
+              <div class="hero-chat">
+                <div class="one-card">
+                  <span class="one-text"><strong>Μιλήστε μας τώρα</strong><span class="sub">απάντηση την ίδια μέρα</span></span>
+                  <span class="one-btns">
+                    <a class="rb rb--wa" href={waHref} target="_blank" rel="noopener" aria-label="WhatsApp"><img src="/logos/whatsapp-icon.svg" alt="" width="22" height="22" /></a>
+                    <a class="rb rb--vb" href={vbHref} aria-label="Viber"><img src="/logos/viber.svg" alt="" width="22" height="22" /></a>
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {v.id === 'v2' && (
+              <div class="hero-chat">
+                <div class="bubble-wrap">
+                  <div class="bubble">Γεια σας 👋 Πώς μπορούμε να βοηθήσουμε;</div>
+                  <div class="bubble-replies">
+                    <a class="reply reply--wa" href={waHref} target="_blank" rel="noopener"><img src="/logos/whatsapp-icon.svg" alt="" width="18" height="18" />WhatsApp</a>
+                    <a class="reply reply--vb" href={vbHref}><img src="/logos/viber.svg" alt="" width="18" height="18" />Viber</a>
+                    <span class="reply-note">απάντηση την ίδια μέρα</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {v.id === 'v3' && (
+              <p class="inline-line">
+                Ή γράψτε μας σε
+                <a class="il il--wa" href={waHref} target="_blank" rel="noopener"><img src="/logos/whatsapp-icon.svg" alt="" width="16" height="16" />WhatsApp</a>
+                <span class="il-sep">·</span>
+                <a class="il il--vb" href={vbHref}><img src="/logos/viber.svg" alt="" width="16" height="16" />Viber</a>
+                — απαντάμε την ίδια μέρα
+              </p>
+            )}
+
+            {v.id === 'v4' && (
+              <div class="hero-chat">
+                <a class="stripe stripe--wa" href={waHref} target="_blank" rel="noopener"><img src="/logos/whatsapp-icon.svg" alt="" width="22" height="22" /><span><strong>WhatsApp</strong><span class="sub">απάντηση την ίδια μέρα</span></span></a>
+                <a class="stripe stripe--vb" href={vbHref}><img src="/logos/viber.svg" alt="" width="22" height="22" /><span><strong>Viber</strong><span class="sub">απάντηση την ίδια μέρα</span></span></a>
+              </div>
+            )}
+
+            {v.id === 'v5' && (
+              <div class="hero-chat">
+                <a class="chat-btn chat-btn--wa" href={waHref} target="_blank" rel="noopener"><span class="ic ic--dot"><img src="/logos/whatsapp-icon.svg" alt="" width="20" height="20" /></span><span><strong>WhatsApp</strong><span class="sub">συνήθως απαντάμε σε λίγες ώρες</span></span></a>
+                <a class="chat-btn chat-btn--vb" href={vbHref}><span class="ic ic--dot"><img src="/logos/viber.svg" alt="" width="20" height="20" /></span><span><strong>Viber</strong><span class="sub">συνήθως απαντάμε σε λίγες ώρες</span></span></a>
+              </div>
+            )}
+
+            {v.id === 'v6' && (
+              <div class="hero-chat hero-chat--col">
+                <div class="split">
+                  <a class="split-half split--wa" href={waHref} target="_blank" rel="noopener"><img src="/logos/whatsapp-icon.svg" alt="" width="20" height="20" />WhatsApp</a>
+                  <a class="split-half split--vb" href={vbHref}><img src="/logos/viber.svg" alt="" width="20" height="20" />Viber</a>
+                </div>
+                <span class="split-note">απάντηση την ίδια μέρα</span>
+              </div>
+            )}
+
+            {v.id === 'v7' && (
+              <div class="hero-chat">
+                <a class="chat-btn chat-btn--wa fill fill--wa" href={waHref} target="_blank" rel="noopener"><span class="ic"><img src="/logos/whatsapp-icon.svg" alt="" width="20" height="20" /></span><span><strong>WhatsApp</strong><span class="sub">απάντηση την ίδια μέρα</span></span></a>
+                <a class="chat-btn chat-btn--vb fill fill--vb" href={vbHref}><span class="ic"><img src="/logos/viber.svg" alt="" width="20" height="20" /></span><span><strong>Viber</strong><span class="sub">απάντηση την ίδια μέρα</span></span></a>
+              </div>
+            )}
+
+            {v.id === 'v10' && (
+              <div class="hero-chat">
+                <a class="qr qr--wa" href={waHref} target="_blank" rel="noopener">
+                  <span class="qr-code" set:html={qrWa} />
+                  <span class="qr-text"><span class="ic"><img src="/logos/whatsapp-icon.svg" alt="" width="18" height="18" /></span><strong>WhatsApp</strong><span class="sub">σκανάρετε ή πατήστε</span></span>
+                </a>
+                <a class="qr qr--vb" href={vbHref}>
+                  <span class="qr-code" set:html={qrVb} />
+                  <span class="qr-text"><span class="ic"><img src="/logos/viber.svg" alt="" width="18" height="18" /></span><strong>Viber</strong><span class="sub">σκανάρετε ή πατήστε</span></span>
+                </a>
+              </div>
+            )}
+
+            <ul class={`hero-stats ${v.id === 'v8' ? 'hero-stats--chat' : ''}`}>
+              <li><strong>από 590 €</strong><span>ιστοσελίδα</span></li>
+              <li><strong>48 ώρες</strong><span>πρώτο preview</span></li>
+              <li><strong>48 ώρες</strong><span>γραπτή πρόταση</span></li>
+              <li><strong>100%</strong><span>δημόσιες τιμές</span></li>
+              {v.id === 'v8' && (
+                <li class="stat-chat">
+                  <strong>ίδια μέρα</strong>
+                  <span class="stat-chat-links">απάντηση σε
+                    <a href={waHref} target="_blank" rel="noopener" aria-label="WhatsApp"><img src="/logos/whatsapp-icon.svg" alt="" width="16" height="16" /></a>
+                    <a href={vbHref} aria-label="Viber"><img src="/logos/viber.svg" alt="" width="16" height="16" /></a>
+                  </span>
+                </li>
+              )}
+            </ul>
+          </div>
+        </div>
+      </section>
+    ))}
+
+    <footer class="dk-foot"><div class="container"><p class="muted">Πείτε μου αριθμό (ή συνδυασμό, π.χ. «6 με την κουκκίδα του 5») και το περνάω στην αρχική EL+EN.</p></div></footer>
+
+    <!-- 9 — floating κουμπί, ζωντανό σε αυτή τη σελίδα -->
+    <div class="fab-wrap" id="fab">
+      <div class="fab-menu" hidden>
+        <a class="fab-item" href={waHref} target="_blank" rel="noopener"><span class="ic ic-wa"><img src="/logos/whatsapp-icon.svg" alt="" width="18" height="18" /></span>WhatsApp</a>
+        <a class="fab-item" href={vbHref}><span class="ic ic-vb"><img src="/logos/viber.svg" alt="" width="18" height="18" /></span>Viber</a>
+      </div>
+      <button class="fab" type="button" aria-expanded="false" aria-label="Επικοινωνία">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-2.9-.4-4.1-1L3 20l1-5.4A8.5 8.5 0 1 1 21 11.5z"/></svg>
+      </button>
+    </div>
+    <script is:inline>
+      (function(){var w=document.getElementById('fab'),b=w.querySelector('.fab'),m=w.querySelector('.fab-menu');
+      b.addEventListener('click',function(){var o=m.hidden;m.hidden=!o;b.setAttribute('aria-expanded',String(o));w.classList.toggle('open',o);});})();
+    </script>
+  </body>
+</html>
+
+<style>
+  /* ---------- σκελετός ---------- */
+  .dk-top { padding: clamp(40px, 7vw, 72px) 0 8px; }
+  .dk-top h1 { margin: 14px 0 10px; }
+  .dk-nav { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+  .dk-nav a { display: inline-flex; padding: 7px 14px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); text-decoration: none; font-weight: 700; font-size: .88rem; }
+  .dk-nav a:hover { border-color: var(--line-strong); }
+  .dk-label { margin-bottom: 18px; padding: 12px 16px; border-radius: 12px; background: var(--orange-soft); border: 1px solid rgba(var(--orange-rgb), .3); color: var(--ink); font-size: .95rem; max-width: none; }
+  .dk-label strong { color: var(--orange-text); }
+  .dk-foot { padding: 40px 0 120px; }
+  .section--tight { padding-block: 22px; }
+
+  .stage { text-align: center; padding: 36px 20px 40px; border: 1px dashed var(--line-strong); border-radius: var(--r); background: var(--bg); }
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 0; }
+  .btn-frame { display: inline-flex; padding: 3px; border-radius: 14px; background: rgba(255, 255, 255, .08); border: 1px solid var(--line); }
+  .btn-note { margin: 12px auto 0; }
+  .hero-chat { display: flex; align-items: stretch; justify-content: center; flex-wrap: wrap; gap: 10px 12px; margin-top: 20px; }
+  .hero-chat--col { flex-direction: column; align-items: center; gap: 8px; }
+  .hero-stats { list-style: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 34px; margin: 26px auto 0; }
+  .hero-stats li { display: grid; gap: 2px; text-align: center; }
+  .hero-stats strong { font-family: var(--font-display); font-weight: 800; font-size: 1.18rem; color: var(--navy); letter-spacing: .01em; }
+  .hero-stats span { font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .sub { display: block; font-size: .8rem; color: var(--muted); line-height: 1.3; font-weight: 400; }
+
+  /* ---------- 0 (τωρινό), 5, 7 ---------- */
+  .chat-btn { display: inline-flex; align-items: center; gap: 12px; text-align: left; padding: 11px 18px 11px 12px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); color: var(--navy); text-decoration: none; box-shadow: 0 2px 8px rgba(0,0,0,.3); transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background-color .35s ease, color .35s ease; }
+  .chat-btn:hover { transform: translateY(-2px); border-color: var(--line-strong); box-shadow: var(--shadow); }
+  .chat-btn .ic { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; flex: none; position: relative; }
+  .chat-btn .ic img { width: 20px; height: 20px; display: block; }
+  .chat-btn--wa .ic { background: rgba(37,211,102,.16); }
+  .chat-btn--vb .ic { background: rgba(115,96,242,.18); }
+  .chat-btn strong { display: block; font-size: .95rem; line-height: 1.2; }
+
+  /* 5 — κουκκίδα online */
+  .ic--dot::after { content: ''; position: absolute; right: 0; bottom: 0; width: 11px; height: 11px; border-radius: 50%; background: #3DDC84; border: 2px solid var(--card); box-shadow: 0 0 0 0 rgba(61,220,132,.6); animation: ping 2s infinite; }
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(61,220,132,.55); } 70% { box-shadow: 0 0 0 8px rgba(61,220,132,0); } 100% { box-shadow: 0 0 0 0 rgba(61,220,132,0); } }
+  @media (prefers-reduced-motion: reduce) { .ic--dot::after { animation: none; } }
+
+  /* 7 — γέμισμα στο hover */
+  .fill--wa:hover { background: #25D366; border-color: #25D366; color: #0b2e1a; }
+  .fill--vb:hover { background: #7360F2; border-color: #7360F2; color: #fff; }
+  .fill:hover .ic { background: rgba(255,255,255,.22); }
+  .fill:hover .sub { color: inherit; opacity: .85; }
+  .fill--wa:hover img, .fill--vb:hover img { filter: brightness(0) invert(1); }
+
+  /* ---------- 1 — μία ενιαία κάρτα ---------- */
+  .one-card { display: inline-flex; align-items: center; gap: 22px; padding: 12px 12px 12px 20px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0,0,0,.3); text-align: left; }
+  .one-text strong { display: block; font-size: .95rem; color: var(--navy); line-height: 1.2; }
+  .one-btns { display: flex; gap: 8px; }
+  .rb { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; text-decoration: none; transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+  .rb:hover { transform: translateY(-2px); }
+  .rb--wa { background: rgba(37,211,102,.16); } .rb--wa:hover { box-shadow: 0 0 0 4px rgba(37,211,102,.18); }
+  .rb--vb { background: rgba(115,96,242,.18); } .rb--vb:hover { box-shadow: 0 0 0 4px rgba(115,96,242,.2); }
+
+  /* ---------- 2 — φυσαλίδα ---------- */
+  .bubble-wrap { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 10px; text-align: left; }
+  .bubble { position: relative; background: var(--card-2); border: 1px solid var(--line); color: var(--navy); font-size: .95rem; padding: 12px 16px; border-radius: 16px 16px 16px 4px; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+  .bubble::after { content: ''; position: absolute; left: -1px; bottom: -8px; border: 8px solid transparent; border-left-color: var(--card-2); border-bottom: 0; }
+  .bubble-replies { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding-left: 6px; }
+  .reply { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: .88rem; text-decoration: none; color: var(--navy); border: 1.5px solid var(--line-strong); transition: background-color .25s ease, border-color .25s ease; }
+  .reply--wa:hover { border-color: #25D366; background: rgba(37,211,102,.14); }
+  .reply--vb:hover { border-color: #7360F2; background: rgba(115,96,242,.16); }
+  .reply-note { font-size: .8rem; color: var(--muted); margin-left: 4px; }
+
+  /* ---------- 3 — inline γραμμή ---------- */
+  .inline-line { margin: 18px auto 0; font-size: .92rem; color: var(--muted); display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 8px; max-width: none; }
+  .il { display: inline-flex; align-items: center; gap: 5px; color: var(--navy); font-weight: 700; text-decoration: none; border-bottom: 1.5px solid var(--line-strong); padding-bottom: 1px; transition: border-color .25s ease; }
+  .il--wa:hover { border-color: #25D366; } .il--vb:hover { border-color: #7360F2; }
+  .il-sep { color: var(--line-strong); }
+
+  /* ---------- 4 — λωρίδα στο πλάι ---------- */
+  .stripe { display: inline-flex; align-items: center; gap: 12px; text-align: left; padding: 11px 18px 11px 14px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); border-left-width: 3px; color: var(--navy); text-decoration: none; box-shadow: 0 2px 8px rgba(0,0,0,.3); transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+  .stripe:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .stripe--wa { border-left-color: #25D366; } .stripe--vb { border-left-color: #7360F2; }
+  .stripe strong { display: block; font-size: .95rem; line-height: 1.2; }
+
+  /* ---------- 6 — split pill ---------- */
+  .split { display: inline-flex; border-radius: 999px; border: 1px solid var(--line); background: var(--card); box-shadow: 0 2px 8px rgba(0,0,0,.3); overflow: hidden; }
+  .split-half { display: inline-flex; align-items: center; gap: 9px; padding: 11px 20px; font-weight: 700; font-size: .92rem; color: var(--navy); text-decoration: none; transition: background-color .25s ease; }
+  .split-half + .split-half { border-left: 1px solid var(--line-strong); }
+  .split--wa:hover { background: rgba(37,211,102,.14); } .split--vb:hover { background: rgba(115,96,242,.16); }
+  .split-note { font-size: .8rem; color: var(--muted); }
+
+  /* ---------- 8 — πέμπτο stat ---------- */
+  .stat-chat-links { display: inline-flex; align-items: center; gap: 6px; }
+  .stat-chat-links a { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--card-2); border: 1px solid var(--line); transition: border-color .25s ease; }
+  .stat-chat-links a:hover { border-color: var(--line-strong); }
+  .hero-stats--chat .stat-chat { padding-left: 34px; border-left: 1px solid var(--line-strong); }
+  @media (max-width: 720px) { .hero-stats--chat .stat-chat { padding-left: 0; border-left: 0; } }
+
+  /* ---------- 9 — floating ---------- */
+  .fab-wrap { position: fixed; right: 20px; bottom: 20px; z-index: 50; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+  .fab { width: 56px; height: 56px; border-radius: 50%; border: 0; cursor: pointer; background: var(--grad); color: #fff; display: grid; place-items: center; box-shadow: 0 6px 24px rgba(var(--cta-rgb), .4); transition: transform var(--dur) var(--ease); }
+  .fab svg { width: 26px; height: 26px; }
+  .fab:hover { transform: translateY(-2px); }
+  .fab-wrap.open .fab { transform: rotate(-8deg) scale(.96); }
+  .fab-menu { display: flex; flex-direction: column; gap: 8px; }
+  .fab-menu[hidden] { display: none; }
+  .fab-item { display: inline-flex; align-items: center; gap: 10px; padding: 9px 16px 9px 9px; border-radius: 999px; background: var(--card-2); border: 1px solid var(--line-strong); color: var(--navy); font-weight: 700; font-size: .9rem; text-decoration: none; box-shadow: var(--shadow); animation: pop .25s var(--ease) both; }
+  .fab-item .ic { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; }
+  .ic-wa { background: rgba(37,211,102,.18); } .ic-vb { background: rgba(115,96,242,.2); }
+  @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: none; } }
+
+  /* ---------- 10 — QR ---------- */
+  .qr { display: inline-flex; flex-direction: column; align-items: center; gap: 10px; padding: 14px 16px 12px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); text-decoration: none; color: var(--navy); box-shadow: 0 2px 8px rgba(0,0,0,.3); transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+  .qr:hover { transform: translateY(-2px); border-color: var(--line-strong); }
+  .qr-code { width: 88px; height: 88px; padding: 6px; border-radius: 8px; background: var(--card); color: var(--navy); border: 1px solid var(--line-strong); }
+  .qr-code :global(svg) { width: 100%; height: 100%; display: block; }
+  .qr-text { display: grid; grid-template-columns: auto 1fr; column-gap: 8px; align-items: center; text-align: left; }
+  .qr-text .ic { grid-row: span 2; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; }
+  .qr--wa .ic { background: rgba(37,211,102,.16); } .qr--vb .ic { background: rgba(115,96,242,.18); }
+  .qr-text strong { font-size: .92rem; line-height: 1.2; }
+  @media (max-width: 720px) { .qr-code { display: none; } .qr { flex-direction: row; padding: 11px 18px 11px 12px; } }
+</style>
