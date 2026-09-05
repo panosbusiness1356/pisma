@@ -82,9 +82,9 @@ export const CATEGORIES: PricingCategory[] = [
     desc: 'Στον χώρο σας — διαλέξτε ό,τι χρειάζεστε.',
     mode: 'checkbox',
     options: [
-      { id: 'media-space', label: 'Φωτογράφηση χώρου & ομάδας', detail: 'Μισή μέρα στον χώρο σας, έως 40 επεξεργασμένες φωτογραφίες σε διαστάσεις για site, Google και social', price: 180, type: 'once' },
-      { id: 'media-products', label: 'Φωτογράφηση προϊόντων', detail: 'Έως 30 προϊόντα για e-shop ή κατάλογο, επεξεργασμένα — σε ουδέτερο φόντο ή μέσα στον χώρο σας', price: 240, type: 'once' },
-      { id: 'media-video', label: 'Βίντεο για social', detail: '3 μικρά βίντεο 15–30 δευτερολέπτων με μοντάζ, σε διαστάσεις reels και stories', price: 150, type: 'once' },
+      { id: 'media-space', label: 'Φωτογράφηση χώρου & ομάδας', detail: 'Στον χώρο σας — επεξεργασμένες φωτογραφίες σε διαστάσεις για site, Google και social', price: 180, type: 'once' },
+      { id: 'media-products', label: 'Φωτογράφηση προϊόντων', detail: 'Για e-shop ή κατάλογο, επεξεργασμένες — σε ουδέτερο φόντο ή μέσα στον χώρο σας', price: 240, type: 'once' },
+      { id: 'media-video', label: 'Βίντεο για social', detail: 'Μικρά βίντεο με μοντάζ, σε διαστάσεις reels και stories', price: 150, type: 'once' },
     ],
   },
   {
@@ -110,7 +110,7 @@ export const CATEGORIES: PricingCategory[] = [
     mode: 'checkbox',
     options: [
       { id: 'care-web', label: 'Συντήρηση ιστοσελίδας', detail: 'Ενημερώσεις, ασφάλεια, μικροαλλαγές', price: 29, type: 'monthly' },
-      { id: 'care-shopify', label: 'Διαχείριση Shopify', detail: 'Νέα προϊόντα, αποθέματα, εκπτώσεις, apps, ενημερώσεις — και μηνιαία αναφορά πωλήσεων', price: 120, type: 'monthly' },
+      { id: 'care-shopify', label: 'Διαχείριση Shopify', detail: 'Νέα προϊόντα, αποθέματα, εκπτώσεις, apps, ενημερώσεις — και μηνιαία αναφορά πωλήσεων', price: 49, type: 'monthly' },
     ],
   },
 ];
