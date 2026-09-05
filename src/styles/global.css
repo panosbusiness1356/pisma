@@ -1,17 +1,17 @@
 /* ============================================================
    PISMA — Design System (dark)
-   «Ανθρακί + Φωτιά»: ζεστό ανθρακί φόντο, πορτοκαλί gradient accents,
-   χωρίς μωβ. Κανένα hardcoded χρώμα στα components — πάντα οι μεταβλητές.
+   «Σκηνή»: ουδέτερο μαύρο/γκρι/λευκό (καπνός, προβολείς), πορτοκαλί το ΜΟΝΟ
+   χρώμα — χωρίς μωβ, χωρίς ζεστές αποχρώσεις στο φόντο. Κανένα hardcoded χρώμα στα components — πάντα οι μεταβλητές.
    ============================================================ */
 
 :root {
-  --bg: #171514;
-  --bg-soft: #1D1A18;
-  --card: #1F1C1A;
-  --card-2: #262220;
-  --navy: #F4F0EC;        /* χρώμα επικεφαλίδων / «σκούρο» κείμενο του παλιού theme */
-  --ink: #E7E1DB;
-  --muted: #A79E95;
+  --bg: #0B0B0B;
+  --bg-soft: #111111;
+  --card: #151515;
+  --card-2: #1B1B1B;
+  --navy: #FFFFFF;        /* χρώμα επικεφαλίδων / «σκούρο» κείμενο του παλιού theme */
+  --ink: #E4E4E4;
+  --muted: #9C9C9C;
   --orange: #FF7A50;      /* accent: εικονίδια, λεπτομέρειες, logo dot */
   --orange-cta: #EE4F27;  /* φόντο κουμπιών */
   --orange-hi: #FF6A3D;
@@ -26,18 +26,18 @@
   --gt-1: #FF9159; --gt-2: #FF5C2E; --shine: #FFD9A8;
   --cta-deep: #D63E1B; --cta-lite: #FF8A3D;
   --cta-ink: #fff;        /* κείμενο πάνω στο CTA gradient */
-  --nav-rgb: 23, 21, 20;  /* φόντο της κάψουλας του Nav (rgba με blur) */
-  --purple: #B09A8C;      /* πρώην μωβ — τώρα ζεστό taupe, δένει με το ανθρακί */
-  --purple-soft: rgba(176, 154, 140, .12);
-  --purple-text: #D1BFB3;
-  --blue: #A08E7E;
-  --blue-soft: rgba(160, 142, 126, .13);
-  --blue-text: #C6B6A8;
+  --nav-rgb: 11, 11, 11;  /* φόντο της κάψουλας του Nav (rgba με blur) */
+  --purple: #A3A3A3;      /* πρώην μωβ — τώρα ζεστό taupe, δένει με το ανθρακί */
+  --purple-soft: rgba(255, 255, 255, .08);
+  --purple-text: #CFCFCF;
+  --blue: #9A9A9A;
+  --blue-soft: rgba(255, 255, 255, .08);
+  --blue-text: #C8C8C8;
   --yellow: #C0913D;
   --yellow-soft: rgba(192, 145, 61, .15);
   --yellow-text: #DDBE85;
-  --line: rgba(255, 240, 225, .09);
-  --line-strong: rgba(255, 240, 225, .17);
+  --line: rgba(255, 255, 255, .10);
+  --line-strong: rgba(255, 255, 255, .18);
   --ok: #55A874;
   --ok-soft: rgba(85, 168, 116, .15);
   --ok-text: #A5D6B8;
