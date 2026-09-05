@@ -896,7 +896,9 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     color: var(--orange-text);
     text-wrap: balance;
   }
-  .hero h1 { max-width: 18ch; margin-inline: auto; font-size: clamp(2.3rem, 5.8vw, 4.8rem); line-height: 1.02; letter-spacing: -.035em; text-shadow: 0 10px 60px rgba(0, 0, 0, .6); }
+  /* Desktop: μία πρόταση σε ΜΙΑ γραμμή (αίτημα χρήστριας) — το μέγεθος ακολουθεί το πλάτος. */
+  .hero h1 { max-width: none; margin-inline: auto; white-space: nowrap; font-size: clamp(2rem, 3.6vw, 3.4rem); line-height: 1.05; letter-spacing: -.03em; text-shadow: 0 10px 60px rgba(0, 0, 0, .6); }
+  @media (max-width: 860px) { .hero h1 { white-space: normal; max-width: 18ch; } }
   .hero-hl { position: relative; white-space: nowrap; }
   .hl-stroke {
     position: absolute; left: -.06em; bottom: -.16em;
