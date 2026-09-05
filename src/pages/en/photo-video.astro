@@ -1,0 +1,261 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE, ELEGXOS } from '../../config';
+
+// Photography & video at the business premises — material for website, store,
+// Google profile and social. No single list price (depends on space, products,
+// duration) — a fixed price in writing within ELEGXOS.reportHours hours.
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Photography & Video for businesses',
+  serviceType: 'Product, space and team photography, Video shooting for websites and social media',
+  areaServed: SITE.regionEn,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: SITE.name,
+    email: SITE.email,
+    telephone: SITE.phone,
+    url: SITE.url,
+  },
+  description:
+    'Photos and short videos shot at your business premises — products, dishes, space, team — ready for your website, online store, Google and social media.',
+};
+
+const why = [
+  {
+    t: 'Customers see you — not stock',
+    d: 'A photo from the internet is one the customer has seen on ten other sites. Your shop window, your dish, your face: that builds trust before they even call.',
+    icon: 'eye',
+  },
+  {
+    t: 'One shoot — material for months',
+    d: 'In one visit we get everything the website, the Google profile and social media need. Dozens of photos and short videos, organised and ready to upload.',
+    icon: 'stack',
+  },
+  {
+    t: 'Ready for every channel',
+    d: 'Vertical for reels and stories, horizontal for the website, square for Google. We deliver in the right sizes — you never crop anything yourself.',
+    icon: 'frames',
+  },
+];
+
+const shoot = [
+  { t: 'Space & shop window', d: 'The shop as a first-time customer sees it walking in — bright, clean, welcoming.' },
+  { t: 'Products', d: 'For your store, catalogue and social: on a neutral background or inside your space, with the details that sell.' },
+  { t: 'Dishes & drinks', d: 'For the menu, Google and Instagram — the dish as it comes out of the kitchen, in its natural light.' },
+  { t: 'You & the team', d: 'People want to know who they are trusting. Portraits and working moments, no posing.' },
+  { t: 'Short videos', d: 'Reels and stories of 15–30 seconds: the process, the before/after, a "hello" from you. Whatever stops the thumb.' },
+  { t: 'Before / After', d: 'For any job that changes something — hair salon, garage, renovation. The most convincing photo there is.' },
+];
+
+const steps = [
+  {
+    t: 'We agree what you need',
+    d: 'Website, store, Google, social — or all of them. The shot list comes from that.',
+  },
+  {
+    t: 'Appointment at your premises',
+    d: 'During your quiet hours, without closing. We bring whatever equipment is needed.',
+  },
+  {
+    t: 'Editing',
+    d: 'Colour, light, cropping to the right size for every channel. Editing for the videos.',
+  },
+  {
+    t: 'Delivery — and upload',
+    d: 'You get everything organised in a folder. If we run your website or social media, it goes up as well.',
+  },
+];
+
+const faqItems = [
+  {
+    q: 'Do I have to close the shop for the shoot?',
+    a: 'No. We come during your quieter hours and work around you. For dishes and products we just need a spot with good light.',
+  },
+  {
+    q: 'Who owns the photos and videos?',
+    a: 'You do, entirely. Use them wherever you like — website, social, print, ads — with no conditions and no expiry.',
+  },
+  {
+    q: 'Do I need to prepare anything?',
+    a: 'A little: a tidy space, the products or dishes you want shown, and whoever on the team wants to be in it. We send a short checklist before the appointment.',
+  },
+  {
+    q: 'Do you edit the videos too?',
+    a: 'Yes. We deliver finished videos — cut, with music where it fits, in each channel’s dimensions. You never open an editing program.',
+  },
+  {
+    q: 'I already have monthly social media management with you. Do I need anything extra?',
+    a: 'If your management is "content by PISMA", the photos and videos for the posts come from us and are already included. A separate shoot is for bigger needs — e.g. every product of an online store, or a new website.',
+  },
+  {
+    q: 'How much does it cost?',
+    a: `It depends on the space, the number of products and whether you also want video. You get a written proposal with a fixed price within ${ELEGXOS.reportHours} hours — you know the amount before we book the appointment.`,
+  },
+];
+---
+
+<Base
+  title="Photography & Video for your business | PISMA"
+  description="We come to your premises and shoot photos and short videos for your website, online store, Google profile and social media: products, dishes, space, team. Your own material — not stock."
+  schema={schema}
+>
+  <!-- 1. Hero -->
+  <PageHero
+    kicker="Photography & Video"
+    sub="Photos and short videos shot at your premises — for the website, the online store, the Google profile and social media. No images from the internet."
+  >
+    Your business, <span class="accent">as it really is</span>
+  </PageHero>
+
+  <!-- 2. What you gain -->
+  <section class="section section--tight" aria-labelledby="why-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">What you gain</p>
+        <h2 id="why-title">Three reasons your own material sells more.</h2>
+      </div>
+      <div class="grid-3">
+        {why.map((w) => (
+          <article class="card reveal">
+            <span class="icon-chip">
+              {w.icon === 'eye' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" />
+                </svg>
+              )}
+              {w.icon === 'stack' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="6" y="6" width="14" height="14" rx="2" /><path d="M3 15V5a2 2 0 0 1 2-2h10" /><path d="m9 16 3-3.5 2 2 3-4" />
+                </svg>
+              )}
+              {w.icon === 'frames' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="4" width="8" height="16" rx="1.5" /><rect x="14" y="4" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="6" rx="1.5" />
+                </svg>
+              )}
+            </span>
+            <h3>{w.t}</h3>
+            <p>{w.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. What we shoot -->
+  <section class="section" aria-labelledby="shoot-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker kicker--blue">What we shoot</p>
+        <h2 id="shoot-title">Everything a customer needs to see before they come.</h2>
+      </div>
+      <div class="grid-3">
+        {shoot.map((s, i) => (
+          <article class="card shot reveal">
+            <span class="shot-num num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. How it works -->
+  <section class="section section--tight" aria-labelledby="flow-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">How it works</p>
+        <h2 id="flow-title">Four steps — one appointment.</h2>
+      </div>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="step reveal">
+            <span class="step-num num" aria-hidden="true">{i + 1}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. Price -->
+  <section class="section" aria-labelledby="price-title">
+    <div class="container container--narrow">
+      <div class="card price-card reveal">
+        <div class="price-main">
+          <p class="kicker">Price</p>
+          <h2 id="price-title">In writing and fixed, within <span class="price-num num">{ELEGXOS.reportHours}</span> hours</h2>
+          <p class="price-sub">
+            A hair salon with ten shots and an online store with two hundred products do not cost the same.
+            Tell us what you need and you get a <strong>written proposal with a fixed price</strong> — before
+            we book the appointment. With monthly social media management "content by PISMA", the material
+            for the posts is already included.
+          </p>
+        </div>
+        <div class="price-cta">
+          <a class="btn btn--orange" href="/en/contact/">Tell us what you need</a>
+          <a class="btn btn--ghost" href="/en/pricing/">See our other prices</a>
+          <span class="btn-note">Same-day reply · no lock-in</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FAQ -->
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">FAQ</p>
+        <h2 id="faq-title">Before you ask, others did.</h2>
+      </div>
+      <Faq items={faqItems} withSchema />
+    </div>
+  </section>
+
+  <!-- 7. CTA -->
+  <CtaBand
+    title="Time people saw you as you really are."
+    sub="Tell us what you need — website, store, Google or social — and we book an appointment at your premises."
+    ctaText="Tell us what you need"
+    ctaHref="/en/contact/"
+    note="Same-day reply · no lock-in"
+  />
+</Base>
+
+<style>
+  /* ---- What we shoot ---- */
+  .shot { position: relative; padding-top: 26px; }
+  .shot-num {
+    position: absolute; top: 18px; right: 20px;
+    font-size: .82rem; font-weight: 700; color: var(--orange-text);
+    background: var(--orange-soft); padding: 3px 9px; border-radius: 999px;
+  }
+  .shot h3 { padding-right: 56px; }
+  .shot p { color: var(--muted); font-size: .95rem; }
+
+  /* ---- Price (same pattern as the other service pages) ---- */
+  .price-card {
+    display: grid;
+    grid-template-columns: 1.2fr minmax(min(240px, 100%), .8fr);
+    gap: clamp(24px, 4vw, 48px);
+    align-items: center;
+    padding: clamp(26px, 4vw, 48px);
+  }
+  @media (max-width: 720px) {
+    .price-card { grid-template-columns: 1fr; }
+  }
+  .price-main .kicker { margin-bottom: 14px; }
+  .price-num { font-size: clamp(2rem, 5vw, 2.8rem); color: var(--orange-text); }
+  .price-sub { margin-top: 12px; color: var(--muted); }
+  .price-sub strong { color: var(--ink); }
+  .price-cta { display: flex; flex-direction: column; gap: 12px; }
+  .price-cta .btn { text-align: center; }
+  .price-cta .btn-note { text-align: center; }
+</style>

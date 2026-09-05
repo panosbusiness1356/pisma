@@ -10,7 +10,7 @@ const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   name: 'Digital Visibility — Get found on Google and AI',
-  serviceType: 'Website development, Google Business Profile, SEO, GEO/AEO, Social media, Google Reviews',
+  serviceType: 'Website development, Shopify store development, Shopify management, Google Business Profile, SEO, GEO/AEO, Social media, Google Reviews, Photography and video',
   areaServed: SITE.regionEn,
   provider: {
     '@type': 'LocalBusiness',
@@ -62,6 +62,25 @@ const services = [
     d: 'Our tool that makes Google reviews pile up on their own. How? That part we only show live.',
     icon: 'star',
     href: '/en/reviews/',
+  },
+  {
+    t: 'A Shopify store',
+    d: 'An online store set up properly from day one: products, payments, shipping — all ready to sell. Afterwards, you run it yourself — or we do.',
+    icon: 'shopify',
+    size: 'big',
+    href: '/en/shopify/',
+  },
+  {
+    t: 'Shopify management',
+    d: 'Already have a store? We take it over month by month: new products, stock, discounts, apps, updates. You only see the orders.',
+    icon: 'shopify',
+    href: '/en/shopify/#management',
+  },
+  {
+    t: 'Photography & Video',
+    d: 'We come to your premises: photos of products, dishes, space and team, plus short videos for your website, Google and social media. Your own material — not stock.',
+    icon: 'camera',
+    href: '/en/photo-video/',
   },
   {
     t: 'Social media',
@@ -120,7 +139,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">What we set up</p>
-        <h2 id="svc-title">Nine jobs. One goal: getting you found.</h2>
+        <h2 id="svc-title">Twelve jobs. One goal: getting you found.</h2>
       </div>
       <ServiceCards services={services} cta="See what it does →" />
     </div>

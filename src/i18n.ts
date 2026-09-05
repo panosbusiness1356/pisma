@@ -15,6 +15,8 @@ export const PAIRS: ReadonlyArray<readonly [string, string]> = [
   ['/psifiako-menou/', '/en/digital-menu/'],
   ['/site-kratiseis/', '/en/booking-website/'],
   ['/site-pou-poulaei/', '/en/website-that-sells/'],
+  ['/shopify/', '/en/shopify/'],
+  ['/fotografisi-video/', '/en/photo-video/'],
   ['/aftokollita/', '/en/qr-stickers/'],
   ['/tablo/', '/en/business-check/'],
   ['/times/', '/en/pricing/'],

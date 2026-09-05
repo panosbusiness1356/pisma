@@ -1,0 +1,261 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, ELEGXOS } from '../config';
+
+// Φωτογράφηση & βίντεο στον χώρο της επιχείρησης — υλικό για site, e-shop,
+// προφίλ Google και social. Χωρίς ενιαία τιμή στη λίστα (εξαρτάται από χώρο,
+// προϊόντα, διάρκεια) — γραπτή σταθερή τιμή εντός ELEGXOS.reportHours ωρών.
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Φωτογράφηση & Βίντεο για επιχειρήσεις',
+  serviceType: 'Φωτογράφηση προϊόντων, χώρου και ομάδας, Βιντεοσκόπηση για site και social media',
+  areaServed: SITE.region,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: SITE.name,
+    email: SITE.email,
+    telephone: SITE.phone,
+    url: SITE.url,
+  },
+  description:
+    'Φωτογραφίες και μικρά βίντεο τραβηγμένα στον χώρο της επιχείρησής σας — προϊόντα, πιάτα, χώρος, ομάδα — έτοιμα για site, e-shop, Google και social.',
+};
+
+const why = [
+  {
+    t: 'Οι πελάτες βλέπουν εσάς — όχι stock',
+    d: 'Μια φωτογραφία από το internet τη βλέπει ο πελάτης και σε δέκα άλλα site. Η δική σας βιτρίνα, το δικό σας πιάτο, το δικό σας πρόσωπο: αυτό χτίζει εμπιστοσύνη πριν καν σας καλέσει.',
+    icon: 'eye',
+  },
+  {
+    t: 'Ένα γύρισμα — υλικό για μήνες',
+    d: 'Σε ένα ραντεβού βγαίνει ό,τι χρειάζεται για το site, το προφίλ Google και τα social. Δεκάδες φωτογραφίες και μικρά βίντεο, οργανωμένα και έτοιμα να ανέβουν.',
+    icon: 'stack',
+  },
+  {
+    t: 'Έτοιμο για κάθε κανάλι',
+    d: 'Κάθετο για reels και stories, οριζόντιο για το site, τετράγωνο για τη Google. Παραδίδουμε στις σωστές διαστάσεις — δεν κόβετε τίποτα μόνοι σας.',
+    icon: 'frames',
+  },
+];
+
+const shoot = [
+  { t: 'Χώρος & βιτρίνα', d: 'Το μαγαζί όπως το βλέπει ο πελάτης που μπαίνει πρώτη φορά — φωτεινό, καθαρό, φιλόξενο.' },
+  { t: 'Προϊόντα', d: 'Για e-shop, κατάλογο και social: σε ουδέτερο φόντο ή μέσα στον χώρο σας, με τις λεπτομέρειες που πουλάνε.' },
+  { t: 'Πιάτα & ποτά', d: 'Για μενού, Google και Instagram — το πιάτο όπως βγαίνει από την κουζίνα, στο φυσικό του φως.' },
+  { t: 'Εσείς & η ομάδα', d: 'Ο κόσμος θέλει να ξέρει σε ποιον εμπιστεύεται. Πορτρέτα και στιγμές δουλειάς, χωρίς πόζες.' },
+  { t: 'Μικρά βίντεο', d: 'Reels και stories 15–30 δευτερολέπτων: η διαδικασία, το πριν/μετά, ένα «γεια» από εσάς. Ό,τι σταματά τον αντίχειρα.' },
+  { t: 'Πριν / Μετά', d: 'Για όποια δουλειά αλλάζει κάτι — κομμωτήριο, συνεργείο, ανακαίνιση. Η πιο πειστική φωτογραφία που υπάρχει.' },
+];
+
+const steps = [
+  {
+    t: 'Λέμε τι χρειάζεστε',
+    d: 'Site, e-shop, Google, social — ή όλα. Από αυτό βγαίνει η λίστα με τις λήψεις.',
+  },
+  {
+    t: 'Ραντεβού στον χώρο σας',
+    d: 'Στις ήσυχες ώρες σας, χωρίς να κλείσετε. Φέρνουμε ό,τι εξοπλισμό χρειάζεται.',
+  },
+  {
+    t: 'Επεξεργασία',
+    d: 'Χρώμα, φως, κόψιμο στις σωστές διαστάσεις για κάθε κανάλι. Μοντάζ στα βίντεο.',
+  },
+  {
+    t: 'Παράδοση — και ανέβασμα',
+    d: 'Τα παίρνετε οργανωμένα σε φάκελο. Αν το site ή τα social τα κρατάμε εμείς, ανεβαίνουν κιόλας.',
+  },
+];
+
+const faqItems = [
+  {
+    q: 'Πρέπει να κλείσω το μαγαζί για τη φωτογράφηση;',
+    a: 'Όχι. Ερχόμαστε τις ώρες που έχετε λιγότερο κόσμο και δουλεύουμε γύρω από εσάς. Για πιάτα και προϊόντα χρειαζόμαστε απλώς ένα σημείο με καλό φως.',
+  },
+  {
+    q: 'Σε ποιον ανήκουν οι φωτογραφίες και τα βίντεο;',
+    a: 'Σε εσάς, εξ ολοκλήρου. Τα χρησιμοποιείτε όπου θέλετε — site, social, έντυπα, διαφημίσεις — χωρίς όρους και χωρίς λήξη.',
+  },
+  {
+    q: 'Χρειάζεται προετοιμασία από μένα;',
+    a: 'Λίγη: καθαρός χώρος, τα προϊόντα ή τα πιάτα που θέλετε να φανούν, και όποιος από την ομάδα θέλει να είναι μέσα. Σας στέλνουμε μια σύντομη λίστα πριν το ραντεβού.',
+  },
+  {
+    q: 'Κάνετε και μοντάζ στα βίντεο;',
+    a: 'Ναι. Παραδίδουμε έτοιμα βίντεο — κομμένα, με μουσική όπου ταιριάζει, στις διαστάσεις του κάθε καναλιού. Δεν χρειάζεται να ανοίξετε κανένα πρόγραμμα.',
+  },
+  {
+    q: 'Έχω ήδη μηνιαία διαχείριση social με εσάς. Χρειάζομαι κάτι έξτρα;',
+    a: 'Αν η διαχείρισή σας είναι «με υλικό από PISMA», οι φωτογραφίες και τα βίντεο για τα posts βγαίνουν από εμάς και είναι ήδη μέσα. Η ξεχωριστή φωτογράφηση αφορά μεγαλύτερες ανάγκες — π.χ. όλα τα προϊόντα ενός e-shop ή το νέο site.',
+  },
+  {
+    q: 'Πόσο κοστίζει;',
+    a: `Εξαρτάται από τον χώρο, τον αριθμό προϊόντων και το αν θέλετε και βίντεο. Λαμβάνετε γραπτή πρόταση με σταθερή τιμή εντός ${ELEGXOS.reportHours} ωρών — ξέρετε το ποσό πριν κλείσουμε ραντεβού.`,
+  },
+];
+---
+
+<Base
+  title="Φωτογράφηση & Βίντεο για την επιχείρησή σας | PISMA"
+  description="Ερχόμαστε στον χώρο σας και βγάζουμε φωτογραφίες και μικρά βίντεο για site, e-shop, προφίλ Google και social: προϊόντα, πιάτα, χώρος, ομάδα. Δικό σας υλικό — όχι από το internet."
+  schema={schema}
+>
+  <!-- 1. Hero -->
+  <PageHero
+    kicker="Φωτογράφηση & Βίντεο"
+    sub="Φωτογραφίες και μικρά βίντεο τραβηγμένα στον χώρο σας — για το site, το e-shop, το προφίλ Google και τα social. Όχι εικόνες από το internet."
+  >
+    Η δουλειά σας, <span class="accent">όπως είναι στ’ αλήθεια</span>
+  </PageHero>
+
+  <!-- 2. Τι κερδίζετε -->
+  <section class="section section--tight" aria-labelledby="why-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Τι κερδίζετε</p>
+        <h2 id="why-title">Τρεις λόγοι που το δικό σας υλικό πουλάει περισσότερο.</h2>
+      </div>
+      <div class="grid-3">
+        {why.map((w) => (
+          <article class="card reveal">
+            <span class="icon-chip">
+              {w.icon === 'eye' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" />
+                </svg>
+              )}
+              {w.icon === 'stack' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="6" y="6" width="14" height="14" rx="2" /><path d="M3 15V5a2 2 0 0 1 2-2h10" /><path d="m9 16 3-3.5 2 2 3-4" />
+                </svg>
+              )}
+              {w.icon === 'frames' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="4" width="8" height="16" rx="1.5" /><rect x="14" y="4" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="6" rx="1.5" />
+                </svg>
+              )}
+            </span>
+            <h3>{w.t}</h3>
+            <p>{w.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Τι τραβάμε -->
+  <section class="section" aria-labelledby="shoot-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker kicker--blue">Τι τραβάμε</p>
+        <h2 id="shoot-title">Ό,τι χρειάζεται να δει ο πελάτης πριν έρθει.</h2>
+      </div>
+      <div class="grid-3">
+        {shoot.map((s, i) => (
+          <article class="card shot reveal">
+            <span class="shot-num num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Πώς δουλεύει -->
+  <section class="section section--tight" aria-labelledby="flow-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Πώς δουλεύει</p>
+        <h2 id="flow-title">Τέσσερα βήματα — ένα ραντεβού.</h2>
+      </div>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="step reveal">
+            <span class="step-num num" aria-hidden="true">{i + 1}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. Τιμή -->
+  <section class="section" aria-labelledby="price-title">
+    <div class="container container--narrow">
+      <div class="card price-card reveal">
+        <div class="price-main">
+          <p class="kicker">Τιμή</p>
+          <h2 id="price-title">Γραπτή και σταθερή, εντός <span class="price-num num">{ELEGXOS.reportHours}</span> ωρών</h2>
+          <p class="price-sub">
+            Ένα κομμωτήριο με δέκα λήψεις και ένα e-shop με διακόσια προϊόντα δεν κοστίζουν το ίδιο.
+            Μας λέτε τι χρειάζεστε και λαμβάνετε <strong>γραπτή πρόταση με σταθερή τιμή</strong> — πριν
+            κλείσουμε το ραντεβού. Στη μηνιαία διαχείριση social «με υλικό από PISMA», το υλικό
+            των posts είναι ήδη μέσα.
+          </p>
+        </div>
+        <div class="price-cta">
+          <a class="btn btn--orange" href="/epikoinonia/">Πείτε μας τι χρειάζεστε</a>
+          <a class="btn btn--ghost" href="/times/">Δείτε τις υπόλοιπες τιμές</a>
+          <span class="btn-note">Απάντηση την ίδια μέρα · χωρίς δέσμευση</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FAQ -->
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Συχνές ερωτήσεις</p>
+        <h2 id="faq-title">Πριν ρωτήσετε, ρώτησαν άλλοι.</h2>
+      </div>
+      <Faq items={faqItems} withSchema />
+    </div>
+  </section>
+
+  <!-- 7. CTA -->
+  <CtaBand
+    title="Ώρα να σας δουν όπως είστε στ’ αλήθεια."
+    sub="Πείτε μας τι χρειάζεστε — site, e-shop, Google ή social — και κλείνουμε ραντεβού στον χώρο σας."
+    ctaText="Πείτε μας τι χρειάζεστε"
+    ctaHref="/epikoinonia/"
+    note="Απάντηση την ίδια μέρα · χωρίς δέσμευση"
+  />
+</Base>
+
+<style>
+  /* ---- Τι τραβάμε ---- */
+  .shot { position: relative; padding-top: 26px; }
+  .shot-num {
+    position: absolute; top: 18px; right: 20px;
+    font-size: .82rem; font-weight: 700; color: var(--orange-text);
+    background: var(--orange-soft); padding: 3px 9px; border-radius: 999px;
+  }
+  .shot h3 { padding-right: 56px; }
+  .shot p { color: var(--muted); font-size: .95rem; }
+
+  /* ---- Τιμή (ίδιο μοτίβο με τις άλλες σελίδες υπηρεσιών) ---- */
+  .price-card {
+    display: grid;
+    grid-template-columns: 1.2fr minmax(min(240px, 100%), .8fr);
+    gap: clamp(24px, 4vw, 48px);
+    align-items: center;
+    padding: clamp(26px, 4vw, 48px);
+  }
+  @media (max-width: 720px) {
+    .price-card { grid-template-columns: 1fr; }
+  }
+  .price-main .kicker { margin-bottom: 14px; }
+  .price-num { font-size: clamp(2rem, 5vw, 2.8rem); color: var(--orange-text); }
+  .price-sub { margin-top: 12px; color: var(--muted); }
+  .price-sub strong { color: var(--ink); }
+  .price-cta { display: flex; flex-direction: column; gap: 12px; }
+  .price-cta .btn { text-align: center; }
+  .price-cta .btn-note { text-align: center; }
+</style>

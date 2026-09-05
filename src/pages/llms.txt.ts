@@ -16,9 +16,11 @@ const body = `# ${SITE.name}
 > ${SITE.tagline}
 
 Η ${SITE.name} είναι στούντιο ψηφιακής παρουσίας και αυτοματοποίησης για
-επιχειρήσεις. Φτιάχνει sites, ανεβάζει επιχειρήσεις σε Google και
-εργαλεία AI (SEO/GEO/AEO), οργανώνει κριτικές Google και αυτοματοποιεί τη ρουτίνα
-του γραφείου. Εξυπηρετεί από κοντά τα νότια προάστια της Αθήνας (Γλυφάδα, Βούλα,
+επιχειρήσεις. Φτιάχνει sites και e-shop σε Shopify (και αναλαμβάνει τη μηνιαία
+διαχείριση καταστημάτων Shopify), ανεβάζει επιχειρήσεις σε Google και
+εργαλεία AI (SEO/GEO/AEO), οργανώνει κριτικές Google, βγάζει φωτογραφίες και
+βίντεο στον χώρο της επιχείρησης για site/Google/social, και αυτοματοποιεί τη
+ρουτίνα του γραφείου. Εξυπηρετεί από κοντά τα νότια προάστια της Αθήνας (Γλυφάδα, Βούλα,
 Βάρη-Βουλιαγμένη, Άλιμος, Ελληνικό-Αργυρούπολη, Παλαιό Φάληρο, Νέα Σμύρνη) και
 online όλη την Ελλάδα. Κάθε συνεργασία ξεκινά με μέτρηση «πριν», επαναμετριέται
 στους 3 μήνες, και τα μηνιαία δεν έχουν συμβόλαιο ή δέσμευση.
@@ -57,6 +59,8 @@ ${GUIDES.map((g) => `- [${g.q}](${SITE.url}/odigoi/${g.slug}/): ${g.blurb}`).joi
 - [Ψηφιακό Μενού με QR](${SITE.url}/psifiako-menou/): το μενού στο κινητό του πελάτη, αλλαγές χωρίς επανεκτυπώσεις
 - [Site με online κρατήσεις](${SITE.url}/site-kratiseis/): ραντεβού και τραπέζια που κλείνονται online, με αυτόματη υπενθύμιση
 - [Site που πουλάει](${SITE.url}/site-pou-poulaei/): γρήγορο site με ένα ξεκάθαρο επόμενο βήμα — ο επισκέπτης γίνεται τηλεφώνημα
+- [E-shop σε Shopify](${SITE.url}/shopify/): κατασκευή ηλεκτρονικού καταστήματος σε Shopify ή μηνιαία διαχείριση υπάρχοντος (προϊόντα, αποθέματα, εκπτώσεις, apps, ενημερώσεις) — σταθερή τιμή γραπτώς εντός ${ELEGXOS.reportHours} ωρών
+- [Φωτογράφηση & Βίντεο](${SITE.url}/fotografisi-video/): φωτογραφίες και μικρά βίντεο τραβηγμένα στον χώρο της επιχείρησης (προϊόντα, πιάτα, χώρος, ομάδα) για site, e-shop, Google και social — όχι stock
 - [Τιμές](${SITE.url}/times/): όλες οι τιμές δημόσια, builder πακέτου
 - [Αποτελέσματα](${SITE.url}/apotelesmata/): πώς μετριέται κάθε συνεργασία
 - [Το Ταμπλό](${SITE.url}/tablo/): δωρεάν quiz 2 λεπτών — σκορ ορατότητας και αυτοματισμού
@@ -66,7 +70,7 @@ ${GUIDES.map((g) => `- [${g.q}](${SITE.url}/odigoi/${g.slug}/): ${g.blurb}`).joi
 ## English version
 
 Το site διατίθεται και στα αγγλικά, με πλήρη αντιστοιχία σελίδων:
-- [Home](${SITE.url}/en/) · [Pricing](${SITE.url}/en/pricing/) · [The Reviews Tool](${SITE.url}/en/reviews/) · [Guides](${SITE.url}/en/guides/) · [Contact](${SITE.url}/en/contact/)
+- [Home](${SITE.url}/en/) · [Pricing](${SITE.url}/en/pricing/) · [The Reviews Tool](${SITE.url}/en/reviews/) · [Shopify store](${SITE.url}/en/shopify/) · [Photo & Video](${SITE.url}/en/photo-video/) · [Guides](${SITE.url}/en/guides/) · [Contact](${SITE.url}/en/contact/)
 - Free ${ELEGXOS.minutes}-minute assessment: [The PISMA Check](${SITE.url}/en/free-assessment/)
 
 English guides:

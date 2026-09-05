@@ -10,7 +10,7 @@ const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   name: 'Ψηφιακή Προβολή — Ορατότητα σε Google και AI',
-  serviceType: 'Κατασκευή ιστοσελίδων, Google Business Profile, SEO, GEO/AEO, Social media, Google Reviews',
+  serviceType: 'Κατασκευή ιστοσελίδων, Κατασκευή e-shop Shopify, Διαχείριση Shopify, Google Business Profile, SEO, GEO/AEO, Social media, Google Reviews, Φωτογράφηση και βίντεο',
   areaServed: SITE.region,
   provider: {
     '@type': 'LocalBusiness',
@@ -62,6 +62,25 @@ const services = [
     d: 'Το εργαλείο μας που κάνει τις κριτικές Google να μαζεύονται μόνες τους. Πώς; Αυτό το δείχνουμε μόνο ζωντανά.',
     icon: 'star',
     href: '/kritikes/',
+  },
+  {
+    t: 'E-shop σε Shopify',
+    d: 'Ηλεκτρονικό κατάστημα στημένο σωστά από την πρώτη μέρα: προϊόντα, πληρωμές, αποστολές, όλα έτοιμα να πουλάνε. Και μετά, το διαχειρίζεστε εσείς — ή εμείς.',
+    icon: 'shopify',
+    size: 'big',
+    href: '/shopify/',
+  },
+  {
+    t: 'Διαχείριση Shopify',
+    d: 'Έχετε ήδη e-shop; Το αναλαμβάνουμε μήνα-μήνα: νέα προϊόντα, αποθέματα, εκπτώσεις, apps, ενημερώσεις. Εσείς βλέπετε μόνο τις παραγγελίες.',
+    icon: 'shopify',
+    href: '/shopify/#diaxeirisi',
+  },
+  {
+    t: 'Φωτογράφηση & Βίντεο',
+    d: 'Ερχόμαστε στον χώρο σας: φωτογραφίες προϊόντων, πιάτων, χώρου και ομάδας, και μικρά βίντεο για site, Google και social. Δικό σας υλικό — όχι από το internet.',
+    icon: 'camera',
+    href: '/fotografisi-video/',
   },
   {
     t: 'Social media',
@@ -120,7 +139,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">Τι στήνουμε</p>
-        <h2 id="svc-title">Εννιά δουλειές. Ένας στόχος: να σας βρίσκουν.</h2>
+        <h2 id="svc-title">Δώδεκα δουλειές. Ένας στόχος: να σας βρίσκουν.</h2>
       </div>
       <ServiceCards services={services} cta="Μάθετε τι κάνει →" />
     </div>

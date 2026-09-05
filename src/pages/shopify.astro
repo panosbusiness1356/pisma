@@ -1,0 +1,300 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, ELEGXOS } from '../config';
+
+// Shopify: κατασκευή e-shop + μηνιαία διαχείριση. Δεν υπάρχει ενιαία τιμή στη
+// λίστα (κάθε κατάστημα διαφέρει σε προϊόντα/πληρωμές/συνδέσεις) — η τιμή
+// δίνεται γραπτώς και σταθερή εντός ELEGXOS.reportHours ωρών, όπως λέει το /times/.
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'E-shop σε Shopify — κατασκευή και διαχείριση',
+  serviceType: 'Κατασκευή ηλεκτρονικού καταστήματος Shopify, Διαχείριση καταστήματος Shopify',
+  areaServed: SITE.region,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: SITE.name,
+    email: SITE.email,
+    telephone: SITE.phone,
+    url: SITE.url,
+  },
+  description:
+    'Ηλεκτρονικό κατάστημα σε Shopify στημένο σωστά από την πρώτη μέρα, ή μηνιαία διαχείριση του e-shop που ήδη έχετε: προϊόντα, αποθέματα, εκπτώσεις, apps, ενημερώσεις.',
+};
+
+const why = [
+  {
+    t: 'Δεν πέφτει — ούτε τις γιορτές',
+    d: 'Το Shopify φιλοξενεί εκατομμύρια καταστήματα. Δεν ασχολείστε με servers, backups ή ενημερώσεις ασφαλείας — τρέχει, και εσείς πουλάτε.',
+    icon: 'shield',
+  },
+  {
+    t: 'Πληρωμές και αποστολές έτοιμες',
+    d: 'Κάρτα, αντικαταβολή, courier με αυτόματο κόστος μεταφορικών. Ο πελάτης παραγγέλνει σε δύο λεπτά από το κινητό του — και εσείς παίρνετε ειδοποίηση.',
+    icon: 'cart',
+  },
+  {
+    t: 'Το ελέγχετε από το κινητό',
+    d: 'Παραγγελίες, αποθέματα, τιμές — όλα από μία εφαρμογή. Αλλάζετε μια τιμή στο ταμείο και είναι ήδη online.',
+    icon: 'phone',
+  },
+];
+
+const build = [
+  'Στήσιμο καταστήματος στα χρώματα και το λογότυπό σας',
+  'Καταχώριση προϊόντων: φωτογραφίες, περιγραφές, παραλλαγές (μεγέθη, χρώματα)',
+  'Πληρωμές, αποστολές, ΦΠΑ και τα νομικά κείμενα που ζητά ο νόμος',
+  'Σύνδεση με Google, Instagram και Facebook για να πουλάτε και από εκεί',
+  'Δοκιμαστικές παραγγελίες από άκρη σε άκρη πριν ανοίξει',
+  'Εκπαίδευση: μία συνάντηση για να το χειρίζεστε μόνοι σας',
+];
+
+const manage = [
+  'Νέα προϊόντα και φωτογραφίες — εσείς στέλνετε, εμείς ανεβάζουμε',
+  'Αποθέματα και τιμές πάντα σωστά — τίποτα «εξαντλημένο» που πουλιέται',
+  'Εκπτώσεις και εποχιακές προσφορές (Black Friday, γιορτές, εκπτωτικές περίοδοι)',
+  'Apps, θέμα και ενημερώσεις — χωρίς να χαλάει κάτι',
+  'Έλεγχος ταχύτητας και ασφάλειας κάθε μήνα',
+  'Μηνιαία αναφορά: τι πουλήθηκε, από πού ήρθαν οι πελάτες',
+];
+
+const steps = [
+  {
+    t: 'Δωρεάν Έλεγχος',
+    d: `${ELEGXOS.minutes} λεπτά: τι πουλάτε, πώς στέλνετε, πώς πληρώνεστε, τι έχετε ήδη online.`,
+  },
+  {
+    t: 'Γραπτή πρόταση',
+    d: `Εντός ${ELEGXOS.reportHours} ωρών: τι ακριβώς στήνεται, πότε παραδίδεται και σταθερή τιμή.`,
+  },
+  {
+    t: 'Στήσιμο και δοκιμές',
+    d: 'Χτίζουμε το κατάστημα, ανεβάζουμε τα προϊόντα, κάνουμε δοκιμαστικές παραγγελίες μαζί σας.',
+  },
+  {
+    t: 'Άνοιγμα — και μετά',
+    d: 'Το κατάστημα ανοίγει. Το χειρίζεστε εσείς μετά την εκπαίδευση, ή το αναλαμβάνουμε εμείς μήνα-μήνα.',
+  },
+];
+
+const faqItems = [
+  {
+    q: 'Έχω ήδη e-shop σε άλλη πλατφόρμα. Μεταφέρεται;',
+    a: 'Ναι. Προϊόντα, πελάτες και ιστορικό παραγγελιών μεταφέρονται στο Shopify, και το παλιό κατάστημα μένει ανοιχτό μέχρι να δουλέψει το νέο — δεν χάνετε ούτε μία μέρα πωλήσεων.',
+  },
+  {
+    q: 'Ποιος πληρώνει τη συνδρομή του Shopify;',
+    a: 'Εσείς, απευθείας στο Shopify — ο λογαριασμός και το κατάστημα ανήκουν στην επιχείρησή σας. Εμείς χρεώνουμε μόνο τη δουλειά μας, με σταθερή τιμή που τη βλέπετε γραπτά πριν ξεκινήσουμε.',
+  },
+  {
+    q: 'Σε πόσο καιρό ανοίγει;',
+    a: 'Εξαρτάται από το πόσα προϊόντα έχετε και πόσο έτοιμο είναι το υλικό σας (φωτογραφίες, περιγραφές). Στη γραπτή πρόταση βλέπετε συγκεκριμένη ημερομηνία — και την κρατάμε.',
+  },
+  {
+    q: 'Δεν έχω καλές φωτογραφίες προϊόντων.',
+    a: 'Τις βγάζουμε εμείς, στον χώρο σας — δείτε τη φωτογράφηση και το βίντεο. Ένα e-shop με θολές φωτογραφίες από κινητό δεν πουλάει, όσο καλά κι αν είναι στημένο.',
+  },
+  {
+    q: 'Θα με βρίσκουν στη Google;',
+    a: 'Το κατάστημα στήνεται τεχνικά σωστό για τη Google από την πρώτη μέρα. Αν θέλετε και ενεργή άνοδο θέσεων (SEO) ή διαφημίσεις, είναι ξεχωριστές υπηρεσίες — τις βλέπετε στη σελίδα της Ψηφιακής Προβολής.',
+  },
+  {
+    q: 'Τι γίνεται αν θέλω να σταματήσω τη μηνιαία διαχείριση;',
+    a: 'Σταματάτε. Δεν υπάρχει δέσμευση — το κατάστημα είναι δικό σας και συνεχίζει να δουλεύει, απλώς το χειρίζεστε εσείς.',
+  },
+];
+---
+
+<Base
+  title="E-shop σε Shopify — κατασκευή και μηνιαία διαχείριση | PISMA"
+  description="Ηλεκτρονικό κατάστημα σε Shopify, στημένο σωστά από την πρώτη μέρα — ή μηνιαία διαχείριση του e-shop που ήδη έχετε: προϊόντα, αποθέματα, εκπτώσεις, ενημερώσεις. Σταθερή τιμή, γραπτώς."
+  schema={schema}
+>
+  <!-- 1. Hero -->
+  <PageHero
+    kicker="E-shop σε Shopify"
+    sub="Στήνουμε το ηλεκτρονικό σας κατάστημα σε Shopify — ή αναλαμβάνουμε αυτό που ήδη έχετε. Εσείς βλέπετε παραγγελίες, όχι ρυθμίσεις."
+  >
+    Το κατάστημά σας, <span class="accent">ανοιχτό 24 ώρες</span>
+  </PageHero>
+
+  <!-- 2. Γιατί Shopify -->
+  <section class="section section--tight" aria-labelledby="why-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Γιατί Shopify</p>
+        <h2 id="why-title">Τρία πράγματα που δεν θα σας απασχολήσουν ποτέ.</h2>
+      </div>
+      <div class="grid-3">
+        {why.map((w) => (
+          <article class="card reveal">
+            <span class="icon-chip">
+              {w.icon === 'shield' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z" /><path d="m9 12 2 2 4-4.5" />
+                </svg>
+              )}
+              {w.icon === 'cart' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 4h2.5l2.2 11h10.6l2-7H7" /><circle cx="9.5" cy="19.5" r="1.4" /><circle cx="17" cy="19.5" r="1.4" />
+                </svg>
+              )}
+              {w.icon === 'phone' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="7" y="2.5" width="10" height="19" rx="2.5" /><path d="M10.5 18h3" />
+                </svg>
+              )}
+            </span>
+            <h3>{w.t}</h3>
+            <p>{w.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Δύο τρόποι: κατασκευή / διαχείριση -->
+  <section class="section" aria-labelledby="ways-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker kicker--blue">Τι αναλαμβάνουμε</p>
+        <h2 id="ways-title">Δύο τρόποι να δουλέψουμε — ή και οι δύο.</h2>
+      </div>
+      <div class="grid-2">
+        <article class="card way reveal" id="kataskevi">
+          <span class="svc-viz" aria-hidden="true">
+            <span class="svc-chip"><img src="/logos/shopify.svg" alt="" width="30" height="30" loading="lazy" /></span>
+            <span class="way-tag">Εφάπαξ</span>
+          </span>
+          <h3>Κατασκευή e-shop</h3>
+          <p class="way-lead">Από το μηδέν — ή από το παλιό σας κατάστημα — μέχρι την πρώτη πραγματική παραγγελία.</p>
+          <ul class="way-list">
+            {build.map((b) => <li>{b}</li>)}
+          </ul>
+        </article>
+        <article class="card way way--blue reveal" id="diaxeirisi">
+          <span class="svc-viz" aria-hidden="true">
+            <span class="svc-chip"><img src="/logos/shopify.svg" alt="" width="30" height="30" loading="lazy" /></span>
+            <span class="way-tag way-tag--blue">Μηνιαία</span>
+          </span>
+          <h3>Διαχείριση Shopify</h3>
+          <p class="way-lead">Έχετε ήδη κατάστημα, αλλά όχι χρόνο. Το κρατάμε ενημερωμένο, γρήγορο και έτοιμο για κάθε εποχή.</p>
+          <ul class="way-list">
+            {manage.map((m) => <li>{m}</li>)}
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Πώς δουλεύει -->
+  <section class="section section--tight" aria-labelledby="flow-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Πώς δουλεύει</p>
+        <h2 id="flow-title">Τέσσερα βήματα μέχρι την πρώτη παραγγελία.</h2>
+      </div>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="step reveal">
+            <span class="step-num num" aria-hidden="true">{i + 1}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. Τιμή -->
+  <section class="section" aria-labelledby="price-title">
+    <div class="container container--narrow">
+      <div class="card price-card reveal">
+        <div class="price-main">
+          <p class="kicker">Τιμή</p>
+          <h2 id="price-title">Γραπτή και σταθερή, εντός <span class="price-num num">{ELEGXOS.reportHours}</span> ωρών</h2>
+          <p class="price-sub">
+            Κάθε e-shop είναι διαφορετικό — πόσα προϊόντα, ποιοι τρόποι πληρωμής, τι συνδέσεις.
+            Γι’ αυτό η τιμή του δεν είναι ένα νούμερο στη λίστα: μετά τον δωρεάν Έλεγχο λαμβάνετε
+            <strong>γραπτή πρόταση με σταθερή τιμή</strong>, ξεχωριστά για την κατασκευή και για τη
+            μηνιαία διαχείριση. Καμία έκπληξη στον λογαριασμό.
+          </p>
+        </div>
+        <div class="price-cta">
+          <a class="btn btn--orange" href="/elegxos/">Κλείστε τον δωρεάν Έλεγχο</a>
+          <a class="btn btn--ghost" href="/times/">Δείτε τις υπόλοιπες τιμές</a>
+          <span class="btn-note">Καμία πληρωμή online — το κλείνουμε στο τηλέφωνο.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FAQ -->
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Συχνές ερωτήσεις</p>
+        <h2 id="faq-title">Πριν ρωτήσετε, ρώτησαν άλλοι.</h2>
+      </div>
+      <Faq items={faqItems} withSchema />
+    </div>
+  </section>
+
+  <!-- 7. CTA -->
+  <CtaBand
+    title="Ώρα το κατάστημά σας να πουλάει και όταν κοιμάστε."
+    sub={`Ξεκινάμε με τον δωρεάν Έλεγχο PISMA (${ELEGXOS.minutes} λεπτά) — βλέπουμε τι πουλάτε, τι έχετε ήδη, και τι χρειάζεται.`}
+    ctaText="Κλείστε τον δωρεάν Έλεγχο"
+    ctaHref="/elegxos/"
+    note="Καμία πληρωμή online · χωρίς δέσμευση"
+  />
+</Base>
+
+<style>
+  /* ---- Δύο τρόποι (κατασκευή / διαχείριση) ---- */
+  .way { display: flex; flex-direction: column; }
+  .way .svc-viz { margin-bottom: 14px; }
+  .way-tag {
+    font-size: .74rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--orange-text); background: var(--orange-soft);
+    padding: 5px 10px; border-radius: 999px;
+  }
+  .way-tag--blue { color: var(--blue-text); background: var(--blue-soft); }
+  .way-lead { color: var(--muted); margin: 6px 0 14px; }
+  .way-list { list-style: none; padding: 0; display: grid; gap: 10px; }
+  .way-list li {
+    position: relative; padding-left: 26px;
+    font-size: .97rem; color: var(--ink); line-height: 1.5;
+  }
+  .way-list li::before {
+    content: ''; position: absolute; left: 0; top: .3em;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--orange);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/13px no-repeat, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/13px no-repeat, linear-gradient(#000 0 0);
+  }
+  .way--blue .way-list li::before { background: var(--blue); }
+
+  /* ---- Τιμή (ίδιο μοτίβο με τις άλλες σελίδες υπηρεσιών) ---- */
+  .price-card {
+    display: grid;
+    grid-template-columns: 1.2fr minmax(min(240px, 100%), .8fr);
+    gap: clamp(24px, 4vw, 48px);
+    align-items: center;
+    padding: clamp(26px, 4vw, 48px);
+  }
+  @media (max-width: 720px) {
+    .price-card { grid-template-columns: 1fr; }
+  }
+  .price-main .kicker { margin-bottom: 14px; }
+  .price-num { font-size: clamp(2rem, 5vw, 2.8rem); color: var(--orange-text); }
+  .price-sub { margin-top: 12px; color: var(--muted); }
+  .price-sub strong { color: var(--ink); }
+  .price-cta { display: flex; flex-direction: column; gap: 12px; }
+  .price-cta .btn { text-align: center; }
+  .price-cta .btn-note { text-align: center; }
+</style>

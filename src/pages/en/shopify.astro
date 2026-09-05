@@ -1,0 +1,300 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE, ELEGXOS } from '../../config';
+
+// Shopify: store build + monthly management. No single list price (every store
+// differs in products/payments/integrations) — a fixed price is given in writing
+// within ELEGXOS.reportHours hours, as the pricing page says.
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Shopify store — build and management',
+  serviceType: 'Shopify store development, Shopify store management',
+  areaServed: SITE.regionEn,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: SITE.name,
+    email: SITE.email,
+    telephone: SITE.phone,
+    url: SITE.url,
+  },
+  description:
+    'An online store on Shopify, set up properly from day one — or monthly management of the store you already have: products, stock, discounts, apps, updates.',
+};
+
+const why = [
+  {
+    t: 'It does not go down — not even on holidays',
+    d: 'Shopify hosts millions of stores. You never deal with servers, backups or security updates — it runs, and you sell.',
+    icon: 'shield',
+  },
+  {
+    t: 'Payments and shipping, ready',
+    d: 'Card, cash on delivery, couriers with automatic shipping costs. Customers order in two minutes from their phone — and you get a notification.',
+    icon: 'cart',
+  },
+  {
+    t: 'You run it from your phone',
+    d: 'Orders, stock, prices — all from one app. Change a price at the register and it is already live.',
+    icon: 'phone',
+  },
+];
+
+const build = [
+  'Store set-up in your colours and with your logo',
+  'Product entry: photos, descriptions, variants (sizes, colours)',
+  'Payments, shipping, VAT and the legal pages the law requires',
+  'Connection to Google, Instagram and Facebook so you sell there too',
+  'Test orders end to end before opening',
+  'Training: one session so you can run it yourself',
+];
+
+const manage = [
+  'New products and photos — you send, we upload',
+  'Stock and prices always right — nothing "sold out" that still sells',
+  'Discounts and seasonal offers (Black Friday, holidays, sale periods)',
+  'Apps, theme and updates — without anything breaking',
+  'Monthly speed and security check',
+  'Monthly report: what sold, where your customers came from',
+];
+
+const steps = [
+  {
+    t: 'Free PISMA Check',
+    d: `${ELEGXOS.minutes} minutes: what you sell, how you ship, how you get paid, what you already have online.`,
+  },
+  {
+    t: 'Written proposal',
+    d: `Within ${ELEGXOS.reportHours} hours: exactly what gets built, when it is delivered, and a fixed price.`,
+  },
+  {
+    t: 'Build and testing',
+    d: 'We build the store, upload the products and place test orders together with you.',
+  },
+  {
+    t: 'Launch — and after',
+    d: 'The store opens. You run it after training, or we take it over month by month.',
+  },
+];
+
+const faqItems = [
+  {
+    q: 'I already have a store on another platform. Can it move?',
+    a: 'Yes. Products, customers and order history move to Shopify, and the old store stays open until the new one works — you do not lose a single day of sales.',
+  },
+  {
+    q: 'Who pays the Shopify subscription?',
+    a: 'You do, directly to Shopify — the account and the store belong to your business. We only charge for our work, at a fixed price you see in writing before we start.',
+  },
+  {
+    q: 'How long until it opens?',
+    a: 'It depends on how many products you have and how ready your material is (photos, descriptions). The written proposal gives a specific date — and we keep it.',
+  },
+  {
+    q: 'I do not have good product photos.',
+    a: 'We take them, at your premises — see our photography and video service. A store with blurry phone photos does not sell, no matter how well it is built.',
+  },
+  {
+    q: 'Will I get found on Google?',
+    a: 'The store is built technically right for Google from day one. If you also want active ranking growth (SEO) or ads, those are separate services — you will find them on the Digital Visibility page.',
+  },
+  {
+    q: 'What if I want to stop the monthly management?',
+    a: 'You stop. There is no lock-in — the store is yours and keeps working, you simply run it yourself.',
+  },
+];
+---
+
+<Base
+  title="Shopify store — build and monthly management | PISMA"
+  description="An online store on Shopify, set up properly from day one — or monthly management of the store you already have: products, stock, discounts, updates. Fixed price, in writing."
+  schema={schema}
+>
+  <!-- 1. Hero -->
+  <PageHero
+    kicker="Shopify store"
+    sub="We build your online store on Shopify — or take over the one you already have. You see orders, not settings."
+  >
+    Your store, <span class="accent">open 24 hours</span>
+  </PageHero>
+
+  <!-- 2. Why Shopify -->
+  <section class="section section--tight" aria-labelledby="why-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">Why Shopify</p>
+        <h2 id="why-title">Three things you will never have to think about.</h2>
+      </div>
+      <div class="grid-3">
+        {why.map((w) => (
+          <article class="card reveal">
+            <span class="icon-chip">
+              {w.icon === 'shield' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z" /><path d="m9 12 2 2 4-4.5" />
+                </svg>
+              )}
+              {w.icon === 'cart' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 4h2.5l2.2 11h10.6l2-7H7" /><circle cx="9.5" cy="19.5" r="1.4" /><circle cx="17" cy="19.5" r="1.4" />
+                </svg>
+              )}
+              {w.icon === 'phone' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="7" y="2.5" width="10" height="19" rx="2.5" /><path d="M10.5 18h3" />
+                </svg>
+              )}
+            </span>
+            <h3>{w.t}</h3>
+            <p>{w.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Two ways: build / management -->
+  <section class="section" aria-labelledby="ways-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker kicker--blue">What we take on</p>
+        <h2 id="ways-title">Two ways to work together — or both.</h2>
+      </div>
+      <div class="grid-2">
+        <article class="card way reveal" id="build">
+          <span class="svc-viz" aria-hidden="true">
+            <span class="svc-chip"><img src="/logos/shopify.svg" alt="" width="30" height="30" loading="lazy" /></span>
+            <span class="way-tag">One-off</span>
+          </span>
+          <h3>Store build</h3>
+          <p class="way-lead">From scratch — or from your old store — up to the first real order.</p>
+          <ul class="way-list">
+            {build.map((b) => <li>{b}</li>)}
+          </ul>
+        </article>
+        <article class="card way way--blue reveal" id="management">
+          <span class="svc-viz" aria-hidden="true">
+            <span class="svc-chip"><img src="/logos/shopify.svg" alt="" width="30" height="30" loading="lazy" /></span>
+            <span class="way-tag way-tag--blue">Monthly</span>
+          </span>
+          <h3>Shopify management</h3>
+          <p class="way-lead">You already have a store, but no time. We keep it updated, fast and ready for every season.</p>
+          <ul class="way-list">
+            {manage.map((m) => <li>{m}</li>)}
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. How it works -->
+  <section class="section section--tight" aria-labelledby="flow-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">How it works</p>
+        <h2 id="flow-title">Four steps to the first order.</h2>
+      </div>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="step reveal">
+            <span class="step-num num" aria-hidden="true">{i + 1}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. Price -->
+  <section class="section" aria-labelledby="price-title">
+    <div class="container container--narrow">
+      <div class="card price-card reveal">
+        <div class="price-main">
+          <p class="kicker">Price</p>
+          <h2 id="price-title">In writing and fixed, within <span class="price-num num">{ELEGXOS.reportHours}</span> hours</h2>
+          <p class="price-sub">
+            Every store is different — how many products, which payment methods, what integrations.
+            That is why its price is not one number on a list: after the free PISMA Check you get a
+            <strong>written proposal with a fixed price</strong>, separately for the build and for the
+            monthly management. No surprises on the bill.
+          </p>
+        </div>
+        <div class="price-cta">
+          <a class="btn btn--orange" href="/en/free-assessment/">Book the free PISMA Check</a>
+          <a class="btn btn--ghost" href="/en/pricing/">See our other prices</a>
+          <span class="btn-note">No online payment — we close it over the phone.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FAQ -->
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="sec-head">
+        <p class="kicker">FAQ</p>
+        <h2 id="faq-title">Before you ask, others did.</h2>
+      </div>
+      <Faq items={faqItems} withSchema />
+    </div>
+  </section>
+
+  <!-- 7. CTA -->
+  <CtaBand
+    title="Time your store sold while you sleep."
+    sub={`We start with the free ${ELEGXOS.minutes}-minute PISMA Check — we look at what you sell, what you already have, and what is needed.`}
+    ctaText="Book the free PISMA Check"
+    ctaHref="/en/free-assessment/"
+    note="No online payment · no lock-in"
+  />
+</Base>
+
+<style>
+  /* ---- Two ways (build / management) ---- */
+  .way { display: flex; flex-direction: column; }
+  .way .svc-viz { margin-bottom: 14px; }
+  .way-tag {
+    font-size: .74rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--orange-text); background: var(--orange-soft);
+    padding: 5px 10px; border-radius: 999px;
+  }
+  .way-tag--blue { color: var(--blue-text); background: var(--blue-soft); }
+  .way-lead { color: var(--muted); margin: 6px 0 14px; }
+  .way-list { list-style: none; padding: 0; display: grid; gap: 10px; }
+  .way-list li {
+    position: relative; padding-left: 26px;
+    font-size: .97rem; color: var(--ink); line-height: 1.5;
+  }
+  .way-list li::before {
+    content: ''; position: absolute; left: 0; top: .3em;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--orange);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/13px no-repeat, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/13px no-repeat, linear-gradient(#000 0 0);
+  }
+  .way--blue .way-list li::before { background: var(--blue); }
+
+  /* ---- Price (same pattern as the other service pages) ---- */
+  .price-card {
+    display: grid;
+    grid-template-columns: 1.2fr minmax(min(240px, 100%), .8fr);
+    gap: clamp(24px, 4vw, 48px);
+    align-items: center;
+    padding: clamp(26px, 4vw, 48px);
+  }
+  @media (max-width: 720px) {
+    .price-card { grid-template-columns: 1fr; }
+  }
+  .price-main .kicker { margin-bottom: 14px; }
+  .price-num { font-size: clamp(2rem, 5vw, 2.8rem); color: var(--orange-text); }
+  .price-sub { margin-top: 12px; color: var(--muted); }
+  .price-sub strong { color: var(--ink); }
+  .price-cta { display: flex; flex-direction: column; gap: 12px; }
+  .price-cta .btn { text-align: center; }
+  .price-cta .btn-note { text-align: center; }
+</style>
