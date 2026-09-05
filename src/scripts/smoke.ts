@@ -13,36 +13,60 @@
  *   data-bottom    πόσο πιο πυκνός κάτω (0–1, default .75)
  *   data-rise      άνοδος προς τα πάνω (0–1, default .15)
  *   data-rays      ακτίνες προβολέων μέσα στον καπνό (0/1, default 0)
+ *   data-glow      φως/«αύρα» πίσω από το κέντρο που φωτίζει τον καπνό (0–1.5, default .9)
  * Σταματά εκτός οθόνης/κρυφής καρτέλας, παγώνει σε ένα καρέ με reduced motion,
  * αφαιρείται χωρίς WebGL (μένει ο CSS καπνός από κάτω).
  */
 const VERT = `attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}`;
 const FRAG = `precision mediump float;
-uniform vec2 u_res;uniform float u_t,u_str,u_scale,u_warp,u_lo,u_hi,u_bottom,u_rise,u_rays;
+uniform vec2 u_res;uniform float u_t,u_str,u_scale,u_warp,u_lo,u_hi,u_bottom,u_rise,u_rays,u_glow;
 float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
 return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);}
+/* 6 οκτάβες, με περιστροφή ανά οκτάβα — πιο «οργανική» υφή */
 float fbm(vec2 p){float v=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);
-for(int i=0;i<5;i++){v+=a*noise(p);p=m*p;a*=.5;}return v;}
+for(int i=0;i<6;i++){v+=a*noise(p);p=m*p;a*=.5;}return v;}
+/* πυκνότητα ενός στρώματος καπνού στο σημείο p, χρόνος t */
+float layer(vec2 p,float t,float warp){
+  vec2 q=vec2(fbm(p+vec2(0.,t)),fbm(p+vec2(5.2,1.3)-t*.7));
+  vec2 r=vec2(fbm(p+warp*q+vec2(1.7,9.2)+t*.45),fbm(p+warp*q+vec2(8.3,2.8)-t*.3));
+  float f=fbm(p+warp*r);
+  return f;
+}
 void main(){
 vec2 uv=gl_FragCoord.xy/u_res;
-vec2 p=uv*vec2(u_res.x/u_res.y,1.)*u_scale;
+float asp=u_res.x/u_res.y;
+vec2 base=uv*vec2(asp,1.)*u_scale;
 float t=u_t*.05;
-p.y-=t*u_rise*3.;
-vec2 q=vec2(fbm(p+vec2(0.,t)),fbm(p+vec2(5.2,1.3)-t*.7));
-vec2 r=vec2(fbm(p+u_warp*q+vec2(1.7,9.2)+t*.45),fbm(p+u_warp*q+vec2(8.3,2.8)-t*.3));
-float f=fbm(p+u_warp*r);
-float s=smoothstep(u_lo,u_hi,f);
-s*=mix(1.-u_bottom,1.,smoothstep(1.05,.1,uv.y));
-s*=.45+.55*(smoothstep(0.,.3,uv.x)*smoothstep(1.,.7,uv.x));
+/* τρία στρώματα: μακρινό (μεγάλο, αργό), μεσαίο, κοντινό (μικρό, γρήγορο) */
+vec2 p1=base*.6-vec2(0.,t*u_rise*1.5);
+vec2 p2=base*1.0-vec2(t*.15,t*u_rise*3.);
+vec2 p3=base*1.7+vec2(t*.25,-t*u_rise*4.5);
+float f1=layer(p1,t*.6,u_warp);
+float f2=layer(p2+7.1,t,u_warp);
+float f3=layer(p3+13.7,t*1.5,u_warp*.8);
+float f=f1*.45+f2*.35+f3*.2;
+/* φωτισμός από ψηλά: διαφορά πυκνότητας προς την κατεύθυνση του φωτός → όγκος */
+vec2 L=vec2(.006,.012)*u_scale;
+float fl=layer(p2+7.1+L*3.,t,u_warp)*.35+layer(p1+L*2.,t*.6,u_warp)*.45+layer(p3+13.7+L*4.,t*1.5,u_warp*.8)*.2;
+float shade=clamp(.5+(fl-f)*9.,0.,1.);
+float d=smoothstep(u_lo,u_hi,f);
+d=pow(d,1.05);
+d*=mix(1.-u_bottom,1.,smoothstep(1.05,.1,uv.y));
+d*=.45+.55*(smoothstep(0.,.3,uv.x)*smoothstep(1.,.7,uv.x));
 if(u_rays>.5){
-  float ang=(uv.x-.5)*1.4-(uv.y-1.2)*.0;
+  float ang=(uv.x-.5)*1.4;
   float rays=0.;
   for(int i=0;i<5;i++){float fi=float(i);float c=-.6+fi*.3+sin(t*2.+fi)*.03;rays+=smoothstep(.06,.0,abs(ang-c))*(.5+.5*noise(vec2(fi*7.,t*3.)));}
-  s+=rays*smoothstep(0.,.9,uv.y)*.35*(.4+.6*f);
+  d+=rays*smoothstep(0.,.9,uv.y)*.35*(.4+.6*f);
 }
-float c=clamp(s,0.,1.)*u_str;
-gl_FragColor=vec4(vec3(c*.92),c);
+/* «αύρα»: απαλό φως πίσω από το κέντρο (τα γράμματα) που φωτίζει τον καπνό γύρω του */
+vec2 cc=uv-vec2(.5,.5);cc.x*=asp;
+float glow=exp(-dot(cc,cc)*2.8)*u_glow;
+float a=clamp(d+glow*.12*(.3+f),0.,1.)*u_str;
+/* γκρι με σκίαση: φωτισμένες κορυφές πιο ανοιχτές, «κοιλιές» πιο σκούρες· πιο φωτεινός κοντά στο φως */
+float g=mix(.6,1.,shade)*(.8+.55*glow);
+gl_FragColor=vec4(vec3(min(a*g,1.)),a);
 }`;
 
 function setup(canvas: HTMLCanvasElement) {
@@ -60,7 +84,7 @@ function setup(canvas: HTMLCanvasElement) {
   const uRes = U('u_res'), uT = U('u_t');
   const d = canvas.dataset;
   const num = (k: string, def: number) => { const v = Number(d[k]); return Number.isFinite(v) && d[k] !== undefined ? v : def; };
-  gl.uniform1f(U('u_str'), num('strength', .6));
+  gl.uniform1f(U('u_str'), num('strength', .75));
   gl.uniform1f(U('u_scale'), num('scale', 2.4));
   gl.uniform1f(U('u_warp'), num('warp', 3.5));
   gl.uniform1f(U('u_lo'), num('lo', .38));
@@ -68,6 +92,7 @@ function setup(canvas: HTMLCanvasElement) {
   gl.uniform1f(U('u_bottom'), num('bottom', .75));
   gl.uniform1f(U('u_rise'), num('rise', .15));
   gl.uniform1f(U('u_rays'), num('rays', 0));
+  gl.uniform1f(U('u_glow'), num('glow', .9));
   const speed = num('speed', 1);
   gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
