@@ -1,0 +1,200 @@
+---
+// ΠΡΟΣΩΡΙΝΗ σελίδα δοκιμών — ΜΟΝΟ dev, δεν μπαίνει στο build.
+// «Σκηνή»: το ύφος που έστειλε η χρήστρια (Spotify card «Yes Indeed») —
+// σκούρο, κινηματογραφικό, ασπρόμαυρο, καπνός + προβολείς σκηνής, τεράστια
+// ξεθωριασμένα γράμματα στο φόντο, λευκό έντονο κείμενο, ΕΝΑ χρώμα (πράσινο τικ).
+// Τρεις παραλλαγές. Ίδια κείμενα/αριθμοί με το ζωντανό site.
+import '../styles/fonts.css';
+const variants = [
+  { id: 'a', t: '1 — Σκηνή', d: 'Full-bleed: καπνός, προβολείς από ψηλά, σιλουέτα στη σκηνή, «PISMA» ξεθωριασμένο πίσω. Το hero σαν αφίσα συναυλίας.' },
+  { id: 'b', t: '2 — Οι συσκευές στον καπνό', d: 'Ίδια ατμόσφαιρα, αλλά στη σκηνή στέκονται τα κινητά σας μέσα στην ομίχλη· πίσω «ΟΡΑΤΗ» τεράστιο.' },
+  { id: 'c', t: '3 — Κάρτες σαν Spotify', d: 'Το hero ως μεγάλη σκούρα κάρτα με ετικέτα πάνω, και οι τρεις υπηρεσίες ως κάρτες με καπνό, ξεθωριασμένα γράμματα και πράσινο τικ.' },
+];
+---
+
+<html lang="el">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Δοκιμές — «Σκηνή»</title>
+  </head>
+  <body>
+    <nav class="pick" aria-label="Επιλογή">{variants.map((v) => <a href={`#sk-${v.id}`}>{v.t}</a>)}</nav>
+    <header class="intro">
+      <p class="intro-k">Δοκιμές αισθητικής · «Σκηνή»</p>
+      <h1>Σκούρο, καπνός, προβολείς.</h1>
+      <p>Η αίσθηση της εικόνας που στείλατε, σε τρεις παραλλαγές για το site. Ασπρόμαυρο, ένα μόνο χρώμα, μεγάλα γράμματα.</p>
+      <ol>{variants.map((v) => <li><b>{v.t}.</b> {v.d}</li>)}</ol>
+    </header>
+
+    <!-- ================= 1 — ΣΚΗΝΗ ================= -->
+    <section class="sk sk-a" id="sk-a">
+      <div class="fog fog-1"></div><div class="fog fog-2"></div><div class="fog fog-3"></div>
+      <div class="beams"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="ghost" aria-hidden="true">PISMA</div>
+      <div class="floor"></div>
+      <svg class="figure" viewBox="0 0 120 300" aria-hidden="true"><path d="M60 8c-9 0-16 8-16 18 0 8 4 14 9 17l-2 9c-8 3-15 9-17 18l-5 26c-1 6 3 10 8 9l6-2-2 40 3 64c0 3 2 5 5 5h6c3 0 5-2 5-5l2-58 2 58c0 3 2 5 5 5h6c3 0 5-2 5-5l3-64-2-40 6 2c5 1 9-3 8-9l-5-26c-2-9-9-15-17-18l-2-9c5-3 9-9 9-17 0-10-7-18-16-18z" /></svg>
+      <div class="grain"></div>
+      <nav class="sk-nav"><span class="sk-logo">PISMA</span><span class="sk-links"><a>Υπηρεσίες</a><a>Τιμές</a><a>Αποτελέσματα</a><a>Οδηγοί</a></span><a class="sk-cta">Μετρήστε την επιχείρησή σας</a></nav>
+      <div class="sk-hero">
+        <p class="sk-k">Ψηφιακή παρουσία &amp; αυτοματοποίηση</p>
+        <h2>Η επιχείρησή σας,<br />ορατή στους πελάτες.</h2>
+        <p class="sk-sub">Η λειτουργία της, χωρίς χαμένες ώρες.</p>
+        <div class="sk-btns"><a class="sk-btn" href="#">Μετρήστε την επιχείρησή σας — 2 λεπτά</a><a class="sk-ghostbtn" href="#">Δωρεάν Έλεγχος</a></div>
+        <ul class="sk-checks">
+          <li><i></i><b>από 220 €</b> ιστοσελίδα</li>
+          <li><i></i><b>72 ώρες</b> πρώτο preview</li>
+          <li><i></i><b>48 ώρες</b> γραπτή πρόταση</li>
+          <li><i></i><b>100%</b> δημόσιες τιμές</li>
+        </ul>
+      </div>
+      <div class="sk-tracks">
+        <div class="tr"><span class="tr-n">01</span><div><b>Ψηφιακή προβολή</b><span>Ιστοσελίδα · Google &amp; Χάρτες · AI · social</span></div><i class="chk"></i></div>
+        <div class="tr"><span class="tr-n">02</span><div><b>Κριτικές Google</b><span>Περισσότερες κριτικές, πιο ψηλά στη Google</span></div><i class="chk"></i></div>
+        <div class="tr"><span class="tr-n">03</span><div><b>Αυτοματισμοί</b><span>Πληρωμές · εισπράξεις · η εικόνα της ημέρας</span></div><i class="chk"></i></div>
+      </div>
+    </section>
+
+    <!-- ================= 2 — ΟΙ ΣΥΣΚΕΥΕΣ ΣΤΟΝ ΚΑΠΝΟ ================= -->
+    <section class="sk sk-b" id="sk-b">
+      <div class="fog fog-1"></div><div class="fog fog-2"></div><div class="fog fog-3"></div>
+      <div class="beams beams-wide"><i></i><i></i><i></i></div>
+      <div class="ghost ghost-b" aria-hidden="true">ΟΡΑΤΗ</div>
+      <div class="floor"></div>
+      <div class="grain"></div>
+      <nav class="sk-nav"><span class="sk-logo">PISMA</span><span class="sk-links"><a>Υπηρεσίες</a><a>Τιμές</a><a>Αποτελέσματα</a><a>Οδηγοί</a></span><a class="sk-cta">Μετρήστε την επιχείρησή σας</a></nav>
+      <div class="sk-hero sk-hero-split">
+        <div>
+          <p class="sk-k">Ψηφιακή παρουσία &amp; αυτοματοποίηση</p>
+          <h2>Η επιχείρησή σας, ορατή στους πελάτες.<br /><span class="dim">Η λειτουργία της, χωρίς χαμένες ώρες.</span></h2>
+          <div class="sk-btns"><a class="sk-btn" href="#">Μετρήστε την επιχείρησή σας</a><a class="sk-ghostbtn" href="#">Δωρεάν Έλεγχος, 45 λεπτά</a></div>
+          <ul class="sk-checks sk-checks-col">
+            <li><i></i><b>από 220 €</b> ιστοσελίδα · <b>100%</b> δημόσιες τιμές</li>
+            <li><i></i><b>72 ώρες</b> πρώτο preview · <b>48 ώρες</b> γραπτή πρόταση</li>
+          </ul>
+        </div>
+        <div class="devices"><img src="/hero/pisma-phones.webp" alt="" /></div>
+      </div>
+      <div class="sk-tracks">
+        <div class="tr"><span class="tr-n">01</span><div><b>Ψηφιακή προβολή</b><span>Ιστοσελίδα · Google &amp; Χάρτες · AI · social</span></div><i class="chk"></i></div>
+        <div class="tr"><span class="tr-n">02</span><div><b>Κριτικές Google</b><span>Περισσότερες κριτικές, πιο ψηλά στη Google</span></div><i class="chk"></i></div>
+        <div class="tr"><span class="tr-n">03</span><div><b>Αυτοματισμοί</b><span>Πληρωμές · εισπράξεις · η εικόνα της ημέρας</span></div><i class="chk"></i></div>
+      </div>
+    </section>
+
+    <!-- ================= 3 — ΚΑΡΤΕΣ ΣΑΝ SPOTIFY ================= -->
+    <section class="sk sk-c" id="sk-c">
+      <nav class="sk-nav"><span class="sk-logo">PISMA</span><span class="sk-links"><a>Υπηρεσίες</a><a>Τιμές</a><a>Αποτελέσματα</a><a>Οδηγοί</a></span><a class="sk-cta">Μετρήστε την επιχείρησή σας</a></nav>
+      <div class="card card-hero">
+        <div class="fog fog-1"></div><div class="fog fog-2"></div>
+        <div class="beams"><i></i><i></i><i></i><i></i></div>
+        <div class="ghost ghost-c" aria-hidden="true">ΟΡΑΤΗ</div>
+        <div class="floor"></div>
+        <svg class="figure figure-c" viewBox="0 0 120 300" aria-hidden="true"><path d="M60 8c-9 0-16 8-16 18 0 8 4 14 9 17l-2 9c-8 3-15 9-17 18l-5 26c-1 6 3 10 8 9l6-2-2 40 3 64c0 3 2 5 5 5h6c3 0 5-2 5-5l2-58 2 58c0 3 2 5 5 5h6c3 0 5-2 5-5l3-64-2-40 6 2c5 1 9-3 8-9l-5-26c-2-9-9-15-17-18l-2-9c5-3 9-9 9-17 0-10-7-18-16-18z" /></svg>
+        <div class="grain"></div>
+        <p class="card-label">Ψηφιακή παρουσία &amp; αυτοματοποίηση</p>
+        <div class="card-foot">
+          <div><h2>Η επιχείρησή σας, ορατή στους πελάτες.</h2><p>Η λειτουργία της, χωρίς χαμένες ώρες.</p></div>
+          <i class="chk chk-lg"></i>
+        </div>
+      </div>
+      <div class="card-row">
+        <a class="card card-sm" href="#"><div class="fog fog-2"></div><div class="ghost ghost-sm" aria-hidden="true">01</div><div class="grain"></div><p class="card-label">Ψηφιακή προβολή</p><div class="card-foot"><div><b>Ιστοσελίδα, Google &amp; Χάρτες, AI, social</b><p>από 220 €</p></div><i class="chk"></i></div></a>
+        <a class="card card-sm" href="#"><div class="fog fog-1"></div><div class="ghost ghost-sm" aria-hidden="true">02</div><div class="grain"></div><p class="card-label">Κριτικές Google</p><div class="card-foot"><div><b>Περισσότερες κριτικές, πιο ψηλά</b><p>στη Google &amp; στους Χάρτες</p></div><i class="chk"></i></div></a>
+        <a class="card card-sm" href="#"><div class="fog fog-3"></div><div class="ghost ghost-sm" aria-hidden="true">03</div><div class="grain"></div><p class="card-label">Αυτοματισμοί</p><div class="card-foot"><div><b>Η ρουτίνα γίνεται αυτόματα</b><p>πληρωμές · εισπράξεις · η εικόνα της ημέρας</p></div><i class="chk"></i></div></a>
+      </div>
+      <div class="sk-cta-row"><a class="sk-btn" href="#">Μετρήστε την επιχείρησή σας — 2 λεπτά</a><span class="sk-note">Χωρίς email · χωρίς δέσμευση · 2 λεπτά και βλέπετε το σκορ</span></div>
+    </section>
+
+    <footer class="outro"><p>Πείτε μου νούμερο και το περνάω σε όλο το site EL + EN.</p></footer>
+  </body>
+</html>
+
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: #0A0A0A; color: #fff; -webkit-font-smoothing: antialiased; }
+  a { cursor: pointer; }
+  h1, h2, h3, p, ul { margin: 0; }
+  .pick { position: fixed; top: 14px; right: 14px; z-index: 100; display: flex; gap: 4px; background: rgba(20,20,20,.85); backdrop-filter: blur(10px); padding: 6px; border-radius: 999px; border: 1px solid rgba(255,255,255,.15); }
+  .pick a { padding: 6px 12px; border-radius: 999px; color: #fff; text-decoration: none; font-size: .78rem; font-weight: 600; } .pick a:hover { background: rgba(255,255,255,.12); }
+  .intro { padding: 72px clamp(20px, 5vw, 72px) 48px; max-width: 900px; }
+  .intro-k { color: #1ED760; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .76rem; }
+  .intro h1 { font-size: clamp(1.8rem, 4vw, 3rem); margin: 10px 0 14px; line-height: 1.1; font-weight: 800; letter-spacing: -.02em; }
+  .intro p { color: #bbb; font-size: 1.05rem; line-height: 1.6; } .intro ol { color: #ccc; line-height: 1.55; padding-left: 20px; margin-top: 18px; } .intro li b { color: #fff; }
+  .outro { padding: 60px clamp(20px, 5vw, 72px) 120px; color: #bbb; }
+
+  /* ---------- κοινά: σκηνή ---------- */
+  .sk { position: relative; overflow: hidden; background: #0B0B0B; padding: 0 clamp(20px, 5vw, 72px) 72px; isolation: isolate; }
+  .fog { position: absolute; border-radius: 50%; filter: blur(70px); pointer-events: none; z-index: 0; animation: drift 18s ease-in-out infinite alternate; }
+  .fog-1 { width: 70vw; height: 40vw; left: -10vw; top: 18%; background: radial-gradient(closest-side, rgba(255,255,255,.18), transparent); }
+  .fog-2 { width: 60vw; height: 36vw; right: -12vw; top: 30%; background: radial-gradient(closest-side, rgba(255,255,255,.14), transparent); animation-delay: -7s; animation-duration: 22s; }
+  .fog-3 { width: 90vw; height: 30vw; left: 5vw; bottom: -6vw; background: radial-gradient(closest-side, rgba(255,255,255,.22), transparent); animation-delay: -12s; animation-duration: 26s; }
+  @keyframes drift { to { transform: translate(6vw, -3vw) scale(1.12); } }
+  .beams { position: absolute; left: 0; right: 0; top: -10%; height: 110%; pointer-events: none; z-index: 0; display: flex; justify-content: space-around; padding: 0 8%; }
+  .beams i { width: 6%; height: 100%; background: linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,.06) 55%, transparent); filter: blur(14px); transform-origin: top center; opacity: .8; animation: sway 9s ease-in-out infinite alternate; }
+  .beams i:nth-child(2) { transform: rotate(6deg); animation-delay: -2s; } .beams i:nth-child(3) { transform: rotate(-4deg); animation-delay: -4s; } .beams i:nth-child(4) { transform: rotate(3deg); animation-delay: -6s; } .beams i:nth-child(5) { transform: rotate(-7deg); animation-delay: -8s; }
+  @keyframes sway { to { transform: rotate(2deg) scaleX(1.3); opacity: .55; } }
+  .beams-wide i { width: 12%; }
+  .ghost { position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%); font-family: 'Unbounded', 'Inter', sans-serif; font-weight: 800; font-size: clamp(9rem, 26vw, 24rem); letter-spacing: .04em; color: transparent; -webkit-text-stroke: 2px rgba(255,255,255,.12); background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.03)); -webkit-background-clip: text; background-clip: text; filter: blur(1.5px); pointer-events: none; z-index: 0; white-space: nowrap; user-select: none; }
+  .ghost-b { font-size: clamp(7rem, 22vw, 20rem); top: 46%; }
+  .floor { position: absolute; left: 0; right: 0; bottom: 0; height: 34%; background: linear-gradient(180deg, transparent, rgba(255,255,255,.10) 60%, rgba(255,255,255,.16)); pointer-events: none; z-index: 0; }
+  .figure { position: absolute; left: 74%; bottom: 22%; width: clamp(70px, 8vw, 110px); transform: translateX(-50%); fill: #050505; filter: drop-shadow(0 0 30px rgba(0,0,0,.9)); z-index: 1; }
+  .grain { position: absolute; inset: 0; pointer-events: none; z-index: 1; opacity: .35; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .sk-nav, .sk-hero, .sk-tracks, .card, .card-row, .sk-cta-row { position: relative; z-index: 2; }
+  .sk-nav { display: flex; align-items: center; justify-content: space-between; padding: 24px 0; }
+  .sk-logo { font-weight: 800; letter-spacing: .12em; font-size: 1rem; }
+  .sk-links { display: flex; gap: 26px; font-size: .9rem; } .sk-links a { color: #fff; opacity: .7; text-decoration: none; font-weight: 500; } .sk-links a:hover { opacity: 1; }
+  .sk-cta { color: #fff; text-decoration: none; font-size: .88rem; font-weight: 700; border: 1px solid rgba(255,255,255,.4); border-radius: 999px; padding: 10px 18px; } .sk-cta:hover { background: #fff; color: #000; }
+  .sk-hero { padding: clamp(80px, 14vw, 200px) 0 40px; max-width: 900px; }
+  .sk-k { font-size: .78rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 800; color: #fff; margin-bottom: 22px; display: inline-flex; align-items: center; gap: 10px; }
+  .sk-k::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #1ED760; box-shadow: 0 0 12px #1ED760; }
+  .sk-hero h2 { font-size: clamp(2.6rem, 6vw, 5.4rem); line-height: 1; letter-spacing: -.04em; font-weight: 800; text-shadow: 0 10px 60px rgba(0,0,0,.6); }
+  .sk-hero h2 .dim { color: rgba(255,255,255,.55); font-weight: 600; }
+  .sk-sub { font-size: clamp(1.2rem, 2.4vw, 1.7rem); color: rgba(255,255,255,.7); margin-top: 14px; font-weight: 500; letter-spacing: -.01em; }
+  .sk-btns { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 34px; }
+  .sk-btn { background: #1ED760; color: #000; padding: 16px 28px; border-radius: 999px; font-weight: 800; text-decoration: none; font-size: .95rem; transition: transform .2s, box-shadow .2s; }
+  .sk-btn:hover { transform: scale(1.04); box-shadow: 0 0 40px rgba(30,215,96,.4); }
+  .sk-ghostbtn { color: #fff; text-decoration: none; font-weight: 700; padding: 16px 22px; border: 1px solid rgba(255,255,255,.35); border-radius: 999px; }
+  .sk-checks { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 12px 30px; margin-top: 36px; font-size: .92rem; color: rgba(255,255,255,.75); }
+  .sk-checks-col { flex-direction: column; gap: 10px; }
+  .sk-checks li { display: inline-flex; align-items: center; gap: 10px; } .sk-checks b { color: #fff; }
+  .sk-checks i, .chk { width: 22px; height: 22px; border-radius: 50%; background: #1ED760; flex: none; position: relative; }
+  .sk-checks i::after, .chk::after { content: ''; position: absolute; left: 7px; top: 4px; width: 5px; height: 10px; border: solid #000; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+  .chk-lg { width: 34px; height: 34px; } .chk-lg::after { left: 12px; top: 7px; width: 7px; height: 14px; border-width: 0 3px 3px 0; }
+  .sk-tracks { margin-top: clamp(60px, 10vw, 120px); border-top: 1px solid rgba(255,255,255,.14); }
+  .tr { display: grid; grid-template-columns: 40px 1fr auto; align-items: center; gap: 20px; padding: 18px 10px; border-bottom: 1px solid rgba(255,255,255,.1); border-radius: 8px; transition: background .2s; }
+  .tr:hover { background: rgba(255,255,255,.06); }
+  .tr-n { color: rgba(255,255,255,.5); font-variant-numeric: tabular-nums; font-size: .9rem; }
+  .tr b { display: block; font-size: 1.05rem; } .tr span { color: rgba(255,255,255,.55); font-size: .88rem; }
+
+  /* 2 */
+  .sk-hero-split { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: end; max-width: none; padding-bottom: 0; }
+  .devices { position: relative; align-self: end; }
+  .devices img { width: 100%; max-width: 520px; display: block; margin: 0 auto; filter: grayscale(1) contrast(1.1) drop-shadow(0 30px 60px rgba(0,0,0,.8)); -webkit-mask-image: linear-gradient(#000 78%, transparent); mask-image: linear-gradient(#000 78%, transparent); }
+
+  /* 3 */
+  .sk-c { background: #0A0A0A; }
+  .card { position: relative; overflow: hidden; border-radius: 22px; background: #121212; isolation: isolate; display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; color: #fff; }
+  .card .fog { filter: blur(40px); } .card .fog-1 { width: 80%; height: 60%; left: -10%; top: 10%; } .card .fog-2 { width: 70%; height: 60%; right: -10%; top: 30%; } .card .fog-3 { width: 90%; height: 50%; left: 5%; bottom: -10%; }
+  .card .beams { top: -20%; height: 120%; } .card .beams i { width: 7%; }
+  .card-hero { min-height: min(78vh, 720px); padding: 28px; margin-top: 10px; }
+  .ghost-c { font-size: clamp(6rem, 18vw, 16rem); top: 40%; }
+  .figure-c { left: 50%; bottom: 30%; width: clamp(60px, 7vw, 96px); }
+  .card-label { position: relative; z-index: 2; font-size: .85rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 800; }
+  .card-foot { position: relative; z-index: 2; display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+  .card-foot h2 { font-size: clamp(1.8rem, 3.6vw, 3rem); line-height: 1.05; letter-spacing: -.03em; font-weight: 800; max-width: 18ch; }
+  .card-foot p { color: rgba(255,255,255,.65); margin-top: 8px; font-size: 1rem; }
+  .card-foot b { display: block; font-size: 1.1rem; line-height: 1.25; letter-spacing: -.01em; }
+  .card-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+  .card-sm { aspect-ratio: 4 / 3.2; padding: 22px; transition: transform .25s; } .card-sm:hover { transform: translateY(-4px); }
+  .ghost-sm { font-size: clamp(6rem, 12vw, 11rem); top: 48%; }
+  .sk-cta-row { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; margin-top: 30px; }
+  .sk-note { color: rgba(255,255,255,.55); font-size: .88rem; }
+
+  @media (max-width: 860px) {
+    .pick { top: auto; bottom: 12px; left: 12px; right: 12px; justify-content: center; }
+    .sk-links { display: none; } .sk-hero-split { grid-template-columns: 1fr; } .card-row { grid-template-columns: 1fr; } .card-sm { aspect-ratio: auto; min-height: 220px; }
+    .ghost { font-size: 22vw; } .figure { bottom: 26%; }
+  }
+</style>
