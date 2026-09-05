@@ -3,11 +3,15 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { SITE, ELEGXOS } from '../config';
+import { SITE, eur } from '../config';
+import { optionById } from '../data/pricing';
 
-// Φωτογράφηση & βίντεο στον χώρο της επιχείρησης — υλικό για site, e-shop,
-// προφίλ Google και social. Χωρίς ενιαία τιμή στη λίστα (εξαρτάται από χώρο,
-// προϊόντα, διάρκεια) — γραπτή σταθερή τιμή εντός ELEGXOS.reportHours ωρών.
+// Μία πηγή αλήθειας για τις τιμές: pricing.ts (media-space, media-products, media-video).
+const space = optionById('media-space')!;
+const products = optionById('media-products')!;
+const video = optionById('media-video')!;
+const minPrice = Math.min(space.price, products.price, video.price);
+
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
@@ -21,6 +25,13 @@ const schema = {
     telephone: SITE.phone,
     url: SITE.url,
   },
+  offers: [space, products, video].map((o) => ({
+    '@type': 'Offer',
+    name: o.label,
+    price: o.price,
+    priceCurrency: 'EUR',
+    description: `${eur(o.price)} εφάπαξ.`,
+  })),
   description:
     'Φωτογραφίες και μικρά βίντεο τραβηγμένα στον χώρο της επιχείρησής σας — προϊόντα, πιάτα, χώρος, ομάδα — έτοιμα για site, e-shop, Google και social.',
 };
@@ -94,14 +105,14 @@ const faqItems = [
   },
   {
     q: 'Πόσο κοστίζει;',
-    a: `Εξαρτάται από τον χώρο, τον αριθμό προϊόντων και το αν θέλετε και βίντεο. Λαμβάνετε γραπτή πρόταση με σταθερή τιμή εντός ${ELEGXOS.reportHours} ωρών — ξέρετε το ποσό πριν κλείσουμε ραντεβού.`,
+    a: `Τρεις καθαρές επιλογές, εφάπαξ: ${space.label.toLowerCase()} ${eur(space.price)}, ${products.label.toLowerCase()} ${eur(products.price)}, ${video.label.toLowerCase()} ${eur(video.price)}. Τις συνδυάζετε όπως θέλετε στη σελίδα τιμών — ξέρετε το ποσό πριν κλείσουμε ραντεβού.`,
   },
 ];
 ---
 
 <Base
   title="Φωτογράφηση & Βίντεο για την επιχείρησή σας | PISMA"
-  description="Ερχόμαστε στον χώρο σας και βγάζουμε φωτογραφίες και μικρά βίντεο για site, e-shop, προφίλ Google και social: προϊόντα, πιάτα, χώρος, ομάδα. Δικό σας υλικό — όχι από το internet."
+  description={`Ερχόμαστε στον χώρο σας και βγάζουμε φωτογραφίες και μικρά βίντεο για site, e-shop, προφίλ Google και social: προϊόντα, πιάτα, χώρος, ομάδα. Από ${eur(minPrice)} εφάπαξ, τιμές δημόσιες. Δικό σας υλικό — όχι από το internet.`}
   schema={schema}
 >
   <!-- 1. Hero -->
@@ -190,19 +201,22 @@ const faqItems = [
     <div class="container container--narrow">
       <div class="card price-card reveal">
         <div class="price-main">
-          <p class="kicker">Τιμή</p>
-          <h2 id="price-title">Γραπτή και σταθερή, εντός <span class="price-num num">{ELEGXOS.reportHours}</span> ωρών</h2>
+          <p class="kicker">Τιμές — δημόσιες, ίδιες για όλους</p>
+          <h2 id="price-title">
+            Από <span class="price-num num">{eur(minPrice)}</span> εφάπαξ
+          </h2>
           <p class="price-sub">
-            Ένα κομμωτήριο με δέκα λήψεις και ένα e-shop με διακόσια προϊόντα δεν κοστίζουν το ίδιο.
-            Μας λέτε τι χρειάζεστε και λαμβάνετε <strong>γραπτή πρόταση με σταθερή τιμή</strong> — πριν
-            κλείσουμε το ραντεβού. Στη μηνιαία διαχείριση social «με υλικό από PISMA», το υλικό
-            των posts είναι ήδη μέσα.
+            Τρεις καθαρές επιλογές, τις συνδυάζετε όπως θέλετε:
+            <strong>{space.label} {eur(space.price)}</strong> ({space.detail}),
+            <strong>{products.label} {eur(products.price)}</strong> ({products.detail}),
+            <strong>{video.label} {eur(video.price)}</strong> ({video.detail}).
+            Στη μηνιαία διαχείριση social «με υλικό από PISMA», το υλικό των posts είναι ήδη μέσα.
           </p>
         </div>
         <div class="price-cta">
-          <a class="btn btn--orange" href="/epikoinonia/">Πείτε μας τι χρειάζεστε</a>
-          <a class="btn btn--ghost" href="/times/">Δείτε τις υπόλοιπες τιμές</a>
-          <span class="btn-note">Απάντηση την ίδια μέρα · χωρίς δέσμευση</span>
+          <a class="btn btn--orange" href="/times/">Φτιάξτε το πακέτο σας →</a>
+          <a class="btn btn--ghost" href="/epikoinonia/">Πείτε μας τι χρειάζεστε</a>
+          <span class="btn-note">Καμία πληρωμή online — το κλείνουμε στο τηλέφωνο.</span>
         </div>
       </div>
     </div>

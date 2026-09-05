@@ -3,11 +3,15 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import { SITE, ELEGXOS } from '../../config';
+import { SITE, ELEGXOS, eurEn } from '../../config';
+import { CATEGORIES_EN } from '../../data/pricing.en';
 
-// Shopify: store build + monthly management. No single list price (every store
-// differs in products/payments/integrations) — a fixed price is given in writing
-// within ELEGXOS.reportHours hours, as the pricing page says.
+// One source of truth for prices: pricing.ts (labels translated in pricing.en.ts).
+const optEn = (id: string) => CATEGORIES_EN.flatMap((c) => c.options).find((o) => o.id === id)!;
+const shop = optEn('web-shopify');
+const shopLarge = optEn('web-shopify-large');
+const manageOpt = optEn('care-shopify');
+
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
@@ -21,6 +25,11 @@ const schema = {
     telephone: SITE.phone,
     url: SITE.url,
   },
+  offers: [
+    { '@type': 'Offer', name: shop.label, price: shop.price, priceCurrency: 'EUR', description: `${eurEn(shop.price)} one-off.` },
+    { '@type': 'Offer', name: shopLarge.label, price: shopLarge.price, priceCurrency: 'EUR', description: `${eurEn(shopLarge.price)} one-off.` },
+    { '@type': 'Offer', name: manageOpt.label, price: manageOpt.price, priceCurrency: 'EUR', description: `${eurEn(manageOpt.price)} per month.` },
+  ],
   description:
     'An online store on Shopify, set up properly from day one — or monthly management of the store you already have: products, stock, discounts, apps, updates.',
 };
@@ -86,8 +95,12 @@ const faqItems = [
     a: 'Yes. Products, customers and order history move to Shopify, and the old store stays open until the new one works — you do not lose a single day of sales.',
   },
   {
+    q: 'How much does it cost?',
+    a: `Build: ${eurEn(shop.price)} one-off (up to 50 products) or ${eurEn(shopLarge.price)} for a large store (up to 300 products, with migration from another platform). Monthly management ${eurEn(manageOpt.price)} per month, optional and with no lock-in. All public on the pricing page.`,
+  },
+  {
     q: 'Who pays the Shopify subscription?',
-    a: 'You do, directly to Shopify — the account and the store belong to your business. We only charge for our work, at a fixed price you see in writing before we start.',
+    a: 'You do, directly to Shopify — the account and the store belong to your business. We only charge for our work, at the prices you see publicly on the pricing page.',
   },
   {
     q: 'How long until it opens?',
@@ -110,7 +123,7 @@ const faqItems = [
 
 <Base
   title="Shopify store — build and monthly management | PISMA"
-  description="An online store on Shopify, set up properly from day one — or monthly management of the store you already have: products, stock, discounts, updates. Fixed price, in writing."
+  description={`An online store on Shopify from ${eurEn(shop.price)} one-off, set up properly from day one — or monthly management of the store you already have from ${eurEn(manageOpt.price)} per month. Public prices, no lock-in.`}
   schema={schema}
 >
   <!-- 1. Hero -->
@@ -214,18 +227,20 @@ const faqItems = [
     <div class="container container--narrow">
       <div class="card price-card reveal">
         <div class="price-main">
-          <p class="kicker">Price</p>
-          <h2 id="price-title">In writing and fixed, within <span class="price-num num">{ELEGXOS.reportHours}</span> hours</h2>
+          <p class="kicker">Prices — public, the same for everyone</p>
+          <h2 id="price-title">
+            From <span class="price-num num">{eurEn(shop.price)}</span> one-off
+          </h2>
           <p class="price-sub">
-            Every store is different — how many products, which payment methods, what integrations.
-            That is why its price is not one number on a list: after the free PISMA Check you get a
-            <strong>written proposal with a fixed price</strong>, separately for the build and for the
-            monthly management. No surprises on the bill.
+            <strong>Build {eurEn(shop.price)}</strong> ({shop.detail}) or
+            <strong>large store {eurEn(shopLarge.price)}</strong> ({shopLarge.detail}).
+            <strong>Management {eurEn(manageOpt.price)} per month</strong> — optional, no lock-in.
+            The Shopify subscription is paid by you directly to Shopify.
           </p>
         </div>
         <div class="price-cta">
-          <a class="btn btn--orange" href="/en/free-assessment/">Book the free PISMA Check</a>
-          <a class="btn btn--ghost" href="/en/pricing/">See our other prices</a>
+          <a class="btn btn--orange" href="/en/pricing/">Build your package →</a>
+          <a class="btn btn--ghost" href="/en/free-assessment/">Free {ELEGXOS.minutes}-minute Check</a>
           <span class="btn-note">No online payment — we close it over the phone.</span>
         </div>
       </div>

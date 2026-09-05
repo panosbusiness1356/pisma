@@ -3,11 +3,16 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import { SITE, ELEGXOS } from '../../config';
+import { SITE, eurEn } from '../../config';
+import { CATEGORIES_EN } from '../../data/pricing.en';
 
-// Photography & video at the business premises — material for website, store,
-// Google profile and social. No single list price (depends on space, products,
-// duration) — a fixed price in writing within ELEGXOS.reportHours hours.
+// One source of truth for prices: pricing.ts (labels translated in pricing.en.ts).
+const optEn = (id: string) => CATEGORIES_EN.flatMap((c) => c.options).find((o) => o.id === id)!;
+const space = optEn('media-space');
+const products = optEn('media-products');
+const video = optEn('media-video');
+const minPrice = Math.min(space.price, products.price, video.price);
+
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
@@ -21,6 +26,13 @@ const schema = {
     telephone: SITE.phone,
     url: SITE.url,
   },
+  offers: [space, products, video].map((o) => ({
+    '@type': 'Offer',
+    name: o.label,
+    price: o.price,
+    priceCurrency: 'EUR',
+    description: `${eurEn(o.price)} one-off.`,
+  })),
   description:
     'Photos and short videos shot at your business premises — products, dishes, space, team — ready for your website, online store, Google and social media.',
 };
@@ -94,14 +106,14 @@ const faqItems = [
   },
   {
     q: 'How much does it cost?',
-    a: `It depends on the space, the number of products and whether you also want video. You get a written proposal with a fixed price within ${ELEGXOS.reportHours} hours — you know the amount before we book the appointment.`,
+    a: `Three clear options, one-off: ${space.label.toLowerCase()} ${eurEn(space.price)}, ${products.label.toLowerCase()} ${eurEn(products.price)}, ${video.label.toLowerCase()} ${eurEn(video.price)}. Combine them as you like on the pricing page — you know the amount before we book the appointment.`,
   },
 ];
 ---
 
 <Base
   title="Photography & Video for your business | PISMA"
-  description="We come to your premises and shoot photos and short videos for your website, online store, Google profile and social media: products, dishes, space, team. Your own material — not stock."
+  description={`We come to your premises and shoot photos and short videos for your website, online store, Google profile and social media: products, dishes, space, team. From ${eurEn(minPrice)} one-off, public prices. Your own material — not stock.`}
   schema={schema}
 >
   <!-- 1. Hero -->
@@ -190,19 +202,22 @@ const faqItems = [
     <div class="container container--narrow">
       <div class="card price-card reveal">
         <div class="price-main">
-          <p class="kicker">Price</p>
-          <h2 id="price-title">In writing and fixed, within <span class="price-num num">{ELEGXOS.reportHours}</span> hours</h2>
+          <p class="kicker">Prices — public, the same for everyone</p>
+          <h2 id="price-title">
+            From <span class="price-num num">{eurEn(minPrice)}</span> one-off
+          </h2>
           <p class="price-sub">
-            A hair salon with ten shots and an online store with two hundred products do not cost the same.
-            Tell us what you need and you get a <strong>written proposal with a fixed price</strong> — before
-            we book the appointment. With monthly social media management "content by PISMA", the material
-            for the posts is already included.
+            Three clear options, combine them as you like:
+            <strong>{space.label} {eurEn(space.price)}</strong> ({space.detail}),
+            <strong>{products.label} {eurEn(products.price)}</strong> ({products.detail}),
+            <strong>{video.label} {eurEn(video.price)}</strong> ({video.detail}).
+            With monthly social media management "content by PISMA", the material for the posts is already included.
           </p>
         </div>
         <div class="price-cta">
-          <a class="btn btn--orange" href="/en/contact/">Tell us what you need</a>
-          <a class="btn btn--ghost" href="/en/pricing/">See our other prices</a>
-          <span class="btn-note">Same-day reply · no lock-in</span>
+          <a class="btn btn--orange" href="/en/pricing/">Build your package →</a>
+          <a class="btn btn--ghost" href="/en/contact/">Tell us what you need</a>
+          <span class="btn-note">No online payment — we close it over the phone.</span>
         </div>
       </div>
     </div>

@@ -40,6 +40,8 @@ export const CATEGORIES: PricingCategory[] = [
       { id: 'web-standard', label: 'Standard', detail: 'Πλήρες site με περισσότερες σελίδες και φόρμες', price: 320, type: 'once' },
       { id: 'web-pro', label: 'Pro', detail: 'Μεγαλύτερο site με ειδικές λειτουργίες', price: 450, type: 'once' },
       { id: 'web-bookings', label: 'Site με online κρατήσεις', detail: 'Οι πελάτες σας κλείνουν ραντεβού ή τραπέζι online και παίρνουν αυτόματη υπενθύμιση — τέλος τα «μου έστησε»', price: 450, type: 'once' },
+      { id: 'web-shopify', label: 'E-shop σε Shopify', detail: 'Στήσιμο καταστήματος, έως 50 προϊόντα, πληρωμές, αποστολές, εκπαίδευση', price: 690, type: 'once' },
+      { id: 'web-shopify-large', label: 'E-shop σε Shopify — μεγάλο', detail: 'Έως 300 προϊόντα, μεταφορά από άλλη πλατφόρμα, σύνδεση με Google, Instagram και Facebook', price: 990, type: 'once' },
     ],
   },
   {
@@ -75,6 +77,17 @@ export const CATEGORIES: PricingCategory[] = [
     ],
   },
   {
+    id: 'media',
+    title: 'Φωτογράφηση & Βίντεο',
+    desc: 'Στον χώρο σας — διαλέξτε ό,τι χρειάζεστε.',
+    mode: 'checkbox',
+    options: [
+      { id: 'media-space', label: 'Φωτογράφηση χώρου & ομάδας', detail: 'Μισή μέρα στον χώρο σας, έως 40 επεξεργασμένες φωτογραφίες σε διαστάσεις για site, Google και social', price: 180, type: 'once' },
+      { id: 'media-products', label: 'Φωτογράφηση προϊόντων', detail: 'Έως 30 προϊόντα για e-shop ή κατάλογο, επεξεργασμένα — σε ουδέτερο φόντο ή μέσα στον χώρο σας', price: 240, type: 'once' },
+      { id: 'media-video', label: 'Βίντεο για social', detail: '3 μικρά βίντεο 15–30 δευτερολέπτων με μοντάζ, σε διαστάσεις reels και stories', price: 150, type: 'once' },
+    ],
+  },
+  {
     id: 'auto',
     title: 'Αυτοματισμοί',
     desc: 'Διαλέξτε όσους θέλετε — η λίστα μεγαλώνει συνεχώς.',
@@ -97,6 +110,7 @@ export const CATEGORIES: PricingCategory[] = [
     mode: 'checkbox',
     options: [
       { id: 'care-web', label: 'Συντήρηση ιστοσελίδας', detail: 'Ενημερώσεις, ασφάλεια, μικροαλλαγές', price: 29, type: 'monthly' },
+      { id: 'care-shopify', label: 'Διαχείριση Shopify', detail: 'Νέα προϊόντα, αποθέματα, εκπτώσεις, apps, ενημερώσεις — και μηνιαία αναφορά πωλήσεων', price: 120, type: 'monthly' },
     ],
   },
 ];

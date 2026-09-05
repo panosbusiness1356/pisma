@@ -3,11 +3,14 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { SITE, ELEGXOS } from '../config';
+import { SITE, ELEGXOS, eur } from '../config';
+import { optionById } from '../data/pricing';
 
-// Shopify: κατασκευή e-shop + μηνιαία διαχείριση. Δεν υπάρχει ενιαία τιμή στη
-// λίστα (κάθε κατάστημα διαφέρει σε προϊόντα/πληρωμές/συνδέσεις) — η τιμή
-// δίνεται γραπτώς και σταθερή εντός ELEGXOS.reportHours ωρών, όπως λέει το /times/.
+// Μία πηγή αλήθειας για τις τιμές: pricing.ts (web-shopify, web-shopify-large, care-shopify).
+const shop = optionById('web-shopify')!;
+const shopLarge = optionById('web-shopify-large')!;
+const manageOpt = optionById('care-shopify')!;
+
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
@@ -21,6 +24,11 @@ const schema = {
     telephone: SITE.phone,
     url: SITE.url,
   },
+  offers: [
+    { '@type': 'Offer', name: shop.label, price: shop.price, priceCurrency: 'EUR', description: `${eur(shop.price)} εφάπαξ.` },
+    { '@type': 'Offer', name: shopLarge.label, price: shopLarge.price, priceCurrency: 'EUR', description: `${eur(shopLarge.price)} εφάπαξ.` },
+    { '@type': 'Offer', name: manageOpt.label, price: manageOpt.price, priceCurrency: 'EUR', description: `${eur(manageOpt.price)} τον μήνα.` },
+  ],
   description:
     'Ηλεκτρονικό κατάστημα σε Shopify στημένο σωστά από την πρώτη μέρα, ή μηνιαία διαχείριση του e-shop που ήδη έχετε: προϊόντα, αποθέματα, εκπτώσεις, apps, ενημερώσεις.',
 };
@@ -86,8 +94,12 @@ const faqItems = [
     a: 'Ναι. Προϊόντα, πελάτες και ιστορικό παραγγελιών μεταφέρονται στο Shopify, και το παλιό κατάστημα μένει ανοιχτό μέχρι να δουλέψει το νέο — δεν χάνετε ούτε μία μέρα πωλήσεων.',
   },
   {
+    q: 'Πόσο κοστίζει;',
+    a: `Κατασκευή ${eur(shop.price)} εφάπαξ (έως 50 προϊόντα) ή ${eur(shopLarge.price)} για μεγάλο κατάστημα (έως 300 προϊόντα, με μεταφορά από άλλη πλατφόρμα). Η μηνιαία διαχείριση ${eur(manageOpt.price)} τον μήνα, προαιρετική και χωρίς δέσμευση. Όλα δημόσια στη σελίδα τιμών.`,
+  },
+  {
     q: 'Ποιος πληρώνει τη συνδρομή του Shopify;',
-    a: 'Εσείς, απευθείας στο Shopify — ο λογαριασμός και το κατάστημα ανήκουν στην επιχείρησή σας. Εμείς χρεώνουμε μόνο τη δουλειά μας, με σταθερή τιμή που τη βλέπετε γραπτά πριν ξεκινήσουμε.',
+    a: 'Εσείς, απευθείας στο Shopify — ο λογαριασμός και το κατάστημα ανήκουν στην επιχείρησή σας. Εμείς χρεώνουμε μόνο τη δουλειά μας, με τις τιμές που βλέπετε δημόσια στη σελίδα τιμών.',
   },
   {
     q: 'Σε πόσο καιρό ανοίγει;',
@@ -110,7 +122,7 @@ const faqItems = [
 
 <Base
   title="E-shop σε Shopify — κατασκευή και μηνιαία διαχείριση | PISMA"
-  description="Ηλεκτρονικό κατάστημα σε Shopify, στημένο σωστά από την πρώτη μέρα — ή μηνιαία διαχείριση του e-shop που ήδη έχετε: προϊόντα, αποθέματα, εκπτώσεις, ενημερώσεις. Σταθερή τιμή, γραπτώς."
+  description={`Ηλεκτρονικό κατάστημα σε Shopify από ${eur(shop.price)} εφάπαξ, στημένο σωστά από την πρώτη μέρα — ή μηνιαία διαχείριση του e-shop που ήδη έχετε από ${eur(manageOpt.price)} τον μήνα. Τιμές δημόσιες, χωρίς δέσμευση.`}
   schema={schema}
 >
   <!-- 1. Hero -->
@@ -214,18 +226,20 @@ const faqItems = [
     <div class="container container--narrow">
       <div class="card price-card reveal">
         <div class="price-main">
-          <p class="kicker">Τιμή</p>
-          <h2 id="price-title">Γραπτή και σταθερή, εντός <span class="price-num num">{ELEGXOS.reportHours}</span> ωρών</h2>
+          <p class="kicker">Τιμές — δημόσιες, ίδιες για όλους</p>
+          <h2 id="price-title">
+            Από <span class="price-num num">{eur(shop.price)}</span> εφάπαξ
+          </h2>
           <p class="price-sub">
-            Κάθε e-shop είναι διαφορετικό — πόσα προϊόντα, ποιοι τρόποι πληρωμής, τι συνδέσεις.
-            Γι’ αυτό η τιμή του δεν είναι ένα νούμερο στη λίστα: μετά τον δωρεάν Έλεγχο λαμβάνετε
-            <strong>γραπτή πρόταση με σταθερή τιμή</strong>, ξεχωριστά για την κατασκευή και για τη
-            μηνιαία διαχείριση. Καμία έκπληξη στον λογαριασμό.
+            <strong>Κατασκευή {eur(shop.price)}</strong> ({shop.detail}) ή
+            <strong>μεγάλο κατάστημα {eur(shopLarge.price)}</strong> ({shopLarge.detail}).
+            <strong>Διαχείριση {eur(manageOpt.price)} τον μήνα</strong> — προαιρετική, χωρίς δέσμευση.
+            Η συνδρομή του Shopify πληρώνεται από εσάς απευθείας στο Shopify.
           </p>
         </div>
         <div class="price-cta">
-          <a class="btn btn--orange" href="/elegxos/">Κλείστε τον δωρεάν Έλεγχο</a>
-          <a class="btn btn--ghost" href="/times/">Δείτε τις υπόλοιπες τιμές</a>
+          <a class="btn btn--orange" href="/times/">Φτιάξτε το πακέτο σας →</a>
+          <a class="btn btn--ghost" href="/elegxos/">Δωρεάν Έλεγχος {ELEGXOS.minutes}′</a>
           <span class="btn-note">Καμία πληρωμή online — το κλείνουμε στο τηλέφωνο.</span>
         </div>
       </div>
