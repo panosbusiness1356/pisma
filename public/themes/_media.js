@@ -11,6 +11,7 @@
     dasos:     { hero: 'canvas', mockup: true },
     aspro:     { hero: 'canvas', mockup: true },
     petra:     { hero: 'video',  mockup: true },
+    stoudio:   { hero: 'frame',  mockup: false }, // βίντεο σε κάδρο δεξιά από το κείμενο, χωρίς φόντο
   };
   var me = document.currentScript;
   var name = me && me.getAttribute('data-theme');
@@ -31,6 +32,7 @@
 
     var isHome = /^\/(en\/)?$/.test(location.pathname);
     /* ---- (α) Φόντο ---- */
+    if (cfg.hero === 'frame') { if (isHome) { hero.classList.add('tm-hero--frame'); frame(hero); } return; }
     var bd = document.createElement('div');
     bd.className = 'tm-backdrop';
     bd.setAttribute('aria-hidden', 'true');
@@ -79,6 +81,34 @@
         inner.insertAdjacentElement('afterend', fig);
       }
     }
+  }
+
+  /* Κάδρο βίντεο δίπλα στο κείμενο του hero (θέμα «Στούντιο»). */
+  function frame(hero) {
+    var inner = hero.querySelector('.hero-inner');
+    if (!inner) return;
+    var fig = document.createElement('figure');
+    fig.className = 'tm-media tm-media--frame';
+    var poster = '/site-demo/lyra/images/hero.jpg';
+    if (reduce) {
+      fig.innerHTML = '<img src="' + poster + '" alt="" width="1600" height="1000">';
+    } else {
+      var vid = document.createElement('video');
+      vid.autoplay = true; vid.muted = true; vid.loop = true; vid.playsInline = true;
+      vid.setAttribute('playsinline', ''); vid.setAttribute('muted', '');
+      vid.preload = 'auto'; vid.poster = poster;
+      var src = document.createElement('source'); src.src = '/site-demo/lyra/video/vineyard.mp4'; src.type = 'video/mp4';
+      vid.appendChild(src); fig.appendChild(vid);
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) {
+          es.forEach(function (e) { e.isIntersecting ? vid.play().catch(function () {}) : vid.pause(); });
+        }).observe(fig);
+      }
+    }
+    var cap = document.createElement('figcaption');
+    cap.innerHTML = '<span>Δείγμα βίντεο · Οινοποιείο Λύρα</span><span>Θα αντικατασταθεί με δικό μας πλάνο</span>';
+    fig.appendChild(cap);
+    inner.insertAdjacentElement('afterend', fig);
   }
 
   /* Ζωντανό «φως»: 5 μεγάλες μαλακές κηλίδες στα χρώματα του θέματος,

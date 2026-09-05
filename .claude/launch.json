@@ -2,6 +2,14 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "metaxi",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "/Users/ariadnibarlou/Desktop/metaxi/server.js"
+      ],
+      "port": 5188
+    },
+    {
       "name": "arxigeio",
       "runtimeExecutable": "node",
       "runtimeArgs": [
@@ -231,6 +239,18 @@
         "4355"
       ],
       "port": 4355
+    },
+    {
+      "name": "pisma-stoudio-4356",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4356"
+      ],
+      "port": 4356
     }
   ]
 }
