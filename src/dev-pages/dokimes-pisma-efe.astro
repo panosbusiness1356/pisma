@@ -1,0 +1,166 @@
+---
+// ΠΡΟΣΩΡΙΝΗ σελίδα δοκιμών — ΜΟΝΟ dev, δεν μπαίνει στο build.
+// Δώδεκα εφέ για το μεγάλο «PISMA.» της αρχικής, το καθένα στο σκηνικό του hero.
+import '../styles/fonts.css';
+const fx = [
+  { id: 'breathe', t: 'Λάμψη που αναπνέει', d: 'Απαλό φως γύρω από τα γράμματα που δυναμώνει και σβήνει αργά, σαν ανάσα.' },
+  { id: 'shine', t: 'Φως που περνάει', d: 'Μια λωρίδα φωτός διασχίζει τα γράμματα κάθε λίγα δευτερόλεπτα, σαν ανάκλαση σε γυαλί.' },
+  { id: 'letters', t: 'Γράμμα-γράμμα', d: 'Στο φόρτωμα τα γράμματα εμφανίζονται ένα-ένα μέσα από θόλωμα, και μετά μένουν.' },
+  { id: 'smoke', t: 'Μέσα από τον καπνό', d: 'Τα γράμματα φαίνονται όπου περνάει ο καπνός — άλλα σημεία φωτίζονται, άλλα χάνονται.' },
+  { id: 'draw', t: 'Περίγραμμα που ζωγραφίζεται', d: 'Το περίγραμμα σχεδιάζεται σαν με στυλό και μετά γεμίζει αχνά.' },
+  { id: 'tilt', t: 'Κλίση με το ποντίκι', d: 'Τα γράμματα γέρνουν ελαφρά σε 3D ακολουθώντας το ποντίκι. Κουνήστε το.' },
+  { id: 'metal', t: 'Μεταλλικό', d: 'Γέμισμα σαν βουρτσισμένο ατσάλι, με μια γυαλάδα που μετακινείται αργά.' },
+  { id: 'mirror', t: 'Ανάκλαση στο πάτωμα', d: 'Από κάτω, μια αχνή ανάποδη ανάκλαση που σβήνει, σαν σε γυαλισμένη σκηνή.' },
+  { id: 'neon', t: 'Τρεμόπαιγμα', d: 'Σταθερό φως που κάθε τόσο τρεμοπαίζει για μια στιγμή, σαν πινακίδα.' },
+  { id: 'extrude', t: 'Βάθος', d: 'Τα γράμματα με «πάχος» προς τα πίσω, σαν κομμένα από πέτρα.' },
+  { id: 'scroll', t: 'Με το scroll', d: 'Καθώς κατεβαίνετε, το PISMA μεγαλώνει και σβήνει πίσω από το περιεχόμενο. Κάντε scroll.' },
+  { id: 'embers', t: 'Στάχτες', d: 'Μικρά γκρι σωματίδια ανεβαίνουν αργά μέσα και γύρω από τα γράμματα.' },
+];
+---
+
+<html lang="el">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Δοκιμές — 12 εφέ για το PISMA</title>
+  </head>
+  <body>
+    <nav class="pick" aria-label="Επιλογή">{fx.map((f, i) => <a href={`#fx-${f.id}`}><b>{i + 1}</b>{f.t}</a>)}</nav>
+    <header class="intro">
+      <p class="intro-k">Δοκιμές · το μεγάλο PISMA</p>
+      <h1>Δώδεκα εφέ για το «PISMA.»</h1>
+      <p>Ίδιο σκηνικό με την αρχική, άλλο εφέ σε κάθε μπλοκ. Συνδυάζονται (π.χ. «1 + 6»). Πείτε μου νούμερο.</p>
+    </header>
+
+    {fx.map((f, i) => (
+      <section class={`hero fx-${f.id}`} id={`fx-${f.id}`}>
+        <div class="fog fog-1"></div><div class="fog fog-2"></div><div class="fog fog-3"></div>
+        <div class="lab"><b>{i + 1} — {f.t}</b> {f.d}</div>
+        <div class="inner">
+          <p class="k">Ψηφιακή παρουσία &amp; αυτοματοποίηση</p>
+          <h2>Η επιχείρησή σας, ορατή στους πελάτες.</h2>
+          {f.id === 'draw' ? (
+            <svg class="word word-svg" viewBox="0 0 900 200" aria-hidden="true"><text x="50%" y="76%" text-anchor="middle">PISMA.</text></svg>
+          ) : f.id === 'letters' ? (
+            <div class="word" aria-hidden="true"><span>P</span><span>I</span><span>S</span><span>M</span><span>A</span><span>.</span></div>
+          ) : f.id === 'embers' ? (
+            <div class="word-wrap"><div class="word" aria-hidden="true">PISMA<i>.</i></div><div class="embers"></div></div>
+          ) : f.id === 'mirror' ? (
+            <div class="word-wrap"><div class="word" aria-hidden="true">PISMA<i>.</i></div><div class="word word-mirror" aria-hidden="true">PISMA<i>.</i></div></div>
+          ) : (
+            <div class="word" aria-hidden="true">PISMA<i>.</i></div>
+          )}
+          <div class="btns"><a class="btn" href="#">Μετρήστε την επιχείρησή σας — 2 λεπτά</a><a class="ghostbtn" href="#">Κλείστε τον δωρεάν Έλεγχο</a></div>
+          <ul class="stats"><li><b>από 220 €</b><span>ιστοσελίδα</span></li><li><b>72 ώρες</b><span>πρώτο preview</span></li><li><b>48 ώρες</b><span>γραπτή πρόταση</span></li><li><b>100%</b><span>δημόσιες τιμές</span></li></ul>
+        </div>
+      </section>
+    ))}
+
+    <footer class="outro"><p>Πείτε μου νούμερο (ή συνδυασμό) και το περνάω στην αρχική EL + EN.</p></footer>
+
+    <script is:inline>
+      (function () {
+        // 6 — κλίση με το ποντίκι
+        var tilt = document.querySelector('.fx-tilt'); var tw = tilt && tilt.querySelector('.word');
+        if (tilt && tw) tilt.addEventListener('mousemove', function (e) {
+          var r = tilt.getBoundingClientRect(); var x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+          tw.style.transform = 'perspective(900px) rotateX(' + (-y * 14) + 'deg) rotateY(' + (x * 18) + 'deg)';
+        });
+        // 9 — τρεμόπαιγμα
+        var neon = document.querySelector('.fx-neon .word');
+        if (neon) (function flick() { setTimeout(function () { neon.classList.add('flick'); setTimeout(function () { neon.classList.remove('flick'); flick(); }, 260 + Math.random() * 300); }, 1800 + Math.random() * 3500); })();
+        // 11 — με το scroll
+        var sc = document.querySelector('.fx-scroll'); var sw = sc && sc.querySelector('.word');
+        if (sc && sw) { var upd = function () { var r = sc.getBoundingClientRect(); var p = Math.min(1, Math.max(0, -r.top / (r.height * .7))); sw.style.transform = 'scale(' + (1 + p * .6) + ') translateY(' + (p * 60) + 'px)'; sw.style.opacity = String(1 - p * .95); }; addEventListener('scroll', upd, { passive: true }); upd(); }
+        // 12 — στάχτες
+        var em = document.querySelector('.embers');
+        if (em) for (var i = 0; i < 40; i++) { var s = document.createElement('i'); s.style.left = (Math.random() * 100) + '%'; s.style.animationDuration = (6 + Math.random() * 9) + 's'; s.style.animationDelay = (-Math.random() * 12) + 's'; s.style.width = s.style.height = (2 + Math.random() * 3) + 'px'; s.style.opacity = String(.25 + Math.random() * .5); em.appendChild(s); }
+        // 3 — γράμμα-γράμμα: ξαναπαίζει όταν φανεί
+        var lt = document.querySelector('.fx-letters .word');
+        if (lt && 'IntersectionObserver' in window) new IntersectionObserver(function (es) { if (es[0].isIntersecting) { lt.classList.remove('play'); void lt.offsetWidth; lt.classList.add('play'); } }, { threshold: .5 }).observe(lt);
+        // 5 — περίγραμμα: ξαναπαίζει όταν φανεί
+        var dr = document.querySelector('.fx-draw .word-svg');
+        if (dr && 'IntersectionObserver' in window) new IntersectionObserver(function (es) { if (es[0].isIntersecting) { dr.classList.remove('play'); void dr.getBoundingClientRect(); dr.classList.add('play'); } }, { threshold: .5 }).observe(dr);
+      })();
+    </script>
+  </body>
+</html>
+
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: #0B0B0B; color: #fff; -webkit-font-smoothing: antialiased; }
+  h1, h2, p, ul { margin: 0; }
+  .pick { position: fixed; top: 14px; right: 14px; z-index: 100; display: flex; gap: 3px; flex-wrap: wrap; max-width: 760px; justify-content: flex-end; background: rgba(20,20,20,.85); backdrop-filter: blur(10px); padding: 6px; border-radius: 18px; border: 1px solid rgba(255,255,255,.15); }
+  .pick a { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 999px; color: #fff; text-decoration: none; font-size: .72rem; font-weight: 600; }
+  .pick a b { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: #fff; color: #111; font-size: .66rem; }
+  .intro { padding: 72px clamp(20px, 3vw, 44px) 40px; max-width: 900px; }
+  .intro-k { color: #FF9A73; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .76rem; }
+  .intro h1 { font-size: clamp(1.8rem, 4vw, 3rem); margin: 10px 0 14px; line-height: 1.1; font-weight: 800; letter-spacing: -.02em; }
+  .intro p { color: #bbb; font-size: 1.05rem; line-height: 1.6; }
+  .outro { padding: 60px clamp(20px, 3vw, 44px) 120px; color: #bbb; }
+  .lab { position: relative; z-index: 2; margin: 16px auto 0; padding: 10px 14px; border-radius: 12px; background: rgba(255,122,80,.14); border: 1px solid rgba(255,122,80,.35); font-size: .92rem; color: #eee; width: fit-content; max-width: 90%; }
+  .lab b { color: #FFA284; }
+
+  .hero { position: relative; overflow: hidden; min-height: 780px; display: flex; flex-direction: column; padding: 0 clamp(20px, 4vw, 40px) 56px; margin-top: 24px; border-top: 1px solid rgba(255,255,255,.08); background: #0B0B0B; }
+  .fog { position: absolute; border-radius: 50%; filter: blur(70px); pointer-events: none; animation: drift 20s ease-in-out infinite alternate; }
+  .fog-1 { width: 70vw; height: 40vw; left: -10vw; top: 14%; background: radial-gradient(closest-side, rgba(255,255,255,.16), transparent); }
+  .fog-2 { width: 60vw; height: 36vw; right: -12vw; top: 26%; background: radial-gradient(closest-side, rgba(255,255,255,.12), transparent); animation-delay: -7s; animation-duration: 24s; }
+  .fog-3 { width: 90vw; height: 30vw; left: 5vw; bottom: -6vw; background: radial-gradient(closest-side, rgba(255,255,255,.2), transparent); animation-delay: -12s; animation-duration: 28s; }
+  @keyframes drift { to { transform: translate(6vw, -3vw) scale(1.12); } }
+  .inner { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; max-width: 1120px; margin: 0 auto; width: 100%; }
+  .k { font-size: .76rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #FFA284; margin-bottom: 18px; }
+  .hero h2 { font-size: clamp(2rem, 3.6vw, 3.4rem); line-height: 1.05; letter-spacing: -.03em; font-weight: 800; text-shadow: 0 10px 60px rgba(0,0,0,.6); white-space: nowrap; }
+  .word, .word-svg text { font-family: 'Unbounded', 'Inter', sans-serif; font-weight: 800; }
+  .word { display: block; margin: clamp(4px, 1.5vw, 16px) auto clamp(10px, 2.5vw, 26px); font-size: clamp(4.6rem, 16vw, 15rem); line-height: .95; letter-spacing: .01em; white-space: nowrap; user-select: none; pointer-events: none; color: rgba(255,255,255,.17); text-shadow: 0 0 80px rgba(255,255,255,.22); }
+  .word i { font-style: normal; }
+  .word-wrap { position: relative; }
+  .btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 30px; }
+  .btn { background: linear-gradient(92deg, #CC431C, #AC3213); color: #fff; padding: 15px 24px; border-radius: 12px; font-weight: 700; text-decoration: none; box-shadow: 0 6px 24px rgba(238,79,39,.35); }
+  .ghostbtn { padding: 15px 22px; border-radius: 12px; font-weight: 700; color: #fff; text-decoration: none; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.18); }
+  .stats { list-style: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 34px; margin: 26px 0 0; }
+  .stats li { display: grid; gap: 2px; } .stats b { font-family: 'Unbounded', 'Inter', sans-serif; font-weight: 800; font-size: 1.18rem; } .stats span { font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #9C9C9C; }
+
+  /* 1 λάμψη που αναπνέει */
+  .fx-breathe .word { animation: breathe 5s ease-in-out infinite; }
+  @keyframes breathe { 0%,100% { color: rgba(255,255,255,.14); text-shadow: 0 0 40px rgba(255,255,255,.12); } 50% { color: rgba(255,255,255,.26); text-shadow: 0 0 120px rgba(255,255,255,.45), 0 0 30px rgba(255,255,255,.25); } }
+  /* 2 φως που περνάει */
+  .fx-shine .word { color: transparent; background: linear-gradient(110deg, rgba(255,255,255,.16) 0 42%, rgba(255,255,255,.75) 50%, rgba(255,255,255,.16) 58% 100%); background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; animation: shine 6s ease-in-out infinite; text-shadow: none; }
+  @keyframes shine { 0%, 55% { background-position: 120% 0; } 100% { background-position: -120% 0; } }
+  /* 3 γράμμα-γράμμα */
+  .fx-letters .word span { display: inline-block; opacity: 0; filter: blur(14px); transform: translateY(20px); }
+  .fx-letters .word.play span { animation: letterIn .9s cubic-bezier(.22,1,.36,1) forwards; }
+  .fx-letters .word.play span:nth-child(2) { animation-delay: .12s } .fx-letters .word.play span:nth-child(3) { animation-delay: .24s } .fx-letters .word.play span:nth-child(4) { animation-delay: .36s } .fx-letters .word.play span:nth-child(5) { animation-delay: .48s } .fx-letters .word.play span:nth-child(6) { animation-delay: .62s }
+  @keyframes letterIn { to { opacity: 1; filter: blur(0); transform: none; } }
+  /* 4 μέσα από τον καπνό */
+  .fx-smoke .word { color: rgba(255,255,255,.34); -webkit-mask-image: radial-gradient(40% 60% at 30% 50%, #000 0%, transparent 100%), radial-gradient(35% 70% at 70% 40%, #000 0%, transparent 100%), radial-gradient(30% 50% at 50% 70%, #000 0%, transparent 100%); mask-image: radial-gradient(40% 60% at 30% 50%, #000 0%, transparent 100%), radial-gradient(35% 70% at 70% 40%, #000 0%, transparent 100%), radial-gradient(30% 50% at 50% 70%, #000 0%, transparent 100%); -webkit-mask-size: 200% 200%; mask-size: 200% 200%; animation: smokeMask 14s ease-in-out infinite alternate; }
+  @keyframes smokeMask { 0% { -webkit-mask-position: 0% 0%, 100% 100%, 50% 0%; mask-position: 0% 0%, 100% 100%, 50% 0%; } 100% { -webkit-mask-position: 100% 100%, 0% 0%, 50% 100%; mask-position: 100% 100%, 0% 0%, 50% 100%; } }
+  /* 5 περίγραμμα */
+  .word-svg { display: block; width: min(100%, 980px); height: auto; margin: clamp(4px, 1.5vw, 16px) auto clamp(10px, 2.5vw, 26px); }
+  .word-svg text { font-size: 170px; fill: rgba(255,255,255,0); stroke: rgba(255,255,255,.7); stroke-width: 1.5; stroke-dasharray: 1400; stroke-dashoffset: 1400; letter-spacing: 2px; }
+  .word-svg.play text { animation: draw 3.2s ease-out forwards, fillIn 1.2s 2.6s ease-out forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } } @keyframes fillIn { to { fill: rgba(255,255,255,.14); stroke: rgba(255,255,255,.25); } }
+  /* 6 κλίση */
+  .fx-tilt .word { transition: transform .15s ease-out; transform-style: preserve-3d; text-shadow: 0 30px 60px rgba(0,0,0,.6), 0 0 80px rgba(255,255,255,.2); color: rgba(255,255,255,.2); }
+  /* 7 μεταλλικό */
+  .fx-metal .word { color: transparent; background: linear-gradient(100deg, #5a5a5a 0%, #b9b9b9 18%, #6a6a6a 32%, #e9e9e9 50%, #5e5e5e 66%, #a9a9a9 84%, #4d4d4d 100%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; opacity: .55; text-shadow: none; animation: metal 9s linear infinite; }
+  @keyframes metal { to { background-position: 220% 0; } }
+  /* 8 ανάκλαση */
+  .fx-mirror .word-wrap { position: relative; }
+  .word-mirror { position: absolute; left: 0; right: 0; top: 100%; margin-top: -.18em; transform: scaleY(-1); color: rgba(255,255,255,.12); text-shadow: none; -webkit-mask-image: linear-gradient(rgba(0,0,0,.6), transparent 60%); mask-image: linear-gradient(rgba(0,0,0,.6), transparent 60%); filter: blur(1.5px); }
+  /* 9 τρεμόπαιγμα */
+  .fx-neon .word { color: rgba(255,255,255,.22); text-shadow: 0 0 30px rgba(255,255,255,.35), 0 0 90px rgba(255,255,255,.2); }
+  .fx-neon .word.flick { animation: flick .3s steps(2) 2; }
+  @keyframes flick { 50% { color: rgba(255,255,255,.08); text-shadow: none; } }
+  /* 10 βάθος */
+  .fx-extrude .word { color: rgba(255,255,255,.2); text-shadow: 1px 1px 0 rgba(255,255,255,.1), 2px 2px 0 rgba(255,255,255,.09), 4px 4px 0 rgba(255,255,255,.08), 6px 6px 0 rgba(255,255,255,.07), 9px 9px 0 rgba(255,255,255,.06), 12px 12px 0 rgba(255,255,255,.05), 16px 16px 0 rgba(255,255,255,.04), 20px 20px 0 rgba(255,255,255,.03), 30px 30px 60px rgba(0,0,0,.7); }
+  /* 11 scroll */
+  .fx-scroll .word { transform-origin: 50% 50%; will-change: transform, opacity; }
+  /* 12 στάχτες */
+  .embers { position: absolute; inset: -20% 0 0; pointer-events: none; }
+  .embers i { position: absolute; bottom: -10px; border-radius: 50%; background: #fff; animation: ember linear infinite; }
+  @keyframes ember { 0% { transform: translateY(0) translateX(0); opacity: 0; } 10% { opacity: .6; } 100% { transform: translateY(-120%) translateX(20px); opacity: 0; } }
+  .embers { height: 140%; }
+
+  @media (max-width: 860px) { .pick { top: auto; bottom: 12px; left: 12px; right: 12px; max-width: none; justify-content: center; } .hero h2 { white-space: normal; font-size: clamp(1.7rem, 8.2vw, 2.3rem); } }
+</style>
