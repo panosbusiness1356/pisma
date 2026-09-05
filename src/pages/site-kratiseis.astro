@@ -262,6 +262,34 @@ const faqItems = [
   // Η σκηνή του laptop — μεταφέρθηκε αυτούσια από το /se-vriskoun/.
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Στενές οθόνες: η σελίδα μέσα στο laptop αποδίδεται στο πλάτος desktop
+  // (496px = 520 − μπεζέλ) και σμικρύνεται με transform — ίδια 16:10 μορφή
+  // όπως στον υπολογιστή, αντί να στοιβάζεται καθ' ύψος (ίδιο μοτίβο με το
+  // iframe του «Site που πουλάει»).
+  const lpFitPage = document.getElementById('lp-page');
+  const lpScreen = lpFitPage?.parentElement;
+  if (lpFitPage && lpScreen) {
+    const DESK = 496;
+    const fit = () => {
+      const cs = getComputedStyle(lpScreen);
+      const inner = lpScreen.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      const s = inner / DESK;
+      if (s >= 1) {
+        lpFitPage.classList.remove('is-fit');
+        lpFitPage.style.width = ''; lpFitPage.style.transform = ''; lpFitPage.style.marginBottom = '';
+        return;
+      }
+      lpFitPage.classList.add('is-fit');
+      lpFitPage.style.width = `${DESK}px`;
+      lpFitPage.style.transform = `scale(${s})`;
+      // Το transform δεν αλλάζει το layout — μαζεύουμε το κενό που μένει κάτω
+      lpFitPage.style.marginBottom = `${-(lpFitPage.offsetHeight * (1 - s))}px`;
+    };
+    fit();
+    if ('ResizeObserver' in window) new ResizeObserver(fit).observe(lpScreen);
+    else window.addEventListener('resize', fit);
+  }
+
   // «Site με online κρατήσεις» (laptop): το HTML έχει το τελικό state (site
   // πλήρες, κράτηση επιβεβαιωμένη). Με JS + ορατότητα, σε loop: η σελίδα
   // χτίζεται κομμάτι-κομμάτι, ο κέρσορας πατά «Κλείσε ραντεβού» και περνάει
@@ -287,10 +315,12 @@ const faqItems = [
     const lpGo = (el: HTMLElement, ms: number) => {
       const pr = lpPage.getBoundingClientRect();
       const br = el.getBoundingClientRect();
+      // Σε σμίκρυνση (.is-fit) τα rects είναι scaled — γυρνάμε σε συντεταγμένες σελίδας
+      const k = pr.width / lpPage.offsetWidth || 1;
       lpCursor.style.transition = `opacity .3s ease, left ${ms}ms cubic-bezier(.3, .7, .25, 1), top ${ms}ms cubic-bezier(.3, .7, .25, 1)`;
       lpCursor.style.opacity = '1';
-      lpCursor.style.left = `${Math.round(br.left - pr.left + br.width * 0.55)}px`;
-      lpCursor.style.top = `${Math.round(br.top - pr.top + br.height * 0.55)}px`;
+      lpCursor.style.left = `${Math.round((br.left - pr.left + br.width * 0.55) / k)}px`;
+      lpCursor.style.top = `${Math.round((br.top - pr.top + br.height * 0.55) / k)}px`;
     };
 
     const lpFinal = () => {
@@ -308,7 +338,6 @@ const faqItems = [
 
     const lpCycle = () => {
       lpTimers.forEach(clearTimeout); lpTimers = [];
-      const pr = lpPage.getBoundingClientRect();
       // Επαναφορά: άδεια σελίδα, κέρσορας κάτω-δεξιά, τίποτα επιλεγμένο
       lpParts.forEach((p) => p.classList.remove('is-in'));
       lpCta.classList.remove('is-press');
@@ -321,8 +350,8 @@ const faqItems = [
       lpDone.classList.remove('is-on');
       lpCursor.style.transition = 'none';
       lpCursor.style.opacity = '0';
-      lpCursor.style.left = `${Math.round(pr.width - 34)}px`;
-      lpCursor.style.top = `${Math.round(pr.height - 30)}px`;
+      lpCursor.style.left = `${Math.round(lpPage.offsetWidth - 34)}px`;
+      lpCursor.style.top = `${Math.round(lpPage.offsetHeight - 30)}px`;
       // Η σελίδα «χτίζεται» κομμάτι-κομμάτι
       lpLater(() => {
         lpParts.forEach((p, i) => lpLater(() => p.classList.add('is-in'), i * 220));
@@ -388,7 +417,9 @@ const faqItems = [
   .lp-cta-row { display: flex; }
   .lp-note { color: var(--muted); font-size: .78rem; margin: 14px 0 0; max-width: 42ch; }
   @media (max-width: 960px) {
-    .lp-grid { grid-template-columns: 1fr; }
+    /* minmax(0,1fr): το σμικρυμένο .lp-page (496px layout box) δεν πρέπει
+       να μετρήσει ως min-content και να ανοίξει το mobile viewport. */
+    .lp-grid { grid-template-columns: minmax(0, 1fr); }
     /* width:100% (όχι το σταθερό 520px): μέσα σε 1fr track το fixed πλάτος
        μετράει ως min-content και ΑΝΟΙΓΕΙ το mobile viewport στα ~556px.
        Ο selector με το .lp-grid: ο βασικός κανόνας .lp-stage γράφεται πιο
@@ -400,7 +431,7 @@ const faqItems = [
   .lp-stage { width: 520px; max-width: 100%; }
   .lp-laptop { position: relative; }
   .lp-screen {
-    position: relative;
+    position: relative; overflow: hidden;
     background: #0f0f11; border: 1px solid #3c3c42;
     border-radius: 16px 16px 4px 4px;
     padding: 11px 11px 15px;
@@ -650,10 +681,15 @@ const faqItems = [
     /* Η προεξοχή της βάσης μαζεύει ώστε να μη δημιουργεί οριζόντιο scroll */
     .lp-base { width: 106%; margin-left: -3%; }
   }
+  /* Στενές οθόνες: η σελίδα ΔΕΝ ξαναδιατάσσεται. Το JS την αποδίδει στο
+     πλάτος desktop (496px) και τη σμικρύνει με transform (.is-fit), ώστε το
+     laptop να κρατά την ίδια 16:10 μορφή που έχει στον υπολογιστή. Το
+     στοίβαγμα παρακάτω μένει μόνο ως fallback χωρίς JS. */
+  .lp-page.is-fit { transform-origin: 0 0; }
   @media (max-width: 460px) {
-    .lp-hero { grid-template-columns: 1fr; }
-    .lp-hart { display: none; }
-    .lp-page { aspect-ratio: auto; }
+    .lp-page:not(.is-fit) .lp-hero { grid-template-columns: 1fr; }
+    .lp-page:not(.is-fit) .lp-hart { display: none; }
+    .lp-page:not(.is-fit) { aspect-ratio: auto; }
   }
 
   /* ---- Τιμή (ίδιο μοτίβο με τη σελίδα του Ψηφιακού Μενού) ---- */
