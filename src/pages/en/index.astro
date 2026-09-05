@@ -886,8 +886,9 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
      συνεχίζει ενιαία ως την κορυφή, πίσω από το sticky nav. */
   /* Η σκηνή απλώνεται και πίσω από το sticky μενού (72px) — μενού και hero «ένα» (αίτημα χρήστριας). */
   .hero { margin-top: -72px; min-height: min(100svh, 940px); display: flex; flex-direction: column; justify-content: center; padding-top: calc(clamp(32px, 5vw, 64px) + 72px); padding-bottom: clamp(48px, 7vw, 80px); position: relative; overflow-x: clip; }
-  /* Desktop: το κείμενο στην ΑΡΙΣΤΕΡΗ άκρη (όχι κεντραρισμένη στήλη) — ίδιο padding με το μενού. */
-  .hero-inner { text-align: left; position: relative; z-index: 1; width: 100%; max-width: none; padding-inline: clamp(12px, 3vw, 44px); }
+  .hero-inner { text-align: center; position: relative; z-index: 1; width: 100%; }
+  /* Αριστερά ΜΟΝΟ οι τίτλοι (kicker + h1) — τα υπόλοιπα στο κέντρο (αίτημα χρήστριας). */
+  .hero-kicker, .hero h1 { text-align: left; }
   .hero-kicker {
     margin-inline: 0; /* αριστερά (αίτημα χρήστριας) */
     margin-bottom: clamp(18px, 3vw, 28px);
@@ -903,13 +904,13 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     width: calc(100% + .12em); height: .34em;
     overflow: visible; pointer-events: none;
   }
-  .hero .sub { margin: 24px 0 0; font-size: 1.1rem; color: var(--muted); max-width: 62ch; }
-  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-start; margin-top: 36px; }
-  .hero .btn-note { margin-top: 14px; margin-inline: 0; }
+  .hero .sub { margin: 24px auto 0; font-size: 1.1rem; color: var(--muted); max-width: 62ch; }
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 36px; }
+  .hero .btn-note { margin-top: 14px; margin-inline: auto; }
 
   /* WhatsApp & Viber — γυαλιστερά brand pills με λευκό δίσκο για το εικονίδιο */
   .hero-chat {
-    display: flex; flex-direction: column; align-items: flex-start;
+    display: flex; flex-direction: column; align-items: center;
     gap: 8px; margin-top: 20px;
   }
   /* Split-button (επιλογή 6): ένα pill χωρισμένο στη μέση — WhatsApp | Viber */
@@ -932,10 +933,10 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   /* Αριθμοί-δεσμεύσεις κάτω από τα CTAs */
   .hero-stats {
     list-style: none; padding: 0;
-    display: flex; flex-wrap: wrap; justify-content: flex-start;
-    gap: 10px 34px; margin: 26px 0 0;
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 10px 34px; margin: 26px auto 0;
   }
-  .hero-stats li { display: grid; gap: 2px; text-align: left; }
+  .hero-stats li { display: grid; gap: 2px; text-align: center; }
   .hero-stats strong {
     font-family: var(--font-display); font-weight: 800;
     font-size: 1.18rem; color: var(--navy); letter-spacing: .01em;
@@ -1051,7 +1052,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   .stg-beams i:nth-child(5) { transform: rotate(-7deg); animation-delay: -8s; }
   @keyframes stgSway { to { transform: rotate(2deg) scaleX(1.3); opacity: .55; } }
   .stg-ghost {
-    position: absolute; left: clamp(12px, 3vw, 44px); top: 50%; transform: translateY(-50%);
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
     font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: clamp(6rem, 21vw, 19rem);
     letter-spacing: -.05em; white-space: nowrap; user-select: none; line-height: 1;
     color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.22);
@@ -1244,13 +1245,14 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     /* Κινητό: καθόλου αιωρούμενα λογότυπα στο hero — καθαρό, χωρίς φόρτωμα.
        (Τα .sflogo των επόμενων sections μένουν — εκεί υπάρχει χώρος.) */
     .float-logos { display: none; }
-    .btn-note { width: fit-content; margin-inline: 0; max-width: 85%; }
+    .btn-note { width: fit-content; margin-inline: auto; max-width: 85%; }
     .sflogo { display: block; }
     .hero-kicker { margin-bottom: 16px; }
     /* Πιο «άδεια» κορυφή (απόφαση χρήστριας): στην πρώτη οθόνη μένουν τίτλος +
        ένα κουμπί. Η περιγραφή ΔΕΝ κόβεται — κατεβαίνει κάτω από τα κουμπιά,
        μικρότερη και πιο αχνή, και το δεύτερο κουμπί γίνεται απλό link. */
-    .hero-inner { display: flex; flex-direction: column; align-items: flex-start; }
+    .hero-inner { display: flex; flex-direction: column; align-items: center; }
+    .hero-kicker, .hero h1 { align-self: flex-start; }
     .hero-kicker { order: 1; }
     .hero h1 { order: 2; }
     .hero-ctas { order: 3; }

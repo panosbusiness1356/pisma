@@ -71,10 +71,10 @@ const variants = [
 
   .hero { position: relative; overflow: hidden; min-height: min(100vh, 900px); display: flex; flex-direction: column; justify-content: center; padding: 0 0 56px; margin-top: 24px; border-top: 1px solid rgba(255,255,255,.08); }
   .stg { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
-  .stg-ghost { position: absolute; left: clamp(12px, 3vw, 44px); top: 50%; transform: translateY(-50%); font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: clamp(6rem, 21vw, 19rem); letter-spacing: -.05em; white-space: nowrap; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.22); background: linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,.07)); -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 0 40px rgba(255,255,255,.10)); }
+  .stg-ghost { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: clamp(6rem, 21vw, 19rem); letter-spacing: -.05em; white-space: nowrap; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.22); background: linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,.07)); -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 0 40px rgba(255,255,255,.10)); }
   .stg-ghost i { font-style: normal; }
   .stg-smoke { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-  .nav, .inner { position: relative; z-index: 1; padding-inline: clamp(12px, 3vw, 44px); }
+  .nav, .inner { position: relative; z-index: 1; max-width: 1120px; margin-inline: auto; width: 100%; padding-inline: clamp(20px, 4vw, 36px); }
   .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; margin-top: 8px; }
   .logo { font-family: 'Unbounded', 'Inter', sans-serif; font-weight: 800; font-size: 1.25rem; } .logo i { color: #FF7A50; font-style: normal; }
   .links { display: flex; gap: 22px; font-size: .92rem; } .links a { color: #E4E4E4; text-decoration: none; }

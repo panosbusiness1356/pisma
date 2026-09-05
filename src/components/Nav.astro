@@ -217,11 +217,11 @@ const inServices = NAV.services.some((s) => path === norm(s.href));
 <style>
   .nav-wrap {
     position: sticky; top: 0; z-index: 100;
-    padding: 8px 0 0;
+    padding: 8px 10px 0;
   }
   .nav {
     display: flex; align-items: center; gap: 16px; height: 64px;
-    max-width: none; padding-inline: clamp(12px, 3vw, 44px); /* όλο το πλάτος — το logo στην αριστερή άκρη, στοιχισμένο με το κείμενο του hero (αίτημα χρήστριας) */
+    max-width: 1160px; /* λίγο φαρδύτερο από το .container (1120) — δένει με το περιεχόμενο */
     border: 1px solid transparent; border-radius: 18px;
     transition: max-width .35s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
   }
