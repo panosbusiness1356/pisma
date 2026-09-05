@@ -171,6 +171,66 @@
         "4341"
       ],
       "port": 4341
+    },
+    {
+      "name": "pisma-mesanyxta-4351",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4351"
+      ],
+      "port": 4351
+    },
+    {
+      "name": "pisma-porselani-4352",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4352"
+      ],
+      "port": 4352
+    },
+    {
+      "name": "pisma-dasos-4353",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4353"
+      ],
+      "port": 4353
+    },
+    {
+      "name": "pisma-aspro-4354",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4354"
+      ],
+      "port": 4354
+    },
+    {
+      "name": "pisma-petra-4355",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4355"
+      ],
+      "port": 4355
     }
   ]
 }

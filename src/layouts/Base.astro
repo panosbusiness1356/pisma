@@ -41,10 +41,22 @@ const schemas = [siteSchema, ...(schema ? (Array.isArray(schema) ? schema : [sch
 
 // ΔΟΚΙΜΕΣ ΠΑΛΕΤΑΣ (προσωρινό — αφαιρείται μόλις επιλεγεί θέμα): στο dev,
 // κάθε port φορτώνει διαφορετικό override παλέτας από το public/themes/.
-const THEME_PORTS: Record<string, string> = { '4331': 'tefteri', '4332': 'petrol', '4333': 'melani', '4334': 'sokolata', '4335': 'elia' };
-const themePreview = import.meta.env.DEV ? (THEME_PORTS[Astro.url.port] ?? null) : null;
-// Επίσης στο dev: ?theme=<όνομα> στο URL φορτώνει το ίδιο override από τον client
-// (οι στατικές σελίδες δεν βλέπουν query params στον server) — για screenshots/σύγκριση.
+const THEME_PORTS: Record<string, string> = {
+  // 1ος γύρος (2025)
+  '4331': 'tefteri', '4332': 'petrol', '4333': 'melani', '4334': 'sokolata', '4335': 'elia',
+  // 2ος γύρος (Σεπτ. 2026) — με στρώμα εικόνας/βίντεο (/themes/_media.*)
+  '4351': 'mesanyxta', '4352': 'porselani', '4353': 'dasos', '4354': 'aspro', '4355': 'petra',
+};
+// Τρεις τρόποι επιλογής στο dev: (α) το port (launch.json), (β) το hostname
+// «<θέμα>.localhost» στο κυρίως server — π.χ. http://mesanyxta.localhost:4321/
+// (ο browser κάνει resolve τα *.localhost στο loopback χωρίς ρύθμιση),
+// (γ) ?theme=<όνομα> στο URL, από τον client (οι στατικές σελίδες δεν βλέπουν
+// query params στον server) — για screenshots/σύγκριση σε έναν server.
+const THEME_NAMES = Object.values(THEME_PORTS);
+const hostSub = Astro.url.hostname.endsWith('.localhost') ? Astro.url.hostname.slice(0, -'.localhost'.length) : '';
+const themePreview = import.meta.env.DEV
+  ? (THEME_PORTS[Astro.url.port] ?? (THEME_NAMES.includes(hostSub) ? hostSub : null))
+  : null;
 const themeByQuery = import.meta.env.DEV;
 ---
 
@@ -68,8 +80,10 @@ const themeByQuery = import.meta.env.DEV;
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#171514" />
+    {themePreview && <link rel="stylesheet" href="/themes/_media.css" />}
     {themePreview && <link rel="stylesheet" href={`/themes/${themePreview}.css`} />}
-    {themeByQuery && <script is:inline>(function(){var t=new URLSearchParams(location.search).get('theme');if(t&&/^[a-z0-9-]+$/.test(t)){var l=document.createElement('link');l.rel='stylesheet';l.href='/themes/'+t+'.css';document.head.appendChild(l);}})();</script>}
+    {themePreview && <script is:inline defer src="/themes/_media.js" data-theme={themePreview}></script>}
+    {themeByQuery && <script is:inline>(function(){var t=new URLSearchParams(location.search).get('theme');if(t&&/^[a-z0-9-]+$/.test(t)){var l=document.createElement('link');l.rel='stylesheet';l.href='/themes/_media.css';document.head.appendChild(l);l=document.createElement('link');l.rel='stylesheet';l.href='/themes/'+t+'.css';document.head.appendChild(l);var sc=document.createElement('script');sc.src='/themes/_media.js';sc.defer=true;sc.setAttribute('data-theme',t);document.head.appendChild(sc);}})();</script>}
 
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

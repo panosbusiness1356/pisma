@@ -1,0 +1,52 @@
+/* ============================================================
+   ΔΟΚΙΜΕΣ ΠΑΛΕΤΑΣ 2026 — κοινό στρώμα εικόνας/βίντεο (dev μόνο).
+   Φορτώνεται από το Base.astro μαζί με το θέμα του κάθε port.
+   Το /themes/_media.js προσθέτει στο hero: (α) φόντο-κίνηση (βίντεο ή
+   ζωντανό «φως» σε canvas) και (β) mockup συσκευών κάτω από τα CTA.
+   Κάθε θέμα ρυθμίζει μόνο μεταβλητές --tm-* (χρώμα φίλτρου, ύψος).
+   ============================================================ */
+:root {
+  --tm-h: min(92vh, 100%);                 /* ύψος φόντου στο hero */
+  --tm-tint: rgba(0, 0, 0, .35);           /* φίλτρο πάνω από βίντεο/εικόνα */
+  --tm-fade-1: 58%;                         /* από πού αρχίζει το ξεθώριασμα */
+  --tm-glow-a: .30;                         /* ένταση λάμψης πίσω από το mockup */
+}
+/* Ξεκινά ΠΑΝΩ από το hero (πίσω από το sticky μενού, ~80px) ώστε βίντεο/φως
+   να μη κόβονται σε λωρίδα στην κορυφή της σελίδας. */
+/* Το hero γίνεται containing block (σε εσωτερικές σελίδες δεν είναι relative) */
+.hero, main .hero { position: relative; }
+.tm-backdrop {
+  position: absolute; left: 0; right: 0; top: -80px; height: calc(var(--tm-h) + 80px);
+  z-index: 0; pointer-events: none; overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 var(--tm-fade-1), transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 var(--tm-fade-1), transparent 100%);
+}
+.tm-backdrop video, .tm-backdrop img, .tm-backdrop canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.tm-backdrop canvas { filter: blur(54px); transform: scale(1.18); opacity: .95; }
+.tm-backdrop--video::after, .tm-backdrop--image::after {
+  content: ''; position: absolute; inset: 0; background: var(--tm-tint);
+}
+/* Το κείμενο του hero πάνω από το φόντο */
+.hero .hero-inner, .hero .hero-ba, .hero .float-logos { position: relative; z-index: 1; }
+.hero .float-logos { z-index: 2; }
+.tm-hero--video .hero h1, .tm-hero--image .hero h1 { text-shadow: 0 2px 24px rgba(0, 0, 0, .18); }
+
+/* Mockup συσκευών: κάτω από τα CTA, πάνω από το «Πριν → Μετά» */
+.tm-media {
+  position: relative; z-index: 1;
+  max-width: 720px; margin: clamp(26px, 5vw, 54px) auto 0; padding-inline: clamp(20px, 4vw, 36px);
+  animation: tmIn .8s cubic-bezier(.22, 1, .36, 1) .7s both;
+}
+.tm-media::before {
+  content: ''; position: absolute; left: 50%; top: 42%; width: 78%; height: 62%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(var(--cta-rgb), var(--tm-glow-a)), transparent 70%);
+  filter: blur(30px); z-index: -1; pointer-events: none;
+}
+.tm-media img { width: 100%; height: auto; filter: drop-shadow(0 34px 60px rgba(0, 0, 0, .38)); }
+.tm-media figcaption { text-align: center; font-size: .84rem; color: var(--muted); margin-top: 6px; }
+@keyframes tmIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+@media (max-width: 680px) { .tm-media { max-width: 420px; } }
+@media (prefers-reduced-motion: reduce) { .tm-media { animation: none; } }

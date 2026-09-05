@@ -1,0 +1,130 @@
+/* ============================================================
+   ΔΟΚΙΜΗ ΠΑΛΕΤΑΣ 2026 — Ε. «Πέτρα» · dev port 4345
+   Ζεστή πέτρα/λινό, καφέ-εσπρέσο κείμενο, καμένη σιένα στα κουμπιά
+   (επίπεδα, χωρίς gradient) — boutique συμβουλευτική, editorial.
+   Τίτλοι σε Literata (serif με πλήρες ελληνικό). Hero με βίντεο σε
+   ζεστό φίλτρο. Προσωρινό αρχείο — γραμματοσειρές από Google Fonts
+   ΜΟΝΟ για την προεπισκόπηση.
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;7..72,700&display=swap');
+
+:root:root {
+  --bg: #F2EDE5;
+  --bg-soft: #EAE3D8;
+  --card: #FBF8F3;
+  --card-2: #F0EAE0;
+  --navy: #2A211C;
+  --ink: #473D36;
+  --muted: #6B5F57;
+  --orange: #B4482A;
+  --orange-cta: #A63D1F;
+  --orange-hi: #C2532F;
+  --orange-soft: rgba(180, 72, 42, .10);
+  --orange-text: #8F3316;
+  --orange-rgb: 180, 72, 42;
+  --cta-rgb: 166, 61, 31;
+  --peach-rgb: 214, 150, 110;
+  --grad-1: #A63D1F; --grad-2: #A63D1F; --grad-3: #9A3719;
+  --gt-1: #B4482A; --gt-2: #8F3316; --shine: #F1C9B6;
+  --cta-deep: #85301A; --cta-lite: #C2532F;
+  --cta-ink: #FFF7F0;
+  --nav-rgb: 242, 237, 229;
+  --purple: #6F7A4E;
+  --purple-soft: rgba(111, 122, 78, .12);
+  --purple-text: #55603A;
+  --blue: #5C7183;
+  --blue-soft: rgba(92, 113, 131, .11);
+  --blue-text: #45596A;
+  --yellow: #B08428;
+  --yellow-soft: rgba(176, 132, 40, .12);
+  --yellow-text: #85621A;
+  --line: rgba(42, 33, 28, .11);
+  --line-strong: rgba(42, 33, 28, .21);
+  --ok: #3E7D55;
+  --ok-soft: rgba(62, 125, 85, .12);
+  --ok-text: #2F6242;
+  --red: #B8402A;
+  --red-deep: #9A3320;
+  --red-soft: rgba(184, 64, 42, .10);
+  --red-text: #9A3320;
+  --shadow: 0 1px 2px rgba(42, 33, 28, .05), 0 12px 32px rgba(42, 33, 28, .09);
+  --shadow-hover: 0 2px 4px rgba(42, 33, 28, .06), 0 20px 48px rgba(42, 33, 28, .13);
+  --glow-orange: 0 0 44px rgba(166, 61, 31, .16);
+  --r: 14px;
+  /* media layer */
+  --tm-tint: linear-gradient(180deg, rgba(242, 237, 229, .72), rgba(242, 237, 229, .90));
+  --tm-fade-1: 48%;
+  --tm-glow-a: .14;
+  --tm-on-dark: #F1C9B6;
+}
+
+/* ---------- Τυπογραφία: serif τίτλοι ---------- */
+:root:root h1, :root:root h2, :root:root .band h2, :root:root .final-cta h2 {
+  font-family: 'Literata', Georgia, 'Times New Roman', serif;
+  font-weight: 600; letter-spacing: -.01em; line-height: 1.08;
+}
+:root:root .hero h1 { font-size: clamp(2.3rem, 5.4vw, 4.3rem); max-width: 22ch; }
+:root:root h2 { font-size: clamp(1.7rem, 3.6vw, 2.7rem); }
+:root:root .hero-kicker { letter-spacing: .18em; }
+
+/* ---------- Κουμπιά: επίπεδα, σιένα, χωρίς λάμψη ---------- */
+:root:root .btn { border-radius: 8px; }
+:root:root .btn--orange { background: var(--orange-cta); box-shadow: 0 1px 0 rgba(133, 48, 26, .35), 0 8px 22px rgba(166, 61, 31, .16); }
+:root:root .btn--orange:hover { background: var(--orange-hi); filter: none; box-shadow: 0 2px 0 rgba(133, 48, 26, .35), 0 12px 28px rgba(166, 61, 31, .22); }
+:root:root .step-num { background: var(--orange-cta); }
+:root:root:root:root .steps li:nth-child(1) .step-num { background: #D6966E; color: #2A211C; }
+:root:root:root:root .steps li:nth-child(2) .step-num { background: #C2532F; color: #FFF7F0; }
+:root:root:root:root .steps li:nth-child(3) .step-num { background: #A63D1F; color: #FFF7F0; }
+:root:root:root:root .steps li:nth-child(4) .step-num { background: #85301A; color: #FFF7F0; }
+:root:root .kicker, :root:root .kicker--blue, :root:root .kicker--yellow, :root:root .kicker--ok { border-color: transparent; }
+
+/* Ατμόσφαιρα: ζεστή, χάρτινη */
+body::before {
+  background:
+    radial-gradient(58% 34% at 82% -4%, rgba(214, 150, 110, .14), transparent 62%),
+    radial-gradient(46% 30% at 8% 0%, rgba(111, 122, 78, .07), transparent 60%);
+}
+/* ---------- Διορθώσεις φωτεινού φόντου (στοιχεία που υπέθεταν σκούρο θέμα) ---------- */
+/* Η «γεμάτη» κάρτα (Με την PISMA, Ταμπλό κ.ά.) γίνεται σκούρα-μελάνι για να ξεχωρίζει */
+:root:root:root:root .card--navy {
+  background:
+    radial-gradient(90% 100% at 50% 0%, rgba(var(--cta-rgb), .22), transparent 70%),
+    var(--navy);
+  border-color: transparent; color: #FFFFFF;
+}
+:root:root:root:root .card--navy h2, :root:root:root:root .card--navy h3 { color: #FFFFFF; }
+:root:root:root:root .card--navy p { color: rgba(255, 255, 255, .84); }
+:root:root:root:root .card--navy .muted { color: rgba(255, 255, 255, .70); }
+:root:root:root:root .ba-label--after { color: var(--cta-lite); }
+:root:root:root:root .ba-list--after li strong { color: var(--tm-on-dark, #FFFFFF); }
+/* Τελικό CTA band: σκούρο μπλοκ πάνω στο φωτεινό φόντο */
+:root:root:root:root .band {
+  background:
+    radial-gradient(80% 130% at 85% -20%, rgba(var(--cta-rgb), .30), transparent 60%),
+    radial-gradient(60% 120% at 10% 120%, rgba(var(--orange-rgb), .14), transparent 65%),
+    var(--navy);
+  border-color: transparent;
+}
+:root:root:root:root .announce:hover { border-color: var(--navy); background: var(--card); }
+:root:root:root:root .nav-links a.sub-item:hover { background: rgba(0, 0, 0, .045); }
+:root:root:root:root .flogo img.inv { filter: drop-shadow(0 8px 22px rgba(0, 0, 0, .18)); opacity: .9; }
+:root:root:root:root .flogo img { filter: drop-shadow(0 10px 22px rgba(0, 0, 0, .16)); }
+:root:root:root:root .skip-link { color: var(--navy); }
+:root:root:root:root .consent { background: rgba(255, 255, 255, .94); border-color: var(--line-strong); box-shadow: var(--shadow-hover); }
+:root:root:root:root .consent-decline { box-shadow: inset 0 0 0 1.5px var(--line-strong); }
+:root:root:root:root .consent-decline:hover { color: var(--navy); box-shadow: inset 0 0 0 1.5px var(--navy); }
+:root:root:root:root .who { border-color: var(--line-strong); background: var(--card); }
+:root:root:root:root .icon-chip--navy { background: var(--purple-soft); color: var(--purple-text); }
+:root:root:root:root .icon-chip--blue { background: var(--blue-soft); color: var(--blue-text); }
+:root:root:root:root .svc-chip { box-shadow: 0 1px 0 rgba(0, 0, 0, .04), 0 6px 14px rgba(0, 0, 0, .10); border: 1px solid var(--line); }
+:root:root:root:root .svc-art svg { filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .12)); }
+:root:root:root:root .svc-big {
+  background:
+    radial-gradient(120% 130% at 20% -10%, rgba(var(--cta-rgb), .10), transparent 60%),
+    var(--card-2);
+}
+:root:root:root:root .btn--navy { background: var(--navy); color: #FFFFFF; box-shadow: none; }
+:root:root:root:root .btn--navy:hover { box-shadow: var(--shadow); }
+:root:root:root:root .btn--ghost:hover { box-shadow: inset 0 0 0 1.5px var(--navy), var(--shadow); }
+:root:root:root:root .rev-phone { border-color: #2A2A30; }
+::selection { background: rgba(var(--cta-rgb), .22); color: var(--navy); }

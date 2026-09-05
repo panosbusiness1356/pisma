@@ -1,0 +1,78 @@
+/* ============================================================
+   ΔΟΚΙΜΗ ΠΑΛΕΤΑΣ 2026 — Γ. «Δάσος» · dev port 4343
+   Βαθύ πράσινο (ηρεμία, ασφάλεια, ανάπτυξη) με το πορτοκαλί της PISMA
+   αμετάβλητο στα κουμπιά — συμπληρωματικό ζευγάρι, ζεστό αλλά σοβαρό.
+   Τίτλοι σε Manrope (γεωμετρική, καθαρή, πλήρες ελληνικό). Hero με
+   ζωντανό «φως» σε canvas. Προσωρινό αρχείο δοκιμής — γραμματοσειρές
+   από Google Fonts ΜΟΝΟ για την προεπισκόπηση.
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&display=swap');
+
+:root:root {
+  --bg: #0C1F1A;
+  --bg-soft: #10271F;
+  --card: #132B24;
+  --card-2: #19352C;
+  --navy: #EEF5F0;
+  --ink: #D3DFD6;
+  --muted: #93A99A;
+  --orange: #FF8A5B;
+  --orange-cta: #EA5A2E;
+  --orange-hi: #FF7A45;
+  --orange-soft: rgba(255, 138, 91, .13);
+  --orange-text: #FFAD8B;
+  --orange-rgb: 255, 138, 91;
+  --cta-rgb: 234, 90, 46;
+  --peach-rgb: 255, 176, 128;
+  --grad-1: #CC431C; --grad-2: #BE3A17; --grad-3: #AC3213;
+  --gt-1: #FF9A66; --gt-2: #FF6A3A; --shine: #FFD9B8;
+  --cta-deep: #B83A16; --cta-lite: #FF8A5B;
+  --cta-ink: #FFFFFF;
+  --nav-rgb: 12, 31, 26;
+  --purple: #A9C4B3;
+  --purple-soft: rgba(169, 196, 179, .13);
+  --purple-text: #C9DCCF;
+  --blue: #8FB8A8;
+  --blue-soft: rgba(143, 184, 168, .13);
+  --blue-text: #B9D5C9;
+  --yellow: #D9B36A;
+  --yellow-soft: rgba(217, 179, 106, .14);
+  --yellow-text: #E8CB8E;
+  --line: rgba(214, 235, 222, .10);
+  --line-strong: rgba(214, 235, 222, .18);
+  --ok: #5FCB93;
+  --ok-soft: rgba(95, 203, 147, .15);
+  --ok-text: #A8E6C5;
+  --red: #FF6B5B;
+  --red-deep: #C13A20;
+  --red-soft: rgba(255, 107, 91, .13);
+  --red-text: #FFA79D;
+  --shadow: 0 2px 8px rgba(3, 12, 9, .40), 0 14px 40px rgba(3, 12, 9, .40);
+  --shadow-hover: 0 4px 12px rgba(3, 12, 9, .45), 0 22px 52px rgba(3, 12, 9, .55);
+  --glow-orange: 0 0 44px rgba(234, 90, 46, .32);
+  /* media layer */
+  --tm-blob-a: .34;
+  --tm-fade-1: 50%;
+  --tm-glow-a: .26;
+}
+
+/* ---------- Τυπογραφία ---------- */
+:root:root h1, :root:root h2, :root:root .band h2, :root:root .final-cta h2 {
+  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  font-weight: 800; letter-spacing: -.028em; line-height: 1.08;
+}
+:root:root .hero h1 { font-size: clamp(2.2rem, 5.2vw, 4.1rem); }
+
+/* Η «γεμάτη» κάρτα: πράσινο-μελάνι με πορτοκαλί λάμψη */
+:root:root .card--navy {
+  background: radial-gradient(90% 100% at 50% 0%, rgba(234, 90, 46, .14), transparent 70%), var(--card-2);
+}
+:root:root .ba-label--after { color: var(--purple-text); }
+:root:root .who { border-color: rgba(169, 196, 179, .30); background: radial-gradient(90% 120% at 85% 0%, rgba(169, 196, 179, .10), transparent 60%), var(--card); }
+
+/* Ατμόσφαιρα: πορτοκαλί ανάσα δεξιά, πράσινη αριστερά */
+body::before {
+  background:
+    radial-gradient(58% 34% at 82% -4%, rgba(255, 138, 91, .10), transparent 62%),
+    radial-gradient(46% 30% at 8% 0%, rgba(95, 203, 147, .06), transparent 60%);
+}

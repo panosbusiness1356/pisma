@@ -1,0 +1,107 @@
+/* ============================================================
+   ΔΟΚΙΜΗ ΠΑΛΕΤΑΣ 2026 — Δ. «Άσπρο & Φωτιά» · dev port 4344
+   Η φωτεινή εκδοχή της σημερινής ταυτότητας: ζεστό λευκό, ανθρακί
+   κείμενο, το πορτοκαλί της PISMA ΑΚΡΙΒΩΣ όπως είναι στα κουμπιά.
+   Γραμματοσειρές αμετάβλητες (Inter). Η πιο «ασφαλής» μετάβαση —
+   αλλάζει μόνο το φόντο από σκούρο σε φωτεινό. Hero με ζωντανό «φως»
+   σε canvas. Προσωρινό αρχείο δοκιμής.
+   ============================================================ */
+:root:root {
+  --bg: #FCFBF9;
+  --bg-soft: #F4F1EC;
+  --card: #FFFFFF;
+  --card-2: #F7F4EF;
+  --navy: #1A1715;
+  --ink: #3B3633;
+  --muted: #69615B;
+  --orange: #E8552B;
+  --orange-cta: #DD4A21;
+  --orange-hi: #F0663D;
+  --orange-soft: rgba(232, 85, 43, .10);
+  --orange-text: #B4381A;
+  --orange-rgb: 232, 85, 43;
+  --cta-rgb: 221, 74, 33;
+  --peach-rgb: 255, 170, 120;
+  --grad-1: #CC431C; --grad-2: #BE3A17; --grad-3: #AC3213;
+  --gt-1: #E8552B; --gt-2: #AC3213; --shine: #FFD3BE;
+  --cta-deep: #A83212; --cta-lite: #F0663D;
+  --cta-ink: #FFFFFF;
+  --nav-rgb: 252, 251, 249;
+  --purple: #8A7A70;
+  --purple-soft: rgba(138, 122, 112, .12);
+  --purple-text: #6A5B52;
+  --blue: #5B7FA6;
+  --blue-soft: rgba(91, 127, 166, .10);
+  --blue-text: #3F6390;
+  --yellow: #B07A1E;
+  --yellow-soft: rgba(176, 122, 30, .12);
+  --yellow-text: #8A5F14;
+  --line: rgba(26, 23, 21, .10);
+  --line-strong: rgba(26, 23, 21, .20);
+  --ok: #2E8B57;
+  --ok-soft: rgba(46, 139, 87, .12);
+  --ok-text: #226B45;
+  --red: #C93A22;
+  --red-deep: #A82F1B;
+  --red-soft: rgba(201, 58, 34, .10);
+  --red-text: #A82F1B;
+  --shadow: 0 1px 2px rgba(26, 23, 21, .05), 0 12px 32px rgba(26, 23, 21, .08);
+  --shadow-hover: 0 2px 4px rgba(26, 23, 21, .06), 0 20px 48px rgba(26, 23, 21, .12);
+  --glow-orange: 0 0 44px rgba(221, 74, 33, .22);
+  /* media layer */
+  --tm-blob-a: .26;
+  --tm-fade-1: 45%;
+  --tm-glow-a: .18;
+  --tm-on-dark: #FFAD8B;
+}
+
+/* Ατμόσφαιρα: η γνώριμη πορτοκαλί ανάσα, πολύ πιο αχνή στο λευκό */
+body::before {
+  background:
+    radial-gradient(58% 34% at 82% -4%, rgba(232, 85, 43, .08), transparent 62%),
+    radial-gradient(46% 30% at 8% 0%, rgba(255, 170, 120, .07), transparent 60%);
+}
+/* ---------- Διορθώσεις φωτεινού φόντου (στοιχεία που υπέθεταν σκούρο θέμα) ---------- */
+/* Η «γεμάτη» κάρτα (Με την PISMA, Ταμπλό κ.ά.) γίνεται σκούρα-μελάνι για να ξεχωρίζει */
+:root:root:root:root .card--navy {
+  background:
+    radial-gradient(90% 100% at 50% 0%, rgba(var(--cta-rgb), .22), transparent 70%),
+    var(--navy);
+  border-color: transparent; color: #FFFFFF;
+}
+:root:root:root:root .card--navy h2, :root:root:root:root .card--navy h3 { color: #FFFFFF; }
+:root:root:root:root .card--navy p { color: rgba(255, 255, 255, .84); }
+:root:root:root:root .card--navy .muted { color: rgba(255, 255, 255, .70); }
+:root:root:root:root .ba-label--after { color: var(--cta-lite); }
+:root:root:root:root .ba-list--after li strong { color: var(--tm-on-dark, #FFFFFF); }
+/* Τελικό CTA band: σκούρο μπλοκ πάνω στο φωτεινό φόντο */
+:root:root:root:root .band {
+  background:
+    radial-gradient(80% 130% at 85% -20%, rgba(var(--cta-rgb), .30), transparent 60%),
+    radial-gradient(60% 120% at 10% 120%, rgba(var(--orange-rgb), .14), transparent 65%),
+    var(--navy);
+  border-color: transparent;
+}
+:root:root:root:root .announce:hover { border-color: var(--navy); background: var(--card); }
+:root:root:root:root .nav-links a.sub-item:hover { background: rgba(0, 0, 0, .045); }
+:root:root:root:root .flogo img.inv { filter: drop-shadow(0 8px 22px rgba(0, 0, 0, .18)); opacity: .9; }
+:root:root:root:root .flogo img { filter: drop-shadow(0 10px 22px rgba(0, 0, 0, .16)); }
+:root:root:root:root .skip-link { color: var(--navy); }
+:root:root:root:root .consent { background: rgba(255, 255, 255, .94); border-color: var(--line-strong); box-shadow: var(--shadow-hover); }
+:root:root:root:root .consent-decline { box-shadow: inset 0 0 0 1.5px var(--line-strong); }
+:root:root:root:root .consent-decline:hover { color: var(--navy); box-shadow: inset 0 0 0 1.5px var(--navy); }
+:root:root:root:root .who { border-color: var(--line-strong); background: var(--card); }
+:root:root:root:root .icon-chip--navy { background: var(--purple-soft); color: var(--purple-text); }
+:root:root:root:root .icon-chip--blue { background: var(--blue-soft); color: var(--blue-text); }
+:root:root:root:root .svc-chip { box-shadow: 0 1px 0 rgba(0, 0, 0, .04), 0 6px 14px rgba(0, 0, 0, .10); border: 1px solid var(--line); }
+:root:root:root:root .svc-art svg { filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .12)); }
+:root:root:root:root .svc-big {
+  background:
+    radial-gradient(120% 130% at 20% -10%, rgba(var(--cta-rgb), .10), transparent 60%),
+    var(--card-2);
+}
+:root:root:root:root .btn--navy { background: var(--navy); color: #FFFFFF; box-shadow: none; }
+:root:root:root:root .btn--navy:hover { box-shadow: var(--shadow); }
+:root:root:root:root .btn--ghost:hover { box-shadow: inset 0 0 0 1.5px var(--navy), var(--shadow); }
+:root:root:root:root .rev-phone { border-color: #2A2A30; }
+::selection { background: rgba(var(--cta-rgb), .22); color: var(--navy); }

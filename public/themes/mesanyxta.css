@@ -1,0 +1,95 @@
+/* ============================================================
+   ΔΟΚΙΜΗ ΠΑΛΕΤΑΣ 2026 — Α. «Μεσάνυχτα & Χρυσός» · dev port 4341
+   Βαθύ ναυτικό μπλε (τράπεζα/ασφάλεια), σαμπανιζέ χρυσό accent,
+   ζεστό λευκό κείμενο. Τίτλοι σε Source Serif 4 (editorial κύρος,
+   πλήρες ελληνικό). Hero με βίντεο πίσω από το κείμενο, φιλτραρισμένο
+   στο ναυτικό. Προσωρινό αρχείο δοκιμής — γραμματοσειρές από Google
+   Fonts ΜΟΝΟ για την προεπισκόπηση (στο site θα γίνουν self-hosted).
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap');
+
+:root:root {
+  --bg: #0B1526;
+  --bg-soft: #0F1B30;
+  --card: #121F36;
+  --card-2: #182643;
+  --navy: #F4F1EA;
+  --ink: #D9D6CE;
+  --muted: #9AA4B8;
+  --orange: #E3BA6C;
+  --orange-cta: #D6AB52;
+  --orange-hi: #ECC981;
+  --orange-soft: rgba(227, 186, 108, .12);
+  --orange-text: #EBC77E;
+  --orange-rgb: 227, 186, 108;
+  --cta-rgb: 214, 171, 82;
+  --peach-rgb: 243, 216, 150;
+  --grad-1: #E6BE70; --grad-2: #D6AB52; --grad-3: #C89C42;
+  --gt-1: #F3D896; --gt-2: #D6AB52; --shine: #FFF3D0;
+  --cta-deep: #B98D34; --cta-lite: #F3D896;
+  --cta-ink: #1B1506;
+  --nav-rgb: 11, 21, 38;
+  --purple: #8FA6C9;
+  --purple-soft: rgba(143, 166, 201, .14);
+  --purple-text: #BCCBE4;
+  --blue: #7FB3D5;
+  --blue-soft: rgba(127, 179, 213, .13);
+  --blue-text: #ADD3EA;
+  --yellow: #E3BA6C;
+  --yellow-soft: rgba(227, 186, 108, .14);
+  --yellow-text: #EBC77E;
+  --line: rgba(226, 220, 204, .10);
+  --line-strong: rgba(226, 220, 204, .19);
+  --ok: #4FB98A;
+  --ok-soft: rgba(79, 185, 138, .15);
+  --ok-text: #A3E1C4;
+  --red: #FF6F5E;
+  --red-deep: #C7452F;
+  --red-soft: rgba(255, 111, 94, .13);
+  --red-text: #FFA89D;
+  --shadow: 0 2px 8px rgba(2, 6, 16, .45), 0 14px 40px rgba(2, 6, 16, .45);
+  --shadow-hover: 0 4px 12px rgba(2, 6, 16, .5), 0 22px 52px rgba(2, 6, 16, .6);
+  --glow-orange: 0 0 44px rgba(214, 171, 82, .30);
+  /* media layer */
+  --tm-tint: linear-gradient(180deg, rgba(11, 21, 38, .55), rgba(11, 21, 38, .82));
+  --tm-fade-1: 50%;
+  --tm-glow-a: .22;
+}
+
+/* ---------- Τυπογραφία: serif τίτλοι, Inter σώμα ---------- */
+:root:root h1, :root:root h2, :root:root .band h2, :root:root .final-cta h2 {
+  font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  font-weight: 600;
+  letter-spacing: -.012em;
+  line-height: 1.08;
+}
+:root:root .hero h1 { font-size: clamp(2.3rem, 5.4vw, 4.3rem); max-width: 22ch; }
+:root:root h2 { font-size: clamp(1.7rem, 3.6vw, 2.7rem); }
+:root:root .hero-kicker { color: var(--orange-text); letter-spacing: .18em; }
+
+/* ---------- Κουμπιά: χρυσό με σκούρο μελάνι, χωρίς φωτιά ---------- */
+:root:root .btn--orange { color: var(--cta-ink); box-shadow: 0 6px 24px rgba(214, 171, 82, .28); }
+:root:root .btn--orange:hover { filter: brightness(1.05); box-shadow: 0 10px 32px rgba(214, 171, 82, .38); }
+:root:root .btn--navy { background: rgba(255, 255, 255, .06); }
+
+/* ---------- Κάρτες: πιο ήσυχες, μπλε-μαύρη σκιά ---------- */
+:root:root .card { background: linear-gradient(180deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, 0) 60%), var(--card); }
+:root:root .card--navy {
+  background: radial-gradient(90% 100% at 50% 0%, rgba(227, 186, 108, .14), transparent 70%), var(--card-2);
+}
+:root:root .ba-label--after { color: var(--orange-text); }
+:root:root .ba-list--after li strong { color: var(--gt-1); }
+
+/* Βήματα: ενιαίο χρυσό αντί για την κλίμακα πορτοκαλί */
+:root:root:root:root .steps li:nth-child(1) .step-num,
+:root:root:root:root .steps li:nth-child(2) .step-num,
+:root:root:root:root .steps li:nth-child(3) .step-num,
+:root:root:root:root .steps li:nth-child(4) .step-num { background: var(--grad); color: var(--cta-ink); }
+
+/* Ατμόσφαιρα κορυφής: χρυσή ανάσα δεξιά, μπλε αριστερά */
+body::before {
+  background:
+    radial-gradient(58% 34% at 82% -4%, rgba(227, 186, 108, .10), transparent 62%),
+    radial-gradient(46% 30% at 8% 0%, rgba(127, 179, 213, .06), transparent 60%);
+}
+::selection { background: rgba(214, 171, 82, .55); color: #0B1526; }
