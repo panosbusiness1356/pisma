@@ -14,12 +14,13 @@
  *   data-rise      άνοδος προς τα πάνω (0–1, default .15)
  *   data-rays      ακτίνες προβολέων μέσα στον καπνό (0/1, default 0)
  *   data-glow      φως/«αύρα» πίσω από το κέντρο που φωτίζει τον καπνό (0–1.5, default .9)
+ *   data-glowy     ύψος του φωτός 0–1 (default .5), data-glowr σφίξιμο (default 2.8, μικρότερο = πιο απλωμένο)
  * Σταματά εκτός οθόνης/κρυφής καρτέλας, παγώνει σε ένα καρέ με reduced motion,
  * αφαιρείται χωρίς WebGL (μένει ο CSS καπνός από κάτω).
  */
 const VERT = `attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}`;
 const FRAG = `precision mediump float;
-uniform vec2 u_res;uniform float u_t,u_str,u_scale,u_warp,u_lo,u_hi,u_bottom,u_rise,u_rays,u_glow;
+uniform vec2 u_res;uniform float u_t,u_str,u_scale,u_warp,u_lo,u_hi,u_bottom,u_rise,u_rays,u_glow,u_gy,u_gr;
 float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
 return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);}
@@ -61,8 +62,8 @@ if(u_rays>.5){
   d+=rays*smoothstep(0.,.9,uv.y)*.35*(.4+.6*f);
 }
 /* «αύρα»: απαλό φως πίσω από το κέντρο (τα γράμματα) που φωτίζει τον καπνό γύρω του */
-vec2 cc=uv-vec2(.5,.5);cc.x*=asp;
-float glow=exp(-dot(cc,cc)*2.8)*u_glow;
+vec2 cc=uv-vec2(.5,u_gy);cc.x*=asp;
+float glow=exp(-dot(cc,cc)*u_gr)*u_glow;
 float a=clamp(d+glow*.12*(.3+f),0.,1.)*u_str;
 /* γκρι με σκίαση: φωτισμένες κορυφές πιο ανοιχτές, «κοιλιές» πιο σκούρες· πιο φωτεινός κοντά στο φως */
 float g=mix(.6,1.,shade)*(.8+.55*glow);
@@ -93,6 +94,8 @@ function setup(canvas: HTMLCanvasElement) {
   gl.uniform1f(U('u_rise'), num('rise', .15));
   gl.uniform1f(U('u_rays'), num('rays', 0));
   gl.uniform1f(U('u_glow'), num('glow', .9));
+  gl.uniform1f(U('u_gy'), num('glowy', .5));   // ύψος του φωτός (0 κάτω – 1 πάνω)
+  gl.uniform1f(U('u_gr'), num('glowr', 2.8));  // πόσο «σφιχτό» είναι το φως (μεγάλο = μικρότερος κύκλος)
   const speed = num('speed', 1);
   gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;

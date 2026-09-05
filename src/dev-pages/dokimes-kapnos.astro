@@ -5,12 +5,14 @@
 // που θα μπουν στο <canvas class="stg-smoke"> της αρχικής.
 import '../styles/fonts.css';
 const variants = [
-  { n: 1, t: 'Λεπτές τολύπες', d: 'Αραιός, λεπτός καπνός που στρίβει — σαν καπνός τσιγάρου σε σκοτεινό δωμάτιο.', a: { strength: '.5', scale: '3.4', warp: '5', lo: '.46', hi: '1', bottom: '.5', rise: '.2', speed: '1.2' } },
-  { n: 2, t: 'Πυκνή ομίχλη', d: 'Βαρύς, μαλακός καπνός που καλύπτει το κάτω μέρος και αραιώνει προς τα πάνω (το τωρινό, λίγο πιο πυκνό).', a: { strength: '.7', scale: '2.2', warp: '3.5', lo: '.34', hi: '.95', bottom: '.85', rise: '.12', speed: '.9' } },
-  { n: 3, t: 'Σύννεφα', d: 'Μεγάλοι, απαλοί σχηματισμοί, πολύ αργοί — ήρεμο, σχεδόν ακίνητο.', a: { strength: '.55', scale: '1.3', warp: '2.2', lo: '.4', hi: '.98', bottom: '.6', rise: '.06', speed: '.6' } },
-  { n: 4, t: 'Κορδέλες', d: 'Έντονο στρίψιμο, ψηλή αντίθεση — φαίνονται καθαρά οι «κλωστές» του καπνού.', a: { strength: '.65', scale: '2.8', warp: '6', lo: '.5', hi: '.9', bottom: '.6', rise: '.18', speed: '1' } },
-  { n: 5, t: 'Προβολείς μέσα στον καπνό', d: 'Ίδιος καπνός με το 2, αλλά με πέντε ακτίνες φωτός από ψηλά που τρεμοπαίζουν — σκηνή συναυλίας.', a: { strength: '.6', scale: '2.2', warp: '3.5', lo: '.36', hi: '.96', bottom: '.8', rise: '.12', speed: '.9', rays: '1' } },
-  { n: 6, t: 'Ανεβαίνει από κάτω', d: 'Πυκνός στο πάτωμα, ανεβαίνει σταθερά προς τα πάνω σαν ξηρός πάγος.', a: { strength: '.7', scale: '2.6', warp: '3', lo: '.35', hi: '.95', bottom: '.95', rise: '.5', speed: '1' } },
+  { n: 1, t: 'Αύρα στο κέντρο', d: 'Μέτριος καπνός και δυνατό, σφιχτό φως πίσω από το PISMA — τα γράμματα «κολυμπούν» σε φωτεινό σύννεφο.', a: { strength: '.8', scale: '2.4', warp: '3.5', lo: '.38', hi: '.98', bottom: '.75', rise: '.15', speed: '1', glow: '1.3', glowy: '.5', glowr: '3.2' } },
+  { n: 2, t: 'Απλωμένο φως', d: 'Το φως πιο απαλό αλλά απλωμένο σε όλο το hero — ομοιόμορφη, ονειρική λάμψη.', a: { strength: '.7', scale: '2', warp: '3', lo: '.4', hi: '.98', bottom: '.6', rise: '.1', speed: '.8', glow: '1', glowy: '.5', glowr: '1.2' } },
+  { n: 3, t: 'Φως από ψηλά + προβολείς', d: 'Το φως ψηλά, με πέντε ακτίνες που τρεμοπαίζουν μέσα στον καπνό — σκηνή συναυλίας.', a: { strength: '.75', scale: '2.2', warp: '3.5', lo: '.36', hi: '.96', bottom: '.8', rise: '.12', speed: '.9', rays: '1', glow: '1', glowy: '.8', glowr: '2' } },
+  { n: 4, t: 'Φωτισμένο πάτωμα', d: 'Πυκνός καπνός που ανεβαίνει από κάτω, με το φως χαμηλά — σαν ξηρός πάγος σε φωτισμένη σκηνή.', a: { strength: '.85', scale: '2.6', warp: '3', lo: '.34', hi: '.95', bottom: '.95', rise: '.45', speed: '1', glow: '1.2', glowy: '.2', glowr: '2.4' } },
+  { n: 5, t: 'Λεπτές κλωστές με λάμψη', d: 'Λεπτός, στριφτός καπνός· το φως αναδεικνύει τις «κλωστές» του.', a: { strength: '.7', scale: '3.2', warp: '5.5', lo: '.46', hi: '1', bottom: '.5', rise: '.2', speed: '1.2', glow: '1.1', glowy: '.5', glowr: '2.8' } },
+  { n: 6, t: 'Αργά σύννεφα', d: 'Μεγάλοι, αργοί σχηματισμοί με απαλή αύρα — ήρεμο, πολυτελές.', a: { strength: '.65', scale: '1.4', warp: '2.2', lo: '.4', hi: '.98', bottom: '.6', rise: '.06', speed: '.55', glow: '.9', glowy: '.5', glowr: '2' } },
+  { n: 7, t: 'Ονειρικός', d: 'Ελαφρύς, φωτεινός καπνός, χαμηλή αντίθεση, φως παντού — σαν πρωινή ομίχλη με ήλιο.', a: { strength: '.6', scale: '1.7', warp: '2.6', lo: '.3', hi: '.9', bottom: '.5', rise: '.1', speed: '.7', glow: '1.4', glowy: '.55', glowr: '1.5' } },
+  { n: 8, t: 'Δραματικός', d: 'Σκούρος, βαρύς καπνός με ένα μόνο δυνατό φως στο κέντρο — υψηλή αντίθεση, cinematic.', a: { strength: '.9', scale: '2.4', warp: '4', lo: '.44', hi: '.98', bottom: '.85', rise: '.15', speed: '.9', glow: '1.5', glowy: '.5', glowr: '4' } },
 ];
 ---
 
@@ -25,7 +27,7 @@ const variants = [
     <nav class="pick" aria-label="Επιλογή">{variants.map((v) => <a href={`#k${v.n}`}><b>{v.n}</b>{v.t}</a>)}</nav>
     <header class="intro">
       <p class="intro-k">Δοκιμές · καπνός</p>
-      <h1>Έξι εκδοχές καπνού</h1>
+      <h1>Οκτώ εκδοχές καπνού με «αύρα»</h1>
       <p>Ίδια αρχική, άλλος καπνός σε κάθε μπλοκ. Κινούνται ζωντανά — αφήστε τα λίγα δευτερόλεπτα. Πείτε μου νούμερο.</p>
     </header>
 
@@ -33,7 +35,7 @@ const variants = [
       <section class="hero" id={`k${v.n}`}>
         <div class="stg" aria-hidden="true">
           <span class="stg-ghost">PISMA<i>.</i></span>
-          <canvas class="stg-smoke" data-strength={v.a.strength} data-scale={v.a.scale} data-warp={v.a.warp} data-lo={v.a.lo} data-hi={v.a.hi} data-bottom={v.a.bottom} data-rise={v.a.rise} data-speed={v.a.speed} data-rays={v.a.rays ?? '0'}></canvas>
+          <canvas class="stg-smoke" data-strength={v.a.strength} data-scale={v.a.scale} data-warp={v.a.warp} data-lo={v.a.lo} data-hi={v.a.hi} data-bottom={v.a.bottom} data-rise={v.a.rise} data-speed={v.a.speed} data-rays={v.a.rays ?? '0'} data-glow={v.a.glow} data-glowy={v.a.glowy} data-glowr={v.a.glowr}></canvas>
         </div>
         <div class="lab"><b>{v.n} — {v.t}</b> {v.d}</div>
         <nav class="nav"><span class="logo">PISMA<i>.</i></span><span class="links"><a>Υπηρεσίες</a><a>Τιμές</a><a>Αποτελέσματα</a><a>Οδηγοί</a></span><a class="cta">Μετρήστε την επιχείρησή σας</a></nav>
