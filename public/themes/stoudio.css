@@ -85,7 +85,7 @@
 :root:root h1 { line-height: 1.0; font-size: clamp(2.5rem, 5.6vw, 4.6rem); }
 :root:root h2 { line-height: 1.06; font-size: clamp(1.8rem, 3.6vw, 2.8rem); }
 :root:root h3 { font-size: 1.12rem; font-weight: 600; letter-spacing: -.01em; }
-:root:root:root:root .hero h1 { font-size: clamp(2.5rem, 5vw, 4.4rem); max-width: none; margin-inline: 0; }
+:root:root:root:root .hero h1 { font-size: clamp(2.4rem, 4.6vw, 4rem); max-width: none; margin-inline: 0; }
 :root:root:root:root .hero-hl { box-shadow: inset 0 -.34em 0 rgba(232, 72, 31, .22); }
 :root:root p { max-width: 60ch; }
 :root:root .accent { color: var(--navy); }
