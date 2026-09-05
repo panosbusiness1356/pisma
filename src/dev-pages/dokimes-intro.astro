@@ -1,0 +1,483 @@
+---
+// ΠΡΟΣΩΡΙΝΗ σελίδα δοκιμών — ΜΟΝΟ dev, δεν μπαίνει στο build.
+// Δέκα εκδοχές «intro» (loading με αύρα) πάνω στο hero της αρχικής.
+// Αίτημα χρήστριας 06/09/2026: «ένα ωραίο loading του site πριν ανοίξει, με πολλή αύρα — όλα και περισσότερα».
+// Κανόνες που τηρούν όλες οι εκδοχές (για να μην πληγεί SEO/Core Web Vitals όταν μπει στην αρχική):
+//   • 1.4–1.9 s συνολικά, skip με κλικ οπουδήποτε, μία φορά ανά session (sessionStorage), reduced-motion = καθόλου intro.
+//   • Το hero (μενού, τίτλοι) υπάρχει από το πρώτο ms ΚΑΤΩ από το πέπλο — το intro είναι πέπλο, όχι καθυστέρηση.
+//   • 0 KB media: μόνο CSS, Web Animations, WebGL (ίδιος τύπος καπνού με το hero), Canvas 2D.
+import '../styles/fonts.css';
+const variants = [
+  { n: 1, t: 'Ο καπνός γεννά το logo', d: 'Σφαίρα καπνού με πορτοκαλί αύρα στο κέντρο. Τα γράμματα «PISMA.» βγαίνουν μέσα από τον καπνό, ο καπνός απλώνει και αποκαλύπτει το hero — ένα συνεχές shot.' },
+  { n: 2, t: 'Η τελεία', d: 'Μόνο η πορτοκαλί τελεία του logo, σαν κάρβουνο που πάλλεται στο μαύρο. Ρίχνει halo και το «PISMA» ξεδιπλώνεται από αριστερά προς την τελεία.' },
+  { n: 3, t: 'Άνοιγμα προβολέων', d: 'Δύο κώνοι φωτός σαρώνουν το σκοτάδι, βρίσκουν το logo, «κουμπώνουν» πάνω του και το φως απλώνεται σε όλη τη σκηνή.' },
+  { n: 4, t: 'Ο καπνός τρώει την κουρτίνα', d: 'Το hero είναι ήδη εκεί, κάτω από σκούρο πέπλο. Το πέπλο διαλύεται με μάσκα από καπνό — όχι fade, ο καπνός το «τρώει».' },
+  { n: 5, t: 'Μετρητής με νόημα', d: 'Αριθμός σε Unbounded που ανεβαίνει 0 → 100 % («δημόσιες τιμές», πραγματικό στοιχείο του hero). Το τελευταίο ψηφίο «καίει» πορτοκαλί.' },
+  { n: 6, t: 'Κάρβουνα', d: 'Πορτοκαλί σπίθες ανεβαίνουν από το πάτωμα, μαζεύονται όλες σε ένα σημείο και γίνονται η τελεία του «PISMA.».' },
+  { n: 7, t: 'Χάραξη', d: 'Το «PISMA.» χαράζεται περίγραμμα-περίγραμμα σαν με λέιζερ, μετά γεμίζει λευκό με λάμψη και η τελεία ανάβει.' },
+  { n: 8, t: 'Ζουμ πίσω', d: 'Το «PISMA.» τεράστιο, γεμίζει την οθόνη· η «κάμερα» τραβιέται πίσω μέχρι το logo να καθίσει στη θέση του και το hero να φανεί γύρω του.' },
+  { n: 9, t: 'Αυλαία', d: 'Μια πορτοκαλί γραμμή-λέιζερ ανοίγει στο κέντρο· η σκηνή σκίζεται πάνω-κάτω σαν αυλαία, με λίγο καπνό στη ραφή.' },
+  { n: 10, t: 'Πρόταση: 1 + 4', d: 'Ο καπνός με πορτοκαλί αύρα γεννά το «PISMA.», και μετά ο ίδιος καπνός τρώει το πέπλο και αποκαλύπτει το hero. Το κείμενο μπαίνει τελευταίο.' },
+];
+---
+
+<html lang="el">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Δοκιμές — 10 εκδοχές intro</title>
+  </head>
+  <body>
+    <!-- Hero της αρχικής (mock, ίδια διάταξη με το live: όλα στο κέντρο) -->
+    <section class="hero" id="hero">
+      <div class="stg" aria-hidden="true">
+        <span class="stg-fog stg-fog--1"></span><span class="stg-fog stg-fog--2"></span><span class="stg-fog stg-fog--3"></span>
+        <canvas class="stg-smoke" data-strength=".8" data-glow="1"></canvas>
+        <span class="stg-floor"></span>
+      </div>
+      <nav class="nav bi" style="--d:.05s"><span class="logo">PISMA<i>.</i></span><span class="links"><a>Υπηρεσίες</a><a>Τιμές</a><a>Αποτελέσματα</a><a>Οδηγοί</a></span><a class="cta">Μετρήστε την επιχείρησή σας</a></nav>
+      <div class="inner">
+        <p class="k bi" style="--d:.16s">Ψηφιακή παρουσία &amp; αυτοματοποίηση</p>
+        <h1 class="bi" style="--d:.22s">Η επιχείρησή σας, <span class="hl">ορατή στους πελάτες</span>.</h1>
+        <div class="hero-word bi" style="--d:.3s" aria-hidden="true">PISMA<i>.</i></div>
+        <div class="btns bi" style="--d:.46s"><a class="btn" href="#">Μετρήστε την επιχείρησή σας — 2 λεπτά</a><a class="ghostbtn" href="#">Κλείστε τον δωρεάν Έλεγχο</a></div>
+        <p class="note bi" style="--d:.54s">Χωρίς email · χωρίς δέσμευση · 2 λεπτά και βλέπετε το σκορ</p>
+        <ul class="stats bi" style="--d:.64s"><li><b>από 220 €</b><span>ιστοσελίδα</span></li><li><b>72 ώρες</b><span>πρώτο preview</span></li><li><b>48 ώρες</b><span>γραπτή πρόταση</span></li><li><b>100%</b><span>δημόσιες τιμές</span></li></ul>
+        <p class="sub bi" style="--d:.34s">Στην PISMA σχεδιάζουμε και αναπτύσσουμε την παρουσία της επιχείρησής σας σε ιστοσελίδα, Google και AI, και αυτοματοποιούμε τις καθημερινές διαδικασίες σας.</p>
+      </div>
+    </section>
+
+    <!-- Πάνελ επιλογής (μόνο για τη δοκιμή) -->
+    <aside class="panel" id="panel">
+      <p class="panel-k">Δοκιμές · intro με αύρα</p>
+      <h2 id="p-title">—</h2>
+      <p id="p-desc">—</p>
+      <div class="panel-row">
+        <button type="button" id="again">↻ Ξανά</button>
+        <label><input type="checkbox" id="snd" /> ήχος «whoosh» (μόνο με κλικ)</label>
+      </div>
+      <p class="panel-note">Κλικ οπουδήποτε στο intro = skip. Πλήκτρα 1–9 και 0 για το 10. Κάθε intro 1,4–1,9 s.</p>
+    </aside>
+    <nav class="pick" aria-label="Επιλογή εκδοχής">{variants.map((v) => <button type="button" data-v={v.n}><b>{v.n}</b>{v.t}</button>)}</nav>
+
+    <div id="intro" hidden></div>
+
+    <script define:vars={{ variants }}>
+      window.__VARIANTS = variants;
+    </script>
+    <script>
+      import '../scripts/smoke';
+
+      /* ============================================================
+         Εργαλεία
+         ============================================================ */
+      const $ = (s: string, r: ParentNode = document) => r.querySelector(s) as HTMLElement;
+      const mk = (tag: string, cls = '', html: string | null = null) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+      const ORANGE = '#FF7A50';
+      const ease = (p: number) => p * p * (3 - 2 * p);
+      const letters = (host: HTMLElement, cls = 'ltr') => {
+        const out: HTMLElement[] = [];
+        for (const ch of 'PISMA.') { const s = mk('span', cls + (ch === '.' ? ' dot' : ''), ch); host.appendChild(s); out.push(s); }
+        return out;
+      };
+
+      /** Πλαίσιο ενός intro: μαζεύει animations/rafs/timers ώστε το skip να τα «τελειώνει» όλα μαζί. */
+      class Ctx {
+        root: HTMLElement; done = false; anims: Animation[] = []; rafs = new Set<number>(); timers: { id: number; res: () => void }[] = [];
+        constructor(root: HTMLElement) { this.root = root; }
+        a(el: Element, kf: Keyframe[] | PropertyIndexedKeyframes, o: KeyframeAnimationOptions) {
+          const A = el.animate(kf, { fill: 'forwards', ...o }); this.anims.push(A); if (this.done) A.finish(); return A.finished.catch(() => {});
+        }
+        wait(ms: number) { return new Promise<void>((res) => { if (this.done) return res(); const id = window.setTimeout(() => res(), ms); this.timers.push({ id, res }); }); }
+        loop(fn: (p: number) => void, dur: number) {
+          return new Promise<void>((res) => {
+            const t0 = performance.now();
+            const step = () => {
+              if (this.done) { fn(1); return res(); }
+              if (this.frozen) { fn(this.pf); this.rafs.add(requestAnimationFrame(step)); return; }
+              const p = Math.min(1, (performance.now() - t0) / dur); this.pf = p; fn(p);
+              if (p < 1) this.rafs.add(requestAnimationFrame(step)); else res();
+            };
+            step();
+          });
+        }
+        frozen = false; pf = 0;
+        /* Μόνο για δοκιμή/screenshots: παγώνει το intro εκεί που είναι */
+        freeze() { this.frozen = true; this.anims.forEach((a) => { try { a.pause(); } catch {} }); this.rafs.forEach((r) => cancelAnimationFrame(r)); this.timers.forEach((t) => clearTimeout(t.id)); }
+        skip() { this.done = true; this.anims.forEach((a) => { try { a.finish(); } catch {} }); this.timers.forEach((t) => { clearTimeout(t.id); t.res(); }); this.rafs.forEach((r) => cancelAnimationFrame(r)); }
+      }
+
+      /* ============================================================
+         WebGL καπνός για τα intro (ίδια «οικογένεια» με smoke.ts, με πρόοδο u_p)
+         mode 1 = σφαίρα με αύρα που απλώνει · 4 = πέπλο που το τρώει ο καπνός · 10 = 1 και μετά 4
+         ============================================================ */
+      const VERT = `attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}`;
+      const FRAG = `precision mediump float;
+      uniform vec2 u_res;uniform float u_t,u_p,u_mode;
+      float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+      float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
+      return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);}
+      float fbm(vec2 p){float v=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<4;i++){v+=a*noise(p);p=m*p;a*=.5;}return v;}
+      float smoke(vec2 p,float t){vec2 q=vec2(fbm(p+vec2(0.,t)),fbm(p+vec2(5.2,1.3)-t*.7));return fbm(p+3.2*q);}
+      void main(){
+        vec2 uv=gl_FragCoord.xy/u_res;float asp=u_res.x/u_res.y;
+        vec2 cc=(uv-.5)*vec2(asp,1.);float dist=length(cc);
+        float t=u_t*.09;
+        float f=smoke(uv*vec2(asp,1.)*2.3+vec2(0.,-t*.5),t);
+        vec3 col=vec3(0.);float a=1.;
+        vec3 orange=vec3(1.,.48,.3);
+        if(u_mode<1.5){
+          float e=u_p*u_p*(3.-2.*u_p);
+          float r=mix(.07,2.1,e*e);
+          float nd=dist+(f-.5)*.5*r;
+          float d=smoothstep(.36,.92,f)*smoothstep(r,r*.2,nd);
+          float glow=exp(-dist*dist/(max(r,.06)*.55))*(1.-smoothstep(.45,1.,u_p)*.8);
+          float hole=(1.-smoothstep(r*.45,r*1.05,nd))*smoothstep(.3,.5,u_p);
+          float veil=1.-hole;
+          col=vec3(.86)*d*(.7+.3*glow)+mix(orange,vec3(1.),.25)*glow*.32;
+          a=clamp(veil+d*.9+glow*.4,0.,1.);
+        }else if(u_mode<4.5){
+          float p=u_p*1.4;
+          float lf=smoke(uv*vec2(asp,1.)*1.3+vec2(t*.2,-t*.3),t*.7);
+          float veil=smoothstep(p-.32,p+.02,lf);
+          float edge=smoothstep(p-.42,p-.1,lf)*(1.-smoothstep(p-.02,p+.2,lf));
+          float g=edge*.8*smoothstep(.3,.9,f+.25);
+          col=vec3(.88)*g;a=clamp(veil+g,0.,1.);
+        }else{
+          /* 10: σφαίρα+αύρα (0–.5) και μετά ο καπνός τρώει το πέπλο (.45–1) */
+          float e=smoothstep(0.,.55,u_p);
+          float r=mix(.07,.75,e*e);
+          float nd=dist+(f-.5)*.5*r;
+          float d=smoothstep(.36,.92,f)*smoothstep(r,r*.2,nd)*(1.-smoothstep(.75,1.,u_p));
+          float glow=exp(-dist*dist/(max(r,.06)*.55))*(1.-smoothstep(.5,1.,u_p)*.85);
+          float p=max(0.,(u_p-.42)/.58)*1.45;
+          float lf=smoke(uv*vec2(asp,1.)*1.3+vec2(t*.2,-t*.3),t*.7);
+          float veil=smoothstep(p-.32,p+.02,lf)*step(u_p,.999);
+          float edge=smoothstep(p-.42,p-.1,lf)*(1.-smoothstep(p-.02,p+.2,lf));
+          float g=edge*.8*smoothstep(.3,.9,f+.25);
+          float sm=max(d*(.7+.3*glow),g);
+          col=vec3(.86)*sm+mix(orange,vec3(1.),.25)*glow*.3;
+          a=clamp(veil+sm*.95+glow*.4,0.,1.);
+        }
+        gl_FragColor=vec4(min(col,vec3(a)),a);
+      }`;
+      function glSmoke(canvas: HTMLCanvasElement, mode: number) {
+        const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: true, antialias: false, preserveDrawingBuffer: true });
+        if (!gl) return null;
+        const mkS = (t: number, src: string) => { const s = gl.createShader(t)!; gl.shaderSource(s, src); gl.compileShader(s); return s; };
+        const prog = gl.createProgram()!; gl.attachShader(prog, mkS(gl.VERTEX_SHADER, VERT)); gl.attachShader(prog, mkS(gl.FRAGMENT_SHADER, FRAG)); gl.linkProgram(prog);
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { console.warn(gl.getProgramInfoLog(prog)); return null; }
+        gl.useProgram(prog);
+        const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+        const a = gl.getAttribLocation(prog, 'a'); gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
+        const U = (n: string) => gl.getUniformLocation(prog, n);
+        gl.uniform1f(U('u_mode'), mode);
+        gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+        const s = (innerWidth < 720 ? .5 : .65) * Math.min(devicePixelRatio, 1.25);
+        canvas.width = Math.round(innerWidth * s); canvas.height = Math.round(innerHeight * s);
+        gl.viewport(0, 0, canvas.width, canvas.height); gl.uniform2f(U('u_res'), canvas.width, canvas.height);
+        const uT = U('u_t'), uP = U('u_p'); const t0 = performance.now() + 30000 * Math.random();
+        return {
+          draw(p: number) { gl.uniform1f(uT, (performance.now() - t0) / 1000 + 40); gl.uniform1f(uP, p); gl.clear(gl.COLOR_BUFFER_BIT); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); },
+        };
+      }
+
+      /* Ήχος: «whoosh» καπνού με Web Audio (λευκός θόρυβος + bandpass sweep). Μόνο μετά από κλικ. */
+      let audio: AudioContext | null = null;
+      function whoosh(dur = 1.2) {
+        try {
+          audio ??= new AudioContext();
+          const n = audio.sampleRate * dur; const b = audio.createBuffer(1, n, audio.sampleRate); const d = b.getChannelData(0);
+          for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
+          const src = audio.createBufferSource(); src.buffer = b;
+          const f = audio.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = .9;
+          f.frequency.setValueAtTime(180, audio.currentTime); f.frequency.exponentialRampToValueAtTime(1400, audio.currentTime + dur * .6); f.frequency.exponentialRampToValueAtTime(300, audio.currentTime + dur);
+          const g = audio.createGain(); g.gain.setValueAtTime(0, audio.currentTime); g.gain.linearRampToValueAtTime(.35, audio.currentTime + dur * .25); g.gain.exponentialRampToValueAtTime(.001, audio.currentTime + dur);
+          src.connect(f).connect(g).connect(audio.destination); src.start();
+        } catch {}
+      }
+
+      /* ============================================================
+         Οι 10 εκδοχές. Κάθε μία: async (ctx) => void — τελειώνει όταν το πέπλο έχει φύγει.
+         ============================================================ */
+      type V = (c: Ctx) => Promise<void>;
+      const V: Record<number, V> = {};
+
+      /* 1 — Ο καπνός γεννά το logo */
+      V[1] = async (c) => {
+        c.root.className = 'intro v1';
+        const cv = mk('canvas', 'intro-gl') as HTMLCanvasElement; c.root.appendChild(cv);
+        const word = mk('div', 'iword'); const L = letters(word); c.root.appendChild(word);
+        const gl = glSmoke(cv, 1);
+        L.forEach((el, i) => c.a(el, [{ opacity: 0, filter: 'blur(28px)', transform: 'scale(1.35)' }, { opacity: 1, filter: 'blur(0)', transform: 'scale(1)' }], { duration: 620, delay: 380 + i * 80, easing: 'cubic-bezier(.2,.7,.2,1)' }));
+        c.a(word, [{ opacity: 1 }, { opacity: 1, offset: .78 }, { opacity: 0 }], { duration: 1900, easing: 'ease-in' });
+        await c.loop((p) => gl?.draw(p), 1900);
+      };
+
+      /* 2 — Η τελεία */
+      V[2] = async (c) => {
+        c.root.className = 'intro v2 dark';
+        const wrap = mk('div', 'iword'); const word = mk('span', 'w2'); const L: HTMLElement[] = [];
+        for (const ch of 'PISMA') { const sp = mk('span', 'ltr', ch); sp.style.opacity = '0'; word.appendChild(sp); L.push(sp); }
+        const dot = mk('span', 'ltr dot', '.'); wrap.append(word, dot); c.root.appendChild(wrap);
+        await document.fonts?.ready;
+        const W = word.offsetWidth, DW = dot.offsetWidth;
+        /* η τελεία ξεκινά στο κέντρο της οθόνης· η λέξη μένει στη θέση της και εμφανίζεται γράμμα-γράμμα */
+        dot.style.transform = `translateX(${-(W + DW) / 2 + DW / 2}px)`;
+        /* κάρβουνο: πάλλεται δύο φορές, ρίχνει halo */
+        c.a(dot, [{ textShadow: '0 0 12px rgba(255,122,80,.6)', opacity: .7 }, { textShadow: '0 0 60px rgba(255,122,80,1), 0 0 140px rgba(255,122,80,.6)', opacity: 1 }, { textShadow: '0 0 28px rgba(255,122,80,.8)', opacity: .85 }, { textShadow: '0 0 80px rgba(255,122,80,1), 0 0 220px rgba(255,122,80,.7)', opacity: 1 }, { textShadow: '0 0 40px rgba(255,122,80,.9)', opacity: 1 }], { duration: 700, easing: 'ease-in-out' });
+        const halo = mk('span', 'halo'); c.root.appendChild(halo);
+        c.a(halo, [{ transform: 'scale(.2)', opacity: 0 }, { transform: 'scale(1)', opacity: .9, offset: .5 }, { transform: 'scale(2.6)', opacity: 0 }], { duration: 1500, delay: 250, easing: 'ease-out' });
+        await c.wait(700);
+        c.a(dot, [{ transform: `translateX(${-W / 2}px)` }, { transform: 'translateX(0)' }], { duration: 560, easing: 'cubic-bezier(.3,.8,.2,1)' });
+        L.forEach((el, i) => c.a(el, [{ opacity: 0, transform: 'translateX(-.25em)', filter: 'blur(10px)' }, { opacity: 1, transform: 'none', filter: 'blur(0)' }], { duration: 380, delay: i * 70, easing: 'ease-out' }));
+        await c.wait(720);
+        await c.a(c.root, [{ opacity: 1 }, { opacity: 0 }], { duration: 420, easing: 'ease-in' });
+      };
+
+      /* 3 — Άνοιγμα προβολέων */
+      V[3] = async (c) => {
+        c.root.className = 'intro v3 dark';
+        const bl = mk('span', 'beam beam-l'), br = mk('span', 'beam beam-r'); const word = mk('div', 'iword'); letters(word); const flood = mk('span', 'flood');
+        c.root.append(bl, br, word, flood);
+        word.style.opacity = '0';
+        /* σάρωση: ξεκινούν σχεδόν οριζόντιοι, κουμπώνουν στο κέντρο */
+        c.a(bl, [{ transform: 'rotate(-78deg)', opacity: 0 }, { transform: 'rotate(-62deg)', opacity: 1, offset: .2 }, { transform: 'rotate(-14deg)', offset: .55 }, { transform: 'rotate(-30deg)' }], { duration: 1000, easing: 'cubic-bezier(.4,0,.2,1)' });
+        c.a(br, [{ transform: 'rotate(78deg)', opacity: 0 }, { transform: 'rotate(62deg)', opacity: 1, offset: .2 }, { transform: 'rotate(14deg)', offset: .55 }, { transform: 'rotate(30deg)' }], { duration: 1000, easing: 'cubic-bezier(.4,0,.2,1)' });
+        c.a(word, [{ opacity: 0, filter: 'brightness(.2) blur(6px)' }, { opacity: 1, filter: 'brightness(1.6) blur(0)', offset: .7 }, { opacity: 1, filter: 'brightness(1) blur(0)' }], { duration: 900, delay: 500, easing: 'ease-out' });
+        await c.wait(1150);
+        c.a(flood, [{ transform: 'scale(0)', opacity: 1 }, { transform: 'scale(3)', opacity: 0 }], { duration: 700, easing: 'ease-out' });
+        await c.wait(160);
+        await c.a(c.root, [{ opacity: 1 }, { opacity: 0 }], { duration: 480, easing: 'ease-in' });
+      };
+
+      /* 4 — Ο καπνός τρώει την κουρτίνα */
+      V[4] = async (c) => {
+        c.root.className = 'intro v4';
+        const cv = mk('canvas', 'intro-gl') as HTMLCanvasElement; c.root.appendChild(cv);
+        const gl = glSmoke(cv, 4);
+        await c.loop((p) => gl?.draw(p), 1500);
+      };
+
+      /* 5 — Μετρητής με νόημα */
+      V[5] = async (c) => {
+        c.root.className = 'intro v5 dark';
+        const box = mk('div', 'count'); const num = mk('b', '', '0'); const pct = mk('i', '', '%'); const lab = mk('span', '', 'δημόσιες τιμές'); const bar = mk('span', 'bar');
+        box.append(num, pct, lab, bar); c.root.appendChild(box);
+        c.a(bar, [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: 1150, easing: 'cubic-bezier(.4,0,.2,1)' });
+        await c.loop((p) => { num.textContent = String(Math.round(ease(p) * 100)); }, 1150);
+        /* το 100 «καίει» πορτοκαλί */
+        await c.a(box, [{ color: '#fff', textShadow: '0 0 0 rgba(255,122,80,0)' }, { color: ORANGE, textShadow: '0 0 40px rgba(255,122,80,.9), 0 0 120px rgba(255,122,80,.5)' }], { duration: 260, easing: 'ease-out' });
+        await c.wait(220);
+        c.a(box, [{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(1.5)', opacity: 0 }], { duration: 420, easing: 'ease-in' });
+        await c.a(c.root, [{ opacity: 1 }, { opacity: 0 }], { duration: 420, easing: 'ease-in' });
+      };
+
+      /* 6 — Κάρβουνα */
+      V[6] = async (c) => {
+        c.root.className = 'intro v6 dark';
+        const cv = mk('canvas', 'intro-2d') as HTMLCanvasElement; const word = mk('div', 'iword'); const L = letters(word); c.root.append(cv, word);
+        const ctx = cv.getContext('2d')!; const dpr = Math.min(devicePixelRatio, 1.5);
+        cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; ctx.scale(dpr, dpr);
+        const W = innerWidth, H = innerHeight;
+        await document.fonts?.ready;
+        const dot = L[5].getBoundingClientRect(); const tx = dot.left + dot.width / 2, ty = dot.top + dot.height * .72;
+        L.slice(0, 5).forEach((el, i) => c.a(el, [{ opacity: 0, filter: 'blur(16px)' }, { opacity: 1, filter: 'blur(0)' }], { duration: 600, delay: 700 + i * 60, easing: 'ease-out' }));
+        L[5].style.opacity = '0';
+        c.a(L[5], [{ opacity: 0, transform: 'scale(.4)', textShadow: '0 0 0 rgba(255,122,80,0)' }, { opacity: 1, transform: 'scale(1.25)', textShadow: '0 0 60px rgba(255,122,80,1), 0 0 160px rgba(255,122,80,.7)' }, { opacity: 1, transform: 'scale(1)', textShadow: '0 0 30px rgba(255,122,80,.8)' }], { duration: 500, delay: 1250, easing: 'ease-out' });
+        const N = 220; const P = Array.from({ length: N }, () => ({ x: Math.random() * W, y: H + Math.random() * H * .4, vx: (Math.random() - .5) * .6, vy: -(1.5 + Math.random() * 2.5), s: 1 + Math.random() * 2.2, ph: Math.random() * 6.28, w: Math.random() }));
+        const spr = document.createElement('canvas'); spr.width = spr.height = 32; const sc = spr.getContext('2d')!; const g = sc.createRadialGradient(16, 16, 0, 16, 16, 16); g.addColorStop(0, 'rgba(255,220,180,1)'); g.addColorStop(.3, 'rgba(255,140,90,.9)'); g.addColorStop(1, 'rgba(255,90,50,0)'); sc.fillStyle = g; sc.fillRect(0, 0, 32, 32);
+        c.a(word, [{ opacity: 1 }, { opacity: 1, offset: .8 }, { opacity: 0 }], { duration: 1900 });
+        await c.loop((p) => {
+          ctx.clearRect(0, 0, W, H); ctx.globalCompositeOperation = 'lighter';
+          const pull = Math.max(0, (p - .5) / .4); const fade = p > .88 ? 1 - (p - .88) / .12 : 1;
+          for (const q of P) {
+            if (pull > 0) { const k = .06 + pull * pull * .35 * (1 + q.w); q.x += (tx - q.x) * k; q.y += (ty - q.y) * k; }
+            else { q.x += q.vx + Math.sin(performance.now() / 600 + q.ph) * .5; q.y += q.vy; if (q.y < -10) q.y = H + 10; }
+            const sz = q.s * 4 * (1 + pull * .5); ctx.globalAlpha = fade * (.6 + .4 * Math.sin(performance.now() / 120 + q.ph));
+            ctx.drawImage(spr, q.x - sz / 2, q.y - sz / 2, sz, sz);
+          }
+        }, 1900);
+      };
+
+      /* 7 — Χάραξη */
+      V[7] = async (c) => {
+        c.root.className = 'intro v7 dark';
+        const svg = `<svg class="engr" viewBox="0 0 1000 260" preserveAspectRatio="xMidYMid meet"><text x="500" y="200" text-anchor="middle">PISMA<tspan class="d">.</tspan></text></svg>`;
+        const host = mk('div', 'iword', svg); c.root.appendChild(host);
+        const txt = host.querySelector('text')!, d = host.querySelector('.d')!;
+        await document.fonts?.ready;
+        await c.a(txt, [{ strokeDashoffset: 1800, fill: 'rgba(255,255,255,0)' }, { strokeDashoffset: 0, fill: 'rgba(255,255,255,0)', offset: .72 }, { strokeDashoffset: 0, fill: 'rgba(255,255,255,1)' }], { duration: 1350, easing: 'cubic-bezier(.5,0,.3,1)' });
+        c.a(host, [{ filter: 'drop-shadow(0 0 0 rgba(255,255,255,0))' }, { filter: 'drop-shadow(0 0 30px rgba(255,255,255,.9))', offset: .4 }, { filter: 'drop-shadow(0 0 12px rgba(255,255,255,.4))' }], { duration: 600 });
+        await c.a(d, [{ fill: '#fff' }, { fill: ORANGE }], { duration: 250 });
+        await c.wait(160);
+        await c.a(c.root, [{ opacity: 1 }, { opacity: 0 }], { duration: 480, easing: 'ease-in' });
+      };
+
+      /* 8 — Ζουμ πίσω */
+      V[8] = async (c) => {
+        c.root.className = 'intro v8 dark';
+        const word = mk('div', 'iword'); letters(word); const aura = mk('span', 'halo halo--big'); c.root.append(aura, word);
+        c.a(aura, [{ opacity: 0, transform: 'scale(.4)' }, { opacity: 1, transform: 'scale(1.2)', offset: .6 }, { opacity: 0, transform: 'scale(1.6)' }], { duration: 1700 });
+        c.a(word, [{ transform: 'translate(-50%, -50%) scale(7.5) translateX(2%)', letterSpacing: '.06em', filter: 'blur(3px)' }, { transform: 'translate(-50%, -50%) scale(1)', letterSpacing: '.01em', filter: 'blur(0)' }], { duration: 1500, easing: 'cubic-bezier(.65,0,.2,1)' });
+        await c.wait(650);
+        await c.a(c.root, [{ backgroundColor: '#0B0B0B' }, { backgroundColor: 'rgba(11,11,11,0)' }], { duration: 850, easing: 'ease-in-out' });
+        await c.a(word, [{ opacity: 1 }, { opacity: 0 }], { duration: 300 });
+      };
+
+      /* 9 — Αυλαία */
+      V[9] = async (c) => {
+        c.root.className = 'intro v9';
+        const top = mk('span', 'half half-t'), bot = mk('span', 'half half-b'), line = mk('span', 'line'), puff = mk('span', 'puff');
+        c.root.append(top, bot, puff, line);
+        await c.a(line, [{ transform: 'scaleX(0)', opacity: 0 }, { transform: 'scaleX(1)', opacity: 1 }], { duration: 480, easing: 'cubic-bezier(.2,.8,.2,1)' });
+        c.a(line, [{ opacity: 1, boxShadow: '0 0 30px 4px rgba(255,122,80,.9)' }, { opacity: 1, boxShadow: '0 0 90px 22px rgba(255,122,80,1)', offset: .3 }, { opacity: 0, boxShadow: '0 0 0 0 rgba(255,122,80,0)' }], { duration: 900, easing: 'ease-out' });
+        c.a(puff, [{ opacity: 0, transform: 'scaleY(.1)' }, { opacity: .9, transform: 'scaleY(1)', offset: .3 }, { opacity: 0, transform: 'scaleY(2.2)' }], { duration: 1000, easing: 'ease-out' });
+        c.a(top, [{ transform: 'translateY(0)' }, { transform: 'translateY(-102%)' }], { duration: 900, easing: 'cubic-bezier(.7,0,.2,1)' });
+        await c.a(bot, [{ transform: 'translateY(0)' }, { transform: 'translateY(102%)' }], { duration: 900, easing: 'cubic-bezier(.7,0,.2,1)' });
+      };
+
+      /* 10 — Πρόταση: 1 + 4 */
+      V[10] = async (c) => {
+        c.root.className = 'intro v10';
+        const cv = mk('canvas', 'intro-gl') as HTMLCanvasElement; c.root.appendChild(cv);
+        const word = mk('div', 'iword'); const L = letters(word); c.root.appendChild(word);
+        const gl = glSmoke(cv, 10);
+        L.forEach((el, i) => c.a(el, [{ opacity: 0, filter: 'blur(26px)', transform: 'scale(1.3)' }, { opacity: 1, filter: 'blur(0)', transform: 'scale(1)' }], { duration: 560, delay: 300 + i * 70, easing: 'cubic-bezier(.2,.7,.2,1)' }));
+        c.a(word, [{ opacity: 1 }, { opacity: 1, offset: .7 }, { opacity: 0 }], { duration: 1900, easing: 'ease-in' });
+        await c.loop((p) => gl?.draw(p), 1900);
+      };
+
+      /* ============================================================
+         Εκτέλεση / πάνελ
+         ============================================================ */
+      const intro = $('#intro'), hero = $('#hero'), pTitle = $('#p-title'), pDesc = $('#p-desc');
+      const variants = (window as any).__VARIANTS as { n: number; t: string; d: string }[];
+      let current = 1, running: Ctx | null = null;
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      async function run(n: number, byClick = false) {
+        if (running) running.skip();
+        current = n;
+        const v = variants.find((x) => x.n === n)!; pTitle.textContent = `${v.n} — ${v.t}`; pDesc.textContent = v.d;
+        document.querySelectorAll('.pick button').forEach((b) => b.classList.toggle('on', (b as HTMLElement).dataset.v === String(n)));
+        hero.classList.remove('is-in'); void hero.offsetWidth; // reset των blur-in
+        hero.classList.add('veiled'); // ο καπνός του hero σταματά όσο δεν φαίνεται (GPU)
+        if (reduce) { hero.classList.add('is-in'); hero.classList.remove('veiled'); pDesc.textContent += ' (reduced motion: δεν παίζει intro)'; return; }
+        intro.hidden = false; intro.innerHTML = ''; intro.style.cssText = '';
+        const hw = $('.hero-word').getBoundingClientRect(); intro.style.setProperty('--wy', `${hw.top + hw.height / 2}px`);
+        const c = new Ctx(intro); running = c;
+        if (byClick && ($('#snd') as HTMLInputElement).checked) whoosh();
+        const onSkip = () => c.skip(); intro.addEventListener('pointerdown', onSkip, { once: true });
+        /* Το hero «μπαίνει» λίγο πριν φύγει το πέπλο, για συνέχεια χωρίς κενό */
+        const show = () => { hero.classList.add('is-in'); hero.classList.remove('veiled'); };
+        const reveal = window.setTimeout(show, n === 4 || n === 9 || n === 10 || n === 1 ? 650 : 1000);
+        try { await V[n](c); } catch (e) { console.warn(e); }
+        clearTimeout(reveal); show();
+        if (running !== c) return;
+        await c.a(intro, [{ opacity: 1 }, { opacity: 0 }], { duration: c.done ? 200 : 60 });
+        intro.hidden = true; intro.innerHTML = ''; running = null;
+      }
+      document.querySelectorAll<HTMLElement>('.pick button').forEach((b) => b.addEventListener('click', () => run(Number(b.dataset.v), true)));
+      $('#again').addEventListener('click', () => run(current, true));
+      addEventListener('keydown', (e) => { if (e.key >= '1' && e.key <= '9') run(Number(e.key), true); if (e.key === '0') run(10, true); });
+      (window as any).__hold = (n: number, ms: number) => { run(n); window.setTimeout(() => running?.freeze(), ms); };
+      /* ?v=N&hold=ms → παγωμένο καρέ (για screenshots με headless Chrome) */
+      const q = new URLSearchParams(location.search); const qv = Number(q.get('v')), qh = Number(q.get('hold'));
+      if (qv) { document.body.classList.add('shot'); if (qh) (window as any).__hold(qv, qh); else run(qv); } else run(1);
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: #0B0B0B; color: #fff; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+  h1, h2, p, ul { margin: 0; }
+  a { color: inherit; text-decoration: none; }
+  .uf, .iword, .logo, .hero-word, .stats b, .count, .w2 { font-family: 'Unbounded', 'Inter', sans-serif; font-weight: 800; }
+
+  /* ---------- Hero mock (ίδια διάταξη με το live) ---------- */
+  .hero { position: relative; overflow: hidden; min-height: 100svh; display: flex; flex-direction: column; padding-bottom: 56px; }
+  .stg { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .stg-fog { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .35; }
+  .stg-fog--1 { width: 70vw; height: 40vw; left: -10vw; top: 14%; background: radial-gradient(closest-side, rgba(255,255,255,.17), transparent); }
+  .stg-fog--2 { width: 60vw; height: 36vw; right: -12vw; top: 26%; background: radial-gradient(closest-side, rgba(255,255,255,.13), transparent); }
+  .stg-fog--3 { width: 90vw; height: 30vw; left: 5vw; bottom: -6vw; background: radial-gradient(closest-side, rgba(255,255,255,.2), transparent); }
+  .stg-smoke { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: .95; }
+  .veiled .stg-smoke { display: none; }
+  .stg-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: linear-gradient(180deg, transparent, rgba(255,255,255,.08) 60%, rgba(255,255,255,.13)); }
+  .stg::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 140px; background: linear-gradient(transparent, #0B0B0B); }
+  .nav, .inner { position: relative; z-index: 1; max-width: 1160px; margin-inline: auto; width: 100%; padding-inline: clamp(20px, 4vw, 36px); }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; margin-top: 8px; }
+  .logo { font-size: 1.25rem; } .logo i, .hero-word i { color: #FF7A50; font-style: normal; }
+  .links { display: flex; gap: 22px; font-size: .92rem; } .links a { color: #E4E4E4; }
+  .cta { background: linear-gradient(92deg, #CC431C, #AC3213); color: #fff; padding: 10px 18px; border-radius: 12px; font-weight: 700; font-size: .9rem; }
+  .inner { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-top: 24px; }
+  .k { font-size: .76rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #FFA284; margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(2rem, 3.6vw, 3.4rem); line-height: 1.05; letter-spacing: -.03em; font-weight: 800; text-shadow: 0 10px 60px rgba(0,0,0,.6); white-space: nowrap; }
+  .hl { border-bottom: 6px solid #EE4F27; }
+  .hero-word { margin: clamp(4px, 1.5vw, 16px) auto clamp(10px, 2.5vw, 26px); font-size: clamp(4.6rem, 16vw, 15rem); line-height: .95; letter-spacing: .01em; white-space: nowrap; user-select: none; color: rgba(255,255,255,.17); text-shadow: 0 0 80px rgba(255,255,255,.22); }
+  .btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .btn { background: linear-gradient(92deg, #CC431C, #AC3213); color: #fff; padding: 15px 24px; border-radius: 12px; font-weight: 700; box-shadow: 0 6px 24px rgba(238,79,39,.35); }
+  .ghostbtn { padding: 15px 22px; border-radius: 12px; font-weight: 700; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.18); }
+  .note { margin-top: 14px; font-size: .82rem; color: #9C9C9C; }
+  .stats { list-style: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 34px; margin: 30px 0 0; }
+  .stats li { display: grid; gap: 2px; } .stats b { font-size: 1.18rem; } .stats span { font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #9C9C9C; }
+  .sub { margin: 30px auto 0; font-size: 1.1rem; color: #9C9C9C; max-width: 62ch; line-height: 1.6; }
+  /* blur-in του hero — ξεκινά μόνο όταν το hero πάρει .is-in (λίγο πριν φύγει το πέπλο) */
+  .bi { opacity: 0; }
+  .is-in .bi { animation: biIn .9s cubic-bezier(.2,.7,.2,1) both; animation-delay: var(--d, 0s); }
+  @keyframes biIn { from { opacity: 0; filter: blur(12px); transform: translateY(14px); } to { opacity: 1; filter: blur(0); transform: none; } }
+
+  .shot .panel, .shot .pick { display: none; }
+  /* ---------- Πάνελ δοκιμής ---------- */
+  .panel { position: fixed; top: 14px; left: 14px; z-index: 200; width: min(360px, calc(100vw - 28px)); background: rgba(16,16,16,.86); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.14); border-radius: 16px; padding: 14px 16px; font-size: .86rem; }
+  .panel-k { color: #FF9A73; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .68rem; }
+  .panel h2 { font-size: 1.05rem; margin: 6px 0 6px; }
+  .panel p { color: #bbb; line-height: 1.45; }
+  .panel-row { display: flex; gap: 12px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+  .panel button { background: #fff; color: #111; border: 0; border-radius: 999px; padding: 6px 12px; font-weight: 700; cursor: pointer; font: inherit; font-weight: 700; }
+  .panel label { display: flex; gap: 6px; align-items: center; color: #ddd; }
+  .panel-note { margin-top: 10px; font-size: .74rem; color: #888; }
+  .pick { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); z-index: 200; display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; max-width: calc(100vw - 28px); background: rgba(16,16,16,.86); backdrop-filter: blur(12px); padding: 6px; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); }
+  .pick button { display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; color: #fff; background: transparent; border: 0; font: inherit; font-size: .76rem; font-weight: 600; cursor: pointer; }
+  .pick button b { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,.18); color: #fff; font-size: .7rem; }
+  .pick button.on { background: rgba(255,122,80,.2); } .pick button.on b { background: #FF7A50; color: #111; }
+  @media (max-width: 860px) { .pick button span, .pick button { font-size: .7rem; } .links { display: none; } .hero h1 { white-space: normal; max-width: 18ch; font-size: clamp(1.7rem, 8.2vw, 2.3rem); } }
+
+  /* ---------- Intro (πέπλο) ---------- */
+  #intro { position: fixed; inset: 0; z-index: 150; cursor: pointer; }
+  .intro.dark { background: #0B0B0B; }
+  .intro-gl, .intro-2d { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .iword { position: absolute; left: 50%; top: var(--wy, 50%); transform: translate(-50%, -50%); font-size: clamp(4.6rem, 16vw, 15rem); line-height: .95; letter-spacing: .01em; white-space: nowrap; color: #fff; display: inline-flex; text-shadow: 0 0 60px rgba(255,255,255,.35); pointer-events: none; }
+  .ltr { display: inline-block; will-change: transform, filter, opacity; }
+  .dot { color: #FF7A50; text-shadow: 0 0 40px rgba(255,122,80,.9); }
+  .halo { position: absolute; left: 50%; top: 50%; width: 60vmin; height: 60vmin; margin: -30vmin 0 0 -30vmin; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,122,80,.55), rgba(255,122,80,.18) 40%, transparent); filter: blur(20px); pointer-events: none; }
+  .halo--big { width: 140vmin; height: 140vmin; margin: -70vmin 0 0 -70vmin; background: radial-gradient(closest-side, rgba(255,122,80,.5), rgba(255,122,80,.12) 45%, transparent); }
+  /* 2 */
+  .v2 .iword { transform: translate(-50%, -50%); } .v2 .w2 { display: inline-block; }
+  /* 3 */
+  .beam { position: absolute; top: -12vh; width: 20vw; height: 170vmax; transform-origin: top center; filter: blur(18px); opacity: 0; background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.45) 45%, transparent 85%); }
+  .beam-l { left: 2vw; } .beam-r { right: 2vw; }
+  .flood { position: absolute; left: 50%; top: 50%; width: 120vmax; height: 120vmax; margin: -60vmax 0 0 -60vmax; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,235,220,.85), rgba(255,160,120,.35) 40%, transparent); transform: scale(0); }
+  /* 5 */
+  .count { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: grid; grid-template-columns: auto auto; align-items: baseline; justify-content: center; color: #fff; }
+  .count b { font-size: clamp(6rem, 22vw, 18rem); line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  .count i { font-style: normal; font-size: clamp(2rem, 7vw, 6rem); margin-left: .1em; }
+  .count span { grid-column: 1 / -1; text-align: center; font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; font-size: .8rem; color: #9C9C9C; margin-top: 10px; }
+  .count .bar { grid-column: 1 / -1; height: 3px; margin-top: 18px; background: linear-gradient(90deg, #FF8A3D, #D63E1B); transform-origin: left; transform: scaleX(0); border-radius: 2px; box-shadow: 0 0 24px rgba(255,122,80,.7); }
+  /* 7 */
+  .engr { width: min(92vw, 1100px); height: auto; overflow: visible; }
+  .engr text { font-family: 'Unbounded', 'Inter', sans-serif; font-weight: 800; font-size: 200px; letter-spacing: 2px; fill: rgba(255,255,255,0); stroke: #fff; stroke-width: 2.2; stroke-dasharray: 1800; stroke-dashoffset: 1800; paint-order: stroke; }
+  .engr .d { stroke: #FF7A50; }
+  /* 8 */
+  .v8 { background: #0B0B0B; }
+  .v8 .iword { transform-origin: center; }
+  /* 9 */
+  .half { position: absolute; left: 0; right: 0; height: 50%; background: #0B0B0B; }
+  .half-t { top: 0; box-shadow: 0 6px 40px rgba(0,0,0,.8); } .half-b { bottom: 0; box-shadow: 0 -6px 40px rgba(0,0,0,.8); }
+  .line { position: absolute; left: 6vw; right: 6vw; top: 50%; height: 2px; margin-top: -1px; background: #FFB08C; border-radius: 2px; box-shadow: 0 0 30px 4px rgba(255,122,80,.9); transform: scaleX(0); }
+  .puff { position: absolute; left: 0; right: 0; top: 50%; height: 26vh; margin-top: -13vh; background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,.35), transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(255,255,255,.3), transparent 60%); filter: blur(30px); opacity: 0; }
+</style>
