@@ -75,7 +75,8 @@ const hasExtra = Astro.slots.has('extra');
   .stg-fog--1 { width: 70vw; height: 34vw; left: -12vw; top: 18%; background: radial-gradient(closest-side, rgba(255, 255, 255, .15), transparent); }
   .stg-fog--2 { width: 60vw; height: 30vw; right: -14vw; top: 30%; background: radial-gradient(closest-side, rgba(255, 255, 255, .11), transparent); animation-delay: -9s; animation-duration: 26s; }
   @keyframes phDrift { to { transform: translate(5vw, -2vw) scale(1.1); } }
-  .stg-smoke { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: .9; }
+  .stg-smoke { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 1.2s ease; }
+  .stg-smoke.is-on { opacity: .9; }
   .stg:has(.stg-smoke.is-on) .stg-fog { opacity: .35; }
   .stg::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(transparent, var(--bg)); }
 

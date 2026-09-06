@@ -242,7 +242,7 @@ const inServices = NAV.services.some((s) => path === norm(s.href));
     color: var(--navy); text-decoration: none; letter-spacing: .01em; margin-right: auto;
     white-space: nowrap; flex: none;
   }
-  .logo span { color: var(--orange); }
+  .logo span { color: var(--orange); display: inline-block; } /* inline-block: ο παλμός γέννησης του Ντοτ (transform) χωρίς layout shift */
   .nav-links { display: flex; align-items: center; gap: 16px; list-style: none; padding: 0; flex-wrap: nowrap; }
   /* Desktop (απόφαση χρήστριας):
      - Κορυφή σελίδας: λινκ ΑΚΡΙΒΩΣ στο κέντρο, ήχος+CTA τέρμα δεξιά.

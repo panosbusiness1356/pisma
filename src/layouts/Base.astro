@@ -27,6 +27,9 @@ const lang = langOf(Astro.url.pathname);
 const ogImage = new URL(image ?? (lang === 'en' ? '/og-en.png' : '/og.png'), Astro.site ?? SITE.url).href;
 const pathNorm = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : Astro.url.pathname + '/';
 const pair = PAIRS.find(([el, en]) => pathNorm === el || pathNorm === en);
+// Αρχική (EL/EN): το μεγάλο «PISMA.» (Unbounded) είναι το LCP στοιχείο και το intro
+// το μετράει ζωντανά — προφορτώνεται μόνο εκεί (στις άλλες σελίδες τη φοράει μόνο το logo).
+const isHome = pathNorm === '/' || pathNorm === '/en/';
 
 // WebSite JSON-LD σε κάθε σελίδα — σταθερή «ταυτότητα» site για Google & AI.
 const siteSchema = {
@@ -104,6 +107,7 @@ const themeByQuery = import.meta.env.DEV;
          Preload στα δύο κρίσιμα ελληνικά βάρη για άμεσο πρώτο render. -->
     <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/inter-var-greek.woff2" as="font" type="font/woff2" crossorigin />
+    {isHome && <link rel="preload" href="/fonts/unbounded-800-basic.woff2" as="font" type="font/woff2" crossorigin />}
 
     <!-- Χωρίς JS το IntersectionObserver δεν τρέχει ποτέ — δείξε τα .reveal κανονικά. -->
     <noscript><style is:inline>.reveal{opacity:1;transform:none;filter:none}</style></noscript>
@@ -122,26 +126,31 @@ const themeByQuery = import.meta.env.DEV;
 
     <script>
       // Smooth scroll με αδράνεια (Lenis) — ίδιο σύστημα με τα σύγχρονα studio sites.
+      // ΜΟΝΟ σε συσκευές με ποντίκι/trackpad: στο κινητό/tablet το native scroll είναι
+      // ήδη ομαλό, και ο μόνιμος βρόχος rAF του Lenis απλώς καίει CPU και μπαταρία.
+      // Dynamic import: το bundle δεν κατεβαίνει καν εκεί που δεν χρειάζεται.
       // Σεβασμός στο prefers-reduced-motion: εκεί μένει το native scroll.
-      import Lenis from 'lenis';
-
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        const lenis = new Lenis({
-          duration: 1.15,
-          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          smoothWheel: true,
-          wheelMultiplier: 1,
-          touchMultiplier: 1.4,
-          anchors: true,
-        });
-        const raf = (time: number) => {
-          lenis.raf(time);
+      const wantsLenis =
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      if (wantsLenis) {
+        import('lenis').then(({ default: Lenis }) => {
+          const lenis = new Lenis({
+            duration: 1.15,
+            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+            wheelMultiplier: 1,
+            anchors: true,
+          });
+          const raf = (time: number) => {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+          };
           requestAnimationFrame(raf);
-        };
-        requestAnimationFrame(raf);
-        // Δημόσιο handle: τα per-page scripts κάνουν scroll ΜΕΣΩ Lenis,
-        // αλλιώς το native scrollIntoView ακυρώνεται από το raf loop του.
-        (window as any).lenis = lenis;
+          // Δημόσιο handle: τα per-page scripts κάνουν scroll ΜΕΣΩ Lenis,
+          // αλλιώς το native scrollIntoView ακυρώνεται από το raf loop του.
+          (window as any).lenis = lenis;
+        });
       }
     </script>
 

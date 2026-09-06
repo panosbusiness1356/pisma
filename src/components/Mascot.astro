@@ -99,13 +99,15 @@ const cloudB = dots.slice(half);
      κουκίδα όμως κάθεται στη γραμμή βάσης, κι έτσι το κέντρο του κουτιού πέφτει
      πιο πάνω/δίπλα ανάλογα με γραμματοσειρά και οθόνη. Μετράμε το πραγματικό
      «μελάνι» του γλυφικού με canvas TextMetrics για σημείο ακριβείας. */
+  let inkCtx: CanvasRenderingContext2D | null | undefined; // ένας κοινός context για όλες τις μετρήσεις
   const inkCenter = (e: HTMLElement) => {
     const r = e.getBoundingClientRect();
     const txt = (e.textContent || '').trim();
     if (txt.length === 1 && !e.firstElementChild) {
       try {
         const cs = getComputedStyle(e);
-        const ctx = document.createElement('canvas').getContext('2d');
+        if (inkCtx === undefined) inkCtx = document.createElement('canvas').getContext('2d');
+        const ctx = inkCtx;
         if (ctx) {
           ctx.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
           const m = ctx.measureText(txt);
@@ -164,6 +166,9 @@ const cloudB = dots.slice(half);
   let mouseY = -1;
   let eyeX = 0;
   let eyeY = 0;
+  let lastEye = '';
+  let lastPos = '';
+  let lastMot = '';
 
   el.style.width = W() + 'px';
 
@@ -355,11 +360,18 @@ const cloudB = dots.slice(half);
       const ek = smooth(0.14);
       eyeX += ((tx / len) * max * k - eyeX) * ek;
       eyeY += ((ty / len) * max * k - eyeY) * ek;
-      pupL.style.transform = `translate(${eyeX.toFixed(1)}px, ${eyeY.toFixed(1)}px)`;
-      pupR.style.transform = `translate(${(eyeX * 0.85).toFixed(1)}px, ${(eyeY * 0.85).toFixed(1)}px)`;
-
-      el.style.transform = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px)`;
-      motion.style.transform = `rotate(${rot.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      /* Γράψιμο στο DOM ΜΟΝΟ όταν αλλάζει η τιμή: κάθε αλλαγή στα μάτια/κλίση ξαναζωγραφίζει
+         το SVG των 135 κύκλων — όταν ο Ντοτ κάθεται ακίνητος, το καρέ δεν κοστίζει τίποτα. */
+      const eyeStr = `translate(${eyeX.toFixed(1)}px, ${eyeY.toFixed(1)}px)`;
+      if (eyeStr !== lastEye) {
+        lastEye = eyeStr;
+        pupL.style.transform = eyeStr;
+        pupR.style.transform = `translate(${(eyeX * 0.85).toFixed(1)}px, ${(eyeY * 0.85).toFixed(1)}px)`;
+      }
+      const posStr = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px)`;
+      if (posStr !== lastPos) { lastPos = posStr; el.style.transform = posStr; }
+      const motStr = `rotate(${rot.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      if (motStr !== lastMot) { lastMot = motStr; motion.style.transform = motStr; }
 
       if (dist < 40 && phase === 'tour') {
         if (!arrivedAt) arrivedAt = performance.now();
@@ -410,18 +422,27 @@ const cloudB = dots.slice(half);
     position: fixed; left: 0; top: 0; z-index: 90;
     width: 110px; opacity: 0; cursor: pointer;
     will-change: transform;
-    filter: drop-shadow(0 10px 26px rgba(var(--cta-rgb), .22));
     transition: opacity .7s ease;
     /* Μόνο οι ζωγραφισμένες κουκίδες πιάνουν κλικ — οι άδειες γωνίες του
        κουτιού αφήνουν τα taps να περνούν στο περιεχόμενο από κάτω. */
     pointer-events: none;
   }
+  /* Η απαλή πορτοκαλί λάμψη κάτω από τον Ντοτ: στατικό gradient, ΟΧΙ filter: drop-shadow —
+     το filter ξανα-ραστεροποιούσε και τους 135 κύκλους σε κάθε καρέ (μάτια, κλίση, περιστροφή)
+     και ήταν ο κύριος λόγος που «κολλούσε» το κινητό. Ίδια εικόνα, μηδενικό κόστος. */
+  #pisma-mascot::before {
+    content: ''; position: absolute; left: 6%; top: 18%; width: 88%; height: 88%;
+    border-radius: 50%; pointer-events: none; z-index: -1;
+    background: radial-gradient(closest-side, rgba(var(--cta-rgb), .26), rgba(var(--cta-rgb), .1) 55%, transparent);
+  }
   #pisma-mascot.is-off { opacity: 0 !important; pointer-events: none; }
+  /* Κρυμμένος = τίποτα δεν κινείται (ούτε στο παρασκήνιο). */
+  #pisma-mascot.is-off .m-bob, #pisma-mascot.is-off .d-spin, #pisma-mascot.is-off .d-spin2, #pisma-mascot.is-off .d-eyes { animation-play-state: paused; }
   #pisma-mascot circle { pointer-events: auto; }
   #pisma-mascot.is-ready { opacity: 1; }
   #pisma-mascot svg { overflow: visible; width: 100%; height: auto; }
 
-  .m-motion { transform-origin: 50% 60%; }
+  .m-motion { transform-origin: 50% 60%; will-change: transform; } /* δικό του layer: η κλίση/κλίμακα δεν ξαναζωγραφίζει το SVG */
   .m-bob { animation: m-bob 4.6s ease-in-out infinite alternate; }
   @keyframes m-bob {
     from { transform: translateY(0) scale(1); }
@@ -456,6 +477,11 @@ const cloudB = dots.slice(half);
     100% { transform: scale(1) translateY(0); }
   }
 
+  /* Οθόνες αφής: η αργή περιστροφή του σύννεφου (75 s) δεν φαίνεται σε 80 px, αλλά ξαναζωγραφίζει
+     το SVG 60 φορές το δευτερόλεπτο — μένουν το λίκνισμα και το βλεφάρισμα. */
+  @media (pointer: coarse) {
+    .d-spin, .d-spin2 { animation: none; }
+  }
   @media (prefers-reduced-motion: reduce) {
     .m-bob, .d-spin, .d-spin2, .d-eyes { animation: none; }
   }

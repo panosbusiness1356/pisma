@@ -52,7 +52,8 @@ const { title, sub, ctaText, ctaHref, note } = Astro.props;
     background: radial-gradient(45% 60% at 50% 45%, rgba(255, 255, 255, .13), transparent 70%);
     filter: blur(30px);
   }
-  .stg-smoke { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: .85; }
+  .stg-smoke { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 1.2s ease; }
+  .stg-smoke.is-on { opacity: .85; }
   .stg:has(.stg-smoke.is-on) .stg-fog { opacity: .4; }
   .band-text, .band-cta { position: relative; z-index: 1; }
   .band h2 { color: #fff; max-width: 24ch; text-shadow: 0 8px 40px rgba(0, 0, 0, .6); }

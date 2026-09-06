@@ -113,8 +113,8 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     class="hero"
     aria-labelledby="hero-title"
   >
-    <!-- «Σκηνή» (αίτημα χρήστριας 06/09/2026): καπνός που κινείται αργά, προβολείς
-         από ψηλά, «PISMA» τεράστιο ξεθωριασμένο πίσω, κόκκος. Μόνο CSS/SVG. -->
+    <!-- «Σκηνή» (αίτημα χρήστριας 06/09/2026): καπνός WebGL που κινείται αργά (smoke.ts) πάνω από CSS ομίχλη,
+         «PISMA.» μεγάλο στη ροή. Τα χρωματιστά αιωρούμενα λογότυπα αφαιρέθηκαν (δεν ταιριάζουν στο ασπρόμαυρο). -->
     <Intro />
     <div class="stg" aria-hidden="true">
       <span class="stg-fog stg-fog--1"></span><span class="stg-fog stg-fog--2"></span><span class="stg-fog stg-fog--3"></span>
@@ -122,20 +122,6 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
       <span class="stg-floor"></span>
     </div>
 
-    <!-- Αιωρούμενα λογότυπα πλατφορμών — αυθεντικά SVG στο /public/logos -->
-    <div class="float-logos" aria-hidden="true">
-      <span class="flogo flogo-ig" data-speed="0.10" style="left:5%;top:13%;--w:44px;--dur:5.2s"><img src="/logos/instagram-icon.svg" alt="" /></span>
-      <span class="flogo flogo-fb" data-speed="-0.07" style="left:12%;top:38%;--w:38px;--dur:6.4s"><img src="/logos/facebook.svg" alt="" /></span>
-      <span class="flogo flogo-gm" data-speed="0.13" style="left:4%;top:64%;--w:38px;--dur:7.1s"><img src="/logos/google-gmail.svg" alt="" /></span>
-      <span class="flogo flogo--sm flogo-ai" data-speed="-0.05" style="left:19%;top:22%;--w:28px;--dur:6s"><img class="inv" src="/logos/openai-icon.svg" alt="" /></span>
-      <span class="flogo flogo--sm flogo-vb" data-speed="0.08" style="left:3.5%;top:98%;--w:30px;--dur:5.8s"><img src="/logos/viber.svg" alt="" /></span>
-      <span class="flogo flogo--sm flogo-li" data-speed="-0.1" style="left:4%;top:94%;--w:28px;--dur:6.6s"><img src="/logos/linkedin-icon.svg" alt="" /></span>
-      <span class="flogo flogo-go" data-speed="0.08" style="right:5%;top:12%;--w:42px;--dur:5.6s"><img src="/logos/google-icon.svg" alt="" /></span>
-      <span class="flogo flogo-wa" data-speed="-0.11" style="right:12%;top:38%;--w:40px;--dur:6.8s"><img src="/logos/whatsapp-icon.svg" alt="" /></span>
-      <span class="flogo flogo-mp" data-speed="0.06" style="right:4%;top:64%;--w:30px;--dur:7.4s"><img src="/logos/google-maps.svg" alt="" /></span>
-      <span class="flogo flogo--sm flogo-xl" data-speed="0.12" style="right:19%;top:22%;--w:30px;--dur:6.2s"><img src="/logos/excel.svg" alt="" /></span>
-      <span class="flogo flogo--sm flogo-tt" data-speed="-0.08" style="right:5%;top:95%;--w:28px;--dur:5.4s"><img class="chip" src="/logos/tiktok-icon.svg" alt="" /></span>
-    </div>
 
     <div class="container hero-inner">
       <p class="hero-kicker blur-in" style="--d:.16s">Digital presence & automation</p>
@@ -532,19 +518,6 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   // Parallax λογοτύπων στο scroll + μετρητής κριτικών — σέβονται το reduced motion.
   const reduceFx = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const flogos = Array.from(document.querySelectorAll<HTMLElement>('.float-logos .flogo'));
-  if (!reduceFx && flogos.length) {
-    let raf = 0;
-    const apply = () => {
-      raf = 0;
-      const y = window.scrollY;
-      for (const el of flogos) {
-        el.style.transform = `translateY(${(y * parseFloat(el.dataset.speed || '0')).toFixed(1)}px)`;
-      }
-    };
-    window.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(apply); }, { passive: true });
-    apply();
-  }
 
   // Τα σκόρπια λογότυπα αναδύονται όταν μπουν στην οθόνη
   const sflogos = Array.from(document.querySelectorAll('.sflogo'));
@@ -987,15 +960,6 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   .announce:hover .announce-arrow-track { transform: translateX(0); }
   .announce-arrow-track svg { width: 12px; height: 26px; margin-inline: auto; color: var(--orange-text); flex: none; padding-block: 7px; box-sizing: content-box; padding-inline: 7px; }
 
-  /* Αιωρούμενα λογότυπα — το στρώμα κλειδώνει στα 1440px κεντραρισμένο:
-     σε φαρδιές οθόνες τα λογότυπα μένουν κοντά στο κείμενο αντί να
-     τραβιούνται στις άκρες (τα % είναι πάνω στο στρώμα, όχι στο viewport).
-     Έως 1440px viewport = ταυτόσημο με πριν. */
-  .float-logos {
-    position: absolute; top: 0; bottom: 0; left: 50%;
-    width: min(100%, 1440px); transform: translateX(-50%);
-    pointer-events: none; z-index: 2;
-  }
   section { position: relative; }
   .sflogo { display: none; pointer-events: none; z-index: 2; }
 
@@ -1006,27 +970,14 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     from { opacity: 0; translate: 0 22px; filter: blur(8px); }
     to { opacity: 1; translate: 0 0; filter: blur(0); }
   }
-  .float-logos .flogo { animation: flogoIn .7s cubic-bezier(.22, 1, .36, 1) both; }
-  .float-logos .flogo:nth-child(1) { animation-delay: .15s; }
-  .float-logos .flogo:nth-child(2) { animation-delay: .45s; }
-  .float-logos .flogo:nth-child(3) { animation-delay: .3s; }
-  .float-logos .flogo:nth-child(4) { animation-delay: .7s; }
-  .float-logos .flogo:nth-child(5) { animation-delay: .55s; }
-  .float-logos .flogo:nth-child(6) { animation-delay: .25s; }
-  .float-logos .flogo:nth-child(7) { animation-delay: .5s; }
-  .float-logos .flogo:nth-child(8) { animation-delay: .35s; }
-  .float-logos .flogo:nth-child(9) { animation-delay: .65s; }
-  .float-logos .flogo:nth-child(10) { animation-delay: .8s; }
-  .float-logos .flogo:nth-child(11) { animation-delay: .6s; }
   /* Τα σκόρπια στα sections: αναδύονται όταν πρωτοφανούν στην οθόνη */
   .sflogo { opacity: 0; }
   .sflogo.in { animation: flogoIn .8s cubic-bezier(.22, 1, .36, 1) both; }
   @media (prefers-reduced-motion: reduce) {
-    .float-logos .flogo { animation: none; }
     .sflogo { opacity: 1; }
     .sflogo.in { animation: none; }
   }
-  .flogo { position: absolute; will-change: transform; }
+  .flogo { position: absolute; }
   .flogo img {
     display: block; width: var(--w, 40px); height: auto;
     animation: flogoFloat var(--dur, 6s) ease-in-out infinite alternate;
@@ -1105,12 +1056,11 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     }
     .hero-word.ready.spot-on::before { opacity: 1; }
   }
-  .stg-smoke { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: .95; }
+  .stg-smoke { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 1.2s ease; }
+  .stg-smoke.is-on { opacity: .95; }
   .stg:has(.stg-smoke.is-on) .stg-fog { opacity: .35; }
   .stg-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: linear-gradient(180deg, transparent, rgba(255,255,255,.08) 60%, rgba(255,255,255,.13)); }
   .stg::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 140px; background: linear-gradient(transparent, var(--bg)); }
-  /* Τα χρωματιστά αιωρούμενα λογότυπα δεν ταιριάζουν στο ασπρόμαυρο — κρύβονται. */
-  .float-logos { display: none !important; }
 
   /* Πριν → Μετά (στη θέση του mockup) */
   .ba-section { padding-top: clamp(40px, 6vw, 72px); }
@@ -1285,9 +1235,6 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   /* ---------- Mobile: σύντομο, γρήγορο, χωρίς περιττό scroll ---------- */
   @media (max-width: 680px) {
     .hero { padding-top: calc(40px + 72px); }
-    /* Κινητό: καθόλου αιωρούμενα λογότυπα στο hero — καθαρό, χωρίς φόρτωμα.
-       (Τα .sflogo των επόμενων sections μένουν — εκεί υπάρχει χώρος.) */
-    .float-logos { display: none; }
     .btn-note { width: fit-content; margin-inline: auto; max-width: 85%; }
     /* Ούτε στα sections (κινητό): τα χρωματιστά λογότυπα δεν ταιριάζουν στο ασπρόμαυρο. */
     .sflogo { display: none; }

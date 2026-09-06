@@ -19,6 +19,9 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
   compressHTML: true,
+  // Όλο το CSS μπαίνει inline στο HTML: κανένα render-blocking αίτημα stylesheet —
+  // η πρώτη ζωγραφιά σε κινητό/αργό δίκτυο γίνεται ένα RTT νωρίτερα (~0,5-0,9 s).
+  build: { inlineStylesheets: 'always' },
   // Προφόρτωση εσωτερικών links (hover σε desktop, tap σε κινητό) — στιγμιαία πλοήγηση.
   prefetch: { prefetchAll: true },
 });

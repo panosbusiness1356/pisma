@@ -243,6 +243,18 @@
         "4360"
       ],
       "port": 4360
+    },
+    {
+      "name": "pisma-preview-4390",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "preview",
+        "--",
+        "--port",
+        "4390"
+      ],
+      "port": 4390
     }
   ]
 }
