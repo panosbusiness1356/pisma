@@ -269,6 +269,19 @@
         "4391"
       ],
       "port": 4391
+    },
+    {
+      "name": "pisma-preview-lan-4392",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "preview",
+        "--",
+        "--host",
+        "--port",
+        "4392"
+      ],
+      "port": 4392
     }
   ]
 }

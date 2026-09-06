@@ -175,6 +175,7 @@ function setup(canvas: HTMLCanvasElement) {
     if ('IntersectionObserver' in window) new IntersectionObserver((es) => { visible = es[0].isIntersecting; if (visible) kick(); }, { threshold: 0 }).observe(canvas);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) kick(); });
     canvas.classList.add('is-on');
+    if (canvas.closest('.hero')) { document.documentElement.dataset.smokeReady = ''; document.dispatchEvent(new CustomEvent('pisma-smoke-ready')); } // για το loading του intro
   };
 
   // Μεταγλώττιση στο παρασκήνιο όπου υποστηρίζεται — περιμένουμε χωρίς να μπλοκάρουμε το main thread.
@@ -203,6 +204,7 @@ const boot = () => {
   };
   const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
   const idle = () => { if (w.requestIdleCallback) w.requestIdleCallback(run, { timeout: 1500 }); else setTimeout(run, 250); };
-  if (mq('(pointer: coarse)')) setTimeout(idle, 1600); else idle();
+  // Με intro (πέπλο) δεν υπάρχει λόγος αναμονής: το loading του intro περιμένει τον καπνό.
+  if (mq('(pointer: coarse)') && !document.documentElement.hasAttribute('data-intro-run')) setTimeout(idle, 1600); else idle();
 };
 if (document.readyState === 'complete') boot(); else addEventListener('load', boot, { once: true });
