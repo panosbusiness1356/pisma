@@ -325,9 +325,6 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
 }
 .reveal.is-in { opacity: 1; transform: none; filter: none; }
 
-/* Μετάξι (Silk.astro): όταν παίζει, τα παλιά beams του hero δεν χρειάζονται */
-.silk-on > .beams { display: none !important; }
-
 /* ---------- Focus / a11y ---------- */
 :focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; border-radius: 6px; }
 .skip-link {

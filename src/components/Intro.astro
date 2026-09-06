@@ -61,11 +61,21 @@
   .intro-word.placed { transform: none; }
   .intro-word span { display: inline-block; opacity: 0; filter: blur(28px); transform: scale(1.3); will-change: transform, filter, opacity; }
   .intro-word .dot { color: #FF7A50; text-shadow: 0 0 40px rgba(255, 122, 80, .9); }
-  /* Όσο το πέπλο είναι αδιαφανές: οι είσοδοι του hero περιμένουν, ο καπνός του δεν ζωγραφίζεται. */
-  html[data-intro] .hero .blur-in, html[data-intro] .hero-word span, html[data-intro] .hero-word::after { animation-play-state: paused; }
+  /* Όσο το πέπλο είναι αδιαφανές: ο καπνός του hero δεν ζωγραφίζεται (GPU), και τα στοιχεία
+     του hero κάθονται ΟΡΑΤΑ στην τελική τους θέση κάτω από το πέπλο (κανείς δεν τα βλέπει, αλλά ο
+     browser τα «ζωγραφίζει» → το LCP μετριέται στην πρώτη ζωγραφιά, όχι όταν ανοίξει το πέπλο).
+     Μόλις φύγει το data-intro, οι κανόνες .blur-in ξαναπιάνουν και οι είσοδοι παίζουν από την
+     αρχή — ίδιο αποτέλεσμα με πριν (παύση → play), χωρίς να πληρώνει το LCP τα 1,6 s του μαύρου. */
+  html[data-intro] .hero .blur-in { animation: none; opacity: 1; filter: none; transform: none; }
+  /* Ούτε η είσοδος του <main> (page-in) παίζει κάτω από το πέπλο — θα ήταν αόρατη, και μετακινούσε
+     το «PISMA.» του hero για 0,7 s (η μέτρηση θέσης έπρεπε να τρέχει σε κάθε καρέ). */
+  html[data-intro] .page-in { animation: none; }
+  html[data-intro] .hero .hero-word::after { animation-play-state: paused; }
   html[data-intro] .hero .stg-smoke { display: none; }
-  /* Όταν το intro έχει παίξει, το «PISMA.» του hero είναι ήδη στην τελική του θέση (τα λευκά γράμματα σβήνουν πάνω του). */
-  html.intro-played .hero-word span { animation: none; opacity: 1; filter: none; transform: none; }
+  /* Το «PISMA.» του hero είναι στην τελική του θέση κάτω από το πέπλο και μετά (τα λευκά γράμματα σβήνουν πάνω του).
+     ΠΡΟΣΟΧΗ στην ειδικότητα: τα scoped styles της αρχικής (.hero-word[data-astro-cid] span[data-astro-cid]) μετράνε
+     (0,3,1) — γι' αυτό οι επιλογείς εδώ περνούν και από το .hero, ώστε να μετράνε (0,3,2) και να νικούν. */
+  html[data-intro] .hero .hero-word span, html.intro-played .hero .hero-word span { animation: none; opacity: 1; filter: none; transform: none; }
 </style>
 
 <script>
@@ -89,10 +99,14 @@
 
     /* ---- Θέση/μέγεθος: ακριβώς πάνω στο «PISMA.» του hero ---- */
     let center = { x: .5, y: .5 };
+    let placedKey = ''; // τελευταία θέση/μέγεθος που γράφτηκε — γράφουμε ΜΟΝΟ όταν αλλάζει (αλλιώς forced reflow σε κάθε καρέ)
     const place = () => {
       if (!hw) return;
       const r = hw.getBoundingClientRect();
       const inView = r.width > 0 && r.top >= 0 && r.bottom <= innerHeight;
+      const key = inView ? `${r.left}|${r.top}|${r.width}|${r.height}|${innerWidth}|${innerHeight}` : 'off';
+      if (key === placedKey) return;
+      placedKey = key;
       if (!inView) { word.classList.remove('placed'); for (const k of ['left', 'top', 'width', 'height', 'fontSize', 'letterSpacing', 'lineHeight', 'textAlign', 'fontFamily', 'fontWeight']) word.style.removeProperty(k.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase())); center = { x: .5, y: .5 }; return; }
       const cs = getComputedStyle(hw);
       word.classList.add('placed');
@@ -127,12 +141,17 @@
       gl_FragColor=vec4(min(col,vec3(a)),a);
     }`;
     type GL = { draw: (r: number, open: number, glow: number, dens: number) => void; fit: () => void; lose: () => void } | null;
-    const initGL = (): GL => {
-      const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: true, antialias: false, powerPreference: 'low-power' });
-      if (!gl) return null;
+    /* Το πρόγραμμα μεταγλωττίζεται στο παρασκήνιο όπου γίνεται (KHR_parallel_shader_compile):
+       το πέπλο μένει μαύρο από CSS μέχρι να είναι έτοιμος ο καπνός, αντί να μπλοκάρει το main thread. */
+    const initGL = (onReady: (gl: GL) => void) => {
+      const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, powerPreference: 'low-power' });
+      if (!gl) return onReady(null);
       const mk = (t: number, src: string) => { const s = gl.createShader(t)!; gl.shaderSource(s, src); gl.compileShader(s); return s; };
       const prog = gl.createProgram()!; gl.attachShader(prog, mk(gl.VERTEX_SHADER, VERT)); gl.attachShader(prog, mk(gl.FRAGMENT_SHADER, FRAG)); gl.linkProgram(prog);
-      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
+      const par = gl.getExtension('KHR_parallel_shader_compile') as { COMPLETION_STATUS_KHR: number } | null;
+      const finishInit = () => { onReady(gl.getProgramParameter(prog, gl.LINK_STATUS) ? build() : null); };
+      if (par) { const poll = () => { if (ended) return; if (gl.getProgramParameter(prog, par.COMPLETION_STATUS_KHR)) finishInit(); else requestAnimationFrame(poll); }; poll(); } else finishInit();
+      function build(): GL {
       gl.useProgram(prog);
       const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
       const a = gl.getAttribLocation(prog, 'a'); gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
@@ -155,6 +174,7 @@
         },
         lose() { try { gl.getExtension('WEBGL_lose_context')?.loseContext(); } catch {} },
       };
+      }
     };
 
     const ease = (p: number) => p * p * (3 - 2 * p);
@@ -167,6 +187,7 @@
 
     const finish = () => {
       if (ended) return; ended = true;
+      root.style.background = 'transparent';
       cancelAnimationFrame(raf);
       html.removeAttribute('data-intro'); html.classList.add('intro-played'); html.removeAttribute('data-intro-run');
       root.remove(); gl?.lose();
@@ -185,7 +206,7 @@
       tt = (now - t0) + (tSkip ? (now - tSkip) * 5 : 0);
       if (tt >= T_OPEN) open();
       if (tt >= T_END) return finish();
-      if (tt < T_FADE + FADE_DUR) place();                    // ακολουθεί το «PISMA.» του hero ακόμη κι αν η σελίδα κινείται (page-in)
+      if (tt < T_FADE + FADE_DUR) place();                    // ακολουθεί το «PISMA.» του hero αν αλλάξει (π.χ. άφιξη γραμματοσειράς) — φθηνό: γράφει μόνο σε αλλαγή
       const pre = clamp01(tt / T_OPEN);                       // 0→1 όσο το πέπλο είναι κλειστό
       const op = ease(clamp01((tt - T_OPEN) / OPEN_DUR));     // άνοιγμα
       const fd = clamp01((tt - T_FADE) / FADE_DUR);           // σβήσιμο στο τέλος
@@ -199,14 +220,19 @@
       // Περιμένουμε τη γραμματοσειρά του logo (self-hosted, γρήγορη) ώστε η μέτρηση να είναι ακριβής.
       try { await Promise.race([document.fonts.load('800 100px Unbounded'), new Promise((r) => setTimeout(r, 900))]); } catch {}
       place(); addEventListener('resize', onResize, { passive: true });
-      gl = initGL();
-      if (!gl) {
-        // Χωρίς WebGL: μαύρο πέπλο που ξεθωριάζει όταν ανοίγει.
-        const A = root.animate([{ opacity: 1 }, { opacity: 1, offset: T_OPEN / T_END }, { opacity: 0 }], { duration: T_END, fill: 'forwards', easing: 'linear' });
-        anims.push(A);
-      } else {
-        root.style.background = 'transparent'; // το μαύρο το ζωγραφίζει ο shader (πέπλο)
-      }
+      initGL((g) => {
+        if (ended) return;
+        gl = g;
+        if (!gl) {
+          // Χωρίς WebGL: μαύρο πέπλο που ξεθωριάζει όταν ανοίγει.
+          const A = root.animate([{ opacity: 1 }, { opacity: 1, offset: T_OPEN / T_END }, { opacity: 0 }], { duration: T_END, fill: 'forwards', easing: 'linear' });
+          if (tSkip) A.playbackRate = 6;
+          anims.push(A);
+        } else {
+          gl.fit();
+          root.style.background = 'transparent'; // το μαύρο το ζωγραφίζει ο shader (πέπλο)
+        }
+      });
       word.style.opacity = '1';
       letters.forEach((el, i) => {
         const A = el.animate(

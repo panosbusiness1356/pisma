@@ -99,13 +99,15 @@ const cloudB = dots.slice(half);
      κουκίδα όμως κάθεται στη γραμμή βάσης, κι έτσι το κέντρο του κουτιού πέφτει
      πιο πάνω/δίπλα ανάλογα με γραμματοσειρά και οθόνη. Μετράμε το πραγματικό
      «μελάνι» του γλυφικού με canvas TextMetrics για σημείο ακριβείας. */
+  let inkCtx: CanvasRenderingContext2D | null | undefined; // ένας κοινός context για όλες τις μετρήσεις
   const inkCenter = (e: HTMLElement) => {
     const r = e.getBoundingClientRect();
     const txt = (e.textContent || '').trim();
     if (txt.length === 1 && !e.firstElementChild) {
       try {
         const cs = getComputedStyle(e);
-        const ctx = document.createElement('canvas').getContext('2d');
+        if (inkCtx === undefined) inkCtx = document.createElement('canvas').getContext('2d');
+        const ctx = inkCtx;
         if (ctx) {
           ctx.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
           const m = ctx.measureText(txt);
@@ -167,6 +169,9 @@ const cloudB = dots.slice(half);
   let mouseY = -1;
   let eyeX = 0;
   let eyeY = 0;
+  let lastEye = '';
+  let lastPos = '';
+  let lastMot = '';
 
   el.style.width = W() + 'px';
 
@@ -255,6 +260,12 @@ const cloudB = dots.slice(half);
         tCache = targetPos(); tKey = key; tAt = nowT;
         return tCache;
       };
+      /* Ύπνος: όταν ο Ντοτ ηρεμήσει (θέση, μάτια, κλίση σταθερά — ούτε γέννηση ούτε είσοδος),
+         ο βρόχος σταματά· ξυπνά με scroll/resize/pointer ή όταν αλλάξει το layout της σελίδας.
+         Πριν έτρεχε 60 φορές το δευτερόλεπτο για πάντα, ακόμη και κρυμμένος. */
+      let idleFrames = 0;
+      let running = false;
+      let prevEyeX = 0, prevEyeY = 0, prevRot = 0;
       const loop = (nowT: number) => {
         const f = Math.min(3, (nowT - lastT) / 16.667);
         lastT = nowT;
@@ -357,11 +368,21 @@ const cloudB = dots.slice(half);
         const ek = smooth(0.14);
         eyeX += ((tx / len) * max * k - eyeX) * ek;
         eyeY += ((ty / len) * max * k - eyeY) * ek;
-        pupL.style.transform = `translate(${eyeX.toFixed(1)}px, ${eyeY.toFixed(1)}px)`;
-        pupR.style.transform = `translate(${(eyeX * 0.85).toFixed(1)}px, ${(eyeY * 0.85).toFixed(1)}px)`;
-
-        el.style.transform = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px)`;
-        motion.style.transform = `rotate(${rot.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+        /* Γράψιμο στο DOM ΜΟΝΟ όταν αλλάζει η τιμή: κάθε αλλαγή στα μάτια/κλίση ξαναζωγραφίζει
+           το SVG των 135 κύκλων — όταν ο Ντοτ κάθεται ακίνητος, το καρέ δεν κοστίζει τίποτα. */
+        const q = (v: number, step: number) => (Math.round(v / step) * step).toFixed(2); // κβάντιση: αόρατη, 10× λιγότερα repaints
+        const posStr = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px)`;
+        if (posStr !== lastPos) { lastPos = posStr; el.style.transform = posStr; }
+        /* Τα μάτια και η κλίση αλλάζουν το ίδιο το SVG (repaint των 135 κύκλων) — μόνο
+           όταν η αλλαγή περνά το κατώφλι (0,25 px / 0,1°). */
+        const eyeStr = `translate(${q(eyeX, .25)}px, ${q(eyeY, .25)}px)`;
+        if (eyeStr !== lastEye) {
+          lastEye = eyeStr;
+          pupL.style.transform = eyeStr;
+          pupR.style.transform = `translate(${q(eyeX * 0.85, .25)}px, ${q(eyeY * 0.85, .25)}px)`;
+        }
+        const motStr = `rotate(${q(rot, .1)}deg) scale(${scale.toFixed(3)})`;
+        if (motStr !== lastMot) { lastMot = motStr; motion.style.transform = motStr; }
 
         if (dist < 40 && phase === 'tour') {
           if (!arrivedAt) arrivedAt = performance.now();
@@ -378,10 +399,22 @@ const cloudB = dots.slice(half);
           hideBubble();
         }
 
+        const busy = !!birthing || phase !== 'tour' || dist > 0.5 ||
+          Math.abs(eyeX - prevEyeX) > 0.01 || Math.abs(eyeY - prevEyeY) > 0.01 || Math.abs(rot - prevRot) > 0.01;
+        prevEyeX = eyeX; prevEyeY = eyeY; prevRot = rot;
+        idleFrames = busy ? 0 : idleFrames + 1;
+        if (idleFrames < 20) requestAnimationFrame(loop);
+        else running = false;
+      };
+      const wake = () => {
+        if (running) return;
+        running = true; idleFrames = 0; lastT = performance.now();
         requestAnimationFrame(loop);
       };
-      requestAnimationFrame(loop);
+      wake();
       requestAnimationFrame(() => el.classList.add('is-ready'));
+      for (const ev of ['scroll', 'resize', 'pointermove', 'pointerdown', 'touchstart'] as const) window.addEventListener(ev, wake, { passive: true });
+      if ('ResizeObserver' in window) new ResizeObserver(wake).observe(document.body);
     }
   };
 
@@ -432,17 +465,24 @@ const cloudB = dots.slice(half);
     position: fixed; left: 0; top: 0; z-index: 90;
     width: 110px; opacity: 0; cursor: pointer;
     will-change: transform;
-    filter: drop-shadow(0 10px 26px rgba(var(--cta-rgb), .22));
     transition: opacity .7s ease;
     /* Μόνο οι ζωγραφισμένες κουκίδες πιάνουν κλικ — οι άδειες γωνίες του
        κουτιού αφήνουν τα taps να περνούν στο περιεχόμενο από κάτω. */
     pointer-events: none;
   }
+  /* Η απαλή πορτοκαλί λάμψη κάτω από τον Ντοτ: στατικό gradient, ΟΧΙ filter: drop-shadow —
+     το filter ξανα-ραστεροποιούσε και τους 135 κύκλους σε κάθε καρέ (μάτια, κλίση, περιστροφή)
+     και ήταν ο κύριος λόγος που «κολλούσε» το κινητό. Ίδια εικόνα, μηδενικό κόστος. */
+  #pisma-mascot::before {
+    content: ''; position: absolute; left: 6%; top: 18%; width: 88%; height: 88%;
+    border-radius: 50%; pointer-events: none; z-index: -1;
+    background: radial-gradient(closest-side, rgba(var(--cta-rgb), .26), rgba(var(--cta-rgb), .1) 55%, transparent);
+  }
   #pisma-mascot circle { pointer-events: auto; }
   #pisma-mascot.is-ready { opacity: 1; }
   #pisma-mascot svg { overflow: visible; width: 100%; height: auto; }
 
-  .m-motion { transform-origin: 50% 60%; }
+  .m-motion { transform-origin: 50% 60%; will-change: transform; } /* δικό του layer: η κλίση/κλίμακα δεν ξαναζωγραφίζει το SVG */
   .m-bob { animation: m-bob 4.6s ease-in-out infinite alternate; }
   @keyframes m-bob {
     from { transform: translateY(0) scale(1); }
@@ -477,6 +517,11 @@ const cloudB = dots.slice(half);
     100% { transform: scale(1) translateY(0); }
   }
 
+  /* Οθόνες αφής: η αργή περιστροφή του σύννεφου (75 s) δεν φαίνεται σε 80 px, αλλά ξαναζωγραφίζει
+     το SVG 60 φορές το δευτερόλεπτο — μένουν το λίκνισμα και το βλεφάρισμα. */
+  @media (pointer: coarse) {
+    .d-spin, .d-spin2 { animation: none; }
+  }
   @media (prefers-reduced-motion: reduce) {
     .m-bob, .d-spin, .d-spin2, .d-eyes { animation: none; }
   }
