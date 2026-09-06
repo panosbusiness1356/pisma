@@ -330,7 +330,13 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
    Εδώ το θόλωμα λύνεται σε 3 βήματα (steps) = 3 ξαναζωγραφίσματα, ενώ ξεθώριασμα και ανάδυση μένουν ομαλά
    στον compositor (will-change: transform = δικό του layer). Το μάτι δεν ξεχωρίζει τη διαφορά. */
 @media (pointer: coarse) {
-  .reveal { will-change: transform; transition: opacity .9s var(--ease), transform .9s var(--ease), filter .5s steps(3, jump-end); }
+  .reveal { filter: blur(5px); transition: opacity .9s var(--ease), transform .9s var(--ease), filter .4s steps(3, jump-end); }
+}
+/* Οθόνες αφής: οι ενότητες κάτω από την πρώτη οθόνη δεν στήνονται/ζωγραφίζονται μέχρι να πλησιάσουν
+   (content-visibility) — το πρώτο layout/paint της σελίδας των 6-7 οθονών γίνεται layout μιας οθόνης.
+   Εξαίρεση (.no-cv): ενότητες με sticky/fixed παιδιά (builder Τιμών). */
+@media (pointer: coarse) {
+  main > section:not(:first-child):not(.no-cv) { content-visibility: auto; contain-intrinsic-size: auto 900px; }
 }
 
 /* ---------- Focus / a11y ---------- */

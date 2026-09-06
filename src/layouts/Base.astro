@@ -315,6 +315,11 @@ const themeByQuery = import.meta.env.DEV;
       for (const ev of ['touchstart', 'pointerdown', 'keydown'] as const) {
         window.addEventListener(ev, warm, { once: true, capture: true, passive: true });
       }
+      // Και προληπτικά στο παρασκήνιο, 2,5 s μετά το φόρτωμα (όταν έχουν τελειώσει intro/είσοδοι): η δημιουργία
+      // του AudioContext κοστίζει δεκάδες ms σε κινητά — καλύτερα τότε παρά μέσα στο πρώτο πάτημα του χρήστη.
+      // (Ξεκινά «suspended» — το resume() γίνεται στο πρώτο άγγιγμα, όπως πάντα.)
+      const warmLater = () => setTimeout(warm, 2500);
+      if (document.readyState === 'complete') warmLater(); else addEventListener('load', warmLater, { once: true });
 
       // Επιστροφή στη σελίδα: ξύπνα το context προληπτικά — κι αν η σελίδα ήρθε
       // από το bfcache (πίσω/μπροστά στο iOS), το παλιό context είναι άχρηστο: πέτα το.
@@ -376,12 +381,18 @@ const themeByQuery = import.meta.env.DEV;
       if (reduce || !('IntersectionObserver' in window)) {
         els.forEach((el) => el.classList.add('is-in'));
       } else {
+        // Layer (will-change) μόνο όσο κρατά η μετάβαση: στο κινητό το θόλωμα λύνεται σε βήματα στο main thread,
+        // κι αν το στοιχείο δεν έχει δικό του layer, το ξεθώριασμα θα ξαναζωγράφιζε σε κάθε καρέ. Μόνιμο will-change
+        // σε κάθε κάρτα της σελίδας = δεκάδες layers από το φόρτωμα.
         const io = new IntersectionObserver(
           (entries) => {
             for (const e of entries) {
               if (e.isIntersecting) {
-                e.target.classList.add('is-in');
-                io.unobserve(e.target);
+                const el = e.target as HTMLElement;
+                el.style.willChange = 'transform';
+                el.classList.add('is-in');
+                setTimeout(() => { el.style.willChange = ''; }, 1400);
+                io.unobserve(el);
               }
             }
           },
@@ -405,14 +416,22 @@ const themeByQuery = import.meta.env.DEV;
       @media (prefers-reduced-motion: reduce) {
         .page-in { animation: none; }
       }
-      /* Οθόνες αφής: η ίδια είσοδος, αλλά μόνο στην πρώτη ενότητα (αυτή που φαίνεται). Η κίνηση ολόκληρου
-         του <main> έφτιαχνε layer ίσο με ΟΛΗ τη σελίδα (σε DPR 3 εκατοντάδες MB raster) ακριβώς στο
-         φόρτωμα — το πρώτο δευτερόλεπτο «κολλούσε». Οπτικά ταυτόσημο: στο φόρτωμα φαίνεται μόνο η πρώτη οθόνη. */
-      @media (pointer: coarse) and (prefers-reduced-motion: no-preference) {
+      /* Οθόνες αφής: χωρίς page-in. Η κίνηση ολόκληρου του <main> έφτιαχνε layer ίσο με ΟΛΗ τη σελίδα (σε DPR 3
+         εκατοντάδες MB raster) ακριβώς στο φόρτωμα. Τα στοιχεία του hero έχουν έτσι κι αλλιώς δική τους είσοδο
+         (blur-in), και το φόντο είναι μαύρο σε μαύρο — το ξεθώριασμα του section δεν φαινόταν, το κόστος του ναι. */
+      @media (pointer: coarse) {
         .page-in { animation: none; }
-        .page-in > :first-child { animation: pageIn .7s var(--ease) both; }
       }
     </style>
+    <script>
+      // Οθόνες αφής: οι είσοδοι του hero (blur-in, γράμματα «PISMA.») παίρνουν δικό τους layer (will-change) όσο
+      // παίζουν· μόλις τελειώσουν, το layer φεύγει — λιγότερα layers = λιγότερη μνήμη GPU και σύνθεση ανά καρέ.
+      if (matchMedia('(pointer: coarse)').matches) {
+        for (const el of document.querySelectorAll<HTMLElement>('.blur-in, .hero-word > span')) {
+          el.addEventListener('animationend', (e) => { if (/Move$/.test(e.animationName)) el.style.willChange = 'auto'; });
+        }
+      }
+    </script>
     <script>
       // Μόλις τελειώσει το entrance animation, φύγε από το .page-in:
       // όσο υπάρχει animation με transform, το <main> γίνεται containing block

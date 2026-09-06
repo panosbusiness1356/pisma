@@ -185,9 +185,24 @@ function setup(canvas: HTMLCanvasElement) {
 }
 
 // Ξεκίνημα μετά το load κι όταν ο browser αδειάσει — ο καπνός δεν παλεύει με την πρώτη ζωγραφιά.
+//  • Οθόνες αφής: 1,6 s μετά το load, όταν έχουν τελειώσει οι είσοδοι του hero — σε GPU κινητού χωρίς
+//    KHR_parallel_shader_compile η μεταγλώττιση μπλοκάρει το main thread ~50-100 ms· καλύτερα σε ήσυχη στιγμή.
+//  • Κάθε καμβάς στήνεται μόνο όταν πλησιάσει στην οθόνη (IntersectionObserver, ±60 %): ο δεύτερος καμβάς
+//    της σελίδας (CTA στο τέλος) δεν κοστίζει τίποτα στο φόρτωμα.
 const boot = () => {
-  const run = () => document.querySelectorAll<HTMLCanvasElement>('canvas.stg-smoke:not([data-smoke])').forEach(setup);
+  const run = () => {
+    const list = document.querySelectorAll<HTMLCanvasElement>('canvas.stg-smoke:not([data-smoke])');
+    if (!('IntersectionObserver' in window)) { list.forEach(setup); return; }
+    const io = new IntersectionObserver((es) => {
+      for (const e of es) if (e.isIntersecting) { io.unobserve(e.target); if (!(e.target as HTMLCanvasElement).dataset.smoke) setup(e.target as HTMLCanvasElement); }
+    }, { rootMargin: '60% 0px' });
+    // Όσο παίζει το intro ο καπνός του hero είναι display:none (δεν «τέμνει» ποτέ) — στήνεται τώρα, κάτω από το
+    // πέπλο, ώστε η μεταγλώττιση να μη συμπέσει με το άνοιγμα και τις εισόδους.
+    const introOn = document.documentElement.hasAttribute('data-intro-run');
+    list.forEach((c) => { if (introOn && getComputedStyle(c).display === 'none') setup(c); else io.observe(c); });
+  };
   const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
-  if (w.requestIdleCallback) w.requestIdleCallback(run, { timeout: 1500 }); else setTimeout(run, 250);
+  const idle = () => { if (w.requestIdleCallback) w.requestIdleCallback(run, { timeout: 1500 }); else setTimeout(run, 250); };
+  if (mq('(pointer: coarse)')) setTimeout(idle, 1600); else idle();
 };
 if (document.readyState === 'complete') boot(); else addEventListener('load', boot, { once: true });
