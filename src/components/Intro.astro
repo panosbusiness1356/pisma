@@ -146,6 +146,13 @@
     const initGL = (onReady: (gl: GL) => void) => {
       const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, powerPreference: 'low-power' });
       if (!gl) return onReady(null);
+      // Software WebGL (SwiftShader/llvmpipe — VM, remote desktop, blocklisted GPU): ο shader στη CPU
+      // «κολλάει» τη σελίδα → η εκδοχή χωρίς καπνό (μαύρο πέπλο που ξεθωριάζει).
+      try {
+        const ext = gl.getExtension('WEBGL_debug_renderer_info') as { UNMASKED_RENDERER_WEBGL: number } | null;
+        const r = String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
+        if (/swiftshader|llvmpipe|softpipe|software|mesa offscreen|basic render/i.test(r)) { gl.getExtension('WEBGL_lose_context')?.loseContext(); return onReady(null); }
+      } catch {}
       const mk = (t: number, src: string) => { const s = gl.createShader(t)!; gl.shaderSource(s, src); gl.compileShader(s); return s; };
       const prog = gl.createProgram()!; gl.attachShader(prog, mk(gl.VERTEX_SHADER, VERT)); gl.attachShader(prog, mk(gl.FRAGMENT_SHADER, FRAG)); gl.linkProgram(prog);
       const par = gl.getExtension('KHR_parallel_shader_compile') as { COMPLETION_STATUS_KHR: number } | null;

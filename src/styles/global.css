@@ -57,8 +57,9 @@
   --shadow-hover: 0 4px 12px rgba(0, 0, 0, .4), 0 22px 52px rgba(0, 0, 0, .5);
   --glow-orange: 0 0 44px rgba(var(--cta-rgb), .35);
 
-  --pisma-font: 'Inter', system-ui, sans-serif;
-  --font-display: 'Unbounded', 'Inter', sans-serif;
+  /* Οι «Fallback» οικογένειες (fonts.css) είναι τοπικές γραμματοσειρές με τις μετρικές των δικών μας — μηδέν layout shift όσο φορτώνουν */
+  --pisma-font: 'Inter', 'Inter Fallback', system-ui, sans-serif;
+  --font-display: 'Unbounded', 'Unbounded Fallback', 'Inter', 'Inter Fallback', sans-serif;
   --font-body: var(--pisma-font);
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
