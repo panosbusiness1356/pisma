@@ -178,7 +178,7 @@ const cloudB = dots.slice(half);
 
   const targetPos = () => {
     if (!stops.length) {
-      return { x: window.innerWidth - W() - 20, y: window.innerHeight - H() - 24, idx: -1, side: 'right' };
+      return { x: window.innerWidth - W() - 20, y: window.innerHeight - H() - 24, idx: -1, side: 'right', off: false };
     }
     const mid = window.innerHeight * 0.5;
     let idx = 0;
@@ -191,9 +191,12 @@ const cloudB = dots.slice(half);
     });
     const s = stops[idx];
     const r = s.getBoundingClientRect();
+    /* Πριν την πρώτη στάση (π.χ. στο hero της αρχικής) ο Ντοτ ΔΕΝ εμφανίζεται —
+       κρύβεται μέχρι να μπει η ενότητα στην οθόνη (αίτημα χρήστριας 06/09/2026). */
+    const off = best > 0 && r.top > window.innerHeight * 0.85;
     const side = s.dataset.mascotSide || (idx % 2 ? 'left' : 'right');
     if (s.dataset.mascotPose === 'sit') {
-      return { x: r.right - W() - r.width * 0.05, y: r.top - H() * 0.62, idx, side };
+      return { x: r.right - W() - r.width * 0.05, y: r.top - H() * 0.62, idx, side, off };
     }
     /* Στάση δίπλα σε συγκεκριμένο στοιχείο (π.χ. δίπλα στον τίτλο του hero). */
     const anchorSel = s.dataset.mascotAnchor;
@@ -208,14 +211,14 @@ const cloudB = dots.slice(half);
             Math.max(ar.top + ar.height * 0.5 - H() * 0.5, 100),
             window.innerHeight - H() - 40
           );
-          return { x, y: ay, idx, side };
+          return { x, y: ay, idx, side, off };
         }
       }
     }
     const y = hasGutter()
       ? Math.min(Math.max(r.top + r.height * 0.3, 250), window.innerHeight - H() - 60)
       : window.innerHeight - H() - 28;
-    return { x: sideX(side), y, idx, side };
+    return { x: sideX(side), y, idx, side, off };
   };
 
   /* Συννεφάκι: αφαιρέθηκε — αποσπούσε την προσοχή και έπαιρνε χώρο.
@@ -280,6 +283,7 @@ const cloudB = dots.slice(half);
       }
 
       lastSide = t.side;
+      el.classList.toggle('is-off', !!t.off && phase === 'tour');
       if (t.idx !== activeIdx) {
         activeIdx = t.idx;
         arrivedAt = 0;
@@ -412,6 +416,7 @@ const cloudB = dots.slice(half);
        κουτιού αφήνουν τα taps να περνούν στο περιεχόμενο από κάτω. */
     pointer-events: none;
   }
+  #pisma-mascot.is-off { opacity: 0 !important; pointer-events: none; }
   #pisma-mascot circle { pointer-events: auto; }
   #pisma-mascot.is-ready { opacity: 1; }
   #pisma-mascot svg { overflow: visible; width: 100%; height: auto; }
