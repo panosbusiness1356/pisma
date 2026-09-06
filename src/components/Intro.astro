@@ -42,7 +42,17 @@
   <canvas class="intro-gl"></canvas>
   <!-- Loading πριν το intro: η τελεία του logo αναπνέει στη θέση της, από κάτω λεπτή γραμμή ΠΡΑΓΜΑΤΙΚΗΣ προόδου
        (γραμματοσειρές, καπνός, layout). Όταν όλα είναι έτοιμα (ή στα 1,2 s το πολύ) η τελεία ανάβει και γεννά τον καπνό. -->
-  <div class="intro-load"><i class="ld-dot"></i><i class="ld-line"><b></b></i></div>
+  <div class="intro-load" data-v="1">
+    <i class="ld-aura"></i>
+    <i class="ld-hz"></i>
+    <i class="ld-embers"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></i>
+    <svg class="ld-ring" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" /></svg>
+    <b class="ld-num">0<span>%</span></b>
+    <b class="ld-txt">Με πείσμα.</b>
+    <i class="ld-dot"></i>
+    <i class="ld-line"><b></b></i>
+    <i class="ld-spark"></i>
+  </div>
   <div class="intro-word"><span>P</span><span>I</span><span>S</span><span>M</span><span>A</span><span class="dot">.</span></div>
 </div>
 <script is:inline>
@@ -74,6 +84,45 @@
   .ld-line { position: fixed; left: 0; top: 0; height: 2px; border-radius: 2px; background: rgba(255, 255, 255, .09); overflow: hidden; opacity: 0; transition: opacity .4s ease; }
   .ld-line.on { opacity: 1; }
   .ld-line b { display: block; height: 100%; width: 100%; transform-origin: 0 50%; transform: scaleX(0); background: linear-gradient(90deg, #FF7A50, #FFA284); transition: transform .45s cubic-bezier(.2, .8, .2, 1); }
+  /* Εκδοχές loading (?loader=N — ό,τι διαλέξει η χρήστρια γίνεται προεπιλογή). Όλα τα στοιχεία κρυφά, ανά εκδοχή ανοίγουν. */
+  .ld-aura, .ld-hz, .ld-embers, .ld-ring, .ld-num, .ld-txt, .ld-spark { display: none; position: fixed; left: 0; top: 0; }
+  .intro-load[data-v="2"] .ld-line { display: none; }
+  .intro-load[data-v="3"] .ld-aura, .intro-load[data-v="10"] .ld-aura { display: block; }
+  .intro-load[data-v="3"] .ld-line, .intro-load[data-v="4"] .ld-line, .intro-load[data-v="5"] .ld-line, .intro-load[data-v="6"] .ld-line, .intro-load[data-v="7"] .ld-line, .intro-load[data-v="8"] .ld-line { display: none; }
+  .intro-load[data-v="4"] .ld-embers { display: block; }
+  .intro-load[data-v="5"] .ld-num { display: block; }
+  .intro-load[data-v="5"] .ld-dot, .intro-load[data-v="9"] .ld-dot { opacity: 0; } /* η τελεία εμφανίζεται μόνο στην ανάφλεξη */
+  .intro-load[data-v="6"] .ld-txt { display: block; }
+  .intro-load[data-v="7"] .ld-ring { display: block; }
+  .intro-load[data-v="8"] .ld-hz { display: block; }
+  .intro-load[data-v="9"] .ld-spark { display: block; }
+  .intro-load[data-v="9"] .ld-line b { background: rgba(255, 122, 80, .22); }
+  /* 3/10 Αύρα: πορτοκαλί φως που αναπνέει στο κέντρο της λέξης — δυναμώνει με την πρόοδο (opacity από το JS) */
+  .ld-aura { border-radius: 50%; opacity: .35; will-change: transform, opacity; background: radial-gradient(closest-side, rgba(255, 122, 80, .5), rgba(255, 122, 80, .16) 45%, transparent); }
+  .ld-aura.on { animation: ldAura 2.2s ease-in-out infinite alternate; }
+  @keyframes ldAura { from { transform: scale(.9); } to { transform: scale(1.12); } }
+  /* 4 Κάρβουνα: σπίθες που ανεβαίνουν από τη βάση της λέξης */
+  .ld-embers b { position: absolute; bottom: 0; width: 5px; height: 5px; border-radius: 50%; background: #FF9159; box-shadow: 0 0 8px 2px rgba(255, 122, 80, .5); opacity: 0; will-change: transform, opacity; }
+  .ld-embers.on b { animation: ldEmber 1.7s ease-out infinite; }
+  .ld-embers b:nth-child(1) { left: 6%; animation-delay: 0s; } .ld-embers b:nth-child(2) { left: 22%; animation-delay: .35s; } .ld-embers b:nth-child(3) { left: 38%; animation-delay: .9s; }
+  .ld-embers b:nth-child(4) { left: 52%; animation-delay: .2s; } .ld-embers b:nth-child(5) { left: 66%; animation-delay: 1.1s; } .ld-embers b:nth-child(6) { left: 80%; animation-delay: .6s; } .ld-embers b:nth-child(7) { left: 93%; animation-delay: 1.4s; }
+  @keyframes ldEmber { 0% { transform: translateY(0) scale(.6); opacity: 0; } 15% { opacity: 1; } 100% { transform: translateY(-130px) scale(1.1); opacity: 0; } }
+  /* 5 Μετρητής: 0 → 100 % στη γραμματοσειρά του logo, στη θέση της λέξης */
+  .ld-num { font-family: var(--font-display, 'Unbounded', sans-serif); font-weight: 800; color: #fff; text-align: center; line-height: 1; white-space: nowrap; letter-spacing: .02em; }
+  .ld-num span { color: #FF7A50; font-size: .55em; margin-left: .1em; }
+  /* 6 Η φράση */
+  .ld-txt { font-family: var(--font-body, 'Inter', sans-serif); font-weight: 600; color: rgba(255, 255, 255, .78); text-align: center; letter-spacing: .04em; white-space: nowrap; opacity: 0; }
+  .ld-txt.on { animation: ldIn 1.4s ease-out forwards; }
+  @keyframes ldIn { to { opacity: 1; } }
+  /* 7 Δακτύλιος γύρω από την τελεία που «γράφεται» με την πρόοδο */
+  .ld-ring { transform: rotate(-90deg); }
+  .ld-ring circle { fill: none; stroke: #FF7A50; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 289; stroke-dashoffset: 289; transition: stroke-dashoffset .5s cubic-bezier(.2, .8, .2, 1); }
+  /* 8 Ορίζοντας: λωρίδα φωτός σκηνής στο ύψος της λέξης, δυναμώνει με την πρόοδο */
+  .ld-hz { right: 0; opacity: .2; will-change: opacity; background: linear-gradient(90deg, transparent, rgba(255, 122, 80, .28) 28%, rgba(255, 190, 150, .5) 50%, rgba(255, 122, 80, .28) 72%, transparent); }
+  /* 9 Σπίθα που τρέχει πάνω στη γραμμή και στο τέλος γίνεται η τελεία */
+  .ld-spark { width: 7px; height: 7px; border-radius: 50%; background: #FFB27A; box-shadow: 0 0 10px 3px rgba(255, 122, 80, .7); will-change: transform; }
+  .ld-spark.on { animation: ldSpark 1.15s ease-in-out infinite alternate; }
+  @keyframes ldSpark { from { transform: translateX(0); } to { transform: translateX(var(--w, 300px)); } }
   .intro-word span { display: inline-block; opacity: 0; filter: blur(28px); transform: scale(1.3); will-change: transform, filter, opacity; }
   .intro-word .dot { color: #FF7A50; text-shadow: 0 0 40px rgba(255, 122, 80, .9); }
   /* Οθόνες αφής: ίδιο εφέ (βγαίνουν από θόλωμα), αλλά το blur λύνεται σε 4 βήματα αντί για κάθε καρέ —
@@ -110,6 +159,13 @@
     const ldDot = root.querySelector<HTMLElement>('.ld-dot')!;
     const ldLine = root.querySelector<HTMLElement>('.ld-line')!;
     const ldBar = ldLine.querySelector<HTMLElement>('b')!;
+    const ldLoad = root.querySelector<HTMLElement>('.intro-load')!;
+    const ldAura = root.querySelector<HTMLElement>('.ld-aura'), ldEmb = root.querySelector<HTMLElement>('.ld-embers'), ldRing = root.querySelector<HTMLElement>('.ld-ring');
+    const ldNum = root.querySelector<HTMLElement>('.ld-num'), ldTxt = root.querySelector<HTMLElement>('.ld-txt'), ldHz = root.querySelector<HTMLElement>('.ld-hz'), ldSpark = root.querySelector<HTMLElement>('.ld-spark');
+    /* Εκδοχή loading: ?loader=N (δοκιμές) ή η προεπιλογή. */
+    const LOADER_DEFAULT = 1;
+    const V = Number((location.search.match(/[?&]loader=(\d+)/) || [])[1]) || LOADER_DEFAULT;
+    ldLoad.dataset.v = String(V);
 
     /* ---- Χρονοδιάγραμμα (ms) ---- */
     const T_LET = 650, LET_GAP = 95, LET_DUR = 680; // γράμματα: 650 → ~1800
@@ -144,6 +200,15 @@
         ldDot.style.width = ldDot.style.height = `${size}px`; ldDot.style.left = `${Math.round(cx - size / 2)}px`; ldDot.style.top = `${Math.round(cy - size / 2)}px`; ldDot.style.fontSize = `${size}px`;
         dotC = { x: cx / innerWidth, y: cy / innerHeight };
         ldLine.style.left = `${Math.round(r.left)}px`; ldLine.style.width = `${Math.round(r.width)}px`; ldLine.style.top = `${Math.round(r.bottom + Math.max(10, fs * .12))}px`;
+        const lineTop = r.bottom + Math.max(10, fs * .12);
+        const set = (el: HTMLElement | null, st: Record<string, string>) => { if (el) for (const k in st) el.style.setProperty(k, st[k]); };
+        set(ldAura, { left: `${Math.round(r.left + r.width / 2 - r.width * .65)}px`, top: `${Math.round(r.top + r.height / 2 - r.height * 1.1)}px`, width: `${Math.round(r.width * 1.3)}px`, height: `${Math.round(r.height * 2.2)}px` });
+        set(ldEmb, { left: `${Math.round(r.left)}px`, top: `${Math.round(r.top)}px`, width: `${Math.round(r.width)}px`, height: `${Math.round(r.height)}px` });
+        set(ldRing, { left: `${Math.round(cx - size * 1.7)}px`, top: `${Math.round(cy - size * 1.7)}px`, width: `${Math.round(size * 3.4)}px`, height: `${Math.round(size * 3.4)}px` });
+        set(ldNum, { left: `${Math.round(r.left)}px`, top: `${Math.round(r.top + r.height / 2 - fs * .25)}px`, width: `${Math.round(r.width)}px`, 'font-size': `${Math.round(fs * .5)}px` });
+        set(ldTxt, { left: `${Math.round(r.left)}px`, top: `${Math.round(lineTop + 4)}px`, width: `${Math.round(r.width)}px`, 'font-size': `${Math.max(14, Math.round(fs * .13))}px` });
+        set(ldHz, { top: `${Math.round(cy - fs * .45)}px`, height: `${Math.round(fs * .9)}px` });
+        set(ldSpark, { left: `${Math.round(r.left - 3)}px`, top: `${Math.round(lineTop - 2.5)}px`, '--w': `${Math.round(r.width)}px` });
       }
     };
 
@@ -263,7 +328,14 @@
        και ξεκινά το intro ακριβώς όπως ήταν — χωρίς να ανταγωνίζεται πια με γραμματοσειρές/μεταγλωττίσεις. */
     const LD_MIN = 500, LD_MAX = 1200;
     let ldP = 0;
-    const progress = (p: number) => { ldP = Math.max(ldP, Math.min(1, p)); ldBar.style.transform = `scaleX(${ldP.toFixed(3)})`; };
+    const progress = (p: number) => {
+      ldP = Math.max(ldP, Math.min(1, p));
+      ldBar.style.transform = `scaleX(${ldP.toFixed(3)})`;
+      if (ldNum) ldNum.firstChild!.textContent = String(Math.round(ldP * 100));
+      if (ldRing) (ldRing.querySelector('circle') as SVGCircleElement).style.strokeDashoffset = String(289 * (1 - ldP));
+      if (ldAura) ldAura.style.opacity = String(.35 + .65 * ldP);
+      if (ldHz) ldHz.style.opacity = String(.2 + .8 * ldP);
+    };
     const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
     let noGL = false;
     const glReady = new Promise<void>((resolve) => {
@@ -288,6 +360,7 @@
       const tLd = performance.now();
       place(); addEventListener('resize', onResize, { passive: true });
       ldDot.classList.add('on'); ldLine.classList.add('on');
+      for (const el of [ldAura, ldEmb, ldTxt, ldSpark]) el?.classList.add('on');
       progress(.15);
       const fontsP = document.fonts.ready.then(() => { place(); progress(.6); });
       glReady.then(() => progress(.85));
@@ -303,10 +376,16 @@
       if (ended) return;
       progress(1);
       /* Ανάφλεξη: η τελεία φουντώνει και σβήνει, η γραμμή διαλύεται — και ο καπνός γεννιέται από την τελεία */
-      ldDot.classList.remove('on');
+      ldDot.classList.remove('on'); ldSpark?.classList.remove('on');
       ldDot.animate([{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(2.6)', opacity: 0 }], { duration: 420, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'forwards' });
-      ldLine.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 350, fill: 'forwards' });
-      setTimeout(() => root.querySelector('.intro-load')?.remove(), 500);
+      for (const el of [ldLine, ldAura, ldEmb, ldNum, ldTxt, ldHz, ldSpark]) el?.animate([{ opacity: getComputedStyle(el).opacity }, { opacity: 0 }], { duration: 350, fill: 'forwards' });
+      ldRing?.animate([{ transform: 'rotate(-90deg) scale(1)', opacity: 1 }, { transform: 'rotate(-90deg) scale(.2)', opacity: 0 }], { duration: 380, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'forwards' });
+      setTimeout(() => ldLoad.remove(), 500);
+      /* Δοκιμές (localhost): σύνδεσμος επιστροφής στη σελίδα επιλογής */
+      if (/[?&]loader=/.test(location.search) && !/pisma\.gr$/.test(location.hostname)) {
+        const a = document.createElement('a'); a.href = '/dokimes-loading/'; a.textContent = '↩ Εκδοχές loading'; a.setAttribute('style', 'position:fixed;left:12px;bottom:12px;z-index:2147483001;background:#EE4F27;color:#fff;font:700 14px Inter,sans-serif;padding:10px 14px;border-radius:999px;text-decoration:none');
+        document.body.appendChild(a);
+      }
       if (ldSkip) skip();
       root.removeEventListener('pointerdown', ldSkipFn);
       if (noGL) {
