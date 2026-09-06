@@ -325,6 +325,12 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
   transition-delay: calc(var(--i, 0) * 70ms);
 }
 .reveal.is-in { opacity: 1; transform: none; filter: none; }
+/* Οθόνες αφής: ΧΩΡΙΣ blur στις εισόδους. Το animation ενός filter που «μετακινεί pixel» (blur) δεν τρέχει
+   στον compositor — ξαναζωγραφίζει το στοιχείο στο main thread σε κάθε καρέ, και στο κινητό αυτό κολλάει
+   scroll και πατήματα. Μένουν ξεθώριασμα + ανάδυση (opacity/transform: compositor, 0 κόστος). */
+@media (pointer: coarse) {
+  .reveal { filter: none; transition: opacity .7s var(--ease), transform .7s var(--ease); }
+}
 
 /* ---------- Focus / a11y ---------- */
 :focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; border-radius: 6px; }

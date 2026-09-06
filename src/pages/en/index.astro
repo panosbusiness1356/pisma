@@ -328,15 +328,15 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
             <span>coffee near me</span>
           </div>
           <div class="rev-list">
-            <div class="rev-row" id="rev-a" style="top:66px">
+            <div class="rev-row" id="rev-a" style="transform:translateY(66px)" data-y="66">
               <p>The Corner Cafe</p>
               <p class="rev-meta"><b>4.6</b> <span class="rev-stars">★★★★★</span> (210)</p>
             </div>
-            <div class="rev-row" id="rev-b" style="top:132px">
+            <div class="rev-row" id="rev-b" style="transform:translateY(132px)" data-y="132">
               <p>Cafe Next Door</p>
               <p class="rev-meta"><b>4.4</b> <span class="rev-stars">★★★★★</span> (98)</p>
             </div>
-            <div class="rev-row rev-row--you" id="rev-y" style="top:0px">
+            <div class="rev-row rev-row--you" id="rev-y" style="transform:translateY(0px)" data-y="0">
               <p>Your business<span class="rev-crown" id="rev-crown"><svg viewBox="0 0 24 24" fill="#e37400" aria-hidden="true"><path d="M2.6 18.2 1 7.6l6 3.9L12 4l5 7.5 6-3.9-1.6 10.6z"/><path d="M3.5 19.6h17v1.9h-17z"/></svg></span></p>
               <p class="rev-meta"><b id="rev-rating">4.9</b> <span class="rev-stars">★★★★★</span> (<span id="rev-count" class="num">234</span>)</p>
               <span class="rev-ring" id="rev-ring"></span>
@@ -623,7 +623,8 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     const later = (fn: () => void, ms: number) => revTimers.push(window.setTimeout(fn, ms));
     const raf2 = (fn: () => void) => requestAnimationFrame(() => requestAnimationFrame(fn));
     const setTops = (y: string, a: string, b: string) => {
-      rowY.style.top = y; rowA.style.top = a; rowB.style.top = b;
+      // transform αντί top: compositor-only (το top έκανε layout + paint σε κάθε καρέ της μετάβασης)
+      for (const [el, v] of [[rowY, y], [rowA, a], [rowB, b]] as const) { el.style.transform = `translateY(${v})`; el.dataset.y = String(parseFloat(v)); }
     };
     const paint = () => {
       // Αγγλική σελίδα: δεκαδικό με τελεία (4.9), όχι κόμμα.
@@ -640,15 +641,14 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
       const lr = rowY.parentElement!.getBoundingClientRect();
       return {
         x: Math.round(lr.left - sr.left + lr.width * fx),
-        y: Math.round(lr.top - sr.top + parseFloat(rowY.style.top || '0') + rowY.offsetHeight / 2),
+        y: Math.round(lr.top - sr.top + parseFloat(rowY.dataset.y || '0') + rowY.offsetHeight / 2),
       };
     };
     const retargetStars = () => {
       for (const s of starFlight) {
         const p = starTarget(parseFloat(s.dataset.fx || '0.5'));
         s.style.transitionDuration = '.45s'; // γρήγορο «σβούριγμα» προς τη νέα θέση
-        s.style.left = `${p.x}px`;
-        s.style.top = `${p.y}px`;
+        s.style.transform = `translate(${p.x}px,${p.y}px) scale(.4) rotate(${s.dataset.rot || 0}deg)`;
       }
     };
 
@@ -681,14 +681,15 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
       const s = document.createElement('span');
       s.textContent = '★';
       s.dataset.fx = String(fx);
-      s.style.cssText = `position:absolute;left:${sx}px;top:${sy}px;font-size:${Math.round(14 + Math.random() * 8)}px;color:#FBBC04;text-shadow:0 0 10px rgba(251,188,4,.9),0 0 22px rgba(251,188,4,.5);transition:all 1.1s cubic-bezier(.4,0,.6,1);z-index:3;opacity:0;line-height:1`;
+      const rot = Math.round(Math.random() * 260 - 130);
+      s.dataset.rot = String(rot);
+      // transform αντί left/top: η πτήση του αστεριού τρέχει στον compositor (το left/top έκανε layout σε κάθε καρέ)
+      s.style.cssText = `position:absolute;left:0;top:0;transform:translate(${sx}px,${sy}px);font-size:${Math.round(14 + Math.random() * 8)}px;color:#FBBC04;text-shadow:0 0 10px rgba(251,188,4,.9),0 0 22px rgba(251,188,4,.5);transition:transform 1.1s cubic-bezier(.4,0,.6,1),opacity 1.1s cubic-bezier(.4,0,.6,1);will-change:transform;z-index:3;opacity:0;line-height:1`;
       fxL.appendChild(s);
       starFlight.add(s);
       raf2(() => {
         s.style.opacity = '1';
-        s.style.left = `${t.x}px`;
-        s.style.top = `${t.y}px`;
-        s.style.transform = `scale(.4) rotate(${Math.round(Math.random() * 260 - 130)}deg)`;
+        s.style.transform = `translate(${t.x}px,${t.y}px) scale(.4) rotate(${rot}deg)`;
       });
       later(() => { starFlight.delete(s); s.remove(); bump(); }, 1120);
     };
@@ -807,7 +808,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   .rev-list { position: relative; height: 196px; flex: none; }
   .rev-row {
     position: absolute; left: 0; right: 0;
-    transition: top .9s cubic-bezier(.3, 1.3, .4, 1);
+    top: 0; transition: transform .9s cubic-bezier(.3, 1.3, .4, 1); will-change: transform;
     background: #fff; border: 1px solid #e8eaed; border-radius: 12px; padding: 9px 12px;
   }
   .rev-row p { margin: 0; color: #202124; font-size: .8rem; font-weight: 600; max-width: none; }
@@ -1059,6 +1060,17 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   .stg-smoke { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 1.2s ease; }
   .stg-smoke.is-on { opacity: .95; }
   .stg:has(.stg-smoke.is-on) .stg-fog { opacity: .35; }
+  /* Οθόνες αφής: ομίχλη χωρίς filter: blur και χωρίς κίνηση (blur(70px) σε 3 στοιχεία 70-90vw που κινούνται
+     συνεχώς = το ακριβότερο πράγμα για GPU κινητού)· τα γράμματα «PISMA.» μπαίνουν με ξεθώριασμα + ανάδυση
+     χωρίς blur/λάμψη (color/text-shadow/blur = main thread, repaint 6 μεγάλων γραμμάτων σε κάθε καρέ). */
+  @media (pointer: coarse) {
+    .stg-fog { filter: none; animation: none; }
+    .stg-fog--1 { background: radial-gradient(closest-side, rgba(255,255,255,.12), transparent); }
+    .stg-fog--2 { background: radial-gradient(closest-side, rgba(255,255,255,.09), transparent); }
+    .stg-fog--3 { background: radial-gradient(closest-side, rgba(255,255,255,.13), transparent); }
+    .hero-word span { filter: none; animation-name: hwInLite; }
+    @keyframes hwInLite { 0% { opacity: 0; transform: translateY(26px) scale(1.06); } 100% { opacity: 1; transform: none; } }
+  }
   .stg-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: linear-gradient(180deg, transparent, rgba(255,255,255,.08) 60%, rgba(255,255,255,.13)); }
   .stg::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 140px; background: linear-gradient(transparent, var(--bg)); }
 
@@ -1288,6 +1300,11 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   @keyframes blurIn {
     to { opacity: 1; filter: blur(0); transform: none; }
   }
+  /* Οθόνες αφής: είσοδοι χωρίς blur (compositor-only) — βλ. global.css .reveal */
+  @media (pointer: coarse) {
+    .blur-in { filter: none; animation-name: fadeUp; }
+    @keyframes fadeUp { to { opacity: 1; transform: none; } }
+  }
   @media (prefers-reduced-motion: reduce) {
     .blur-in { animation: none; opacity: 1; filter: none; transform: none; }
   }
@@ -1314,14 +1331,15 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     content: '✓'; color: var(--ok-text); font-weight: 700; margin-right: 9px;
   }
   .ba-shine {
-    position: absolute; top: 0; bottom: 0; left: -70%; width: 45%;
+    position: absolute; top: 0; bottom: 0; left: 0; width: 45%;
     background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, .07) 50%, transparent 100%);
-    animation: baShine 3.2s ease-in-out infinite;
-    pointer-events: none;
+    transform: translateX(-160%);
+    animation: baShine 3.2s ease-in-out infinite; /* transform, όχι left: compositor-only */
+    pointer-events: none; will-change: transform;
   }
   @keyframes baShine {
-    0% { left: -70%; }
-    55%, 100% { left: 120%; }
+    0% { transform: translateX(-160%); }
+    55%, 100% { transform: translateX(270%); }
   }
   .ba-note {
     text-align: center; font-size: .85rem; color: var(--muted);

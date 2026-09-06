@@ -88,6 +88,16 @@ const hasExtra = Astro.slots.has('extra');
   }
   @keyframes phIn { to { opacity: 1; filter: blur(0); transform: none; } }
 
+  /* Οθόνες αφής: (α) η CSS ομίχλη χωρίς filter: blur και χωρίς κίνηση — ένα blur(60px) σε στοιχείο 70vw που
+     κινείται συνεχώς είναι από τα ακριβότερα πράγματα για GPU κινητού· (β) οι είσοδοι χωρίς blur
+     (το blur animation τρέχει στο main thread). Το ξεθώριασμα/ανάδυση μένει. */
+  @media (pointer: coarse) {
+    .stg-fog { filter: none; animation: none; }
+    .stg-fog--1 { background: radial-gradient(closest-side, rgba(255, 255, 255, .11), transparent); }
+    .stg-fog--2 { background: radial-gradient(closest-side, rgba(255, 255, 255, .08), transparent); }
+    .blur-in { filter: none; animation-name: phInLite; }
+    @keyframes phInLite { to { opacity: 1; transform: none; } }
+  }
   @media (max-width: 680px) {
     .hero { padding-top: calc(40px + 72px); padding-bottom: 40px; min-height: 0; }
     .hero h1 { font-size: clamp(1.75rem, 8vw, 2.3rem); }

@@ -61,6 +61,9 @@
   .intro-word.placed { transform: none; }
   .intro-word span { display: inline-block; opacity: 0; filter: blur(28px); transform: scale(1.3); will-change: transform, filter, opacity; }
   .intro-word .dot { color: #FF7A50; text-shadow: 0 0 40px rgba(255, 122, 80, .9); }
+  /* Οθόνες αφής: τα γράμματα βγαίνουν με ξεθώριασμα + σμίκρυνση, χωρίς blur (το blur animation ξαναζωγραφίζει
+     6 μεγάλα γράμματα στο main thread σε κάθε καρέ — στο κινητό κολλούσε το intro). */
+  @media (pointer: coarse) { .intro-word span { filter: none; will-change: transform, opacity; } }
   /* Όσο το πέπλο είναι αδιαφανές: ο καπνός του hero δεν ζωγραφίζεται (GPU), και τα στοιχεία
      του hero κάθονται ΟΡΑΤΑ στην τελική τους θέση κάτω από το πέπλο (κανείς δεν τα βλέπει, αλλά ο
      browser τα «ζωγραφίζει» → το LCP μετριέται στην πρώτη ζωγραφιά, όχι όταν ανοίξει το πέπλο).
@@ -241,9 +244,13 @@
         }
       });
       word.style.opacity = '1';
+      // Οθόνες αφής: χωρίς blur (compositor-only animation) — βλ. σχόλιο στο CSS.
+      const touch = matchMedia('(pointer: coarse)').matches;
       letters.forEach((el, i) => {
         const A = el.animate(
-          [{ opacity: 0, filter: 'blur(28px)', transform: 'scale(1.3)' }, { opacity: 1, filter: 'blur(0)', transform: 'scale(1)' }],
+          touch
+            ? [{ opacity: 0, transform: 'scale(1.3)' }, { opacity: 1, transform: 'scale(1)' }]
+            : [{ opacity: 0, filter: 'blur(28px)', transform: 'scale(1.3)' }, { opacity: 1, filter: 'blur(0)', transform: 'scale(1)' }],
           { duration: LET_DUR, delay: T_LET + i * LET_GAP, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'forwards' },
         );
         anims.push(A);

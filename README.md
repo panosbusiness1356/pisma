@@ -58,6 +58,7 @@ npm run preview    # σερβίρει το dist/ τοπικά
 - **Fallback γραμματοσειρές με ίδιες μετρικές** (`Unbounded Fallback`, `Inter Fallback` στο `fonts.css`: τοπική Arial/Roboto με `size-adjust`/`ascent-override`): σε αργό δίκτυο το swap δεν κουνά τίποτα (CLS αρχικής 0,16 → 0,01 με καθυστερημένες γραμματοσειρές).
 - **Χωρίς GPU** (software WebGL — VM, remote desktop, παλιοί drivers): καπνός = ένα καρέ, intro χωρίς καπνό, Ντοτ ακίνητος (`html.gpu-soft`).
 - Τα κρυμμένα «αιωρούμενα λογότυπα» του hero αφαιρέθηκαν (φόρτωναν 11 SVG άδικα).
+- **Οθόνες αφής (`@media (pointer: coarse)`): κανένα blur animation, κανένα backdrop-filter, καμία CSS ομίχλη με filter, χωρίς page-in.** Στο κινητό ένα animation με `filter: blur()` ή `backdrop-filter` ΔΕΝ τρέχει στον compositor — ξαναζωγραφίζει στο main thread σε κάθε καρέ και κολλάει scroll/πατήματα. Οι είσοδοι μένουν ως ξεθώριασμα + ανάδυση (opacity/transform). Desktop ίδιο με πριν. Επίσης όλα τα animations με `left/top` (αστέρια/σειρές κριτικών, λάμψη «Πριν→Μετά») έγιναν `transform`.
 
 Έλεγχος ξανά: `npm run build`, `npm run preview -- --port 4390` και Lighthouse CLI (`npx lighthouse http://localhost:4390/ --only-categories=performance --throttling.cpuSlowdownMultiplier=4`). Το live μετριέται με το cookie της κλειδαριάς (`--extra-headers '{"Cookie":"pisma_code=..."}'`).
 
