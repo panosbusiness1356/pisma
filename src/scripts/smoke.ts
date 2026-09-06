@@ -40,7 +40,17 @@ const pickTier = (): Tier => {
   if (touch || innerWidth < 900 || mem <= 4 || cores <= 4) return 'lite';
   return 'full';
 };
-const TIER = pickTier();
+let TIER = pickTier();
+
+/** Software WebGL (SwiftShader/llvmpipe — VM, remote desktop, blocklisted GPU): κάθε καρέ κοστίζει
+ *  εκατοντάδες ms στη CPU και μπλοκάρει τη σελίδα → μόνο ένα στατικό καρέ. */
+const isSoftwareGL = (gl: WebGLRenderingContext): boolean => {
+  try {
+    const ext = gl.getExtension('WEBGL_debug_renderer_info') as { UNMASKED_RENDERER_WEBGL: number } | null;
+    const r = String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
+    return /swiftshader|llvmpipe|softpipe|software|mesa offscreen|basic render/i.test(r);
+  } catch { return false; }
+};
 
 /** Πηγή του fragment shader ανά βαθμίδα. deriv = υπάρχει OES_standard_derivatives (φθηνός φωτισμός της lite). */
 const fragSrc = (tier: Tier, deriv: boolean, highp: boolean): string => {
@@ -108,6 +118,7 @@ function setup(canvas: HTMLCanvasElement) {
   canvas.dataset.smoke = '1';
   const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, powerPreference: 'low-power' });
   if (!gl) { canvas.remove(); return; }
+  if (TIER !== 'still' && isSoftwareGL(gl)) { TIER = 'still'; document.documentElement.classList.add('gpu-soft'); } // και ο Ντοτ σταματά (Mascot.astro)
   // highp όπου υπάρχει: σε GPU κινητών το mediump (fp16) «σπάει» τον θόρυβο μετά από λίγα λεπτά (μεγάλο t).
   const highp = (gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT)?.precision ?? 0) > 0;
   const deriv = TIER !== 'full' && !!gl.getExtension('OES_standard_derivatives');

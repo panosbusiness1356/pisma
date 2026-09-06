@@ -264,6 +264,16 @@ const cloudB = dots.slice(half);
     let running = false;
     let prevEyeX = 0, prevEyeY = 0, prevRot = 0;
     const loop = (nowT: number) => {
+      /* Software rendering (html.gpu-soft, το βάζει το smoke.ts): κάθε καρέ κίνησης κοστίζει ~100 ms
+         στο main thread — ο Ντοτ παρκάρει στη στάση του και σταματά ο βρόχος (ξυπνά ξανά μόνο από scroll). */
+      if (document.documentElement.classList.contains('gpu-soft')) {
+        const tp = targetPos();
+        el.classList.toggle('is-off', !!tp.off);
+        el.style.transform = `translate(${tp.x.toFixed(1)}px, ${tp.y.toFixed(1)}px)`;
+        motion.style.transform = '';
+        running = false;
+        return;
+      }
       const f = Math.min(3, (nowT - lastT) / 16.667);
       lastT = nowT;
       const smooth = (k: number) => 1 - Math.pow(1 - k, f);
@@ -509,5 +519,7 @@ const cloudB = dots.slice(half);
   @media (prefers-reduced-motion: reduce) {
     .m-bob, .d-spin, .d-spin2, .d-eyes { animation: none; }
   }
+  /* Software rendering (χωρίς GPU): καμία κίνηση — δες smoke.ts (html.gpu-soft) */
+  :global(html.gpu-soft) .m-bob, :global(html.gpu-soft) .d-spin, :global(html.gpu-soft) .d-spin2, :global(html.gpu-soft) .d-eyes { animation: none; }
   @media print { #pisma-mascot { display: none; } }
 </style>
