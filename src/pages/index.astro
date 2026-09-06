@@ -1037,26 +1037,31 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
      και το αντίγραφο μετακινείται αντίθετα ώστε να μένει ακίνητο πάνω στα γράμματα. Δύο transform animations
      = τρέχουν εξ ολοκλήρου στον compositor, 0 ξαναζωγραφίσματα. (Το παλιό ::after με background-position
      ξαναζωγράφιζε 6 τεράστια γράμματα με σκιά 80 px σε κάθε καρέ — στο κινητό πάγωνε την οθόνη κάθε 6 s.)
-     Το παράθυρο: 24 % του πλάτους της λέξης, με μαλακή διαγώνια μάσκα. Ίδιοι χρόνοι: 6 s, ανά 1,9 s, ορατό στο 0-40 %. */
-  .hw-shine { position: absolute; inset: 0; overflow: hidden; pointer-events: none; font-style: normal; font-weight: inherit; }
+     Το παράθυρο: 30 % του πλάτους της λέξης, με μαλακή διαγώνια μάσκα σε καμπύλη καμπάνας (όχι «ώμοι» στο 55 %).
+     Ίδιοι χρόνοι: 6 s, ανά 1,9 s, ορατό στο 0-40 %.
+     Γιατί φαινόταν «τετράγωνο με γραμμές» (χρήστρια 07/09/2026): το αντίγραφο κληρονομούσε το text-shadow 80 px
+     της λέξης και το φωτοστέφανό του κοβόταν στο ύψος του κουτιού (overflow: hidden) — ορθογώνιο θολό φως με
+     ευθείες ακμές πάνω/κάτω. Τώρα: δικό του μικρό φωτοστέφανο (.1em) και το κουτί κοπής βγαίνει .35em έξω από τα
+     γράμματα, ώστε το φως να σβήνει μόνο του πριν φτάσει στην ακμή. */
+  .hw-shine { position: absolute; inset: -.35em 0; overflow: hidden; pointer-events: none; font-style: normal; font-weight: inherit; }
   .hw-shine-win {
-    position: absolute; top: 0; bottom: 0; left: 0; width: 24%; overflow: hidden; will-change: transform, opacity;
-    -webkit-mask-image: linear-gradient(105deg, transparent 0%, rgba(0, 0, 0, .55) 33%, #000 50%, rgba(0, 0, 0, .55) 67%, transparent 100%);
-    mask-image: linear-gradient(105deg, transparent 0%, rgba(0, 0, 0, .55) 33%, #000 50%, rgba(0, 0, 0, .55) 67%, transparent 100%);
+    position: absolute; top: 0; bottom: 0; left: 0; width: 30%; overflow: hidden; will-change: transform, opacity;
+    -webkit-mask-image: linear-gradient(105deg, transparent 0%, rgba(0, 0, 0, .08) 15%, rgba(0, 0, 0, .3) 30%, rgba(0, 0, 0, .72) 42%, #000 50%, rgba(0, 0, 0, .72) 58%, rgba(0, 0, 0, .3) 70%, rgba(0, 0, 0, .08) 85%, transparent 100%);
+    mask-image: linear-gradient(105deg, transparent 0%, rgba(0, 0, 0, .08) 15%, rgba(0, 0, 0, .3) 30%, rgba(0, 0, 0, .72) 42%, #000 50%, rgba(0, 0, 0, .72) 58%, rgba(0, 0, 0, .3) 70%, rgba(0, 0, 0, .08) 85%, transparent 100%);
     animation: hwShineWin 6s ease-in-out 1.9s infinite;
   }
   .hw-shine-txt {
-    position: absolute; top: 0; left: 0; width: calc(100% / .24); text-align: center;
-    color: rgba(255, 255, 255, .95); white-space: nowrap; will-change: transform;
+    position: absolute; top: .35em; left: 0; width: calc(100% / .3); text-align: center;
+    color: rgba(255, 255, 255, .95); text-shadow: 0 0 .1em rgba(255, 255, 255, .35); white-space: nowrap; will-change: transform;
     animation: hwShineTxt 6s ease-in-out 1.9s infinite;
   }
   @keyframes hwShineWin {
     0% { transform: translateX(-100%); opacity: 1; }
-    40% { transform: translateX(417%); opacity: 1; }
-    41%, 100% { transform: translateX(417%); opacity: 0; }
+    40% { transform: translateX(333.34%); opacity: 1; }
+    41%, 100% { transform: translateX(333.34%); opacity: 0; }
   }
   @keyframes hwShineTxt {
-    0% { transform: translateX(24%); }
+    0% { transform: translateX(30%); }
     40%, 100% { transform: translateX(-100%); }
   }
   /* Λάμψη πίσω από το «PISMA.» (οθόνες αφής, αντί για text-shadow 80 px που ακρίβαινε κάθε ξαναζωγράφισμα) */
