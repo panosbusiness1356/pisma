@@ -104,6 +104,33 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* ---- Τοπικές γραμματοσειρές «ρυθμισμένες» στις μετρικές των δικών μας (μηδέν layout shift στο swap) ----
+   Σε αργό δίκτυο το κείμενο ζωγραφίζεται πρώτα με τοπική γραμματοσειρά· αν αυτή έχει άλλα πλάτη/ύψη,
+   όταν έρθει η κανονική, ό,τι είναι από κάτω μετακινείται (CLS 0,16 στην αρχική: οι αριθμοί-δεσμεύσεις
+   ξανατυλίγονταν και το «PISMA.» άλλαζε ύψος γραμμής). Με size-adjust/ascent/descent-override η τοπική
+   πιάνει ΙΔΙΟ χώρο, οπότε το swap δεν κουνά τίποτα. Τιμές από τα αρχεία (fontTools, 07/09/2026):
+   Unbounded μέσο πλάτος .757 em / Arial Bold .593 → 128 %· Inter .60–.63 / Arial .58–.60 → 105 %. */
+@font-face {
+  font-family: 'Unbounded Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Roboto Bold'), local('Roboto'), local('Helvetica Neue Bold'), local('Arial');
+  font-weight: 800;
+  size-adjust: 128%;
+  ascent-override: 78%;
+  descent-override: 19%;
+  line-gap-override: 0%;
+  /* Μόνο για τα γλυφικά που έχει και η Unbounded — τα ελληνικά (π.χ. «από», «ώρες») μένουν Inter, όπως τώρα. */
+  unicode-range: U+0020-007E, U+00A0, U+2013-2014, U+2018-2019, U+2026, U+20AC;
+}
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('ArialMT'), local('Roboto'), local('Helvetica Neue'), local('Helvetica');
+  font-weight: 400 800;
+  size-adjust: 105%;
+  ascent-override: 92.5%;
+  descent-override: 23%;
+  line-gap-override: 0%;
+}
+
 /* Unbounded 800 — Basic Latin μόνο (102 γλυφικά, 28 KB αντί 51 KB): η γραμματοσειρά του logo
    («PISMA.», «from €220», «72 hours», «100%») δεν χρειάζεται τονισμένα λατινικά — ό,τι λείπει
    πέφτει στην Inter ανά χαρακτήρα. Υποσύνολο με pyftsubset (fonttools), 07/09/2026. */

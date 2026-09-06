@@ -55,6 +55,8 @@ npm run preview    # σερβίρει το dist/ τοπικά
 - **Lenis μόνο με ποντίκι** (`(hover: hover) and (pointer: fine)`) και με dynamic import — στο κινητό δεν κατεβαίνει καν.
 - **Intro αρχικής**: τα στοιχεία του hero είναι ορατά κάτω από το μαύρο πέπλο (το LCP μετριέται στην πρώτη ζωγραφιά) και οι είσοδοι ξαναπαίζουν όταν ανοίγει· ο shader του μεταγλωττίζεται στο παρασκήνιο.
 - **Unbounded** μόνο Basic Latin (28 KB αντί 51 KB, `pyftsubset`), preload μόνο στην αρχική.
+- **Fallback γραμματοσειρές με ίδιες μετρικές** (`Unbounded Fallback`, `Inter Fallback` στο `fonts.css`: τοπική Arial/Roboto με `size-adjust`/`ascent-override`): σε αργό δίκτυο το swap δεν κουνά τίποτα (CLS αρχικής 0,16 → 0,01 με καθυστερημένες γραμματοσειρές).
+- **Χωρίς GPU** (software WebGL — VM, remote desktop, παλιοί drivers): καπνός = ένα καρέ, intro χωρίς καπνό, Ντοτ ακίνητος (`html.gpu-soft`).
 - Τα κρυμμένα «αιωρούμενα λογότυπα» του hero αφαιρέθηκαν (φόρτωναν 11 SVG άδικα).
 
 Έλεγχος ξανά: `npm run build`, `npm run preview -- --port 4390` και Lighthouse CLI (`npx lighthouse http://localhost:4390/ --only-categories=performance --throttling.cpuSlowdownMultiplier=4`). Το live μετριέται με το cookie της κλειδαριάς (`--extra-headers '{"Cookie":"pisma_code=..."}'`).
