@@ -319,6 +319,9 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
 
 /* ---------- Reveal on scroll ----------
    Ίδια «αναπνοή» με το hero (blur → καθαρό), με μικρό stagger ανά αδελφό (--i από το Base). */
+/* Καταχωρημένη μεταβλητή για το «θόλωμα σε βήματα» των οθονών αφής (.reveal εδώ, .blur-in / γράμματα «PISMA.» /
+   intro στα δικά τους αρχεία). Χωρίς @property οι μεταβλητές δεν παρεμβάλλονται (θα άλλαζε μία φορά, όχι σε βήματα). */
+@property --blur-step { syntax: '<length>'; inherits: false; initial-value: 0px; }
 .reveal {
   opacity: 0; transform: translateY(18px); filter: blur(6px);
   transition: opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease);
@@ -328,9 +331,18 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
 /* Οθόνες αφής: το ΙΔΙΟ εφέ (θόλωμα → καθαρό), αλλά φθηνό. Ένα animation του filter: blur δεν τρέχει στον
    compositor του Chrome — ξαναζωγραφίζει το στοιχείο στο main thread σε ΚΑΘΕ καρέ (54 φορές σε .9 s).
    Εδώ το θόλωμα λύνεται σε 3 βήματα (steps) = 3 ξαναζωγραφίσματα, ενώ ξεθώριασμα και ανάδυση μένουν ομαλά
-   στον compositor (will-change: transform = δικό του layer). Το μάτι δεν ξεχωρίζει τη διαφορά. */
+   στον compositor (will-change: transform = δικό του layer). Το μάτι δεν ξεχωρίζει τη διαφορά.
+   ΠΡΟΣΟΧΗ: τα βήματα ΔΕΝ γίνονται πάνω στο ίδιο το filter αλλά στη μεταβλητή --blur-step (@property πιο πάνω)·
+   το filter είναι πάντα στατική τιμή blur(var(--blur-step)). Στο WebKit (κάθε browser του iPhone) ένα
+   animation/transition του filter σε στοιχείο με δικό του layer περνάει στο Core Animation, που δεν ξέρει
+   steps() (WebKit bug 186129): το ξεθώριασμα έπαιζε, το θόλωμα έμενε για πάντα. */
 @media (pointer: coarse) {
-  .reveal { will-change: transform; transition: opacity .9s var(--ease), transform .9s var(--ease), filter .5s steps(3, jump-end); }
+  .reveal {
+    will-change: transform; --blur-step: 6px; filter: blur(var(--blur-step));
+    transition: opacity .9s var(--ease), transform .9s var(--ease), --blur-step .5s steps(3, jump-end);
+    transition-delay: calc(var(--i, 0) * 70ms);
+  }
+  .reveal.is-in { --blur-step: 0px; filter: blur(var(--blur-step)); }
 }
 
 /* ---------- Focus / a11y ---------- */

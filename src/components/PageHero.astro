@@ -98,10 +98,12 @@ const hasExtra = Astro.slots.has('extra');
     .stg-fog { filter: none; }
     .stg-fog--1 { background: radial-gradient(closest-side, rgba(255, 255, 255, .13) 0%, rgba(255, 255, 255, .06) 45%, transparent 100%); }
     .stg-fog--2 { background: radial-gradient(closest-side, rgba(255, 255, 255, .1) 0%, rgba(255, 255, 255, .04) 45%, transparent 100%); }
-    /* Είσοδος: ίδιο θόλωμα → καθαρό, αλλά σε 3 βήματα (3 ξαναζωγραφίσματα αντί για 66)· ξεθώριασμα/ανάδυση ομαλά στον compositor. */
-    .blur-in { will-change: transform; animation: phInMove 1.1s cubic-bezier(.2, .8, .25, 1) both, phInBlur .55s steps(3, jump-end) both; animation-delay: var(--d, 0s); }
+    /* Είσοδος: ίδιο θόλωμα → καθαρό, αλλά σε 3 βήματα (3 ξαναζωγραφίσματα αντί για 66)· ξεθώριασμα/ανάδυση ομαλά στον compositor.
+       Τα βήματα στη μεταβλητή --blur-step (@property στο global.css), όχι στο filter: στο WebKit (iPhone) ένα filter animation
+       με steps() σε στοιχείο με δικό του layer έμενε κολλημένο στο θόλωμα (WebKit bug 186129). Βλ. index.astro .blur-in */
+    .blur-in { will-change: transform; --blur-step: 12px; filter: blur(var(--blur-step)); animation: phInMove 1.1s cubic-bezier(.2, .8, .25, 1) both, phInBlur .55s steps(3, jump-end) both; animation-delay: var(--d, 0s); }
     @keyframes phInMove { to { opacity: 1; transform: none; } }
-    @keyframes phInBlur { from { filter: blur(12px); } to { filter: blur(0); } }
+    @keyframes phInBlur { from { --blur-step: 12px; } to { --blur-step: 0px; } }
   }
   @media (max-width: 680px) {
     .hero { padding-top: calc(40px + 72px); padding-bottom: 40px; min-height: 0; }
