@@ -65,6 +65,9 @@ const path = norm(Astro.url.pathname);
 const inServices = NAV.services.some((s) => path === norm(s.href));
 ---
 
+<!-- Φρουρός για την «κάψουλα»: όταν βγει από την οθόνη (scroll > 50 px) το μενού μαζεύει. IntersectionObserver
+     αντί για scroll listener που διάβαζε scrollY σε κάθε γεγονός (forced layout όσο κάτι κινείται στη σελίδα). -->
+<span class="nav-sentinel" aria-hidden="true"></span>
 <header class="nav-wrap">
   <nav class="container nav" aria-label={NAV.menuAria}>
     <a class="logo" href={NAV.home}>PISMA<span>.</span></a>
@@ -176,10 +179,16 @@ const inServices = NAV.services.some((s) => path === norm(s.href));
     if (!sub.contains((e as FocusEvent).relatedTarget as Node)) setSub(false);
   });
 
-  // Floating nav: μαζεύει σε «κάψουλα» με blur μετά από λίγο scroll.
-  const onScroll = () => wrap.classList.toggle('is-scrolled', window.scrollY > 50);
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  // Floating nav: μαζεύει σε «κάψουλα» μετά από λίγο scroll. Ο φρουρός (.nav-sentinel, 51 px στην κορυφή του
+  // εγγράφου) φεύγει από την οθόνη → is-scrolled. Κανένα scroll listener, καμία ανάγνωση scrollY (forced layout).
+  const sentinel = document.querySelector('.nav-sentinel');
+  if (sentinel && 'IntersectionObserver' in window) {
+    new IntersectionObserver((es) => wrap.classList.toggle('is-scrolled', !es[0].isIntersecting), { threshold: 0 }).observe(sentinel);
+  } else {
+    const onScroll = () => wrap.classList.toggle('is-scrolled', window.scrollY > 50);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
 
   // Διακόπτες ήχων (εικονίδιο στο nav + σειρά στο mobile μενού) —
   // συγχρονίζονται όλοι μεταξύ τους μέσω του window.pismaSound (ορίζεται στο Base).
@@ -219,6 +228,7 @@ const inServices = NAV.services.some((s) => path === norm(s.href));
     position: sticky; top: 0; z-index: 100;
     padding: 8px 10px 0;
   }
+  .nav-sentinel { position: absolute; top: 0; left: 0; width: 1px; height: 51px; pointer-events: none; visibility: hidden; }
   .nav {
     display: flex; align-items: center; gap: 16px; height: 64px;
     max-width: 1160px; /* λίγο φαρδύτερο από το .container (1120) — δένει με το περιεχόμενο */
@@ -240,6 +250,7 @@ const inServices = NAV.services.some((s) => path === norm(s.href));
   /* Οθόνες αφής: χωρίς backdrop-filter — θολώνει ξανά ό,τι περνά κάτω από το μενού σε ΚΑΘΕ καρέ scroll.
      Πιο αδιαφανές φόντο, ίδιο αποτέλεσμα. */
   @media (pointer: coarse) {
+    .nav { transition: background-color .35s ease, border-color .35s ease, box-shadow .35s ease; } /* όχι max-width: layout ανά καρέ */
     .nav-wrap.is-scrolled .nav, .nav-wrap.menu-open .nav { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(var(--nav-rgb), .95); }
   }
   .logo {

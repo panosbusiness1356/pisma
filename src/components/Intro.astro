@@ -65,7 +65,7 @@
      βλ. το JS (δύο animations: ομαλό opacity/scale + βηματική μεταβλητή --blur-step). Το filter μένει στατικό
      blur(var(--blur-step)): στο WebKit ένα filter animation με steps() σε στοιχείο με layer πάει στο Core
      Animation που δεν ξέρει steps() (bug 186129) — τα γράμματα έμεναν θολά. @property στο global.css. */
-  @media (pointer: coarse) { .intro-word span { --blur-step: 28px; filter: blur(var(--blur-step)); } }
+  @media (pointer: coarse) { .intro-word span { --blur-step: 18px; filter: blur(var(--blur-step)); } }
   /* Όσο το πέπλο είναι αδιαφανές: ο καπνός του hero δεν ζωγραφίζεται (GPU), και τα στοιχεία
      του hero κάθονται ΟΡΑΤΑ στην τελική τους θέση κάτω από το πέπλο (κανείς δεν τα βλέπει, αλλά ο
      browser τα «ζωγραφίζει» → το LCP μετριέται στην πρώτη ζωγραφιά, όχι όταν ανοίξει το πέπλο).
@@ -257,7 +257,7 @@
           { duration: LET_DUR, delay: T_LET + i * LET_GAP, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'forwards' },
         );
         // Τα βήματα στη μεταβλητή --blur-step, όχι στο filter (WebKit/Core Animation δεν τρέχει steps() — βλ. CSS πιο πάνω).
-        if (touch) anims.push(el.animate([{ '--blur-step': '28px' }, { '--blur-step': '0px' }], { duration: LET_DUR * .7, delay: T_LET + i * LET_GAP, easing: 'steps(4, jump-end)', fill: 'forwards' }));
+        if (touch) anims.push(el.animate([{ '--blur-step': '18px' }, { '--blur-step': '0px' }], { duration: LET_DUR * .55, delay: T_LET + i * LET_GAP, easing: 'steps(4, jump-end)', fill: 'forwards' }));
         anims.push(A);
       });
       const W = word.animate([{ opacity: 1 }, { opacity: 1, offset: T_FADE / T_END }, { opacity: 0, offset: (T_FADE + FADE_DUR) / T_END }, { opacity: 0 }], { duration: T_END, fill: 'forwards', easing: 'linear' });

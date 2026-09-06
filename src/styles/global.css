@@ -338,11 +338,17 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
    steps() (WebKit bug 186129): το ξεθώριασμα έπαιζε, το θόλωμα έμενε για πάντα. */
 @media (pointer: coarse) {
   .reveal {
-    will-change: transform; --blur-step: 6px; filter: blur(var(--blur-step));
-    transition: opacity .9s var(--ease), transform .9s var(--ease), --blur-step .5s steps(3, jump-end);
+    --blur-step: 5px; filter: blur(var(--blur-step));
+    transition: opacity .9s var(--ease), transform .9s var(--ease), --blur-step .4s steps(3, jump-end);
     transition-delay: calc(var(--i, 0) * 70ms);
   }
   .reveal.is-in { --blur-step: 0px; filter: blur(var(--blur-step)); }
+}
+/* Οθόνες αφής: οι ενότητες κάτω από την πρώτη οθόνη δεν στήνονται/ζωγραφίζονται μέχρι να πλησιάσουν
+   (content-visibility) — το πρώτο layout/paint της σελίδας των 6-7 οθονών γίνεται layout μιας οθόνης.
+   Εξαίρεση (.no-cv): ενότητες με sticky/fixed παιδιά (builder Τιμών). */
+@media (pointer: coarse) {
+  main > section:not(:first-child):not(.no-cv) { content-visibility: auto; contain-intrinsic-size: auto 900px; }
 }
 
 /* ---------- Focus / a11y ---------- */

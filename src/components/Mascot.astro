@@ -59,6 +59,7 @@ const cloudB = dots.slice(half);
   const pupR = el.querySelector<HTMLElement>('.d-pup-r')!;
   const stops = [...document.querySelectorAll<HTMLElement>('[data-mascot-stop]')];
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const touchScreen = window.matchMedia('(pointer: coarse)').matches;
   const isMobile = () => window.matchMedia('(max-width: 680px)').matches;
 
   const W = () => (isMobile() ? 80 : 110);
@@ -254,8 +255,13 @@ const cloudB = dots.slice(half);
       let tCache: ReturnType<typeof targetPos> | null = null;
       let tKey = '';
       let tAt = 0;
+      /* Το scrollY/μέγεθος από listeners, ΟΧΙ ανάγνωση σε κάθε καρέ: μετά από γράψιμο στα μάτια (SVG) το layout
+         είναι «βρώμικο» και το window.scrollY το ανάγκαζε σε κάθε καρέ (forced layout). */
+      let sY = window.scrollY, vW = window.innerWidth, vH = window.innerHeight;
+      window.addEventListener('scroll', () => { sY = window.scrollY; }, { passive: true });
+      window.addEventListener('resize', () => { vW = window.innerWidth; vH = window.innerHeight; }, { passive: true });
       const targetCached = (nowT: number) => {
-        const key = `${window.scrollY}|${window.innerWidth}|${window.innerHeight}`;
+        const key = `${sY}|${vW}|${vH}`;
         if (tCache && key === tKey && nowT - tAt < 250) return tCache;
         tCache = targetPos(); tKey = key; tAt = nowT;
         return tCache;
@@ -390,17 +396,18 @@ const cloudB = dots.slice(half);
         /* Γράψιμο στο DOM ΜΟΝΟ όταν αλλάζει η τιμή: κάθε αλλαγή στα μάτια/κλίση ξαναζωγραφίζει
            το SVG των 135 κύκλων — όταν ο Ντοτ κάθεται ακίνητος, το καρέ δεν κοστίζει τίποτα. */
         const q = (v: number, step: number) => (Math.round(v / step) * step).toFixed(2); // κβάντιση: αόρατη, 10× λιγότερα repaints
+      const qEye = touchScreen ? 1 : .25, qRot = touchScreen ? .5 : .1; // οθόνες αφής: χωρίς ποντίκι, πιο χοντρά βήματα = λιγότερα SVG layouts
         const posStr = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px)`;
         if (posStr !== lastPos) { lastPos = posStr; el.style.transform = posStr; }
         /* Τα μάτια και η κλίση αλλάζουν το ίδιο το SVG (repaint των 135 κύκλων) — μόνο
            όταν η αλλαγή περνά το κατώφλι (0,25 px / 0,1°). */
-        const eyeStr = `translate(${q(eyeX, .25)}px, ${q(eyeY, .25)}px)`;
+        const eyeStr = `translate(${q(eyeX, qEye)}px, ${q(eyeY, qEye)}px)`;
         if (eyeStr !== lastEye) {
           lastEye = eyeStr;
           pupL.style.transform = eyeStr;
-          pupR.style.transform = `translate(${q(eyeX * 0.85, .25)}px, ${q(eyeY * 0.85, .25)}px)`;
+          pupR.style.transform = `translate(${q(eyeX * 0.85, qEye)}px, ${q(eyeY * 0.85, qEye)}px)`;
         }
-        const motStr = `rotate(${q(rot, .1)}deg) scale(${scale.toFixed(3)})`;
+        const motStr = `rotate(${q(rot, qRot)}deg) scale(${scale.toFixed(3)})`;
         if (motStr !== lastMot) { lastMot = motStr; motion.style.transform = motStr; }
 
         if (dist < 40 && phase === 'tour') {
