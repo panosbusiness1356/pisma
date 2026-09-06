@@ -104,6 +104,10 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
   <section
     class="hero"
     aria-labelledby="hero-title"
+    data-mascot-stop
+    data-mascot-side="right"
+    data-mascot-anchor="#hero-title"
+    data-mascot-say="Καλώς ήρθατε στην PISMA. Συνεχίστε προς τα κάτω — θα σας δείξω τα βασικά."
   >
     <!-- «Σκηνή» (αίτημα χρήστριας 06/09/2026): καπνός που κινείται αργά, προβολείς
          από ψηλά, «PISMA» τεράστιο ξεθωριασμένο πίσω, κόκκος. Μόνο CSS/SVG. -->
@@ -135,6 +139,17 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
       <h1 id="hero-title" class="blur-in" style="--d:.22s">
         Η επιχείρησή σας, <span class="hero-hl">ορατή στους πελάτες<svg class="hl-stroke" viewBox="0 0 320 30" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="hlGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--cta-lite)" /><stop offset="1" stop-color="var(--cta-deep)" /></linearGradient></defs><path d="M6 15 C 60 9, 130 21, 200 14 C 245 10, 285 12, 314 13 C 260 18, 200 22, 120 21 C 90 20.5, 72 19, 58 18" fill="none" stroke="url(#hlGrad)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" opacity=".95" /></svg></span>.
       </h1>
+      <script is:inline>
+        // Κρύβει την υπογράμμιση πριν το πρώτο paint — θα τη «ζωγραφίσει» ο Ντοτ.
+        (function () {
+          var p = document.querySelector('.hl-stroke path');
+          if (p && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            var L = p.getTotalLength();
+            p.style.strokeDasharray = String(L);
+            p.style.strokeDashoffset = String(L);
+          }
+        })();
+      </script>
       <!-- Το «PISMA.» ως δικό του στοιχείο στη ροή: τίτλος πάνω, κουμπιά/αριθμοί κάτω (αίτημα χρήστριας). -->
       <div class="hero-word" aria-hidden="true" data-text="PISMA."><span>P</span><span>I</span><span>S</span><span>M</span><span>A</span><span>.</span></div>
 

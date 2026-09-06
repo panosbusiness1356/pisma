@@ -139,7 +139,7 @@ const cloudB = dots.slice(half);
     py = dotPos.y;
   }
   /* Η γέννηση ξεκινά 600 ms αφότου «φανεί» η σελίδα (ορίζεται στο start() πιο κάτω):
-     χωρίς intro = 600 ms μετά το φόρτωμα, με intro = 600 ms μετά το άνοιγμα του πέπλου.
+     χωρίς intro = 600 ms μετά το φόρτωμα, με intro = 600 ms μετά το τέλος του πέπλου.
      Μέχρι τότε (Infinity) ο Ντοτ μένει καρφωμένος, μικρός, στο σημείο γέννησης. */
   const birth = { start: Infinity, dur: 900 };
   let scale = dotPos ? 0.08 : 1;
@@ -181,7 +181,7 @@ const cloudB = dots.slice(half);
 
   const targetPos = () => {
     if (!stops.length) {
-      return { x: window.innerWidth - W() - 20, y: window.innerHeight - H() - 24, idx: -1, side: 'right', off: false };
+      return { x: window.innerWidth - W() - 20, y: window.innerHeight - H() - 24, idx: -1, side: 'right' };
     }
     const mid = window.innerHeight * 0.5;
     let idx = 0;
@@ -194,12 +194,9 @@ const cloudB = dots.slice(half);
     });
     const s = stops[idx];
     const r = s.getBoundingClientRect();
-    /* Πριν την πρώτη στάση (π.χ. στο hero της αρχικής) ο Ντοτ ΔΕΝ εμφανίζεται —
-       κρύβεται μέχρι να μπει η ενότητα στην οθόνη (αίτημα χρήστριας 06/09/2026). */
-    const off = best > 0 && r.top > window.innerHeight * 0.85;
     const side = s.dataset.mascotSide || (idx % 2 ? 'left' : 'right');
     if (s.dataset.mascotPose === 'sit') {
-      return { x: r.right - W() - r.width * 0.05, y: r.top - H() * 0.62, idx, side, off };
+      return { x: r.right - W() - r.width * 0.05, y: r.top - H() * 0.62, idx, side };
     }
     /* Στάση δίπλα σε συγκεκριμένο στοιχείο (π.χ. δίπλα στον τίτλο του hero). */
     const anchorSel = s.dataset.mascotAnchor;
@@ -214,14 +211,14 @@ const cloudB = dots.slice(half);
             Math.max(ar.top + ar.height * 0.5 - H() * 0.5, 100),
             window.innerHeight - H() - 40
           );
-          return { x, y: ay, idx, side, off };
+          return { x, y: ay, idx, side };
         }
       }
     }
     const y = hasGutter()
       ? Math.min(Math.max(r.top + r.height * 0.3, 250), window.innerHeight - H() - 60)
       : window.innerHeight - H() - 28;
-    return { x: sideX(side), y, idx, side, off };
+    return { x: sideX(side), y, idx, side };
   };
 
   /* Συννεφάκι: αφαιρέθηκε — αποσπούσε την προσοχή και έπαιρνε χώρο.
@@ -264,12 +261,6 @@ const cloudB = dots.slice(half);
         const smooth = (k: number) => 1 - Math.pow(1 - k, f);
         let t = targetCached(nowT);
 
-        /* Όσο κρατάει η γέννηση (βλ. πιο κάτω) ο Ντοτ ΔΕΝ κρύβεται από το is-off —
-           αλλιώς η έξοδός του από την τελεία του logo δεν φαίνεται ποτέ (η πρώτη
-           στάση της αρχικής είναι κάτω από το hero, άρα «off» από το πρώτο καρέ). */
-        const now = performance.now();
-        const birthing = !!dotPos && now < birth.start + birth.dur;
-
         /* Φάσεις εισόδου: πάνω από το «μόνο του», τραβώντας τη γραμμή. */
         if (phase !== 'tour') {
           if (!hlSpan || window.scrollY > 80) {
@@ -295,7 +286,6 @@ const cloudB = dots.slice(half);
         }
 
         lastSide = t.side;
-        el.classList.toggle('is-off', !!t.off && phase === 'tour' && !birthing);
         if (t.idx !== activeIdx) {
           activeIdx = t.idx;
           arrivedAt = 0;
@@ -303,6 +293,8 @@ const cloudB = dots.slice(half);
         }
 
         /* Φάση γέννησης: καρφωμένος στην τελεία του logo, φουσκώνει με spring. */
+        const now = performance.now();
+        const birthing = dotPos && now < birth.start + birth.dur;
         if (birthing) {
           /* Ξαναμετράμε κάθε καρέ: αν φορτώσει αργά η γραμματοσειρά ή κουνηθεί
              το layout, ο Ντοτ μένει καρφωμένος πάνω στην κουκίδα. */
@@ -397,7 +389,8 @@ const cloudB = dots.slice(half);
      πέπλο για ~2,7 s (λιγότερο με skip). Αν γεννιόταν στα 600 ms όπως πριν, ο Ντοτ θα
      ξεπεταγόταν κάτω από το πέπλο και κανείς δεν θα τον έβλεπε. Γι' αυτό περιμένει το
      τέλος του intro (το <html> χάνει το data-intro-run: κανονικό τέλος, skip ή δίχτυ 7 s)
-     και γεννιέται 600 ms μετά — ακριβώς όπως γεννιόταν 600 ms μετά το φόρτωμα.
+     και γεννιέται 600 ms μετά — ακριβώς όπως γεννιόταν 600 ms μετά το φόρτωμα. Από εκεί
+     και πέρα η χορογραφία είναι η ίδια όπως πάντα: υπογράμμιση, στάση δίπλα στον τίτλο, ξενάγηση.
      Χωρίς intro (επόμενες σελίδες, reduced motion, 2η επίσκεψη) ξεκινά αμέσως. */
   const introRunning = () => document.documentElement.hasAttribute('data-intro-run');
   if (!introRunning()) {
@@ -445,7 +438,6 @@ const cloudB = dots.slice(half);
        κουτιού αφήνουν τα taps να περνούν στο περιεχόμενο από κάτω. */
     pointer-events: none;
   }
-  #pisma-mascot.is-off { opacity: 0 !important; pointer-events: none; }
   #pisma-mascot circle { pointer-events: auto; }
   #pisma-mascot.is-ready { opacity: 1; }
   #pisma-mascot svg { overflow: visible; width: 100%; height: auto; }
