@@ -362,16 +362,22 @@ const cloudB = dots.slice(half);
       eyeY += ((ty / len) * max * k - eyeY) * ek;
       /* Γράψιμο στο DOM ΜΟΝΟ όταν αλλάζει η τιμή: κάθε αλλαγή στα μάτια/κλίση ξαναζωγραφίζει
          το SVG των 135 κύκλων — όταν ο Ντοτ κάθεται ακίνητος, το καρέ δεν κοστίζει τίποτα. */
-      const eyeStr = `translate(${eyeX.toFixed(1)}px, ${eyeY.toFixed(1)}px)`;
-      if (eyeStr !== lastEye) {
-        lastEye = eyeStr;
-        pupL.style.transform = eyeStr;
-        pupR.style.transform = `translate(${(eyeX * 0.85).toFixed(1)}px, ${(eyeY * 0.85).toFixed(1)}px)`;
-      }
+      const hidden = !!t.off && phase === 'tour';
+      const q = (v: number, step: number) => (Math.round(v / step) * step).toFixed(2); // κβάντιση: αόρατη, 10× λιγότερα repaints
       const posStr = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px)`;
       if (posStr !== lastPos) { lastPos = posStr; el.style.transform = posStr; }
-      const motStr = `rotate(${rot.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
-      if (motStr !== lastMot) { lastMot = motStr; motion.style.transform = motStr; }
+      if (!hidden) {
+        /* Τα μάτια και η κλίση αλλάζουν το ίδιο το SVG (repaint των 135 κύκλων) — μόνο όταν φαίνεται
+           κι όταν η αλλαγή περνά το κατώφλι (0,25 px / 0,1°). */
+        const eyeStr = `translate(${q(eyeX, .25)}px, ${q(eyeY, .25)}px)`;
+        if (eyeStr !== lastEye) {
+          lastEye = eyeStr;
+          pupL.style.transform = eyeStr;
+          pupR.style.transform = `translate(${q(eyeX * 0.85, .25)}px, ${q(eyeY * 0.85, .25)}px)`;
+        }
+        const motStr = `rotate(${q(rot, .1)}deg) scale(${scale.toFixed(3)})`;
+        if (motStr !== lastMot) { lastMot = motStr; motion.style.transform = motStr; }
+      }
 
       if (dist < 40 && phase === 'tour') {
         if (!arrivedAt) arrivedAt = performance.now();
