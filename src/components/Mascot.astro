@@ -350,11 +350,15 @@ const cloudB = dots.slice(half);
                   { duration: 550, easing: 'ease-out' }
                 );
               } catch { /* χωρίς παλμό */ }
+              /* Το φούσκωμα (spring 0,08 → 1) ως Web Animation στον compositor — ΟΧΙ καρέ-καρέ από JS: αν το main
+                 thread απασχοληθεί εκείνη τη στιγμή (γραμματοσειρές, μεταγλώττιση καπνού, ήχος), το JS-driven
+                 φούσκωμα έδειχνε «2 fps» στο κινητό ενώ όλα τα άλλα εφέ έτρεχαν κανονικά. Ίδια καμπύλη (easeOutBack).
+                 Το inline transform παίρνει από τώρα την τελική τιμή· όσο παίζει το animation την υπερκαλύπτει. */
+              scale = 1;
+              lastMot = 'rotate(0.00deg) scale(1.000)';
+              motion.style.transform = lastMot;
+              try { motion.animate([{ transform: 'rotate(0deg) scale(.08)' }, { transform: 'rotate(0deg) scale(1)' }], { duration: birth.dur, easing: 'cubic-bezier(.34, 1.56, .64, 1)' }); } catch { /* χωρίς spring */ }
             }
-            const t01 = Math.min(1, (now - birth.start) / birth.dur);
-            const c1 = 1.70158;
-            const eased = 1 + (c1 + 1) * Math.pow(t01 - 1, 3) + c1 * Math.pow(t01 - 1, 2);
-            scale = 0.08 + 0.92 * eased;
           }
         } else {
           scale = 1;
@@ -408,7 +412,7 @@ const cloudB = dots.slice(half);
           pupR.style.transform = `translate(${q(eyeX * 0.85, qEye)}px, ${q(eyeY * 0.85, qEye)}px)`;
         }
         const motStr = `rotate(${q(rot, qRot)}deg) scale(${scale.toFixed(3)})`;
-        if (motStr !== lastMot) { lastMot = motStr; motion.style.transform = motStr; }
+        if (motStr !== lastMot && !(birthing && pulsed)) { lastMot = motStr; motion.style.transform = motStr; } // όσο παίζει το spring, δεν γράφουμε
 
         if (dist < 40 && phase === 'tour') {
           if (!arrivedAt) arrivedAt = performance.now();
