@@ -64,8 +64,8 @@ const cloudB = dots.slice(half);
   const W = () => (isMobile() ? 80 : 110);
   const H = () => W();
 
-  /* Σημείο γέννησης: στην αρχική βγαίνει από την τελεία του logo· κάθε άλλη
-     σελίδα τον γεννάει από δικό της, σχετικό σημείο (τιμή, chat, κουκίδα...).
+  /* Σημείο γέννησης: στην αρχική (EL και EN) βγαίνει από την τελεία του logo· κάθε
+     άλλη σελίδα τον γεννάει από δικό της, σχετικό σημείο (τιμή, chat, κουκίδα...).
      Αν το σημείο δεν είναι ορατό στο φόρτωμα, πέφτει στον τίτλο της σελίδας. */
   const SPAWNS: Array<[string, string]> = [
     ['/se-vriskoun', '.msg--user'],
@@ -78,7 +78,7 @@ const cloudB = dots.slice(half);
   ];
   const resolveSpawn = (): HTMLElement | null => {
     const path = location.pathname.replace(/\/$/, '') || '/';
-    if (path === '/') return document.querySelector('.logo span');
+    if (path === '/' || path === '/en') return document.querySelector('.logo span');
     const visible = (e: HTMLElement | null) => {
       if (!e) return false;
       const r = e.getBoundingClientRect();
@@ -140,7 +140,10 @@ const cloudB = dots.slice(half);
     px = dotPos.x;
     py = dotPos.y;
   }
-  const birth = { start: performance.now() + 600, dur: 900 };
+  /* Η γέννηση ξεκινά 600 ms αφότου «φανεί» η σελίδα (ορίζεται στο start() πιο κάτω):
+     χωρίς intro = 600 ms μετά το φόρτωμα, με intro = 600 ms μετά το τέλος του πέπλου.
+     Μέχρι τότε (Infinity) ο Ντοτ μένει καρφωμένος, μικρός, στο σημείο γέννησης. */
+  const birth = { start: Infinity, dur: 900 };
   let scale = dotPos ? 0.08 : 1;
   let pulsed = false;
 
@@ -183,7 +186,7 @@ const cloudB = dots.slice(half);
 
   const targetPos = () => {
     if (!stops.length) {
-      return { x: window.innerWidth - W() - 20, y: window.innerHeight - H() - 24, idx: -1, side: 'right', off: false };
+      return { x: window.innerWidth - W() - 20, y: window.innerHeight - H() - 24, idx: -1, side: 'right' };
     }
     const mid = window.innerHeight * 0.5;
     let idx = 0;
@@ -196,12 +199,9 @@ const cloudB = dots.slice(half);
     });
     const s = stops[idx];
     const r = s.getBoundingClientRect();
-    /* Πριν την πρώτη στάση (π.χ. στο hero της αρχικής) ο Ντοτ ΔΕΝ εμφανίζεται —
-       κρύβεται μέχρι να μπει η ενότητα στην οθόνη (αίτημα χρήστριας 06/09/2026). */
-    const off = best > 0 && r.top > window.innerHeight * 0.85;
     const side = s.dataset.mascotSide || (idx % 2 ? 'left' : 'right');
     if (s.dataset.mascotPose === 'sit') {
-      return { x: r.right - W() - r.width * 0.05, y: r.top - H() * 0.62, idx, side, off };
+      return { x: r.right - W() - r.width * 0.05, y: r.top - H() * 0.62, idx, side };
     }
     /* Στάση δίπλα σε συγκεκριμένο στοιχείο (π.χ. δίπλα στον τίτλο του hero). */
     const anchorSel = s.dataset.mascotAnchor;
@@ -216,14 +216,14 @@ const cloudB = dots.slice(half);
             Math.max(ar.top + ar.height * 0.5 - H() * 0.5, 100),
             window.innerHeight - H() - 40
           );
-          return { x, y: ay, idx, side, off };
+          return { x, y: ay, idx, side };
         }
       }
     }
     const y = hasGutter()
       ? Math.min(Math.max(r.top + r.height * 0.3, 250), window.innerHeight - H() - 60)
       : window.innerHeight - H() - 28;
-    return { x: sideX(side), y, idx, side, off };
+    return { x: sideX(side), y, idx, side };
   };
 
   /* Συννεφάκι: αφαιρέθηκε — αποσπούσε την προσοχή και έπαιρνε χώρο.
@@ -239,152 +239,154 @@ const cloudB = dots.slice(half);
     mouseY = e.clientY;
   }, { passive: true });
 
-  if (reduce) {
-    el.style.transform = `translate(${px}px, ${py}px)`;
-    el.classList.add('is-ready');
-  } else {
-    /* Η κίνηση κανονικοποιείται στον πραγματικό χρόνο κάθε καρέ (delta time),
-       αλλιώς σε οθόνες 120/144Hz ο Ντοτ ταξιδεύει 2-3x πιο γρήγορα απ' ό,τι στα 60Hz. */
-    let lastT = performance.now();
-    /* Οι στάσεις μετρώνται (getBoundingClientRect) μόνο όταν αλλάξει scroll/viewport
-       ή κάθε 250ms — όχι σε κάθε καρέ, που έκανε layout thrash σε κινητά. */
-    let tCache: ReturnType<typeof targetPos> | null = null;
-    let tKey = '';
-    let tAt = 0;
-    const targetCached = (nowT: number) => {
-      const key = `${window.scrollY}|${window.innerWidth}|${window.innerHeight}`;
-      if (tCache && key === tKey && nowT - tAt < 250) return tCache;
-      tCache = targetPos(); tKey = key; tAt = nowT;
-      return tCache;
-    };
-    /* Ύπνος: όταν ο Ντοτ ηρεμήσει (θέση, μάτια, κλίση σταθερά — ούτε γέννηση ούτε είσοδος),
-       ο βρόχος σταματά· ξυπνά με scroll/resize/pointer ή όταν αλλάξει το layout της σελίδας.
-       Πριν έτρεχε 60 φορές το δευτερόλεπτο για πάντα, ακόμη και κρυμμένος. */
-    let idleFrames = 0;
-    let running = false;
-    let prevEyeX = 0, prevEyeY = 0, prevRot = 0;
-    const loop = (nowT: number) => {
-      /* Software rendering (html.gpu-soft, το βάζει το smoke.ts): κάθε καρέ κίνησης κοστίζει ~100 ms
-         στο main thread — ο Ντοτ παρκάρει στη στάση του και σταματά ο βρόχος (ξυπνά ξανά μόνο από scroll). */
-      if (document.documentElement.classList.contains('gpu-soft')) {
-        const tp = targetPos();
-        el.classList.toggle('is-off', !!tp.off);
-        el.style.transform = `translate(${tp.x.toFixed(1)}px, ${tp.y.toFixed(1)}px)`;
-        motion.style.transform = '';
-        running = false;
-        return;
-      }
-      const f = Math.min(3, (nowT - lastT) / 16.667);
-      lastT = nowT;
-      const smooth = (k: number) => 1 - Math.pow(1 - k, f);
-      let t = targetCached(nowT);
-
-      /* Φάσεις εισόδου: πάνω από το «μόνο του», τραβώντας τη γραμμή. */
-      if (phase !== 'tour') {
-        if (!hlSpan || window.scrollY > 80) {
+  /* Έναρξη: 600 ms μετά, η τελεία του logo πάλλεται και ο Ντοτ ξεπετάγεται από μέσα της. */
+  const start = () => {
+    birth.start = performance.now() + 600;
+    if (reduce) {
+      el.style.transform = `translate(${px}px, ${py}px)`;
+      el.classList.add('is-ready');
+    } else {
+      /* Η κίνηση κανονικοποιείται στον πραγματικό χρόνο κάθε καρέ (delta time),
+         αλλιώς σε οθόνες 120/144Hz ο Ντοτ ταξιδεύει 2-3x πιο γρήγορα απ' ό,τι στα 60Hz. */
+      let lastT = performance.now();
+      /* Οι στάσεις μετρώνται (getBoundingClientRect) μόνο όταν αλλάξει scroll/viewport
+         ή κάθε 250ms — όχι σε κάθε καρέ, που έκανε layout thrash σε κινητά. */
+      let tCache: ReturnType<typeof targetPos> | null = null;
+      let tKey = '';
+      let tAt = 0;
+      const targetCached = (nowT: number) => {
+        const key = `${window.scrollY}|${window.innerWidth}|${window.innerHeight}`;
+        if (tCache && key === tKey && nowT - tAt < 250) return tCache;
+        tCache = targetPos(); tKey = key; tAt = nowT;
+        return tCache;
+      };
+      /* Ύπνος: όταν ο Ντοτ ηρεμήσει (θέση, μάτια, κλίση σταθερά — ούτε γέννηση ούτε είσοδος),
+         ο βρόχος σταματά· ξυπνά με scroll/resize/pointer ή όταν αλλάξει το layout της σελίδας.
+         Πριν έτρεχε 60 φορές το δευτερόλεπτο για πάντα, ακόμη και κρυμμένος. */
+      let idleFrames = 0;
+      let running = false;
+      let prevEyeX = 0, prevEyeY = 0, prevRot = 0;
+      const loop = (nowT: number) => {
+        /* Software rendering (html.gpu-soft, το βάζει το smoke.ts): κάθε καρέ κίνησης κοστίζει ~100 ms
+           στο main thread — ο Ντοτ παρκάρει στη στάση του και σταματά ο βρόχος (ξυπνά ξανά μόνο από scroll).
+           Η υπογράμμιση εμφανίζεται ολόκληρη αμέσως — δεν θα τη ζωγραφίσει ο Ντοτ. */
+        if (document.documentElement.classList.contains('gpu-soft')) {
           phase = 'tour';
           finishStroke();
-        } else {
-          const sr = hlSpan.getBoundingClientRect();
-          const yLine = sr.bottom - H() * 0.35;
-          if (phase === 'approach') {
-            t = { x: sr.left - W() * 0.55, y: yLine, idx: -2, side: 'right' };
-            if (Math.hypot(t.x - px, t.y - py) < 24) phase = 'draw';
-          }
-          if (phase === 'draw') {
-            t = { x: sr.right - W() * 0.4, y: yLine, idx: -2, side: 'right' };
-            const p = Math.min(1, Math.max(0, (px + W() / 2 - sr.left) / sr.width));
-            hlPath!.style.strokeDashoffset = String(hlLen * (1 - p));
-            if (p >= 0.97) {
-              phase = 'tour';
-              finishStroke();
+          const tp = targetPos();
+          el.style.transform = `translate(${tp.x.toFixed(1)}px, ${tp.y.toFixed(1)}px)`;
+          motion.style.transform = '';
+          running = false;
+          return;
+        }
+        const f = Math.min(3, (nowT - lastT) / 16.667);
+        lastT = nowT;
+        const smooth = (k: number) => 1 - Math.pow(1 - k, f);
+        let t = targetCached(nowT);
+
+        /* Φάσεις εισόδου: πάνω από το «μόνο του», τραβώντας τη γραμμή. */
+        if (phase !== 'tour') {
+          if (!hlSpan || window.scrollY > 80) {
+            phase = 'tour';
+            finishStroke();
+          } else {
+            const sr = hlSpan.getBoundingClientRect();
+            const yLine = sr.bottom - H() * 0.35;
+            if (phase === 'approach') {
+              t = { x: sr.left - W() * 0.55, y: yLine, idx: -2, side: 'right' };
+              if (Math.hypot(t.x - px, t.y - py) < 24) phase = 'draw';
+            }
+            if (phase === 'draw') {
+              t = { x: sr.right - W() * 0.4, y: yLine, idx: -2, side: 'right' };
+              const p = Math.min(1, Math.max(0, (px + W() / 2 - sr.left) / sr.width));
+              hlPath!.style.strokeDashoffset = String(hlLen * (1 - p));
+              if (p >= 0.97) {
+                phase = 'tour';
+                finishStroke();
+              }
             }
           }
         }
-      }
 
-      lastSide = t.side;
-      el.classList.toggle('is-off', !!t.off && phase === 'tour');
-      if (t.idx !== activeIdx) {
-        activeIdx = t.idx;
-        arrivedAt = 0;
-        if (bubbleOn) hideBubble();
-      }
-
-      /* Φάση γέννησης: καρφωμένος στην τελεία του logo, φουσκώνει με spring. */
-      const now = performance.now();
-      const birthing = dotPos && now < birth.start + birth.dur;
-      if (birthing) {
-        /* Ξαναμετράμε κάθε καρέ: αν φορτώσει αργά η γραμματοσειρά ή κουνηθεί
-           το layout, ο Ντοτ μένει καρφωμένος πάνω στην κουκίδα. */
-        dotPos = spawnPos();
-        px = dotPos.x;
-        py = dotPos.y;
-        if (now >= birth.start) {
-          if (!pulsed) {
-            pulsed = true;
-            try {
-              /* Μικρά στοιχεία (τελεία) πάλλονται έντονα, μεγάλα πιο διακριτικά. */
-              const sw = spawnEl!.getBoundingClientRect().width;
-              const k = sw < 40 ? 2.2 : sw < 140 ? 1.35 : 1.12;
-              if (getComputedStyle(spawnEl!).display === 'inline') spawnEl!.style.display = 'inline-block';
-              spawnEl!.animate(
-                [{ transform: 'scale(1)' }, { transform: `scale(${k})` }, { transform: 'scale(1)' }],
-                { duration: 550, easing: 'ease-out' }
-              );
-            } catch { /* χωρίς παλμό */ }
-          }
-          const t01 = Math.min(1, (now - birth.start) / birth.dur);
-          const c1 = 1.70158;
-          const eased = 1 + (c1 + 1) * Math.pow(t01 - 1, 3) + c1 * Math.pow(t01 - 1, 2);
-          scale = 0.08 + 0.92 * eased;
+        lastSide = t.side;
+        if (t.idx !== activeIdx) {
+          activeIdx = t.idx;
+          arrivedAt = 0;
+          if (bubbleOn) hideBubble();
         }
-      } else {
-        scale = 1;
-      }
 
-      const dx = t.x - px;
-      const dy = t.y - py;
-      if (!birthing) {
-        const k = smooth(phase === 'tour' ? 0.032 : 0.045);
-        px += dx * k;
-        py += dy * k;
-      }
-      const dist = Math.hypot(dx, dy);
+        /* Φάση γέννησης: καρφωμένος στην τελεία του logo, φουσκώνει με spring. */
+        const now = performance.now();
+        const birthing = dotPos && now < birth.start + birth.dur;
+        if (birthing) {
+          /* Ξαναμετράμε κάθε καρέ: αν φορτώσει αργά η γραμματοσειρά ή κουνηθεί
+             το layout, ο Ντοτ μένει καρφωμένος πάνω στην κουκίδα. */
+          dotPos = spawnPos();
+          px = dotPos.x;
+          py = dotPos.y;
+          if (now >= birth.start) {
+            if (!pulsed) {
+              pulsed = true;
+              try {
+                /* Μικρά στοιχεία (τελεία) πάλλονται έντονα, μεγάλα πιο διακριτικά. */
+                const sw = spawnEl!.getBoundingClientRect().width;
+                const k = sw < 40 ? 2.2 : sw < 140 ? 1.35 : 1.12;
+                if (getComputedStyle(spawnEl!).display === 'inline') spawnEl!.style.display = 'inline-block';
+                spawnEl!.animate(
+                  [{ transform: 'scale(1)' }, { transform: `scale(${k})` }, { transform: 'scale(1)' }],
+                  { duration: 550, easing: 'ease-out' }
+                );
+              } catch { /* χωρίς παλμό */ }
+            }
+            const t01 = Math.min(1, (now - birth.start) / birth.dur);
+            const c1 = 1.70158;
+            const eased = 1 + (c1 + 1) * Math.pow(t01 - 1, 3) + c1 * Math.pow(t01 - 1, 2);
+            scale = 0.08 + 0.92 * eased;
+          }
+        } else {
+          scale = 1;
+        }
 
-      const y = window.scrollY;
-      const vel = y - lastY;
-      lastY = y;
-      const lean = Math.max(-10, Math.min(10, dx * 0.028 + (vel / f) * 0.25));
-      rot += (lean - rot) * smooth(0.06);
+        const dx = t.x - px;
+        const dy = t.y - py;
+        if (!birthing) {
+          const k = smooth(phase === 'tour' ? 0.032 : 0.045);
+          px += dx * k;
+          py += dy * k;
+        }
+        const dist = Math.hypot(dx, dy);
 
-      /* Τα μάτια κοιτούν τον κέρσορα — ή προς τα εκεί που ταξιδεύει. */
-      const cx = px + W() / 2;
-      const cy = py + H() / 2;
-      let tx = 0;
-      let ty = 0;
-      if (mouseX >= 0) {
-        tx = mouseX - cx;
-        ty = mouseY - cy;
-      } else if (dist > 24) {
-        tx = dx;
-        ty = dy;
-      }
-      const len = Math.hypot(tx, ty) || 1;
-      const max = 7;
-      const k = Math.min(1, len / 160);
-      const ek = smooth(0.14);
-      eyeX += ((tx / len) * max * k - eyeX) * ek;
-      eyeY += ((ty / len) * max * k - eyeY) * ek;
-      /* Γράψιμο στο DOM ΜΟΝΟ όταν αλλάζει η τιμή: κάθε αλλαγή στα μάτια/κλίση ξαναζωγραφίζει
-         το SVG των 135 κύκλων — όταν ο Ντοτ κάθεται ακίνητος, το καρέ δεν κοστίζει τίποτα. */
-      const hidden = !!t.off && phase === 'tour';
-      const q = (v: number, step: number) => (Math.round(v / step) * step).toFixed(2); // κβάντιση: αόρατη, 10× λιγότερα repaints
-      const posStr = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px)`;
-      if (posStr !== lastPos) { lastPos = posStr; el.style.transform = posStr; }
-      if (!hidden) {
-        /* Τα μάτια και η κλίση αλλάζουν το ίδιο το SVG (repaint των 135 κύκλων) — μόνο όταν φαίνεται
-           κι όταν η αλλαγή περνά το κατώφλι (0,25 px / 0,1°). */
+        const y = window.scrollY;
+        const vel = y - lastY;
+        lastY = y;
+        const lean = Math.max(-10, Math.min(10, dx * 0.028 + (vel / f) * 0.25));
+        rot += (lean - rot) * smooth(0.06);
+
+        /* Τα μάτια κοιτούν τον κέρσορα — ή προς τα εκεί που ταξιδεύει. */
+        const cx = px + W() / 2;
+        const cy = py + H() / 2;
+        let tx = 0;
+        let ty = 0;
+        if (mouseX >= 0) {
+          tx = mouseX - cx;
+          ty = mouseY - cy;
+        } else if (dist > 24) {
+          tx = dx;
+          ty = dy;
+        }
+        const len = Math.hypot(tx, ty) || 1;
+        const max = 7;
+        const k = Math.min(1, len / 160);
+        const ek = smooth(0.14);
+        eyeX += ((tx / len) * max * k - eyeX) * ek;
+        eyeY += ((ty / len) * max * k - eyeY) * ek;
+        /* Γράψιμο στο DOM ΜΟΝΟ όταν αλλάζει η τιμή: κάθε αλλαγή στα μάτια/κλίση ξαναζωγραφίζει
+           το SVG των 135 κύκλων — όταν ο Ντοτ κάθεται ακίνητος, το καρέ δεν κοστίζει τίποτα. */
+        const q = (v: number, step: number) => (Math.round(v / step) * step).toFixed(2); // κβάντιση: αόρατη, 10× λιγότερα repaints
+        const posStr = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px)`;
+        if (posStr !== lastPos) { lastPos = posStr; el.style.transform = posStr; }
+        /* Τα μάτια και η κλίση αλλάζουν το ίδιο το SVG (repaint των 135 κύκλων) — μόνο
+           όταν η αλλαγή περνά το κατώφλι (0,25 px / 0,1°). */
         const eyeStr = `translate(${q(eyeX, .25)}px, ${q(eyeY, .25)}px)`;
         if (eyeStr !== lastEye) {
           lastEye = eyeStr;
@@ -393,39 +395,58 @@ const cloudB = dots.slice(half);
         }
         const motStr = `rotate(${q(rot, .1)}deg) scale(${scale.toFixed(3)})`;
         if (motStr !== lastMot) { lastMot = motStr; motion.style.transform = motStr; }
-      }
 
-      if (dist < 40 && phase === 'tour') {
-        if (!arrivedAt) arrivedAt = performance.now();
-        else if (!bubbleOn && spokenIdx !== activeIdx && performance.now() - arrivedAt > 350) {
-          spokenIdx = activeIdx;
-          if (activeIdx >= 0) {
-            showBubble(stops[activeIdx].dataset.mascotSay, t.side);
-          } else if (!greeted) {
-            greeted = true;
-            showBubble(GREETING, 'right');
+        if (dist < 40 && phase === 'tour') {
+          if (!arrivedAt) arrivedAt = performance.now();
+          else if (!bubbleOn && spokenIdx !== activeIdx && performance.now() - arrivedAt > 350) {
+            spokenIdx = activeIdx;
+            if (activeIdx >= 0) {
+              showBubble(stops[activeIdx].dataset.mascotSay, t.side);
+            } else if (!greeted) {
+              greeted = true;
+              showBubble(GREETING, 'right');
+            }
           }
+        } else if (dist > 130 && bubbleOn) {
+          hideBubble();
         }
-      } else if (dist > 130 && bubbleOn) {
-        hideBubble();
-      }
 
-      const busy = !!birthing || phase !== 'tour' || dist > 0.5 ||
-        Math.abs(eyeX - prevEyeX) > 0.01 || Math.abs(eyeY - prevEyeY) > 0.01 || Math.abs(rot - prevRot) > 0.01;
-      prevEyeX = eyeX; prevEyeY = eyeY; prevRot = rot;
-      idleFrames = busy ? 0 : idleFrames + 1;
-      if (idleFrames < 20) requestAnimationFrame(loop);
-      else running = false;
-    };
-    const wake = () => {
-      if (running) return;
-      running = true; idleFrames = 0; lastT = performance.now();
-      requestAnimationFrame(loop);
-    };
-    wake();
-    requestAnimationFrame(() => el.classList.add('is-ready'));
-    for (const ev of ['scroll', 'resize', 'pointermove', 'pointerdown', 'touchstart'] as const) window.addEventListener(ev, wake, { passive: true });
-    if ('ResizeObserver' in window) new ResizeObserver(wake).observe(document.body);
+        const busy = !!birthing || phase !== 'tour' || dist > 0.5 ||
+          Math.abs(eyeX - prevEyeX) > 0.01 || Math.abs(eyeY - prevEyeY) > 0.01 || Math.abs(rot - prevRot) > 0.01;
+        prevEyeX = eyeX; prevEyeY = eyeY; prevRot = rot;
+        idleFrames = busy ? 0 : idleFrames + 1;
+        if (idleFrames < 20) requestAnimationFrame(loop);
+        else running = false;
+      };
+      const wake = () => {
+        if (running) return;
+        running = true; idleFrames = 0; lastT = performance.now();
+        requestAnimationFrame(loop);
+      };
+      wake();
+      requestAnimationFrame(() => el.classList.add('is-ready'));
+      for (const ev of ['scroll', 'resize', 'pointermove', 'pointerdown', 'touchstart'] as const) window.addEventListener(ev, wake, { passive: true });
+      if ('ResizeObserver' in window) new ResizeObserver(wake).observe(document.body);
+    }
+  };
+
+  /* Το intro της αρχικής (Intro.astro) σκεπάζει όλο το site — και το logo — με μαύρο
+     πέπλο για ~2,7 s (λιγότερο με skip). Αν γεννιόταν στα 600 ms όπως πριν, ο Ντοτ θα
+     ξεπεταγόταν κάτω από το πέπλο και κανείς δεν θα τον έβλεπε. Γι' αυτό περιμένει το
+     τέλος του intro (το <html> χάνει το data-intro-run: κανονικό τέλος, skip ή δίχτυ 7 s)
+     και γεννιέται 600 ms μετά — ακριβώς όπως γεννιόταν 600 ms μετά το φόρτωμα. Από εκεί
+     και πέρα η χορογραφία είναι η ίδια όπως πάντα: υπογράμμιση, στάση δίπλα στον τίτλο, ξενάγηση.
+     Χωρίς intro (επόμενες σελίδες, reduced motion, 2η επίσκεψη) ξεκινά αμέσως. */
+  const introRunning = () => document.documentElement.hasAttribute('data-intro-run');
+  if (!introRunning()) {
+    start();
+  } else {
+    const mo = new MutationObserver(() => {
+      if (introRunning()) return;
+      mo.disconnect();
+      start();
+    });
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-intro-run'] });
   }
 
   window.addEventListener('resize', () => {
@@ -469,9 +490,6 @@ const cloudB = dots.slice(half);
     border-radius: 50%; pointer-events: none; z-index: -1;
     background: radial-gradient(closest-side, rgba(var(--cta-rgb), .26), rgba(var(--cta-rgb), .1) 55%, transparent);
   }
-  #pisma-mascot.is-off { opacity: 0 !important; pointer-events: none; }
-  /* Κρυμμένος = τίποτα δεν κινείται (ούτε στο παρασκήνιο). */
-  #pisma-mascot.is-off .m-bob, #pisma-mascot.is-off .d-spin, #pisma-mascot.is-off .d-spin2, #pisma-mascot.is-off .d-eyes { animation-play-state: paused; }
   #pisma-mascot circle { pointer-events: auto; }
   #pisma-mascot.is-ready { opacity: 1; }
   #pisma-mascot svg { overflow: visible; width: 100%; height: auto; }
