@@ -1,0 +1,226 @@
+---
+/**
+ * Intro «Ο καπνός γεννά το logo» (εκδοχή 1 της σελίδας δοκιμών /dokimes-intro/,
+ * επιλογή χρήστριας 06/09/2026). Μπαίνει ΜΟΝΟ στην αρχική (EL + EN), ως πρώτο
+ * παιδί του <section class="hero">.
+ *
+ * Τι κάνει: μαύρο πέπλο πάνω από όλο το site, στο κέντρο μια σφαίρα καπνού με
+ * απαλή πορτοκαλί αύρα (WebGL, ίδια «οικογένεια» με τον καπνό του hero). Τα
+ * γράμματα «PISMA.» βγαίνουν μέσα από τον καπνό ένα-ένα, ΑΚΡΙΒΩΣ πάνω στη θέση
+ * και το μέγεθος του μεγάλου «PISMA.» του hero (μετριέται ζωντανά, σε κάθε
+ * συσκευή). Μετά ο καπνός απλώνει, το πέπλο ανοίγει από τη σφαίρα προς τα έξω
+ * και τα λευκά γράμματα σβήνουν πάνω στα γράμματα του hero.
+ *
+ * Κανόνες:
+ *  • ~2,7 s συνολικά (το μαύρο κρατάει ~1,6 s πριν αρχίσει να ανοίγει — αίτημα
+ *    χρήστριας)· κλικ/πλήκτρο οπουδήποτε = γρήγορο τέλος.
+ *  • Μία φορά ανά επίσκεψη (sessionStorage) — στις επόμενες σελίδες/επιστροφές δεν παίζει.
+ *  • prefers-reduced-motion → δεν παίζει καθόλου. Χωρίς JS → δεν εμφανίζεται (noscript).
+ *  • Το hero υπάρχει από το πρώτο ms κάτω από το πέπλο (SEO/LCP ανέπαφα)· οι δικές
+ *    του εισόδοι (blur-in, γράμματα) μένουν παγωμένες όσο το πέπλο είναι αδιαφανές
+ *    και ξεκινούν όταν ανοίγει· ο καπνός του hero δεν ζωγραφίζεται όσο δεν φαίνεται (GPU).
+ *  • Δίχτυ ασφαλείας: αν ο κώδικας δεν φορτώσει, το πέπλο φεύγει μόνο του στα 7 s.
+ *  • 0 KB media. Χωρίς WebGL → ίδιο intro με μαύρο πέπλο που ξεθωριάζει (χωρίς καπνό).
+ */
+---
+
+<script is:inline>
+  // Απόφαση ΠΡΙΝ το πρώτο paint: παίζει μόνο μία φορά ανά επίσκεψη και όχι με reduced motion.
+  (function () {
+    try {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches || sessionStorage.getItem('pisma-intro')) return;
+      var h = document.documentElement;
+      h.setAttribute('data-intro', ''); h.setAttribute('data-intro-run', '');
+      // Δίχτυ ασφαλείας αν το module script δεν τρέξει ποτέ.
+      setTimeout(function () { h.removeAttribute('data-intro'); h.removeAttribute('data-intro-run'); }, 7000);
+    } catch (e) {}
+  })();
+</script>
+
+<div class="intro" id="intro" aria-hidden="true">
+  <canvas class="intro-gl"></canvas>
+  <div class="intro-word"><span>P</span><span>I</span><span>S</span><span>M</span><span>A</span><span class="dot">.</span></div>
+</div>
+<script is:inline>
+  // Το πέπλο πάει απευθείας στο <body>: το <main> έχει δικό του stacking context (page-in),
+  // κι αλλιώς το μενού και το cookie banner θα ζωγραφίζονταν ΠΑΝΩ από το πέπλο.
+  (function () { var i = document.getElementById('intro'); if (i && document.documentElement.hasAttribute('data-intro-run')) document.body.appendChild(i); })();
+</script>
+<noscript><style is:inline>.intro{display:none!important}</style></noscript>
+
+<style is:global>
+  .intro { display: none; position: fixed; inset: 0; z-index: 2147483000; background: #0B0B0B; cursor: pointer; }
+  html[data-intro-run] .intro { display: block; }
+  .intro-gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .intro-word {
+    position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center;
+    font-family: var(--font-display, 'Unbounded', 'Inter', sans-serif); font-weight: 800;
+    font-size: clamp(4.6rem, 16vw, 15rem); line-height: .95; letter-spacing: .01em; white-space: nowrap;
+    color: #fff; text-shadow: 0 0 60px rgba(255, 255, 255, .35); pointer-events: none; opacity: 0;
+  }
+  .intro-word.placed { transform: none; }
+  .intro-word span { display: inline-block; opacity: 0; filter: blur(28px); transform: scale(1.3); will-change: transform, filter, opacity; }
+  .intro-word .dot { color: #FF7A50; text-shadow: 0 0 40px rgba(255, 122, 80, .9); }
+  /* Όσο το πέπλο είναι αδιαφανές: οι είσοδοι του hero περιμένουν, ο καπνός του δεν ζωγραφίζεται. */
+  html[data-intro] .hero .blur-in, html[data-intro] .hero-word span, html[data-intro] .hero-word::after { animation-play-state: paused; }
+  html[data-intro] .hero .stg-smoke { display: none; }
+  /* Όταν το intro έχει παίξει, το «PISMA.» του hero είναι ήδη στην τελική του θέση (τα λευκά γράμματα σβήνουν πάνω του). */
+  html.intro-played .hero-word span { animation: none; opacity: 1; filter: none; transform: none; }
+</style>
+
+<script>
+  /* Intro «Ο καπνός γεννά το logo» — βλ. σχόλιο στην κορυφή του component. */
+  const html = document.documentElement;
+  const root = document.getElementById('intro');
+  if (root && html.hasAttribute('data-intro-run')) run(root);
+
+  function run(root: HTMLElement) {
+    try { sessionStorage.setItem('pisma-intro', '1'); } catch {}
+    const word = root.querySelector<HTMLElement>('.intro-word')!;
+    const letters = Array.from(word.querySelectorAll<HTMLElement>('span'));
+    const hw = document.querySelector<HTMLElement>('.hero-word');
+    const canvas = root.querySelector<HTMLCanvasElement>('.intro-gl')!;
+
+    /* ---- Χρονοδιάγραμμα (ms) ---- */
+    const T_LET = 650, LET_GAP = 95, LET_DUR = 680; // γράμματα: 650 → ~1800
+    const T_OPEN = 1650, OPEN_DUR = 900;            // το πέπλο ανοίγει: 1650 → 2550
+    const T_FADE = 2150, FADE_DUR = 480;            // τα λευκά γράμματα σβήνουν πάνω στο hero
+    const T_END = 2700;
+
+    /* ---- Θέση/μέγεθος: ακριβώς πάνω στο «PISMA.» του hero ---- */
+    let center = { x: .5, y: .5 };
+    const place = () => {
+      if (!hw) return;
+      const r = hw.getBoundingClientRect();
+      const inView = r.width > 0 && r.top >= 0 && r.bottom <= innerHeight;
+      if (!inView) { word.classList.remove('placed'); for (const k of ['left', 'top', 'width', 'height', 'fontSize', 'letterSpacing', 'lineHeight', 'textAlign', 'fontFamily', 'fontWeight']) word.style.removeProperty(k.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase())); center = { x: .5, y: .5 }; return; }
+      const cs = getComputedStyle(hw);
+      word.classList.add('placed');
+      word.style.left = `${r.left}px`; word.style.top = `${r.top}px`; word.style.width = `${r.width}px`; word.style.height = `${r.height}px`;
+      word.style.fontSize = cs.fontSize; word.style.letterSpacing = cs.letterSpacing; word.style.lineHeight = cs.lineHeight; word.style.textAlign = cs.textAlign;
+      word.style.fontFamily = cs.fontFamily; word.style.fontWeight = cs.fontWeight;
+      center = { x: (r.left + r.width / 2) / innerWidth, y: (r.top + r.height / 2) / innerHeight };
+    };
+
+    /* ---- WebGL καπνός με αύρα ---- */
+    const VERT = `attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}`;
+    const FRAG = `precision mediump float;
+    uniform vec2 u_res,u_c;uniform float u_t,u_r,u_open,u_glow,u_dens;
+    float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+    float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
+    return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);}
+    float fbm(vec2 p){float v=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<4;i++){v+=a*noise(p);p=m*p;a*=.5;}return v;}
+    float smoke(vec2 p,float t){vec2 q=vec2(fbm(p+vec2(0.,t)),fbm(p+vec2(5.2,1.3)-t*.7));return fbm(p+3.2*q);}
+    void main(){
+      vec2 uv=gl_FragCoord.xy/u_res;float asp=u_res.x/u_res.y;
+      vec2 cc=(uv-u_c)*vec2(asp,1.);float dist=length(cc);
+      float t=u_t*.09;
+      float f=smoke(uv*vec2(asp,1.)*2.3+vec2(0.,-t*.5),t);
+      float r=u_r;
+      float nd=dist+(f-.5)*.5*r;
+      float d=smoothstep(.36,.92,f)*smoothstep(r,r*.2,nd)*u_dens;
+      float glow=exp(-dist*dist/(max(r,.06)*.55))*u_glow;
+      float hole=(1.-smoothstep(r*.45,r*1.05,nd))*u_open;
+      float veil=1.-hole;
+      vec3 col=vec3(.86)*d*(.7+.3*glow)+mix(vec3(1.,.48,.3),vec3(1.),.25)*glow*.32;
+      float a=clamp(veil+d*.9+glow*.4,0.,1.);
+      gl_FragColor=vec4(min(col,vec3(a)),a);
+    }`;
+    type GL = { draw: (r: number, open: number, glow: number, dens: number) => void; fit: () => void; lose: () => void } | null;
+    const initGL = (): GL => {
+      const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: true, antialias: false, powerPreference: 'low-power' });
+      if (!gl) return null;
+      const mk = (t: number, src: string) => { const s = gl.createShader(t)!; gl.shaderSource(s, src); gl.compileShader(s); return s; };
+      const prog = gl.createProgram()!; gl.attachShader(prog, mk(gl.VERTEX_SHADER, VERT)); gl.attachShader(prog, mk(gl.FRAGMENT_SHADER, FRAG)); gl.linkProgram(prog);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
+      gl.useProgram(prog);
+      const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+      const a = gl.getAttribLocation(prog, 'a'); gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
+      const U = (n: string) => gl.getUniformLocation(prog, n);
+      const uRes = U('u_res'), uC = U('u_c'), uT = U('u_t'), uR = U('u_r'), uO = U('u_open'), uG = U('u_glow'), uD = U('u_dens');
+      gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+      const fit = () => {
+        const s = (innerWidth < 720 ? .5 : .65) * Math.min(devicePixelRatio || 1, 1.25);
+        canvas.width = Math.max(2, Math.round(innerWidth * s)); canvas.height = Math.max(2, Math.round(innerHeight * s));
+        gl.viewport(0, 0, canvas.width, canvas.height); gl.uniform2f(uRes, canvas.width, canvas.height);
+      };
+      fit();
+      const t0 = 40 + Math.random() * 30;
+      return {
+        fit,
+        draw(r, open, glow, dens) {
+          gl.uniform1f(uT, t0 + tt / 1000); gl.uniform2f(uC, center.x, 1 - center.y);
+          gl.uniform1f(uR, r); gl.uniform1f(uO, open); gl.uniform1f(uG, glow); gl.uniform1f(uD, dens);
+          gl.clear(gl.COLOR_BUFFER_BIT); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        },
+        lose() { try { gl.getExtension('WEBGL_lose_context')?.loseContext(); } catch {} },
+      };
+    };
+
+    const ease = (p: number) => p * p * (3 - 2 * p);
+    const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+    // Ένα ρολόι για όλα (καπνός + γράμματα): πραγματικός χρόνος, όχι μετρητής καρέ —
+    // σε αργή GPU ο καπνός δεν «μένει πίσω» από τα γράμματα. Το skip προσθέτει χρόνο.
+    let tt = 0, t0 = 0, tSkip = 0, opened = false, ended = false, raf = 0;
+    const anims: Animation[] = [];
+    let gl: GL = null;
+
+    const finish = () => {
+      if (ended) return; ended = true;
+      cancelAnimationFrame(raf);
+      html.removeAttribute('data-intro'); html.classList.add('intro-played'); html.removeAttribute('data-intro-run');
+      root.remove(); gl?.lose();
+      removeEventListener('resize', onResize);
+    };
+    const open = () => {
+      if (opened) return; opened = true;
+      // Το hero «ξυπνά»: εισόδοι + καπνός· το μεγάλο «PISMA.» του hero είναι ήδη στη θέση του.
+      html.classList.add('intro-played'); html.removeAttribute('data-intro');
+    };
+    const skip = () => { if (!tSkip) { tSkip = performance.now(); anims.forEach((a) => { a.playbackRate = 6; }); } };
+    const onResize = () => { place(); gl?.fit(); };
+
+    const frame = (now: number) => {
+      if (!t0) t0 = now;
+      tt = (now - t0) + (tSkip ? (now - tSkip) * 5 : 0);
+      if (tt >= T_OPEN) open();
+      if (tt >= T_END) return finish();
+      if (tt < T_FADE + FADE_DUR) place();                    // ακολουθεί το «PISMA.» του hero ακόμη κι αν η σελίδα κινείται (page-in)
+      const pre = clamp01(tt / T_OPEN);                       // 0→1 όσο το πέπλο είναι κλειστό
+      const op = ease(clamp01((tt - T_OPEN) / OPEN_DUR));     // άνοιγμα
+      const fd = clamp01((tt - T_FADE) / FADE_DUR);           // σβήσιμο στο τέλος
+      const breathe = 1 + .06 * Math.sin(tt / 380);
+      const r = (0.07 + 0.22 * ease(pre)) * breathe + 2.2 * op * op;
+      gl?.draw(r, op, (0.35 + 0.65 * ease(pre)) * (1 - fd), 1 - fd);
+      raf = requestAnimationFrame(frame);
+    };
+
+    const start = async () => {
+      // Περιμένουμε τη γραμματοσειρά του logo (self-hosted, γρήγορη) ώστε η μέτρηση να είναι ακριβής.
+      try { await Promise.race([document.fonts.load('800 100px Unbounded'), new Promise((r) => setTimeout(r, 900))]); } catch {}
+      place(); addEventListener('resize', onResize, { passive: true });
+      gl = initGL();
+      if (!gl) {
+        // Χωρίς WebGL: μαύρο πέπλο που ξεθωριάζει όταν ανοίγει.
+        const A = root.animate([{ opacity: 1 }, { opacity: 1, offset: T_OPEN / T_END }, { opacity: 0 }], { duration: T_END, fill: 'forwards', easing: 'linear' });
+        anims.push(A);
+      } else {
+        root.style.background = 'transparent'; // το μαύρο το ζωγραφίζει ο shader (πέπλο)
+      }
+      word.style.opacity = '1';
+      letters.forEach((el, i) => {
+        const A = el.animate(
+          [{ opacity: 0, filter: 'blur(28px)', transform: 'scale(1.3)' }, { opacity: 1, filter: 'blur(0)', transform: 'scale(1)' }],
+          { duration: LET_DUR, delay: T_LET + i * LET_GAP, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'forwards' },
+        );
+        anims.push(A);
+      });
+      const W = word.animate([{ opacity: 1 }, { opacity: 1, offset: T_FADE / T_END }, { opacity: 0, offset: (T_FADE + FADE_DUR) / T_END }, { opacity: 0 }], { duration: T_END, fill: 'forwards', easing: 'linear' });
+      anims.push(W);
+      root.addEventListener('pointerdown', skip, { once: true });
+      addEventListener('keydown', skip, { once: true });
+      raf = requestAnimationFrame(frame);
+    };
+    start();
+  }
+</script>
