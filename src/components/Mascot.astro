@@ -265,6 +265,9 @@ const cloudB = dots.slice(half);
          Πριν έτρεχε 60 φορές το δευτερόλεπτο για πάντα, ακόμη και κρυμμένος. */
       let idleFrames = 0;
       let running = false;
+      let hlRect: DOMRect | null = null;
+      let hlRectAt = 0;
+      let spawnAt = 0;
       let prevEyeX = 0, prevEyeY = 0, prevRot = 0;
       const loop = (nowT: number) => {
         /* Software rendering (html.gpu-soft, το βάζει το smoke.ts): κάθε καρέ κίνησης κοστίζει ~100 ms
@@ -290,7 +293,9 @@ const cloudB = dots.slice(half);
             phase = 'tour';
             finishStroke();
           } else {
-            const sr = hlSpan.getBoundingClientRect();
+            /* Το rect του τίτλου το πολύ κάθε 100 ms (όχι κάθε καρέ: forced layout πάνω σε κινούμενη σελίδα). */
+            if (!hlRect || nowT - hlRectAt > 100) { hlRect = hlSpan.getBoundingClientRect(); hlRectAt = nowT; }
+            const sr = hlRect;
             const yLine = sr.bottom - H() * 0.35;
             if (phase === 'approach') {
               t = { x: sr.left - W() * 0.55, y: yLine, idx: -2, side: 'right' };
@@ -319,9 +324,9 @@ const cloudB = dots.slice(half);
         const now = performance.now();
         const birthing = dotPos && now < birth.start + birth.dur;
         if (birthing) {
-          /* Ξαναμετράμε κάθε καρέ: αν φορτώσει αργά η γραμματοσειρά ή κουνηθεί
+          /* Ξαναμετράμε (κάθε 100 ms — όχι κάθε καρέ): αν φορτώσει αργά η γραμματοσειρά ή κουνηθεί
              το layout, ο Ντοτ μένει καρφωμένος πάνω στην κουκίδα. */
-          dotPos = spawnPos();
+          if (nowT - spawnAt > 100) { dotPos = spawnPos(); spawnAt = nowT; }
           px = dotPos.x;
           py = dotPos.y;
           if (now >= birth.start) {
@@ -332,7 +337,9 @@ const cloudB = dots.slice(half);
                 const sw = spawnEl!.getBoundingClientRect().width;
                 const k = sw < 40 ? 2.2 : sw < 140 ? 1.35 : 1.12;
                 if (getComputedStyle(spawnEl!).display === 'inline') spawnEl!.style.display = 'inline-block';
-                spawnEl!.animate(
+                /* Ο παλμός μόνο σε μικρά στοιχεία: στον h1 (εσωτερικές σελίδες) μια δεύτερη transform-animation πάνω
+                   στην είσοδό του τον έβγαζε από τον compositor («incompatible animations») — και σε 12 % δεν φαινόταν. */
+                if (sw < 140) spawnEl!.animate(
                   [{ transform: 'scale(1)' }, { transform: `scale(${k})` }, { transform: 'scale(1)' }],
                   { duration: 550, easing: 'ease-out' }
                 );

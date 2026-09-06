@@ -45,6 +45,7 @@ let TIER = pickTier();
 /** Software WebGL (SwiftShader/llvmpipe — VM, remote desktop, blocklisted GPU): κάθε καρέ κοστίζει
  *  εκατοντάδες ms στη CPU και μπλοκάρει τη σελίδα → μόνο ένα στατικό καρέ. */
 const isSoftwareGL = (gl: WebGLRenderingContext): boolean => {
+  if (/[?&]gl=1/.test(location.search)) return false; // δοκιμές: ?gl=1 = τρέξε τον καπνό και σε software GL
   try {
     const ext = gl.getExtension('WEBGL_debug_renderer_info') as { UNMASKED_RENDERER_WEBGL: number } | null;
     const r = String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));

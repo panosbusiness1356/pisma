@@ -137,7 +137,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
         })();
       </script>
       <!-- Το «PISMA.» ως δικό του στοιχείο στη ροή: τίτλος πάνω, κουμπιά/αριθμοί κάτω (αίτημα χρήστριας). -->
-      <div class="hero-word" aria-hidden="true" data-text="PISMA."><span>P</span><span>I</span><span>S</span><span>M</span><span>A</span><span>.</span></div>
+      <div class="hero-word" aria-hidden="true" data-text="PISMA."><span>P</span><span>I</span><span>S</span><span>M</span><span>A</span><span>.</span><i class="hw-glow"></i><b class="hw-shine"><b class="hw-shine-win"><b class="hw-shine-txt">PISMA.</b></b></b></div>
 
       <div class="hero-ctas blur-in" style="--d:.46s">
         <span class="btn-frame">
@@ -1033,22 +1033,38 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
     55% { opacity: 1; filter: blur(0); color: rgba(255,255,255,.5); text-shadow: 0 0 70px rgba(255,255,255,.7), 0 0 20px rgba(255,255,255,.5); }
     100% { opacity: 1; filter: blur(0); transform: none; }
   }
-  .hero-word::after {
-    content: attr(data-text); position: absolute; left: 0; right: 0; top: 0;
-    color: transparent; pointer-events: none; opacity: 0;
-    background: linear-gradient(105deg, transparent 0 38%, rgba(255,255,255,.55) 46%, rgba(255,255,255,.95) 50%, rgba(255,255,255,.55) 54%, transparent 62% 100%);
-    background-size: 260% 100%; background-position: 130% 0;
-    -webkit-background-clip: text; background-clip: text;
-    animation: hwShine 6s ease-in-out 1.9s infinite;
+  /* Λωρίδα φωτός (εφέ 3): ένα «παράθυρο» (.hw-shine-win) γλιστρά πάνω από ένα λευκό αντίγραφο του «PISMA.»
+     και το αντίγραφο μετακινείται αντίθετα ώστε να μένει ακίνητο πάνω στα γράμματα. Δύο transform animations
+     = τρέχουν εξ ολοκλήρου στον compositor, 0 ξαναζωγραφίσματα. (Το παλιό ::after με background-position
+     ξαναζωγράφιζε 6 τεράστια γράμματα με σκιά 80 px σε κάθε καρέ — στο κινητό πάγωνε την οθόνη κάθε 6 s.)
+     Το παράθυρο: 24 % του πλάτους της λέξης, με μαλακή διαγώνια μάσκα. Ίδιοι χρόνοι: 6 s, ανά 1,9 s, ορατό στο 0-40 %. */
+  .hw-shine { position: absolute; inset: 0; overflow: hidden; pointer-events: none; font-style: normal; font-weight: inherit; }
+  .hw-shine-win {
+    position: absolute; top: 0; bottom: 0; left: 0; width: 24%; overflow: hidden; will-change: transform, opacity;
+    -webkit-mask-image: linear-gradient(105deg, transparent 0%, rgba(0, 0, 0, .55) 33%, #000 50%, rgba(0, 0, 0, .55) 67%, transparent 100%);
+    mask-image: linear-gradient(105deg, transparent 0%, rgba(0, 0, 0, .55) 33%, #000 50%, rgba(0, 0, 0, .55) 67%, transparent 100%);
+    animation: hwShineWin 6s ease-in-out 1.9s infinite;
   }
-  @keyframes hwShine {
-    0% { background-position: 130% 0; opacity: 1; }
-    40% { background-position: -130% 0; opacity: 1; }
-    41%, 100% { background-position: -130% 0; opacity: 0; }
+  .hw-shine-txt {
+    position: absolute; top: 0; left: 0; width: calc(100% / .24); text-align: center;
+    color: rgba(255, 255, 255, .95); white-space: nowrap; will-change: transform;
+    animation: hwShineTxt 6s ease-in-out 1.9s infinite;
   }
+  @keyframes hwShineWin {
+    0% { transform: translateX(-100%); opacity: 1; }
+    40% { transform: translateX(417%); opacity: 1; }
+    41%, 100% { transform: translateX(417%); opacity: 0; }
+  }
+  @keyframes hwShineTxt {
+    0% { transform: translateX(24%); }
+    40%, 100% { transform: translateX(-100%); }
+  }
+  /* Λάμψη πίσω από το «PISMA.» (οθόνες αφής, αντί για text-shadow 80 px που ακρίβαινε κάθε ξαναζωγράφισμα) */
+  .hw-glow { display: none; position: absolute; left: 4%; right: 4%; top: -10%; bottom: -10%; pointer-events: none; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 255, 255, .11), rgba(255, 255, 255, .04) 60%, transparent); }
   @media (prefers-reduced-motion: reduce) {
     .hero-word span { animation: none; opacity: 1; filter: none; transform: none; }
-    .hero-word::after { animation: none; }
+    .hw-shine-win, .hw-shine-txt { animation: none; }
+    .hw-shine { display: none; }
   }
   /* Hover «Προβολέας»: στρώμα ::before με το ίδιο κείμενο, φως στο σημείο του ποντικιού
      (--mx/--my από το JS), background-clip: text — ευθυγραμμισμένο ακριβώς με τα γράμματα. */
@@ -1068,12 +1084,26 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
      συνεχώς = το ακριβότερο πράγμα για GPU κινητού)· τα γράμματα «PISMA.» μπαίνουν με ξεθώριασμα + ανάδυση
      χωρίς blur/λάμψη (color/text-shadow/blur = main thread, repaint 6 μεγάλων γραμμάτων σε κάθε καρέ). */
   @media (pointer: coarse) {
-    .stg-fog { filter: none; animation: none; }
-    .stg-fog--1 { background: radial-gradient(closest-side, rgba(255,255,255,.12), transparent); }
-    .stg-fog--2 { background: radial-gradient(closest-side, rgba(255,255,255,.09), transparent); }
-    .stg-fog--3 { background: radial-gradient(closest-side, rgba(255,255,255,.13), transparent); }
-    .hero-word span { filter: none; animation-name: hwInLite; }
-    @keyframes hwInLite { 0% { opacity: 0; transform: translateY(26px) scale(1.06); } 100% { opacity: 1; transform: none; } }
+    /* Η ομίχλη κινείται κανονικά (transform: compositor) — το «θόλωμά» της είναι το ίδιο το gradient, όχι filter. */
+    .stg-fog { filter: none; }
+    .stg-fog--1 { background: radial-gradient(closest-side, rgba(255,255,255,.15) 0%, rgba(255,255,255,.07) 45%, transparent 100%); }
+    .stg-fog--2 { background: radial-gradient(closest-side, rgba(255,255,255,.11) 0%, rgba(255,255,255,.05) 45%, transparent 100%); }
+    .stg-fog--3 { background: radial-gradient(closest-side, rgba(255,255,255,.17) 0%, rgba(255,255,255,.08) 45%, transparent 100%); }
+    /* Γράμματα «PISMA.»: ίδιο εφέ (θόλωμα + στιγμιαία λάμψη) σε δύο animations — ομαλή ανάδυση (compositor)
+       + η όψη (blur/χρώμα/λάμψη) σε 6 βήματα = 6 ξαναζωγραφίσματα ανά γράμμα αντί για 66. */
+    .hero-word span { will-change: transform; animation: hwInMove 1.1s cubic-bezier(.22, 1, .36, 1) forwards, hwInLook 1.1s steps(6, jump-end) forwards; }
+    @keyframes hwInMove { 0% { opacity: 0; transform: translateY(26px) scale(1.06); } 100% { opacity: 1; transform: none; } }
+    /* Σκιές κειμένου: ένα blur 60-80 px ακριβαίνει ΚΑΘΕ ξαναζωγράφισμα του τίτλου/των γραμμάτων (είσοδοι, swap
+       γραμματοσειράς). Ίδια εντύπωση με μικρότερο blur, και η λάμψη του «PISMA.» ως gradient πίσω του. */
+    .hero h1 { text-shadow: 0 4px 22px rgba(0, 0, 0, .6); }
+    .hero-word { text-shadow: none; }
+    .hw-glow { display: block; }
+    .hero-word span { will-change: transform, opacity; }
+    @keyframes hwInLook {
+      0% { filter: blur(16px); }
+      55% { filter: blur(0); color: rgba(255,255,255,.5); text-shadow: 0 0 22px rgba(255,255,255,.7); }
+      100% { filter: blur(0); }
+    }
   }
   .stg-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: linear-gradient(180deg, transparent, rgba(255,255,255,.08) 60%, rgba(255,255,255,.13)); }
   .stg::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 140px; background: linear-gradient(transparent, var(--bg)); }
@@ -1304,10 +1334,12 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
   @keyframes blurIn {
     to { opacity: 1; filter: blur(0); transform: none; }
   }
-  /* Οθόνες αφής: είσοδοι χωρίς blur (compositor-only) — βλ. global.css .reveal */
+  /* Οθόνες αφής: το ίδιο θόλωμα → καθαρό, αλλά σε 3 βήματα (3 ξαναζωγραφίσματα αντί για 66)·
+     ξεθώριασμα/ανάδυση ομαλά στον compositor (will-change: transform = δικό του layer). Βλ. global.css .reveal */
   @media (pointer: coarse) {
-    .blur-in { filter: none; animation-name: fadeUp; }
-    @keyframes fadeUp { to { opacity: 1; transform: none; } }
+    .blur-in { will-change: transform; animation: blurInMove 1.1s cubic-bezier(.2, .8, .25, 1) both, blurInBlur .55s steps(3, jump-end) both; animation-delay: var(--d, 0s); }
+    @keyframes blurInMove { to { opacity: 1; transform: none; } }
+    @keyframes blurInBlur { from { filter: blur(12px); } to { filter: blur(0); } }
   }
   @media (prefers-reduced-motion: reduce) {
     .blur-in { animation: none; opacity: 1; filter: none; transform: none; }

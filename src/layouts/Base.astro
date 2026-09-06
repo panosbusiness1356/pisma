@@ -402,10 +402,15 @@ const themeByQuery = import.meta.env.DEV;
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: none; }
       }
-      /* Οθόνες αφής: η είσοδος ολόκληρου του <main> φτιάχνει layer ίσο με ΟΛΗ τη σελίδα (σε DPR 3
-         εκατοντάδες MB raster) ακριβώς στο φόρτωμα — το πρώτο δευτερόλεπτο «κολλούσε». */
-      @media (prefers-reduced-motion: reduce), (pointer: coarse) {
+      @media (prefers-reduced-motion: reduce) {
         .page-in { animation: none; }
+      }
+      /* Οθόνες αφής: η ίδια είσοδος, αλλά μόνο στην πρώτη ενότητα (αυτή που φαίνεται). Η κίνηση ολόκληρου
+         του <main> έφτιαχνε layer ίσο με ΟΛΗ τη σελίδα (σε DPR 3 εκατοντάδες MB raster) ακριβώς στο
+         φόρτωμα — το πρώτο δευτερόλεπτο «κολλούσε». Οπτικά ταυτόσημο: στο φόρτωμα φαίνεται μόνο η πρώτη οθόνη. */
+      @media (pointer: coarse) and (prefers-reduced-motion: no-preference) {
+        .page-in { animation: none; }
+        .page-in > :first-child { animation: pageIn .7s var(--ease) both; }
       }
     </style>
     <script>

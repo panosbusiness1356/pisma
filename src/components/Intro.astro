@@ -61,9 +61,8 @@
   .intro-word.placed { transform: none; }
   .intro-word span { display: inline-block; opacity: 0; filter: blur(28px); transform: scale(1.3); will-change: transform, filter, opacity; }
   .intro-word .dot { color: #FF7A50; text-shadow: 0 0 40px rgba(255, 122, 80, .9); }
-  /* Οθόνες αφής: τα γράμματα βγαίνουν με ξεθώριασμα + σμίκρυνση, χωρίς blur (το blur animation ξαναζωγραφίζει
-     6 μεγάλα γράμματα στο main thread σε κάθε καρέ — στο κινητό κολλούσε το intro). */
-  @media (pointer: coarse) { .intro-word span { filter: none; will-change: transform, opacity; } }
+  /* Οθόνες αφής: ίδιο εφέ (βγαίνουν από θόλωμα), αλλά το blur λύνεται σε 4 βήματα αντί για κάθε καρέ —
+     βλ. το JS (δύο animations: ομαλό opacity/scale + βηματικό filter). */
   /* Όσο το πέπλο είναι αδιαφανές: ο καπνός του hero δεν ζωγραφίζεται (GPU), και τα στοιχεία
      του hero κάθονται ΟΡΑΤΑ στην τελική τους θέση κάτω από το πέπλο (κανείς δεν τα βλέπει, αλλά ο
      browser τα «ζωγραφίζει» → το LCP μετριέται στην πρώτη ζωγραφιά, όχι όταν ανοίξει το πέπλο).
@@ -72,7 +71,7 @@
   html[data-intro] .hero .blur-in { animation: none; opacity: 1; filter: none; transform: none; }
   /* Ούτε η είσοδος του <main> (page-in) παίζει κάτω από το πέπλο — θα ήταν αόρατη, και μετακινούσε
      το «PISMA.» του hero για 0,7 s (η μέτρηση θέσης έπρεπε να τρέχει σε κάθε καρέ). */
-  html[data-intro] .page-in { animation: none; }
+  html[data-intro] .page-in, html[data-intro] .page-in > :first-child { animation: none; }
   html[data-intro] .hero .hero-word::after { animation-play-state: paused; }
   html[data-intro] .hero .stg-smoke { display: none; }
   /* Το «PISMA.» του hero είναι στην τελική του θέση κάτω από το πέπλο και μετά (τα λευκά γράμματα σβήνουν πάνω του).
@@ -151,7 +150,7 @@
       if (!gl) return onReady(null);
       // Software WebGL (SwiftShader/llvmpipe — VM, remote desktop, blocklisted GPU): ο shader στη CPU
       // «κολλάει» τη σελίδα → η εκδοχή χωρίς καπνό (μαύρο πέπλο που ξεθωριάζει).
-      try {
+      if (!/[?&]gl=1/.test(location.search)) try { // δοκιμές: ?gl=1 = καπνός και σε software GL
         const ext = gl.getExtension('WEBGL_debug_renderer_info') as { UNMASKED_RENDERER_WEBGL: number } | null;
         const r = String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
         if (/swiftshader|llvmpipe|softpipe|software|mesa offscreen|basic render/i.test(r)) { gl.getExtension('WEBGL_lose_context')?.loseContext(); return onReady(null); }
@@ -244,7 +243,8 @@
         }
       });
       word.style.opacity = '1';
-      // Οθόνες αφής: χωρίς blur (compositor-only animation) — βλ. σχόλιο στο CSS.
+      // Οθόνες αφής: το ίδιο εφέ σε δύο animations — ομαλό opacity/scale (compositor) + blur σε 4 βήματα
+      // (4 ξαναζωγραφίσματα ανά γράμμα αντί για ~40· το blur animation δεν τρέχει στον compositor του Chrome).
       const touch = matchMedia('(pointer: coarse)').matches;
       letters.forEach((el, i) => {
         const A = el.animate(
@@ -253,6 +253,7 @@
             : [{ opacity: 0, filter: 'blur(28px)', transform: 'scale(1.3)' }, { opacity: 1, filter: 'blur(0)', transform: 'scale(1)' }],
           { duration: LET_DUR, delay: T_LET + i * LET_GAP, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'forwards' },
         );
+        if (touch) anims.push(el.animate([{ filter: 'blur(28px)' }, { filter: 'blur(0)' }], { duration: LET_DUR * .7, delay: T_LET + i * LET_GAP, easing: 'steps(4, jump-end)', fill: 'forwards' }));
         anims.push(A);
       });
       const W = word.animate([{ opacity: 1 }, { opacity: 1, offset: T_FADE / T_END }, { opacity: 0, offset: (T_FADE + FADE_DUR) / T_END }, { opacity: 0 }], { duration: T_END, fill: 'forwards', easing: 'linear' });

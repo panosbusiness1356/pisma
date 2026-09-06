@@ -325,11 +325,12 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
   transition-delay: calc(var(--i, 0) * 70ms);
 }
 .reveal.is-in { opacity: 1; transform: none; filter: none; }
-/* Οθόνες αφής: ΧΩΡΙΣ blur στις εισόδους. Το animation ενός filter που «μετακινεί pixel» (blur) δεν τρέχει
-   στον compositor — ξαναζωγραφίζει το στοιχείο στο main thread σε κάθε καρέ, και στο κινητό αυτό κολλάει
-   scroll και πατήματα. Μένουν ξεθώριασμα + ανάδυση (opacity/transform: compositor, 0 κόστος). */
+/* Οθόνες αφής: το ΙΔΙΟ εφέ (θόλωμα → καθαρό), αλλά φθηνό. Ένα animation του filter: blur δεν τρέχει στον
+   compositor του Chrome — ξαναζωγραφίζει το στοιχείο στο main thread σε ΚΑΘΕ καρέ (54 φορές σε .9 s).
+   Εδώ το θόλωμα λύνεται σε 3 βήματα (steps) = 3 ξαναζωγραφίσματα, ενώ ξεθώριασμα και ανάδυση μένουν ομαλά
+   στον compositor (will-change: transform = δικό του layer). Το μάτι δεν ξεχωρίζει τη διαφορά. */
 @media (pointer: coarse) {
-  .reveal { filter: none; transition: opacity .7s var(--ease), transform .7s var(--ease); }
+  .reveal { will-change: transform; transition: opacity .9s var(--ease), transform .9s var(--ease), filter .5s steps(3, jump-end); }
 }
 
 /* ---------- Focus / a11y ---------- */
