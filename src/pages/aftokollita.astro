@@ -72,15 +72,17 @@ const schema = [
 <meta property="og:image:alt" content={`${SITE.name} — ${SITE.tagline}`}>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content={`${SITE.url}/og.png`}>
-<meta name="theme-color" content="#171514">
+<meta name="theme-color" content="#0B0B0B">
 {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
 <!-- Η Noto Sans Display (γραμματοσειρά ΤΟΥ ΠΡΟΪΟΝΤΟΣ στα SVG των αυτοκόλλητων)
      είναι πλέον self-hosted στο fonts.css — κανένα εξωτερικό αίτημα. -->
 <style is:global>
 /* Tokens του site (src/styles/global.css) — το showroom μιλά την ίδια γλώσσα. */
 :root{
-  --bg0:#171514;--bg1:#1D1A18;--card:#1F1C1A;--card2:#262220;--line:rgba(255,255,255,.09);--line2:rgba(255,255,255,.16);
-  --txt:#E6E1F0;--head:#F5F2FB;--dim:#A79DBB;
+  --bg0:#0B0B0B;--bg1:#111111;--card:#151515;--card2:#1B1B1B;--line:rgba(255,255,255,.09);--line2:rgba(255,255,255,.16);
+  --txt:#E4E4E4;--head:#FFFFFF;--dim:#9C9C9C;
+  /* Το showroom δεν φορτώνει το global.css — τα tokens του accent ορίζονται εδώ (ίδιες τιμές) */
+  --orange:#FF7A50;--orange-cta:#EE4F27;--orange-text:#FFA284;--orange-rgb:255,122,80;--grad-1:#CC431C;--grad-2:#BE3A17;--grad-3:#AC3213;
   --acc:var(--orange);--acc-text:var(--orange-text);--acc-soft:rgba(var(--orange-rgb),.13);
   --grad:linear-gradient(92deg,var(--grad-1) 0%,var(--grad-2) 55%,var(--grad-3) 100%);
   --ok:#55A874;--ok-text:#A5D6B8;--err:#FF5C41;
@@ -89,7 +91,7 @@ const schema = [
 }
 *{box-sizing:border-box}
 body{margin:0;background:
-  radial-gradient(70% 60% at 88% 0%,rgba(139,92,246,.08),transparent 70%),
+  radial-gradient(70% 60% at 88% 0%,rgba(255,255,255,.04),transparent 70%),
   radial-gradient(130% 90% at 50% 0%,var(--bg1),var(--bg0) 62%);color:var(--txt);
   font-family:'Inter',system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100svh}
 button{font-family:inherit;color:inherit}

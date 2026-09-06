@@ -1,7 +1,8 @@
 ---
 /**
- * Σκούρο CTA banner με glow — ένα κύριο CTA ανά οθόνη.
- * Προαιρετικό note κάτω από το κουμπί.
+ * Σκούρο CTA banner — «σκηνή» σε μικρό: κάρτα με καπνό (smoke.ts) και απαλό φως
+ * πίσω από το κείμενο, ένα κύριο CTA ανά οθόνη. Προαιρετικό note κάτω από το κουμπί.
+ * Χωρίς WebGL μένει η CSS ομίχλη.
  */
 interface Props {
   title: string;
@@ -11,13 +12,15 @@ interface Props {
   note?: string;
 }
 const { title, sub, ctaText, ctaHref, note } = Astro.props;
-import Silk from './Silk.astro';
 ---
 
 <section class="section section--tight">
   <div class="container">
     <div class="band reveal">
-      <Silk variant="band" bgVar="--card-2" />
+      <div class="stg" aria-hidden="true">
+        <span class="stg-fog"></span>
+        <canvas class="stg-smoke" data-strength=".5" data-glow=".9" data-glowy=".5" data-glowr="1.4" data-bottom=".5" data-scale="3"></canvas>
+      </div>
       <div class="band-text">
         <h2>{title}</h2>
         {sub && <p>{sub}</p>}
@@ -30,20 +33,29 @@ import Silk from './Silk.astro';
   </div>
 </section>
 
+<script>
+  import '../scripts/smoke';
+</script>
+
 <style>
   .band {
     position: relative; overflow: hidden;
-    background:
-      radial-gradient(80% 130% at 85% -20%, rgba(var(--cta-rgb), .22), transparent 60%),
-      radial-gradient(60% 120% at 10% 120%, rgba(var(--orange-rgb), .10), transparent 65%),
-      var(--card-2);
+    background: var(--card-2);
     border: 1px solid var(--line-strong);
     border-radius: var(--r); box-shadow: var(--shadow);
     padding: clamp(30px, 5vw, 52px);
     display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap;
   }
+  .stg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .stg-fog {
+    position: absolute; inset: -30%;
+    background: radial-gradient(45% 60% at 50% 45%, rgba(255, 255, 255, .13), transparent 70%);
+    filter: blur(30px);
+  }
+  .stg-smoke { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: .85; }
+  .stg:has(.stg-smoke.is-on) .stg-fog { opacity: .4; }
   .band-text, .band-cta { position: relative; z-index: 1; }
-  .band h2 { color: #fff; max-width: 24ch; }
+  .band h2 { color: #fff; max-width: 24ch; text-shadow: 0 8px 40px rgba(0, 0, 0, .6); }
   .band p { color: rgba(255, 255, 255, .78); margin-top: 10px; }
   .band-cta { text-align: center; }
   .band-cta .btn-note { color: rgba(255, 255, 255, .65); }
