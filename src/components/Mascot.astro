@@ -257,6 +257,12 @@ const cloudB = dots.slice(half);
       tCache = targetPos(); tKey = key; tAt = nowT;
       return tCache;
     };
+    /* Ύπνος: όταν ο Ντοτ ηρεμήσει (θέση, μάτια, κλίση σταθερά — ούτε γέννηση ούτε είσοδος),
+       ο βρόχος σταματά· ξυπνά με scroll/resize/pointer ή όταν αλλάξει το layout της σελίδας.
+       Πριν έτρεχε 60 φορές το δευτερόλεπτο για πάντα, ακόμη και κρυμμένος. */
+    let idleFrames = 0;
+    let running = false;
+    let prevEyeX = 0, prevEyeY = 0, prevRot = 0;
     const loop = (nowT: number) => {
       const f = Math.min(3, (nowT - lastT) / 16.667);
       lastT = nowT;
@@ -394,10 +400,22 @@ const cloudB = dots.slice(half);
         hideBubble();
       }
 
+      const busy = !!birthing || phase !== 'tour' || dist > 0.5 ||
+        Math.abs(eyeX - prevEyeX) > 0.01 || Math.abs(eyeY - prevEyeY) > 0.01 || Math.abs(rot - prevRot) > 0.01;
+      prevEyeX = eyeX; prevEyeY = eyeY; prevRot = rot;
+      idleFrames = busy ? 0 : idleFrames + 1;
+      if (idleFrames < 20) requestAnimationFrame(loop);
+      else running = false;
+    };
+    const wake = () => {
+      if (running) return;
+      running = true; idleFrames = 0; lastT = performance.now();
       requestAnimationFrame(loop);
     };
-    requestAnimationFrame(loop);
+    wake();
     requestAnimationFrame(() => el.classList.add('is-ready'));
+    for (const ev of ['scroll', 'resize', 'pointermove', 'pointerdown', 'touchstart'] as const) window.addEventListener(ev, wake, { passive: true });
+    if ('ResizeObserver' in window) new ResizeObserver(wake).observe(document.body);
   }
 
   window.addEventListener('resize', () => {
