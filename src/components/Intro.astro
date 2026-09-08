@@ -28,8 +28,7 @@
   // Απόφαση ΠΡΙΝ το πρώτο paint: παίζει μόνο μία φορά ανά επίσκεψη και όχι με reduced motion.
   (function () {
     try {
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      if (sessionStorage.getItem('pisma-intro') && !/[?&]fresh=1\b/.test(location.search)) return; // ?fresh=1 = ξαναπαίξε (δοκιμές)
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches || sessionStorage.getItem('pisma-intro')) return;
       var h = document.documentElement;
       h.setAttribute('data-intro', ''); h.setAttribute('data-intro-run', '');
       // Δίχτυ ασφαλείας αν το module script δεν τρέξει ποτέ.
@@ -40,9 +39,6 @@
 
 <div class="intro" id="intro" aria-hidden="true">
   <canvas class="intro-gl"></canvas>
-  <!-- Loading πριν το intro: η τελεία του logo αναπνέει στη θέση της, από κάτω λεπτή γραμμή ΠΡΑΓΜΑΤΙΚΗΣ προόδου
-       (γραμματοσειρές, καπνός, layout). Όταν όλα είναι έτοιμα (ή στα 1,2 s το πολύ) η τελεία ανάβει και γεννά τον καπνό. -->
-  <div class="intro-load"><i class="ld-dot"></i><i class="ld-line"><b></b></i></div>
   <div class="intro-word"><span>P</span><span>I</span><span>S</span><span>M</span><span>A</span><span class="dot">.</span></div>
 </div>
 <script is:inline>
@@ -63,17 +59,6 @@
     color: #fff; text-shadow: 0 0 60px rgba(255, 255, 255, .35); pointer-events: none; opacity: 0;
   }
   .intro-word.placed { transform: none; }
-  /* Loading: μόνο compositor-friendly ιδιότητες (transform/opacity) — παίζει ομαλά ό,τι κι αν κάνει το main thread */
-  .intro-load { position: fixed; inset: 0; pointer-events: none; }
-  .ld-dot {
-    position: fixed; left: 0; top: 0; width: 14px; height: 14px; border-radius: 50%; opacity: 0;
-    background: #FF7A50; box-shadow: 0 0 .9em .25em rgba(255, 122, 80, .45); will-change: transform, opacity;
-  }
-  .ld-dot.on { animation: ldBreath 1.5s ease-in-out infinite; }
-  @keyframes ldBreath { 0%, 100% { transform: scale(.82); opacity: .75; } 50% { transform: scale(1.12); opacity: 1; } }
-  .ld-line { position: fixed; left: 0; top: 0; height: 2px; border-radius: 2px; background: rgba(255, 255, 255, .09); overflow: hidden; opacity: 0; transition: opacity .4s ease; }
-  .ld-line.on { opacity: 1; }
-  .ld-line b { display: block; height: 100%; width: 100%; transform-origin: 0 50%; transform: scaleX(0); background: linear-gradient(90deg, #FF7A50, #FFA284); transition: transform .45s cubic-bezier(.2, .8, .2, 1); }
   .intro-word span { display: inline-block; opacity: 0; filter: blur(28px); transform: scale(1.3); will-change: transform, filter, opacity; }
   .intro-word .dot { color: #FF7A50; text-shadow: 0 0 40px rgba(255, 122, 80, .9); }
   /* Οθόνες αφής: ίδιο εφέ (βγαίνουν από θόλωμα), αλλά το blur λύνεται σε 4 βήματα αντί για κάθε καρέ —
@@ -107,9 +92,6 @@
     const letters = Array.from(word.querySelectorAll<HTMLElement>('span'));
     const hw = document.querySelector<HTMLElement>('.hero-word');
     const canvas = root.querySelector<HTMLCanvasElement>('.intro-gl')!;
-    const ldDot = root.querySelector<HTMLElement>('.ld-dot')!;
-    const ldLine = root.querySelector<HTMLElement>('.ld-line')!;
-    const ldBar = ldLine.querySelector<HTMLElement>('b')!;
 
     /* ---- Χρονοδιάγραμμα (ms) ---- */
     const T_LET = 650, LET_GAP = 95, LET_DUR = 680; // γράμματα: 650 → ~1800
@@ -119,8 +101,6 @@
 
     /* ---- Θέση/μέγεθος: ακριβώς πάνω στο «PISMA.» του hero ---- */
     let center = { x: .5, y: .5 };
-    let drawC = { x: .5, y: .5 };  // πού ζωγραφίζεται η σφαίρα: από την τελεία του loading → κέντρο της λέξης (πρώτα 500 ms)
-    let dotC = { x: .5, y: .5 };   // κέντρο της τελείας (uv)
     let placedKey = ''; // τελευταία θέση/μέγεθος που γράφτηκε — γράφουμε ΜΟΝΟ όταν αλλάζει (αλλιώς forced reflow σε κάθε καρέ)
     const place = () => {
       if (!hw) return;
@@ -136,15 +116,6 @@
       word.style.fontSize = cs.fontSize; word.style.letterSpacing = cs.letterSpacing; word.style.lineHeight = cs.lineHeight; word.style.textAlign = cs.textAlign;
       word.style.fontFamily = cs.fontFamily; word.style.fontWeight = cs.fontWeight;
       center = { x: (r.left + r.width / 2) / innerWidth, y: (r.top + r.height / 2) / innerHeight };
-      /* Loading: η τελεία πάνω στην τελεία του «PISMA.» (ίδιο μέγεθος με το γλυφικό ≈ .2 em), η γραμμή κάτω από τη λέξη */
-      const dotEl = hw.querySelector<HTMLElement>('span:last-of-type'); // η τελεία (μετά τα span έρχονται hw-glow/hw-shine)
-      if (dotEl && ldDot) {
-        const d = dotEl.getBoundingClientRect(); const fs = parseFloat(cs.fontSize);
-        const size = Math.max(8, Math.round(fs * .2)); const cx = d.left + d.width / 2, cy = d.top + d.height * .86 - size * .5;
-        ldDot.style.width = ldDot.style.height = `${size}px`; ldDot.style.left = `${Math.round(cx - size / 2)}px`; ldDot.style.top = `${Math.round(cy - size / 2)}px`; ldDot.style.fontSize = `${size}px`;
-        dotC = { x: cx / innerWidth, y: cy / innerHeight };
-        ldLine.style.left = `${Math.round(r.left)}px`; ldLine.style.width = `${Math.round(r.width)}px`; ldLine.style.top = `${Math.round(r.bottom + Math.max(10, fs * .12))}px`;
-      }
     };
 
     /* ---- WebGL καπνός με αύρα ---- */
@@ -206,7 +177,7 @@
       return {
         fit,
         draw(r, open, glow, dens) {
-          gl.uniform1f(uT, t0 + tt / 1000); gl.uniform2f(uC, drawC.x, 1 - drawC.y);
+          gl.uniform1f(uT, t0 + tt / 1000); gl.uniform2f(uC, center.x, 1 - center.y);
           gl.uniform1f(uR, r); gl.uniform1f(uO, open); gl.uniform1f(uG, glow); gl.uniform1f(uD, dens);
           gl.clear(gl.COLOR_BUFFER_BIT); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
         },
@@ -250,72 +221,27 @@
       const fd = clamp01((tt - T_FADE) / FADE_DUR);           // σβήσιμο στο τέλος
       const breathe = 1 + .06 * Math.sin(tt / 380);
       const r = (0.07 + 0.22 * ease(pre)) * breathe + 2.2 * op * op;
-      const g = ease(clamp01(tt / 500)); // η σφαίρα γεννιέται στην τελεία και φτάνει στο κέντρο της λέξης σε 500 ms
-      drawC = { x: dotC.x + (center.x - dotC.x) * g, y: dotC.y + (center.y - dotC.y) * g };
       gl?.draw(r, op, (0.35 + 0.65 * ease(pre)) * (1 - fd), 1 - fd);
       raf = requestAnimationFrame(frame);
     };
 
-    /* ---- Loading πριν το intro: «πύλη ετοιμότητας» ----
-       Δείχνει την τελεία να αναπνέει και μια γραμμή που μεγαλώνει με ΠΡΑΓΜΑΤΙΚΗ πρόοδο:
-       15 % το script, +45 % οι γραμματοσειρές, +25 % ο shader του intro, +15 % ο καπνός του hero.
-       Κρατά τουλάχιστον 500 ms (να μη «τρεμοπαίξει») και το πολύ 1200 ms· μετά η τελεία ανάβει
-       και ξεκινά το intro ακριβώς όπως ήταν — χωρίς να ανταγωνίζεται πια με γραμματοσειρές/μεταγλωττίσεις. */
-    const LD_MIN = 500, LD_MAX = 1200;
-    let ldP = 0;
-    const progress = (p: number) => { ldP = Math.max(ldP, Math.min(1, p)); ldBar.style.transform = `scaleX(${ldP.toFixed(3)})`; };
-    const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
-    let noGL = false;
-    const glReady = new Promise<void>((resolve) => {
+    const start = async () => {
+      // Περιμένουμε τη γραμματοσειρά του logo (self-hosted, γρήγορη) ώστε η μέτρηση να είναι ακριβής.
+      try { await Promise.race([document.fonts.load('800 100px Unbounded'), new Promise((r) => setTimeout(r, 900))]); } catch {}
+      place(); addEventListener('resize', onResize, { passive: true });
       initGL((g) => {
         if (ended) return;
         gl = g;
         if (!gl) {
-          // Χωρίς WebGL: μαύρο πέπλο που ξεθωριάζει όταν ανοίγει (ξεκινά στην ανάφλεξη).
-          noGL = true;
+          // Χωρίς WebGL: μαύρο πέπλο που ξεθωριάζει όταν ανοίγει.
+          const A = root.animate([{ opacity: 1 }, { opacity: 1, offset: T_OPEN / T_END }, { opacity: 0 }], { duration: T_END, fill: 'forwards', easing: 'linear' });
+          if (tSkip) A.playbackRate = 6;
+          anims.push(A);
         } else {
           gl.fit();
+          root.style.background = 'transparent'; // το μαύρο το ζωγραφίζει ο shader (πέπλο)
         }
-        resolve();
       });
-    });
-    const smokeReady = new Promise<void>((resolve) => {
-      if (document.documentElement.dataset.smokeReady !== undefined) return resolve();
-      document.addEventListener('pisma-smoke-ready', () => resolve(), { once: true });
-    });
-
-    const start = async () => {
-      const tLd = performance.now();
-      place(); addEventListener('resize', onResize, { passive: true });
-      ldDot.classList.add('on'); ldLine.classList.add('on');
-      progress(.15);
-      const fontsP = document.fonts.ready.then(() => { place(); progress(.6); });
-      glReady.then(() => progress(.85));
-      smokeReady.then(() => progress(1));
-      let ldSkip = false;
-      const ldSkipFn = () => { ldSkip = true; };
-      root.addEventListener('pointerdown', ldSkipFn, { once: true });
-      // Περιμένουμε ό,τι είναι έτοιμο μέχρι LD_MAX — ή κλικ.
-      await Promise.race([Promise.all([fontsP, glReady, smokeReady]), wait(LD_MAX), new Promise<void>((r) => { const i = setInterval(() => { if (ldSkip || ended) { clearInterval(i); r(); } }, 50); })]);
-      if (ended) return;
-      const left = LD_MIN - (performance.now() - tLd);
-      if (left > 0 && !ldSkip) await wait(left);
-      if (ended) return;
-      progress(1);
-      /* Ανάφλεξη: η τελεία φουντώνει και σβήνει, η γραμμή διαλύεται — και ο καπνός γεννιέται από την τελεία */
-      ldDot.classList.remove('on');
-      ldDot.animate([{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(2.6)', opacity: 0 }], { duration: 420, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'forwards' });
-      ldLine.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 350, fill: 'forwards' });
-      setTimeout(() => root.querySelector('.intro-load')?.remove(), 500);
-      if (ldSkip) skip();
-      root.removeEventListener('pointerdown', ldSkipFn);
-      if (noGL) {
-        const A = root.animate([{ opacity: 1 }, { opacity: 1, offset: T_OPEN / T_END }, { opacity: 0 }], { duration: T_END, fill: 'forwards', easing: 'linear' });
-        if (tSkip) A.playbackRate = 6;
-        anims.push(A);
-      } else if (gl) {
-        root.style.background = 'transparent'; // από εδώ το μαύρο το ζωγραφίζει ο shader (πέπλο)
-      }
       word.style.opacity = '1';
       // Οθόνες αφής: το ίδιο εφέ σε δύο animations — ομαλό opacity/scale (compositor) + blur σε 4 βήματα
       // (4 ξαναζωγραφίσματα ανά γράμμα αντί για ~40· το blur animation δεν τρέχει στον compositor του Chrome).
