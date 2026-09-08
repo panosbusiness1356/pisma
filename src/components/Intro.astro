@@ -58,6 +58,9 @@
     font-size: clamp(4.6rem, 16vw, 15rem); line-height: .95; letter-spacing: .01em; white-space: nowrap;
     color: #fff; text-shadow: 0 0 60px rgba(255, 255, 255, .35); pointer-events: none; opacity: 0;
   }
+  /* Οθόνες αφής: μικρότερο φωτοστέφανο στα λευκά γράμματα — σε DPR 3 ένα blur 60 px (=180 px φυσικά) ακρίβαινε
+     το raster των 6 layers ακριβώς στη στιγμή που εμφανίζονται· η ίδια απαλή λάμψη με το μισό blur. */
+  @media (pointer: coarse) { .intro-word { text-shadow: 0 0 .42em rgba(255, 255, 255, .35); } }
   .intro-word.placed { transform: none; }
   .intro-word span { display: inline-block; opacity: 0; filter: blur(28px); transform: scale(1.3); will-change: transform, filter, opacity; }
   .intro-word .dot { color: #FF7A50; text-shadow: 0 0 40px rgba(255, 122, 80, .9); }
@@ -76,6 +79,9 @@
      έπεφτε πάνω στο σβήσιμο των λευκών γραμμάτων και φαινόταν σαν «κόψιμο» στο «PIS». Η παύση κρατά και την καθυστέρηση. */
   html[data-intro-run] .hero .hw-shine-win, html[data-intro-run] .hero .hw-shine-txt { animation-play-state: paused; }
   html[data-intro] .hero .stg-smoke { display: none; }
+  /* Ούτε η ομίχλη/το δάπεδο/η λάμψη του hero ζωγραφίζονται κάτω από το πέπλο (ο browser δεν ξέρει ότι το πέπλο είναι
+     αδιαφανές και τα συνέθετε σε κάθε καρέ — 4 μεγάλα layers λιγότερα όσο παίζει το intro). Ξαναφαίνονται στο άνοιγμα. */
+  html[data-intro] .hero .stg-fog, html[data-intro] .hero .stg-floor, html[data-intro] .hero .hw-glow { visibility: hidden; }
   /* Το «PISMA.» του hero είναι στην τελική του θέση κάτω από το πέπλο και μετά (τα λευκά γράμματα σβήνουν πάνω του).
      ΠΡΟΣΟΧΗ στην ειδικότητα: τα scoped styles της αρχικής (.hero-word[data-astro-cid] span[data-astro-cid]) μετράνε
      (0,3,1) — γι' αυτό οι επιλογείς εδώ περνούν και από το .hero, ώστε να μετράνε (0,3,2) και να νικούν. */
@@ -212,42 +218,63 @@
     const skip = () => { if (!tSkip) { tSkip = performance.now(); anims.forEach((a) => { a.playbackRate = 6; }); } };
     const onResize = () => { place(); gl?.fit(); };
 
+    /* Προσαρμογή σε αδύναμη συσκευή: αν τα καρέ αργούν (μέσος όρος > 22 ms), ο καπνός ζωγραφίζεται κάθε 2ο καρέ
+       (τα γράμματα είναι Web Animations — δεν επηρεάζονται). Σε κανονική συσκευή δεν ενεργοποιείται ποτέ. */
+    let dtAvg = 16, lastNow = 0, frameNo = 0, placeAt = -1e9;
     const frame = (now: number) => {
       if (!t0) t0 = now;
       tt = (now - t0) + (tSkip ? (now - tSkip) * 5 : 0);
       if (tt >= T_OPEN) open();
       if (tt >= T_END) return finish();
-      if (tt < T_FADE + FADE_DUR) place();                    // ακολουθεί το «PISMA.» του hero αν αλλάξει (π.χ. άφιξη γραμματοσειράς) — φθηνό: γράφει μόνο σε αλλαγή
+      if (lastNow) dtAvg += ((now - lastNow) - dtAvg) * .2;
+      lastNow = now; frameNo++;
+      if (tt < T_FADE + FADE_DUR && now - placeAt > 80) { placeAt = now; place(); } // ακολουθεί το «PISMA.» του hero αν αλλάξει (π.χ. άφιξη γραμματοσειράς) — γράφει μόνο σε αλλαγή
       const pre = clamp01(tt / T_OPEN);                       // 0→1 όσο το πέπλο είναι κλειστό
       const op = ease(clamp01((tt - T_OPEN) / OPEN_DUR));     // άνοιγμα
       const fd = clamp01((tt - T_FADE) / FADE_DUR);           // σβήσιμο στο τέλος
       const breathe = 1 + .06 * Math.sin(tt / 380);
       const r = (0.07 + 0.22 * ease(pre)) * breathe + 2.2 * op * op;
-      gl?.draw(r, op, (0.35 + 0.65 * ease(pre)) * (1 - fd), 1 - fd);
+      if (!(touch && dtAvg > 22 && frameNo % 2)) gl?.draw(r, op, (0.35 + 0.65 * ease(pre)) * (1 - fd), 1 - fd);
       raf = requestAnimationFrame(frame);
     };
 
+    const touch = matchMedia('(pointer: coarse)').matches;
+    const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+    /* Πύλη ετοιμότητας — ΑΟΡΑΤΗ (το πέπλο είναι απλώς μαύρο, όπως πάντα). Το intro ξεκινά μόνο όταν:
+       (1) η γραμματοσειρά του logo έχει έρθει (τα γράμματα «πάνω στα γράμματα» χωρίς αλλαγή μετρικών στη μέση),
+       (2) ο δικός του καπνός έχει μεταγλωττιστεί (αλλιώς τα γράμματα έβγαιναν σε μαύρο και ο καπνός «πεταγόταν» μετά),
+       (3) σε οθόνες αφής, κι ο καπνός του hero έχει μεταγλωττιστεί κάτω από το πέπλο (smoke.ts → pisma-smoke-ready),
+           ώστε τα 50-300 ms της μεταγλώττισης να μην πέφτουν πάνω στα γράμματα ή στο άνοιγμα,
+       (4) δύο συνεχόμενα ήσυχα καρέ (ο browser τελείωσε την πρώτη ζωγραφιά/scripts).
+       Όριο 1,2 s συνολικά — σε γρήγορη συσκευή όλα είναι έτοιμα σε ~200-400 ms. */
     const start = async () => {
-      // Περιμένουμε τη γραμματοσειρά του logo (self-hosted, γρήγορη) ώστε η μέτρηση να είναι ακριβής.
-      try { await Promise.race([document.fonts.load('800 100px Unbounded'), new Promise((r) => setTimeout(r, 900))]); } catch {}
+      const tBoot = performance.now();
+      const left = () => Math.max(0, 1200 - (performance.now() - tBoot));
+      try { await Promise.race([document.fonts.load('800 100px Unbounded'), wait(900)]); } catch {}
       place(); addEventListener('resize', onResize, { passive: true });
-      initGL((g) => {
-        if (ended) return;
-        gl = g;
-        if (!gl) {
-          // Χωρίς WebGL: μαύρο πέπλο που ξεθωριάζει όταν ανοίγει.
-          const A = root.animate([{ opacity: 1 }, { opacity: 1, offset: T_OPEN / T_END }, { opacity: 0 }], { duration: T_END, fill: 'forwards', easing: 'linear' });
-          if (tSkip) A.playbackRate = 6;
-          anims.push(A);
-        } else {
-          gl.fit();
-          root.style.background = 'transparent'; // το μαύρο το ζωγραφίζει ο shader (πέπλο)
-        }
-      });
+      let started = false;
+      const glReady = new Promise<void>((resolve) => initGL((g) => {
+        if (ended || started) { g?.lose(); return resolve(); } // άργησε πολύ: το intro ήδη τρέχει χωρίς καπνό
+        gl = g; gl?.fit(); resolve();
+      }));
+      const smokeReady = touch
+        ? new Promise<void>((resolve) => { if (html.dataset.smokeReady !== undefined) return resolve(); document.addEventListener('pisma-smoke-ready', () => resolve(), { once: true }); })
+        : Promise.resolve();
+      await Promise.race([Promise.all([glReady, smokeReady]), wait(left())]);
+      await new Promise<void>((resolve) => { const t1 = performance.now(); let last = t1, quiet = 0; const f = (now: number) => { quiet = now - last < 24 ? quiet + 1 : 0; last = now; if (quiet >= 2 || now - t1 > 250 || ended) resolve(); else requestAnimationFrame(f); }; requestAnimationFrame(f); });
+      if (ended) return;
+      started = true;
+      if (!gl) {
+        // Χωρίς WebGL (ή πολύ αργή μεταγλώττιση): μαύρο πέπλο που ξεθωριάζει όταν ανοίγει.
+        const A = root.animate([{ opacity: 1 }, { opacity: 1, offset: T_OPEN / T_END }, { opacity: 0 }], { duration: T_END, fill: 'forwards', easing: 'linear' });
+        if (tSkip) A.playbackRate = 6;
+        anims.push(A);
+      } else {
+        root.style.background = 'transparent'; // το μαύρο το ζωγραφίζει ο shader (πέπλο)
+      }
       word.style.opacity = '1';
       // Οθόνες αφής: το ίδιο εφέ σε δύο animations — ομαλό opacity/scale (compositor) + blur σε 4 βήματα
       // (4 ξαναζωγραφίσματα ανά γράμμα αντί για ~40· το blur animation δεν τρέχει στον compositor του Chrome).
-      const touch = matchMedia('(pointer: coarse)').matches;
       letters.forEach((el, i) => {
         const A = el.animate(
           touch

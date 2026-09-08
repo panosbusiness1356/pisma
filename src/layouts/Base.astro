@@ -318,7 +318,13 @@ const themeByQuery = import.meta.env.DEV;
       // Και προληπτικά στο παρασκήνιο, 2,5 s μετά το φόρτωμα (όταν έχουν τελειώσει intro/είσοδοι): η δημιουργία
       // του AudioContext κοστίζει δεκάδες ms σε κινητά — καλύτερα τότε παρά μέσα στο πρώτο πάτημα του χρήστη.
       // (Ξεκινά «suspended» — το resume() γίνεται στο πρώτο άγγιγμα, όπως πάντα.)
-      const warmLater = () => setTimeout(warm, 2500);
+      // Με intro: ΜΕΤΑ το τέλος του (+1,5 s) — αλλιώς τα 2,5 s έπεφταν ακριβώς πάνω στο άνοιγμα του πέπλου στο κινητό.
+      const warmLater = () => {
+        const h = document.documentElement;
+        if (!h.hasAttribute('data-intro-run')) return setTimeout(warm, 2500);
+        const mo = new MutationObserver(() => { if (!h.hasAttribute('data-intro-run')) { mo.disconnect(); setTimeout(warm, 1500); } });
+        mo.observe(h, { attributes: true, attributeFilter: ['data-intro-run'] });
+      };
       if (document.readyState === 'complete') warmLater(); else addEventListener('load', warmLater, { once: true });
 
       // Επιστροφή στη σελίδα: ξύπνα το context προληπτικά — κι αν η σελίδα ήρθε

@@ -175,6 +175,8 @@ function setup(canvas: HTMLCanvasElement) {
     if ('IntersectionObserver' in window) new IntersectionObserver((es) => { visible = es[0].isIntersecting; if (visible) kick(); }, { threshold: 0 }).observe(canvas);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) kick(); });
     canvas.classList.add('is-on');
+    // Το intro (Intro.astro) περιμένει αυτό το σήμα (οθόνες αφής) πριν αρχίσει — η μεταγλώττιση έγινε κάτω από το πέπλο.
+    if (canvas.closest('.hero')) { document.documentElement.dataset.smokeReady = ''; document.dispatchEvent(new CustomEvent('pisma-smoke-ready')); }
   };
 
   // Μεταγλώττιση στο παρασκήνιο όπου υποστηρίζεται — περιμένουμε χωρίς να μπλοκάρουμε το main thread.
@@ -205,4 +207,9 @@ const boot = () => {
   const idle = () => { if (w.requestIdleCallback) w.requestIdleCallback(run, { timeout: 1500 }); else setTimeout(run, 250); };
   if (mq('(pointer: coarse)')) setTimeout(idle, 1600); else idle();
 };
+// Με intro: ο καπνός του hero στήνεται ΑΜΕΣΩΣ (κάτω από το μαύρο πέπλο, πριν καν το load) — το intro περιμένει
+// τη μεταγλώττισή του και ξεκινά μετά, ώστε να μην πέσει ποτέ πάνω στα γράμματα ή στο άνοιγμα.
+if (document.documentElement.hasAttribute('data-intro-run')) {
+  for (const c of document.querySelectorAll<HTMLCanvasElement>('canvas.stg-smoke:not([data-smoke])')) if (c.closest('.hero')) setup(c);
+}
 if (document.readyState === 'complete') boot(); else addEventListener('load', boot, { once: true });
