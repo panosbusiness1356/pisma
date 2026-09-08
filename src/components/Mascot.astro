@@ -147,6 +147,7 @@ const cloudB = dots.slice(half);
   const birth = { start: Infinity, dur: 900 };
   let scale = dotPos ? 0.08 : 1;
   let pulsed = false;
+  let born = false;
 
   /* Χορογραφία εισόδου: πετάει ως το «μόνο του» και ζωγραφίζει την υπογράμμιση
      σαν μαρκαδόρο, συγχρονισμένη με τη θέση του — μετά ξεκινά η ξενάγηση. */
@@ -332,7 +333,8 @@ const cloudB = dots.slice(half);
         if (birthing) {
           /* Ξαναμετράμε (κάθε 100 ms — όχι κάθε καρέ): αν φορτώσει αργά η γραμματοσειρά ή κουνηθεί
              το layout, ο Ντοτ μένει καρφωμένος πάνω στην κουκίδα. */
-          if (nowT - spawnAt > 100) { dotPos = spawnPos(); spawnAt = nowT; }
+          /* …αλλά ΟΧΙ όσο παίζει το spring: το getBoundingClientRect/measureText θα ήταν forced layout πάνω στη γέννηση. */
+          if (!pulsed && nowT - spawnAt > 100) { dotPos = spawnPos(); spawnAt = nowT; }
           px = dotPos.x;
           py = dotPos.y;
           if (now >= birth.start) {
@@ -354,6 +356,10 @@ const cloudB = dots.slice(half);
                  thread απασχοληθεί εκείνη τη στιγμή (γραμματοσειρές, μεταγλώττιση καπνού, ήχος), το JS-driven
                  φούσκωμα έδειχνε «2 fps» στο κινητό ενώ όλα τα άλλα εφέ έτρεχαν κανονικά. Ίδια καμπύλη (easeOutBack).
                  Το inline transform παίρνει από τώρα την τελική τιμή· όσο παίζει το animation την υπερκαλύπτει. */
+              /* Όσο παίζει το spring, ΤΙΠΟΤΑ δεν ξαναζωγραφίζει το SVG: παύση στις εσωτερικές κινήσεις του (σύννεφο, βλεφάρισμα)
+                 και καμία γραφή στα μάτια/θέση (πιο κάτω). Έτσι ο compositor κρατά ΜΙΑ εικόνα (raster) του Ντοτ στην τελική
+                 κλίμακα και μόνο τη μεγεθύνει — αλλιώς κάθε αλλαγή ξαναζωγράφιζε τους 135 κύκλους σε νέα κλίμακα, καρέ-καρέ. */
+              el.classList.add('is-birthing');
               scale = 1;
               lastMot = 'rotate(0.00deg) scale(1.000)';
               motion.style.transform = lastMot;
@@ -362,6 +368,7 @@ const cloudB = dots.slice(half);
           }
         } else {
           scale = 1;
+          if (pulsed && !born) { born = true; el.classList.remove('is-birthing'); }
         }
 
         const dx = t.x - px;
@@ -406,7 +413,7 @@ const cloudB = dots.slice(half);
         /* Τα μάτια και η κλίση αλλάζουν το ίδιο το SVG (repaint των 135 κύκλων) — μόνο
            όταν η αλλαγή περνά το κατώφλι (0,25 px / 0,1°). */
         const eyeStr = `translate(${q(eyeX, qEye)}px, ${q(eyeY, qEye)}px)`;
-        if (eyeStr !== lastEye) {
+        if (eyeStr !== lastEye && !(birthing && pulsed)) { // όχι όσο παίζει το spring (βλ. γέννηση)
           lastEye = eyeStr;
           pupL.style.transform = eyeStr;
           pupR.style.transform = `translate(${q(eyeX * 0.85, qEye)}px, ${q(eyeY * 0.85, qEye)}px)`;
@@ -512,7 +519,9 @@ const cloudB = dots.slice(half);
   #pisma-mascot.is-ready { opacity: 1; }
   #pisma-mascot svg { overflow: visible; width: 100%; height: auto; }
 
-  .m-motion { transform-origin: 50% 60%; will-change: transform; } /* δικό του layer: η κλίση/κλίμακα δεν ξαναζωγραφίζει το SVG */
+  .m-motion { transform-origin: 50% 60%; will-change: transform; }
+  /* Γέννηση: όσο παίζει το spring, το SVG μένει παγωμένο — μία εικόνα, καμία ξαναζωγραφιά (βλ. JS) */
+  #pisma-mascot.is-birthing .d-spin, #pisma-mascot.is-birthing .d-spin2, #pisma-mascot.is-birthing .d-eyes { animation-play-state: paused; } /* δικό του layer: η κλίση/κλίμακα δεν ξαναζωγραφίζει το SVG */
   .m-bob { animation: m-bob 4.6s ease-in-out infinite alternate; }
   @keyframes m-bob {
     from { transform: translateY(0) scale(1); }

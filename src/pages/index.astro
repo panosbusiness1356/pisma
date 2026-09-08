@@ -1048,12 +1048,12 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
     position: absolute; top: 0; bottom: 0; left: 0; width: 30%; overflow: hidden; will-change: transform, opacity;
     -webkit-mask-image: linear-gradient(105deg, transparent 0%, rgba(0, 0, 0, .08) 15%, rgba(0, 0, 0, .3) 30%, rgba(0, 0, 0, .72) 42%, #000 50%, rgba(0, 0, 0, .72) 58%, rgba(0, 0, 0, .3) 70%, rgba(0, 0, 0, .08) 85%, transparent 100%);
     mask-image: linear-gradient(105deg, transparent 0%, rgba(0, 0, 0, .08) 15%, rgba(0, 0, 0, .3) 30%, rgba(0, 0, 0, .72) 42%, #000 50%, rgba(0, 0, 0, .72) 58%, rgba(0, 0, 0, .3) 70%, rgba(0, 0, 0, .08) 85%, transparent 100%);
-    animation: hwShineWin 6s ease-in-out 1.9s infinite;
+    animation: hwShineWin 6s ease-in-out 1.9s infinite both; /* both: πριν την 1η σάρωση το παράθυρο κάθεται ΕΚΤΟΣ (0 % = -100 %), όχι ακίνητο πάνω στο «PIS» */
   }
   .hw-shine-txt {
     position: absolute; top: .35em; left: 0; width: calc(100% / .3); text-align: center;
     color: rgba(255, 255, 255, .95); text-shadow: 0 0 .1em rgba(255, 255, 255, .35); white-space: nowrap; will-change: transform;
-    animation: hwShineTxt 6s ease-in-out 1.9s infinite;
+    animation: hwShineTxt 6s ease-in-out 1.9s infinite both;
   }
   @keyframes hwShineWin {
     0% { transform: translateX(-100%); opacity: 1; }

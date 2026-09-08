@@ -1054,12 +1054,12 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     position: absolute; top: 0; bottom: 0; left: 0; width: 24%; overflow: hidden; will-change: transform, opacity;
     -webkit-mask-image: linear-gradient(105deg, transparent 0%, rgba(0, 0, 0, .55) 33%, #000 50%, rgba(0, 0, 0, .55) 67%, transparent 100%);
     mask-image: linear-gradient(105deg, transparent 0%, rgba(0, 0, 0, .55) 33%, #000 50%, rgba(0, 0, 0, .55) 67%, transparent 100%);
-    animation: hwShineWin 6s ease-in-out 1.9s infinite;
+    animation: hwShineWin 6s ease-in-out 1.9s infinite both; /* both: πριν την 1η σάρωση το παράθυρο κάθεται ΕΚΤΟΣ (0 % = -100 %), όχι ακίνητο πάνω στο «PIS» */
   }
   .hw-shine-txt {
     position: absolute; top: 0; left: 0; width: calc(100% / .24); text-align: center;
     color: rgba(255, 255, 255, .95); white-space: nowrap; will-change: transform;
-    animation: hwShineTxt 6s ease-in-out 1.9s infinite;
+    animation: hwShineTxt 6s ease-in-out 1.9s infinite both;
   }
   @keyframes hwShineWin {
     0% { transform: translateX(-100%); opacity: 1; }

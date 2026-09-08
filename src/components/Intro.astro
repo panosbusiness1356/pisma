@@ -72,7 +72,9 @@
   /* Ούτε η είσοδος του <main> (page-in) παίζει κάτω από το πέπλο — θα ήταν αόρατη, και μετακινούσε
      το «PISMA.» του hero για 0,7 s (η μέτρηση θέσης έπρεπε να τρέχει σε κάθε καρέ). */
   html[data-intro] .page-in, html[data-intro] .page-in > :first-child { animation: none; }
-  html[data-intro] .hero .hero-word::after { animation-play-state: paused; }
+  /* Η λωρίδα φωτός (hw-shine) περιμένει να ΦΥΓΕΙ το πέπλο (data-intro-run, όχι data-intro): αλλιώς η 1η σάρωση
+     έπεφτε πάνω στο σβήσιμο των λευκών γραμμάτων και φαινόταν σαν «κόψιμο» στο «PIS». Η παύση κρατά και την καθυστέρηση. */
+  html[data-intro-run] .hero .hw-shine-win, html[data-intro-run] .hero .hw-shine-txt { animation-play-state: paused; }
   html[data-intro] .hero .stg-smoke { display: none; }
   /* Το «PISMA.» του hero είναι στην τελική του θέση κάτω από το πέπλο και μετά (τα λευκά γράμματα σβήνουν πάνω του).
      ΠΡΟΣΟΧΗ στην ειδικότητα: τα scoped styles της αρχικής (.hero-word[data-astro-cid] span[data-astro-cid]) μετράνε

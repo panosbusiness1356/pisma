@@ -159,7 +159,7 @@ function setup(canvas: HTMLCanvasElement) {
       canvas.width = Math.max(2, Math.round(r.width * s)); canvas.height = Math.max(2, Math.round(r.height * s));
       gl.viewport(0, 0, canvas.width, canvas.height); gl.uniform2f(uRes, canvas.width, canvas.height);
     };
-    const minDt = TIER === 'lite' ? 31 : 0; // ~30 fps στο κινητό
+    const minDt = TIER === 'lite' ? 31 : 15; // ~30 fps στο κινητό· desktop το πολύ ~60 fps (σε οθόνες 120-240 Hz ο καπνός δεν χρειάζεται 240 καρέ/δευτ.)
     let visible = true, raf = 0, last = -1e9; const t0 = performance.now();
     const frame = (now: number) => {
       raf = 0;
