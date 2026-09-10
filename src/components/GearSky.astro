@@ -1,8 +1,9 @@
 ---
 /*
   Οι τρεις κάμερες (ίδια αρχεία με το Gear.astro) αγκυρωμένες σε σταθερά σημεία
-  της σελίδας Φωτογράφηση & Βίντεο, κυλούν μαζί της. Μία στην αρχή, μία στη
-  μέση, μία προς το τέλος, καλά χωρισμένες, μέσα στα πλαϊνά περιθώρια έξω από το
+  της σελίδας Φωτογράφηση & Βίντεο, κυλούν μαζί της. Nikon αριστερά στο hero,
+  DJI δεξιά στο «Τι κερδίζετε», Canon αριστερά στο «Τι τραβάμε» (θέσεις που
+  έδειξε η χρήστρια με κύκλους, 11/09/2026), μέσα στα πλαϊνά περιθώρια έξω από το
   container των 1120px, ώστε να μην πέφτουν ποτέ πάνω σε κείμενο. Πολύ ήπια
   αιώρηση επί τόπου. Η Canon «ρίχνει φλας» όταν περνά ο δείκτης από πάνω της.
   Αίτημα χρήστριας 11/09/2026: «βάλε τα να είναι σταθερά κάπου μέσα στη σελίδα,
@@ -16,16 +17,19 @@
   - Μόνο transform/opacity/filter σε μικρά στοιχεία. Καμία επίδραση στο layout.
   - Με prefers-reduced-motion: ακίνητες, χωρίς φλας.
 */
+// Σειρά από πάνω προς τα κάτω (χρήστρια 11/09/2026, με κύκλους σε screenshot):
+// Nikon αριστερά στο hero, DJI δεξιά στο «Τι κερδίζετε», Canon αριστερά στο «Τι τραβάμε».
+// anchor = η ενότητα, frac = σε ποιο ύψος της ενότητας κάθεται το κέντρο της κάμερας.
 const items = [
-  { file: 'dji-osmo-pocket-4.webp', w: 335, h: 900, key: 'pocket', flash: false },
-  { file: 'canon-g7x-mark-iii.webp', w: 1190, h: 700, key: 'g7x', flash: true },
-  { file: 'nikon-d750.webp', w: 619, h: 496, key: 'd750', flash: false },
+  { file: 'nikon-d750.webp', w: 619, h: 496, key: 'd750', flash: false, anchor: 'section.hero', frac: 0.56 },
+  { file: 'dji-osmo-pocket-4.webp', w: 335, h: 900, key: 'pocket', flash: false, anchor: '[aria-labelledby="why-title"]', frac: 0.58 },
+  { file: 'canon-g7x-mark-iii.webp', w: 1190, h: 700, key: 'g7x', flash: true, anchor: '[aria-labelledby="shoot-title"]', frac: 0.42 },
 ];
 ---
 
 <div class="gear-sky" aria-hidden="true" data-gear-sky>
   {items.map((i) => (
-    <span class={`sky sky--${i.key}`} data-flash={i.flash ? '' : undefined}>
+    <span class={`sky sky--${i.key}`} data-flash={i.flash ? '' : undefined} data-anchor={i.anchor} data-frac={i.frac}>
       <img src={`/gear/${i.file}`} alt="" width={i.w} height={i.h} loading="lazy" decoding="async" />
       {i.flash && <span class="flash"></span>}
     </span>
@@ -35,8 +39,26 @@ const items = [
 <script>
   const sky = document.querySelector<HTMLElement>('[data-gear-sky]');
   if (sky) {
+    // Αγκύρωση: κάθε κάμερα κάθεται στο ύψος της ενότητάς της (offsetTop ως προς το <main>,
+    // ίδιο σύστημα συντεταγμένων με το στρώμα). Ξανατρέχει σε resize και όταν φορτώσουν οι εικόνες.
+    const cams = [...sky.querySelectorAll<HTMLElement>('.sky')];
+    const place = () => {
+      for (const cam of cams) {
+        const sec = document.querySelector<HTMLElement>(cam.dataset.anchor || '');
+        if (!sec) continue;
+        const frac = Number(cam.dataset.frac || 0.5);
+        const h = cam.getBoundingClientRect().height || cam.offsetHeight;
+        cam.style.top = `${Math.round(sec.offsetTop + sec.offsetHeight * frac - h / 2)}px`;
+      }
+    };
+    place();
+    for (const img of sky.querySelectorAll('img')) img.addEventListener('load', place, { once: true });
+    let t = 0;
+    addEventListener('resize', () => { clearTimeout(t); t = setTimeout(place, 120); });
+    if ('fonts' in document) (document as any).fonts.ready.then(place);
+
     // Ήπια είσοδος αφού «κάτσει» η σελίδα (μετά το page-in του <main>).
-    setTimeout(() => sky.classList.add('is-on'), 900);
+    setTimeout(() => { place(); sky.classList.add('is-on'); }, 900);
 
     // Φλας όταν ο δείκτης περάσει πάνω από την κάμερα (όχι με reduced motion).
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -75,35 +97,35 @@ const items = [
   }
   .sky img { display: block; width: 100%; height: auto; }
 
-  /* Τρία σταθερά σημεία, καλά χωρισμένα: αρχή (hero), μέση, προς το τέλος.
-     Ποσοστά του ύψους της σελίδας, καθεμιά στο κέντρο του περιθωρίου της. */
+  /* Θέσεις: Nikon αριστερά (hero), DJI δεξιά («Τι κερδίζετε»), Canon αριστερά («Τι τραβάμε»).
+     Το ύψος (top) το ορίζει το JS πάνω στην ενότητα· εδώ μόνο fallback. Καθεμιά στο κέντρο του περιθωρίου της. */
+  .sky--d750 {
+    width: min(240px, calc(var(--g) * .8));
+    left: calc(var(--g) / 2 - min(240px, calc(var(--g) * .8)) / 2);
+    top: 3%;
+    animation-name: skyD750; animation-duration: 10s;
+  }
   .sky--pocket {
-    width: min(84px, calc(var(--g) * .5));
-    left: calc(var(--g) / 2 - min(84px, calc(var(--g) * .5)) / 2);
-    top: 4%;
+    width: min(104px, calc(var(--g) * .5));
+    right: calc(var(--g) / 2 - min(104px, calc(var(--g) * .5)) / 2);
+    top: 14%;
     animation-name: skyPocket; animation-duration: 9s;
   }
   .sky--g7x {
-    width: min(200px, calc(var(--g) * .8));
-    right: calc(var(--g) / 2 - min(200px, calc(var(--g) * .8)) / 2);
-    top: 30%;
+    width: min(240px, calc(var(--g) * .8));
+    left: calc(var(--g) / 2 - min(240px, calc(var(--g) * .8)) / 2);
+    top: 28%;
     animation-name: skyG7x; animation-duration: 11s;
     pointer-events: auto; cursor: default;
   }
-  .sky--d750 {
-    width: min(180px, calc(var(--g) * .8));
-    left: calc(var(--g) / 2 - min(180px, calc(var(--g) * .8)) / 2);
-    top: 80%;
-    animation-name: skyD750; animation-duration: 10s;
-  }
   /* Ήπια αιώρηση επί τόπου, με τη βασική κλίση της καθεμιάς */
   @keyframes skyPocket {
-    0%, 100% { transform: translate3d(0, 0, 0) rotate(-13deg); }
-    50%      { transform: translate3d(4px, -12px, 0) rotate(-10deg); }
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(12deg); }
+    50%      { transform: translate3d(-4px, -12px, 0) rotate(9deg); }
   }
   @keyframes skyG7x {
-    0%, 100% { transform: translate3d(0, 0, 0) rotate(8deg); }
-    50%      { transform: translate3d(-5px, -14px, 0) rotate(11deg); }
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(-8deg); }
+    50%      { transform: translate3d(5px, -14px, 0) rotate(-11deg); }
   }
   @keyframes skyD750 {
     0%, 100% { transform: translate3d(0, 0, 0) rotate(-7deg); }
@@ -133,8 +155,8 @@ const items = [
 
   @media (prefers-reduced-motion: reduce) {
     .sky, .flash, .is-flashing img { animation: none; }
-    .sky--pocket { transform: rotate(-13deg); }
-    .sky--g7x { transform: rotate(8deg); }
+    .sky--pocket { transform: rotate(12deg); }
+    .sky--g7x { transform: rotate(-8deg); }
     .sky--d750 { transform: rotate(-7deg); }
     .gear-sky { transition: none; }
   }
