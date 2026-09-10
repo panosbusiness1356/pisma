@@ -31,6 +31,8 @@ export const PAIRS: ReadonlyArray<readonly [string, string]> = [
   ['/odigoi/seo-me-apla-logia/', '/en/guides/seo-in-plain-words/'],
   ['/odigoi/ti-einai-oi-aftomatismoi/', '/en/guides/what-are-automations/'],
   ['/odigoi/diaxeirisi-social-media/', '/en/guides/social-media-management/'],
+  ['/aporrito/', '/en/privacy/'],
+  ['/oroi/', '/en/terms/'],
 ] as const;
 
 /** Κανονικοποίηση: πάντα trailing slash ώστε το lookup να είναι σταθερό. */

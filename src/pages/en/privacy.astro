@@ -1,0 +1,97 @@
+---
+import Legal from '../../layouts/Legal.astro';
+import { SITE } from '../../config';
+---
+
+<Legal
+  lang="en"
+  title="Privacy Policy | PISMA"
+  description="What data pisma.gr collects through its forms and visit statistics, why, for how long, and what your rights are."
+  heading="Privacy Policy"
+  sub="What we keep, why, for how long. And how to ask for it back."
+  updated="2026-09-11"
+>
+  <h2>Who we are</h2>
+  <p>
+    pisma.gr belongs to PISMA ("we"). For any question about your personal data, write to
+    <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or call
+    <a href={`tel:${SITE.phone.replace(/\s/g, '')}`}>{SITE.phone}</a>.
+  </p>
+
+  <h2>What we collect and why</h2>
+  <h3>Contact, Check, quote and order forms</h3>
+  <p>
+    When you fill in a form on this site, you send us what you type into it: your name, business name, phone, email,
+    your message and, on the pricing and sticker forms, a summary of what you selected.
+  </p>
+  <ul>
+    <li><strong>Purpose:</strong> to reply to your request, book the Check or prepare a quote.</li>
+    <li><strong>Legal basis:</strong> the steps before a collaboration you ask for (Article 6(1)(b) GDPR) and our legitimate interest in answering whoever writes to us.</li>
+    <li><strong>Where it goes:</strong> the form is delivered as an email to {SITE.email} through the FormSubmit service (formsubmit.co), which does not keep your details for its own purposes.</li>
+    <li><strong>For how long:</strong> as long as needed to handle the request and, if a collaboration starts, for its duration and for as long as tax law requires.</li>
+  </ul>
+
+  <h3>Visit statistics (Google Analytics)</h3>
+  <p>
+    We use Google Analytics 4 for anonymous statistics: which pages are read, on what device, for how long. It loads
+    <strong>only if you press "Accept"</strong> on the banner. Before that, no statistics cookie is set. Your IP
+    address is anonymised. The data is processed by Google Ireland Limited, with the safeguards the GDPR requires for
+    any transfer outside the EU.
+  </p>
+  <ul>
+    <li><strong>Legal basis:</strong> your consent (Article 6(1)(a) GDPR), which you can withdraw at any time.</li>
+    <li><strong>For how long:</strong> Google Analytics cookies (_ga, _ga_*) last up to 2 years from your last visit.</li>
+  </ul>
+
+  <h3>Technical hosting data</h3>
+  <p>
+    The site is hosted on Vercel. Like any server, it temporarily logs technical details of each request (IP address,
+    browser type, time) for the security and operation of the service. We do not combine these with your name.
+  </p>
+
+  <h2>Cookies and browser storage</h2>
+  <table>
+    <thead>
+      <tr><th>Name</th><th>What it does</th><th>Duration</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>pisma-consent</td><td>Remembers whether you accepted or declined statistics. Stored in your browser, not on our server.</td><td>Until you clear your browser data</td></tr>
+      <tr><td>pisma-sound</td><td>Remembers whether you turned the menu sounds off.</td><td>Until you clear your browser data</td></tr>
+      <tr><td>pisma-intro</td><td>Shows the homepage intro effect once per visit.</td><td>Until the tab is closed</td></tr>
+      <tr><td>_ga, _ga_*</td><td>Google Analytics cookies, only after "Accept".</td><td>Up to 2 years</td></tr>
+    </tbody>
+  </table>
+  <p>
+    To change your choice about statistics, clear this site's data in your browser. The banner will appear again on
+    your next visit.
+  </p>
+
+  <h2>Links to third parties</h2>
+  <p>
+    The site links to WhatsApp, Viber and our clients' websites. Once you open them, their own privacy policy applies.
+    We show no ads and we do not sell or share your details with third parties for their own purposes.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>Under the General Data Protection Regulation (GDPR) and Greek law 4624/2019 you can, at any time:</p>
+  <ul>
+    <li>find out what data we hold about you and get a copy,</li>
+    <li>ask for it to be corrected or deleted,</li>
+    <li>ask for processing to be restricted, or object to it,</li>
+    <li>withdraw your consent for statistics,</li>
+    <li>lodge a complaint with the Hellenic Data Protection Authority (<a href="https://www.dpa.gr" target="_blank" rel="noopener">dpa.gr</a>).</li>
+  </ul>
+  <p>
+    To exercise any right, email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. We reply within one month at
+    the latest.
+  </p>
+
+  <h2>Minors</h2>
+  <p>Our services are addressed to businesses. We do not knowingly collect data from anyone under 16.</p>
+
+  <h2>Changes to this policy</h2>
+  <p>
+    If anything described here changes, we will update this page and the date at the end of it. See also our
+    <a href="/en/terms/">Terms of Use</a>.
+  </p>
+</Legal>

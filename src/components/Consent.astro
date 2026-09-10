@@ -13,11 +13,15 @@ const t =
   lang === 'en'
     ? {
         text: 'We use cookies for anonymous visit statistics (Google Analytics). Is that OK?',
+        policy: 'Privacy Policy',
+        policyHref: '/en/privacy/',
         accept: 'Accept',
         decline: 'No, thanks',
       }
     : {
         text: 'Χρησιμοποιούμε cookies για ανώνυμα στατιστικά επισκέψεων (Google Analytics). Συμφωνείτε;',
+        policy: 'Πολιτική Απορρήτου',
+        policyHref: '/aporrito/',
         accept: 'Αποδοχή',
         decline: 'Όχι, ευχαριστώ',
       };
@@ -26,7 +30,7 @@ const t =
 {
   SITE.gaId && (
     <div class="consent" id="consent-banner" data-ga={SITE.gaId} role="region" aria-label="Cookies" hidden>
-      <p>{t.text}</p>
+      <p>{t.text}{' '}<a href={t.policyHref}>{t.policy}</a></p>
       <div class="consent-btns">
         <button class="consent-accept" id="consent-accept">{t.accept}</button>
         <button class="consent-decline" id="consent-decline">{t.decline}</button>
@@ -55,6 +59,10 @@ const t =
     font-size: 0.85rem;
     line-height: 1.5;
     color: var(--muted);
+  }
+  .consent p a {
+    color: var(--ink);
+    text-underline-offset: 3px;
   }
   .consent-btns {
     display: flex;

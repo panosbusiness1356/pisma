@@ -1,0 +1,74 @@
+---
+import Legal from '../../layouts/Legal.astro';
+import { SITE } from '../../config';
+---
+
+<Legal
+  lang="en"
+  title="Terms of Use | PISMA"
+  description="The terms of use of pisma.gr: what applies to the content, the samples, the forms, the prices and our liability."
+  heading="Terms of Use"
+  sub="Short and clear. What applies when you use our site."
+  updated="2026-09-11"
+>
+  <h2>Who we are</h2>
+  <p>
+    pisma.gr is operated by PISMA ("we"). Contact us at
+    <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or
+    <a href={`tel:${SITE.phone.replace(/\s/g, '')}`}>{SITE.phone}</a>.
+    By using the site you accept the terms below.
+  </p>
+
+  <h2>The content</h2>
+  <p>
+    The texts, designs, images, videos, code and the PISMA logo belong to us unless stated otherwise. Client and
+    third-party logos and names belong to their owners and appear only as a reference. You may read our pages and
+    share links to them. Copying or commercial use of the content without written permission is not allowed.
+  </p>
+
+  <h2>Samples and demos</h2>
+  <p>
+    The sample pages (digital menus, websites, tools) are demonstrations of how we work. The business names, products
+    and prices inside them are illustrative and are not real offers.
+  </p>
+
+  <h2>Forms, requests and prices</h2>
+  <p>
+    Sending a form (contact, Check, quote, sticker order) is a request for contact, not a contract. Every
+    collaboration starts only after we agree the scope, the price and the timing in writing. Prices on the site are in
+    euros and apply as shown on the date you see them. We may change them for future collaborations, not for those
+    already agreed.
+  </p>
+
+  <h2>The free Check</h2>
+  <p>
+    The PISMA Check is offered free of charge and with no obligation to work with us. Its findings are based on what
+    is publicly visible and on what you tell us, and they are our assessment, not a guarantee of results.
+  </p>
+
+  <h2>Liability</h2>
+  <p>
+    We try to keep the content accurate and up to date, but we do not guarantee that it is complete or free of errors.
+    Our guides are general information, not legal, accounting or other professional advice. To the extent the law
+    allows, we are not liable for damages arising from the use of the site or from a temporary interruption of its
+    operation.
+  </p>
+
+  <h2>Links to third parties</h2>
+  <p>
+    Links to third-party websites (clients, Google, WhatsApp, Viber and others) are provided for convenience. We do
+    not control their content and are not responsible for it.
+  </p>
+
+  <h2>Personal data</h2>
+  <p>
+    How we handle the details you send us is described in our
+    <a href="/en/privacy/">Privacy Policy</a>.
+  </p>
+
+  <h2>Governing law</h2>
+  <p>
+    These terms are governed by Greek law. The courts of Athens have jurisdiction over any dispute. If the terms
+    change, we will update this page and the date at the end of it.
+  </p>
+</Legal>

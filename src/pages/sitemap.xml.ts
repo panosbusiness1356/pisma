@@ -21,6 +21,8 @@ const PRIORITY: Record<string, number> = {
   '/odigoi/': 0.8,
   '/apotelesmata/': 0.7,
   '/epikoinonia/': 0.6,
+  '/aporrito/': 0.3,
+  '/oroi/': 0.3,
 };
 const prio = (elPath: string): number =>
   PRIORITY[elPath] ?? (elPath.startsWith('/odigoi/') ? 0.7 : 0.8);

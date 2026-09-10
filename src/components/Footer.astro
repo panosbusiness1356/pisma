@@ -31,6 +31,11 @@ const T = {
       { href: '/times/', label: 'Τιμές' },
       { href: '/epikoinonia/', label: 'Επικοινωνία' },
     ],
+    legalTitle: 'Νομικά',
+    legal: [
+      { href: '/aporrito/', label: 'Πολιτική Απορρήτου' },
+      { href: '/oroi/', label: 'Όροι Χρήσης' },
+    ],
   },
   en: {
     tagline: SITE.taglineEn,
@@ -57,6 +62,11 @@ const T = {
     company: [
       { href: '/en/pricing/', label: 'Pricing' },
       { href: '/en/contact/', label: 'Contact' },
+    ],
+    legalTitle: 'Legal',
+    legal: [
+      { href: '/en/privacy/', label: 'Privacy Policy' },
+      { href: '/en/terms/', label: 'Terms of Use' },
     ],
   },
 }[lang];
@@ -115,6 +125,11 @@ const { solutions, tools, company } = T;
   </div>
   <div class="container bottom">
     <p>© {new Date().getFullYear()} PISMA</p>
+    <nav class="legal" aria-label={T.legalTitle}>
+      {T.legal.map((p) => (
+        <a href={p.href}>{p.label}</a>
+      ))}
+    </nav>
     <p class="bottom-note">{T.note}</p>
   </div>
 </footer>
@@ -149,6 +164,9 @@ const { solutions, tools, company } = T;
     font-size: .85rem; color: var(--muted);
     display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
   }
+  .legal { display: flex; gap: 18px; flex-wrap: wrap; }
+  .legal a { color: var(--muted); text-decoration: none; }
+  .legal a:hover { color: var(--navy); text-decoration: underline; text-underline-offset: 3px; }
 
   @media (max-width: 680px) {
     .cols { grid-template-columns: 1fr 1fr; gap: 24px 18px; padding-block: 34px 20px; }
