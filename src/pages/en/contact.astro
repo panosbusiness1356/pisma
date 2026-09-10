@@ -69,6 +69,20 @@ const schema = {
             <li class="c-item">
               <span class="icon-chip">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 12.5c0 3.6-3.6 6.5-8 6.5-1 0-2-.15-2.9-.42L5 20l1.2-3.2C4.8 15.6 4 14.1 4 12.5 4 8.9 7.6 6 12 6s8 2.9 8 6.5Z" />
+                </svg>
+              </span>
+              <div>
+                <span class="c-label">Messages</span>
+                <span class="c-value c-chat">
+                  <a href={SITE.whatsapp} target="_blank" rel="noopener"><img src="/logos/whatsapp-icon.svg" alt="" width="18" height="18" loading="lazy" />WhatsApp</a>
+                  <a href={SITE.viber}><img src="/logos/viber.svg" alt="" width="18" height="18" loading="lazy" />Viber</a>
+                </span>
+              </div>
+            </li>
+            <li class="c-item">
+              <span class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11Z" /><circle cx="12" cy="10" r="2.6" />
                 </svg>
               </span>
@@ -240,6 +254,10 @@ const schema = {
   .c-label { display: block; font-size: .8rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
   .c-value { color: var(--navy); font-weight: 600; text-decoration: none; }
   a.c-value:hover { color: var(--orange-cta); }
+  .c-chat { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+  .c-chat a { display: inline-flex; align-items: center; gap: 7px; color: var(--navy); font-weight: 600; text-decoration: none; }
+  .c-chat a:hover { color: var(--orange-cta); }
+  .c-chat img { width: 18px; height: 18px; }
 
   .alt-link { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: .95rem; }
   .alt-link .card-arrow { margin-top: 0; margin-left: 6px; }
