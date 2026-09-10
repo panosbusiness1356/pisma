@@ -247,7 +247,7 @@ const faqItems = [
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (spStage && !reduce) {
       let visible = false, loaded = false, stopped = false, running = false;
-      const STEP_MS = 1400, PAUSE_MS = 2000, HOME_MS = 1600, HOME_PAUSE_MS = 2600;
+      const STEP_MS = 1400, PAUSE_MS = 2000, HOME_MS = 1600, HOME_PAUSE_MS = 2600, HERO_PAUSE_MS = 3200;
       const ease = (t: number) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
       const frameWin = () => spFrame.contentWindow;
       const scrollTo = (y: number) => {
@@ -259,6 +259,18 @@ const faqItems = [
         return w && d ? Math.max(0, d.scrollHeight - w.innerHeight) : 0;
       };
       const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+      // Το δείγμα έχει δική του κινηματογραφική εισαγωγή (#cine, περίπου 5 s) που
+      // καλύπτει την αρχική του. Η περιήγηση περιμένει να φύγει πριν μετρήσει την
+      // παύση στην αρχική, αλλιώς η αρχική δεν φαίνεται ποτέ και η οθόνη μοιάζει
+      // να ξεκινά από τη δεύτερη ενότητα (χρήστρια 10/09/2026). Όριο 8 s.
+      const introGone = async () => {
+        const t0 = performance.now();
+        while (!stopped && visible && performance.now() - t0 < 8000) {
+          const d = frameWin()?.document;
+          if (d && !d.getElementById('cine')) return;
+          await wait(100);
+        }
+      };
       const glide = (from: number, to: number, ms: number) => new Promise<void>((res) => {
         const t0 = performance.now();
         const tick = (now: number) => {
@@ -300,7 +312,8 @@ const faqItems = [
         while (!stopped && visible && loaded) {
           const w = frameWin(); if (!w) break;
           let y = 0; scrollTo(0);
-          await wait(PAUSE_MS);
+          await introGone();
+          await wait(HERO_PAUSE_MS);
           for (;;) {
             if (stopped || !visible) break;
             const next = stops().find((s) => s > y + 4);
