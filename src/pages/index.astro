@@ -1293,12 +1293,12 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
   /* ---------- Mobile: σύντομο, γρήγορο, χωρίς περιττό scroll ---------- */
   @media (max-width: 680px) {
     /* Σειρά ενοτήτων στο κινητό (χρήστρια 11/09/2026): πρώτα «Τι αναλαμβάνουμε», μετά «Τι αλλάζει όταν συνεργαστούμε».
-       Το main γίνεται flex στήλη, το hero και οι υπηρεσίες παίρνουν αρνητικό order. Τα φόντα εναλλάσσονται
-       ώστε το «Πριν/Μετά» να μείνει σκούρο ανάμεσα σε δύο ανοιχτές ενότητες (υπηρεσίες, κριτικές). */
+       Το main γίνεται flex στήλη, το hero και οι υπηρεσίες παίρνουν αρνητικό order. Τα φόντα αντιστρέφονται
+       ώστε να κρατηθεί η εναλλαγή: υπηρεσίες σκούρες, «Πριν/Μετά» ανοιχτό, κριτικές σκούρες. */
     :global(#main) { display: flex; flex-direction: column; }
     .hero { order: -2; }
-    section[aria-labelledby="svc-title"] { order: -1; background: none; border-top: 0; border-bottom: 0; }
-    :global(main) .ba-section { background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    section[aria-labelledby="svc-title"] { order: -1; background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    :global(main) .ba-section { background: none; border-top: 0; border-bottom: 0; }
     .hero { padding-top: calc(40px + 72px); }
     .btn-note { width: fit-content; margin-inline: auto; max-width: 85%; }
     /* Ούτε στα sections (κινητό): τα χρωματιστά λογότυπα δεν ταιριάζουν στο ασπρόμαυρο. */
