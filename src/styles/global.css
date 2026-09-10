@@ -247,6 +247,9 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
 .svc-grid .card { padding: 22px 20px; transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease); }
 .svc-grid .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--line-strong); }
 .svc-grid .card p { font-size: .94rem; }
+.svc-grid a.card { display: block; color: inherit; text-decoration: none; cursor: pointer; }
+.svc-grid a.card.svc-strip { display: flex; }
+.svc-grid a.card:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
 .svc-big {
   grid-column: span 2;
   background:

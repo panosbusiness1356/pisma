@@ -152,8 +152,11 @@ const isStrip = (s: Service) => sizeOf(s) === 'strip' || sizeOf(s) === 'strip3';
 ---
 
 <div class="svc-grid">
-  {services.map((s) => (
-    <article class={`card reveal ${sizeClass(s)}`}>
+  {services.map((s) => {
+    /* Με href ολόκληρη η κάρτα είναι link (χρήστρια 10/09/2026: «όλα τα κουτάκια να πατιούνται») */
+    const Tag = s.href ? 'a' : 'article';
+    return (
+    <Tag class={`card reveal ${sizeClass(s)} ${s.href ? 'card--link' : ''}`} href={s.href}>
       <span class={`svc-viz ${isStrip(s) ? 'svc-viz--strip' : ''}`} aria-hidden="true">
         {artOf(s) && (
           <span class={`svc-art ${isStrip(s) ? 'svc-art--sm' : ''}`}>
@@ -180,9 +183,10 @@ const isStrip = (s: Service) => sizeOf(s) === 'strip' || sizeOf(s) === 'strip3';
         <>
           <h3>{s.t}</h3>
           <p>{s.d}</p>
-          {s.href && <a class="card-arrow" href={s.href}>{cta}</a>}
+          {s.href && <span class="card-arrow">{cta}</span>}
         </>
       )}
-    </article>
-  ))}
+    </Tag>
+    );
+  })}
 </div>
