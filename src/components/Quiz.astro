@@ -30,8 +30,8 @@ const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
   </div>
 
   <div class="quiz-steps" aria-live="polite">
-    <section class="quiz-step" data-key="type">
-      <h2 class="quiz-q" tabindex="-1">{t.typeQ}</h2>
+    <section class="quiz-step" data-key="type" tabindex="-1">
+      <h2 class="quiz-q">{t.typeQ}</h2>
       <div class="quiz-opts">
         {types.map((ty) => (
           <button type="button" class="opt opt--type" data-type={ty.id} aria-pressed="false">
@@ -43,8 +43,8 @@ const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
     </section>
 
     {questions.map((q) => (
-      <section class="quiz-step" data-key={q.key} hidden>
-        <h2 class="quiz-q" tabindex="-1">{q.q}</h2>
+      <section class="quiz-step" data-key={q.key} tabindex="-1" hidden>
+        <h2 class="quiz-q">{q.q}</h2>
         <div class="quiz-opts">
           {q.opts.map((o) => (
             <button type="button" class="opt" data-val={o.v === null ? 'na' : String(o.v)} aria-pressed="false">
@@ -55,8 +55,8 @@ const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
       </section>
     ))}
 
-    <section class="quiz-step quiz-result" id="quiz-result" hidden>
-      <h2 class="quiz-q" tabindex="-1">{t.resultTitle}</h2>
+    <section class="quiz-step quiz-result" id="quiz-result" tabindex="-1" hidden>
+      <h2 class="quiz-q">{t.resultTitle}</h2>
 
       <div class="rings">
         <div class="ring">
@@ -180,7 +180,8 @@ const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
     stepEls.forEach((el, key) => { el.hidden = isResult || key !== seq[i]; });
     resultEl.hidden = !isResult;
     const visible = isResult ? resultEl : stepEls.get(seq[i])!;
-    if (moveFocus) visible.querySelector<HTMLElement>('.quiz-q')?.focus({ preventScroll: true });
+    /* Το focus πάει στο βήμα (όχι στον τίτλο): ο τίτλος μένει χωρίς focus ring και χωρίς ξαναζωγράφισμα */
+    if (moveFocus) visible.focus({ preventScroll: true });
     backBtn.hidden = i === 0;
     dotsWrap.hidden = isResult;
     countEl.hidden = isResult;
@@ -444,11 +445,18 @@ const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
 
   .quiz-count { justify-self: end; font-size: .82rem; color: var(--muted); white-space: nowrap; }
 
+  /* Σε αυτή τη σελίδα το <main> δεν κάνει την είσοδο page-in (transform): το ξαναζωγράφισμα
+     μετά από transform/filter άφηνε σκούρο «είδωλο» πίσω από τα γράμματα των ερωτήσεων (Chrome/Windows). */
+  :global(main.page-in) { animation: none; }
+  .quiz-step { outline: none; }
   .quiz-q {
     font-size: clamp(1.25rem, 2.8vw, 1.6rem);
     text-align: center;
     margin-bottom: clamp(20px, 3.5vw, 30px);
     text-wrap: balance;
+    /* Δικό του layer: ο τίτλος ζωγραφίζεται ανεξάρτητα από την κάρτα, χωρίς παλιά pixel από κάτω */
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
   .quiz-opts { display: grid; gap: 12px; }
   .opt {
