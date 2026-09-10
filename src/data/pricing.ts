@@ -48,6 +48,16 @@ export const CATEGORIES: PricingCategory[] = [
     ],
   },
   {
+    id: 'care',
+    title: 'Συντήρηση',
+    desc: 'Να τρέχουν όλα, χωρίς να το σκέφτεστε.',
+    mode: 'checkbox',
+    options: [
+      { id: 'care-web', label: 'Συντήρηση ιστοσελίδας', detail: 'Ενημερώσεις, ασφάλεια, μικροαλλαγές', price: 29, type: 'monthly' },
+      { id: 'care-shopify', label: 'Διαχείριση Shopify', detail: 'Νέα προϊόντα, αποθέματα, εκπτώσεις, apps, ενημερώσεις και μηνιαία αναφορά πωλήσεων', price: 49, type: 'monthly' },
+    ],
+  },
+  {
     id: 'gbp',
     title: 'Google Business Profile',
     desc: 'Το προφίλ σας στους Χάρτες και την αναζήτηση Google.',
@@ -104,16 +114,6 @@ export const CATEGORIES: PricingCategory[] = [
       { id: 'auto-reviews', label: 'Κριτικές Google', detail: 'Κάνει τις κριτικές Google να μαζεύονται μόνες τους. Το δείχνουμε μόνο ζωντανά', price: 39, type: 'monthly' },
       { id: 'auto-loyalty', label: 'Κάρτα Πιστότητας', detail: 'QR στο ταμείο: ο πελάτης μαζεύει σφραγίδες σε κάθε επίσκεψη, κερδίζει δώρο και ξανάρχεται', price: 19, type: 'monthly' },
       { id: 'auto-menu', label: 'Ψηφιακό Μενού', detail: 'QR στο τραπέζι: ο πελάτης σκανάρει και βλέπει το μενού στο κινητό του. Αλλάζετε τιμές και πιάτα όποτε θέλετε, χωρίς επανεκτυπώσεις', price: 15, type: 'monthly' },
-    ],
-  },
-  {
-    id: 'care',
-    title: 'Συντήρηση',
-    desc: 'Να τρέχουν όλα, χωρίς να το σκέφτεστε.',
-    mode: 'checkbox',
-    options: [
-      { id: 'care-web', label: 'Συντήρηση ιστοσελίδας', detail: 'Ενημερώσεις, ασφάλεια, μικροαλλαγές', price: 29, type: 'monthly' },
-      { id: 'care-shopify', label: 'Διαχείριση Shopify', detail: 'Νέα προϊόντα, αποθέματα, εκπτώσεις, apps, ενημερώσεις και μηνιαία αναφορά πωλήσεων', price: 49, type: 'monthly' },
     ],
   },
 ];
