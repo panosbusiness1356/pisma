@@ -86,7 +86,10 @@ const themeByQuery = import.meta.env.DEV;
               // Δίχτυ ασφαλείας αν το module script δεν τρέξει ποτέ: 7 s ΟΡΑΤΟΥ χρόνου. Σε καρτέλα στο παρασκήνιο
               // ή σε prerender δεν τρέχει το requestAnimationFrame, το intro περιμένει να φανεί η σελίδα, και το
               // ρολόι δεν πρέπει να μετρά (αλλιώς το πέπλο έφευγε πριν καν το δει κανείς και έμενε σκέτη η αρχική).
-              var clear = function () { h.removeAttribute('data-intro'); h.removeAttribute('data-intro-run'); h.removeAttribute('data-intro-pre'); };
+              // Το δίχτυ καλύπτει ΜΟΝΟ την περίπτωση που ο κώδικας του intro δεν έτρεξε ποτέ: μόλις τρέξει, βάζει
+              // data-intro-live και αναλαμβάνει ο ίδιος (με δικό του δίχτυ). Αλλιώς, σε αργό δίκτυο που το JS φτάνει
+              // στα 5-7 s, το δίχτυ έκοβε το intro στη μέση (τα γράμματα χάνονταν και έμενε η αρχική).
+              var clear = function () { if (h.hasAttribute('data-intro-live')) return; h.removeAttribute('data-intro'); h.removeAttribute('data-intro-run'); h.removeAttribute('data-intro-pre'); };
               var arm = function () { setTimeout(clear, 7000); };
               var hidden = function () { return document.prerendering || document.visibilityState === 'hidden'; };
               if (!hidden()) return arm();

@@ -89,6 +89,9 @@
   if (root && html.hasAttribute('data-intro-run')) run(root);
 
   function run(root: HTMLElement) {
+    // Από εδώ και πέρα το πέπλο το διαχειρίζεται αυτός ο κώδικας: το δίχτυ των 7 s στο head (Base.astro) δεν επεμβαίνει
+    // (σε αργό δίκτυο το JS έφτανε στα 5-7 s και το δίχτυ έκοβε το intro στη μέση). Δικό μας δίχτυ: βλ. start().
+    html.setAttribute('data-intro-live', '');
     const word = root.querySelector<HTMLElement>('.intro-word')!;
     const letters = Array.from(word.querySelectorAll<HTMLElement>('span'));
     const hw = document.querySelector<HTMLElement>('.hero-word');
@@ -175,7 +178,7 @@
       };
       fit();
       const t0 = 40 + Math.random() * 30;
-      return {
+      const api: GL = {
         fit,
         draw(r, open, glow, dens) {
           gl.uniform1f(uT, t0 + tt / 1000); gl.uniform2f(uC, center.x, 1 - center.y);
@@ -184,6 +187,11 @@
         },
         lose() { try { gl.getExtension('WEBGL_lose_context')?.loseContext(); } catch {} },
       };
+      /* Ζέσταμα: ένα καθαρά μαύρο καρέ ΤΩΡΑ, όσο το .intro έχει ακόμη το μαύρο CSS φόντο του. Ο driver (ANGLE/D3D11
+         στα Windows) φτιάχνει το πραγματικό pipeline του shader στην ΠΡΩΤΗ κλήση draw, όχι στο link, και σε αδύναμη
+         GPU αυτό κοστίζει έως και ~1 s: αν έπεφτε στο πρώτο ορατό καρέ, ο καμβάς έμενε άδειος τόση ώρα. */
+      api.draw(0.07, 0, 0, 0);
+      return api;
       }
     };
 
@@ -199,7 +207,7 @@
       if (ended) return; ended = true;
       root.style.background = 'transparent';
       cancelAnimationFrame(raf);
-      html.removeAttribute('data-intro'); html.classList.add('intro-played'); html.removeAttribute('data-intro-run'); html.removeAttribute('data-intro-pre');
+      html.removeAttribute('data-intro'); html.classList.add('intro-played'); html.removeAttribute('data-intro-run'); html.removeAttribute('data-intro-pre'); html.removeAttribute('data-intro-live');
       root.remove(); gl?.lose();
       removeEventListener('resize', onResize);
     };
@@ -213,7 +221,7 @@
 
     /* Προσαρμογή σε αδύναμη συσκευή: αν τα καρέ αργούν (μέσος όρος > 22 ms), ο καπνός ζωγραφίζεται κάθε 2ο καρέ
        (τα γράμματα είναι Web Animations, δεν επηρεάζονται). Σε κανονική συσκευή δεν ενεργοποιείται ποτέ. */
-    let dtAvg = 16, lastNow = 0, frameNo = 0, placeAt = -1e9, drawAt = -1e9;
+    let dtAvg = 16, lastNow = 0, frameNo = 0, placeAt = -1e9, drawAt = -1e9, drawn = 0;
     const frame = (now: number) => {
       if (!t0) t0 = now;
       tt = (now - t0) + (tSkip ? (now - tSkip) * 5 : 0);
@@ -231,7 +239,11 @@
       // 120/240 Hz το rAF τρέχει 2-4 φορές πιο συχνά και τετραπλασίαζε τη δουλειά της GPU, την ώρα που ο compositor
       // χρειάζεται την ίδια GPU για το blur των γραμμάτων, και τα τελευταία (M, A, .) φαίνονταν να «μένουν πίσω».
       // Το ρολόι (tt) και τα γράμματα (Web Animations) δεν επηρεάζονται, μόνο πόσο συχνά ξαναζωγραφίζεται ο καπνός.
-      if (now - drawAt >= 15 && !(touch && dtAvg > 22 && frameNo % 2)) { drawAt = now; gl?.draw(r, op, (0.35 + 0.65 * ease(pre)) * (1 - fd), 1 - fd); }
+      if (now - drawAt >= 15 && !(touch && dtAvg > 22 && frameNo % 2)) { drawAt = now; gl?.draw(r, op, (0.35 + 0.65 * ease(pre)) * (1 - fd), 1 - fd); drawn++; }
+      // Το μαύρο CSS φόντο του .intro φεύγει στο ΔΕΥΤΕΡΟ ζωγράφισμα: τότε ο καμβάς του πρώτου έχει ήδη συντεθεί σε
+      // προηγούμενο καρέ, οπότε δεν υπάρχει ποτέ καρέ με άδειο καμβά πάνω στην αρχική. Ο shader ζωγραφίζει
+      // αδιαφανές μαύρο πέπλο μέχρι το T_OPEN (1,65 s), άρα το φόντο δεν χρειάζεται από εκεί και πέρα.
+      if (gl && drawn >= 2 && root.style.background !== 'transparent') root.style.background = 'transparent';
       raf = requestAnimationFrame(frame);
     };
 
@@ -245,6 +257,10 @@
        (4) δύο συνεχόμενα ήσυχα καρέ (ο browser τελείωσε την πρώτη ζωγραφιά/scripts).
        Όριο 1,2 s συνολικά, σε γρήγορη συσκευή όλα είναι έτοιμα σε ~200-400 ms. */
     const start = async () => {
+      // Δικό μας δίχτυ (αντικαθιστά το δίχτυ των 7 s του head από τη στιγμή που τρέχει ο κώδικας): πύλη έως 1,2 s
+      // + intro 2,7 s = 3,9 s· αν κάτι κρεμάσει, στα 8 s ορατού χρόνου το πέπλο φεύγει έτσι κι αλλιώς. Το finish() είναι
+      // ασφαλές να ξανακληθεί, οπότε στην κανονική ροή αυτό το timeout δεν κάνει τίποτα.
+      setTimeout(finish, 8000);
       const tBoot = performance.now();
       const left = () => Math.max(0, 1200 - (performance.now() - tBoot));
       try { await Promise.race([document.fonts.load('800 100px Unbounded'), wait(900)]); } catch {}
@@ -269,9 +285,11 @@
         const A = root.animate([{ opacity: 1 }, { opacity: 1, offset: T_OPEN / T_END }, { opacity: 0 }], { duration: T_END, fill: 'forwards', easing: 'linear' });
         if (tSkip) A.playbackRate = 6;
         anims.push(A);
-      } else {
-        root.style.background = 'transparent'; // το μαύρο το ζωγραφίζει ο shader (πέπλο)
       }
+      /* Με WebGL: το μαύρο CSS φόντο του .intro ΔΕΝ φεύγει εδώ. Φεύγει μέσα στο frame(), αφού ο πρώτος καπνός έχει
+         ήδη ζωγραφιστεί και συντεθεί σε προηγούμενο καρέ. Πριν, γινόταν transparent εδώ και το πρώτο draw ερχόταν στο
+         επόμενο rAF: ένα καρέ (και σε αργή GPU έως ~1 s, όσο ο driver μεταγλώττιζε) με άδειο καμβά πάνω στην αρχική,
+         δηλαδή «φαίνεται η αρχική για ένα δευτερόλεπτο πριν ξεκινήσει το intro» (χρήστρια 11/09/2026). */
       word.style.opacity = '1';
       // Οθόνες αφής: το ίδιο εφέ σε δύο animations, ομαλό opacity/scale (compositor) + blur σε 4 βήματα
       // (4 ξαναζωγραφίσματα ανά γράμμα αντί για ~40· το blur animation δεν τρέχει στον compositor του Chrome).
@@ -301,6 +319,6 @@
       const on = () => { if (hiddenNow()) return; document.removeEventListener('visibilitychange', on); document.removeEventListener('prerenderingchange', on); resolve(); };
       document.addEventListener('visibilitychange', on); document.addEventListener('prerenderingchange', on);
     });
-    whenVisible().then(start);
+    whenVisible().then(start).catch(finish);
   }
 </script>
