@@ -258,7 +258,13 @@ const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
     }, 33);
     counters.set(el, id);
   }
+  const ringTimers = new Map<HTMLElement, number>();
+  function stopRing(numEl: HTMLElement) {
+    const id = ringTimers.get(numEl);
+    if (id !== undefined) { window.clearInterval(id); ringTimers.delete(numEl); }
+  }
   function setRing(circle: SVGCircleElement, numEl: HTMLElement, v: number) {
+    stopRing(numEl);
     circle.classList.remove('c-red', 'c-orange', 'c-ok');
     circle.classList.add(band(v));
     const off = CIRC * (1 - v / 100);
@@ -267,9 +273,20 @@ const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
       numEl.textContent = String(v);
       return;
     }
+    /* Το γέμισμα γίνεται βήμα-βήμα από χρονόμετρο, χωρίς CSS transition: κάθε τιμή ζωγραφίζεται
+       αμέσως, οπότε το δαχτυλίδι φτάνει στο σωστό σημείο ακόμα κι αν ο browser δεν ζωγραφίζει κάθε καρέ. */
+    circle.style.transition = 'none';
     circle.style.strokeDashoffset = String(CIRC);
-    void circle.getBoundingClientRect(); // flush, ώστε το transition να ξεκινήσει από το κενό δαχτυλίδι
-    window.setTimeout(() => { circle.style.strokeDashoffset = String(off); }, 40);
+    const key = numEl; // ένα χρονόμετρο ανά δαχτυλίδι, ακυρώνεται σε restart μαζί με το μέτρημα
+    const t0 = performance.now();
+    const dur = 1000;
+    const id = window.setInterval(() => {
+      const p = Math.min((performance.now() - t0) / dur, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      circle.style.strokeDashoffset = String(CIRC - (CIRC - off) * e);
+      if (p >= 1) { window.clearInterval(id); ringTimers.delete(key); }
+    }, 33);
+    ringTimers.set(key, id);
     countUp(numEl, v);
   }
 
@@ -378,6 +395,8 @@ const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
     });
     stopCount(numVis);
     stopCount(numAuto);
+    stopRing(numVis);
+    stopRing(numAuto);
     numVis.textContent = '0';
     numAuto.textContent = '0';
     resultSr.textContent = '';
