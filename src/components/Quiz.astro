@@ -19,7 +19,7 @@ const t = en ? STRINGS_EN : STRINGS;
 const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
 ---
 
-<!-- Χωρίς .reveal: το filter/will-change της εισόδου άφηνε μαύρα κουτιά πάνω στα γράμματα των ερωτήσεων (Chrome/Windows) -->
+<!-- Χωρίς .reveal: η κάρτα εμφανίζεται αμέσως, χωρίς θόλωμα εισόδου -->
 <div class="card quiz" id="tablo-quiz" data-lang={lang} data-total={TOTAL}>
   <div class="quiz-top">
     <button class="quiz-back" type="button" id="quiz-back" hidden>{t.back}</button>
@@ -30,7 +30,7 @@ const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
   </div>
 
   <div class="quiz-steps" aria-live="polite">
-    <section class="quiz-step" data-key="type" tabindex="-1">
+    <div class="quiz-step" data-key="type" role="group" tabindex="-1">
       <h2 class="quiz-q">{t.typeQ}</h2>
       <div class="quiz-opts">
         {types.map((ty) => (
@@ -40,10 +40,10 @@ const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
           </button>
         ))}
       </div>
-    </section>
+    </div>
 
     {questions.map((q) => (
-      <section class="quiz-step" data-key={q.key} tabindex="-1" hidden>
+      <div class="quiz-step" data-key={q.key} role="group" tabindex="-1" hidden>
         <h2 class="quiz-q">{q.q}</h2>
         <div class="quiz-opts">
           {q.opts.map((o) => (
@@ -52,10 +52,10 @@ const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
             </button>
           ))}
         </div>
-      </section>
+      </div>
     ))}
 
-    <section class="quiz-step quiz-result" id="quiz-result" tabindex="-1" hidden>
+    <div class="quiz-step quiz-result" id="quiz-result" role="group" tabindex="-1" hidden>
       <h2 class="quiz-q">{t.resultTitle}</h2>
 
       <div class="rings">
@@ -100,7 +100,7 @@ const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
         <button type="button" class="btn btn--ghost btn--sm" id="quiz-copy" aria-live="polite">{t.copy}</button>
         <button type="button" class="btn btn--ghost btn--sm" id="quiz-restart">{t.restart}</button>
       </div>
-    </section>
+    </div>
   </div>
 </div>
 
@@ -445,18 +445,14 @@ const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
 
   .quiz-count { justify-self: end; font-size: .82rem; color: var(--muted); white-space: nowrap; }
 
-  /* Σε αυτή τη σελίδα το <main> δεν κάνει την είσοδο page-in (transform): το ξαναζωγράφισμα
-     μετά από transform/filter άφηνε σκούρο «είδωλο» πίσω από τα γράμματα των ερωτήσεων (Chrome/Windows). */
-  :global(main.page-in) { animation: none; }
-  .quiz-step { outline: none; }
+  /* Τα βήματα είναι <div>, ΟΧΙ <section>: ο global κανόνας «main section:nth-of-type(2n)» έδινε
+     σκούρο φόντο και γραμμές σε κάθε δεύτερη ερώτηση (φαινόταν σαν μαύρο πίσω από τα γράμματα). */
+  .quiz-step { outline: none; background: none; border: 0; }
   .quiz-q {
     font-size: clamp(1.25rem, 2.8vw, 1.6rem);
     text-align: center;
     margin-bottom: clamp(20px, 3.5vw, 30px);
     text-wrap: balance;
-    /* Δικό του layer: ο τίτλος ζωγραφίζεται ανεξάρτητα από την κάρτα, χωρίς παλιά pixel από κάτω */
-    transform: translateZ(0);
-    backface-visibility: hidden;
   }
   .quiz-opts { display: grid; gap: 12px; }
   .opt {
