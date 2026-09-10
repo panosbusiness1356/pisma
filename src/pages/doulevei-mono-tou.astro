@@ -77,16 +77,16 @@ const faqItems = [
   </section>
 
   <!-- 2β. «Ροή αυτοματισμού», σκηνή σε loop όπως «Η άνοδος στη Google» στην
-       αρχική: ένα γεγονός περνάει από τρία βήματα και βγαίνει αποτέλεσμα. Το
+       αρχική: μια γενική εργασία περνάει από τρία βήματα και βγαίνει ολοκληρωμένη. Το
        HTML έχει το τελικό state (όλα αναμμένα, αποτέλεσμα ορατό)· χωρίς JS ή με
-       reduced motion μένει στατικό, το JS το ξαναπαίζει με άλλα γεγονότα όσο
+       reduced motion μένει στατικό, το JS το ξαναπαίζει συνέχεια όσο
        φαίνεται. -->
   <section class="section" aria-labelledby="flow-title">
     <div class="container">
       <div class="sec-head sec-head--center">
         <p class="kicker kicker--ok">Δείτε το ζωντανά</p>
-        <h2 id="flow-title">Ό,τι συμβαίνει, το σύστημα το ολοκληρώνει.</h2>
-        <p>Ένα γεγονός μπαίνει, περνάει από τρία βήματα και βγαίνει έτοιμο. Ξανά και ξανά, όλη μέρα.</p>
+        <h2 id="flow-title">Η ρουτίνα τρέχει μόνη της.</h2>
+        <p>Κάθε εργασία περνάει από το σύστημα και βγαίνει ολοκληρωμένη, χωρίς εσάς.</p>
       </div>
 
       <div class="af" id="af" aria-hidden="true">
@@ -98,15 +98,15 @@ const faqItems = [
           <span class="af-line"></span>
           <span class="af-dot" id="af-dot"></span>
           <div class="af-ev" id="af-ev">
-            <span class="af-cap">Γεγονός</span>
-            <span class="af-ev-text" id="af-ev-text">Νέο αίτημα</span>
+            <span class="af-cap">Εισερχόμενο</span>
+            <span class="af-ev-text" id="af-ev-text">Νέα εργασία</span>
           </div>
           <div class="af-node is-on"><span class="af-ring"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 13h6M10 17h6"/></svg><span class="af-node-label">Διαβάζει</span></div>
           <div class="af-node is-on"><span class="af-ring"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v6"/><path d="M12 10l-6 5v5M12 10l6 5v5"/><circle cx="12" cy="4" r="1.6"/><circle cx="6" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/></svg><span class="af-node-label">Αποφασίζει</span></div>
           <div class="af-node is-on"><span class="af-ring"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3L5 14h6l-1 7 8-11h-6z"/></svg><span class="af-node-label">Ενεργεί</span></div>
           <div class="af-out is-in" id="af-out">
             <span class="af-cap">Αποτέλεσμα</span>
-            <span class="af-out-row"><span class="af-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12.5l4.8 4.8L19.5 6.8" /></svg></span><span class="af-out-text" id="af-out-text">Καταχωρήθηκε και απαντήθηκε</span></span>
+            <span class="af-out-row"><span class="af-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12.5l4.8 4.8L19.5 6.8" /></svg></span><span class="af-out-text" id="af-out-text">Ολοκληρώθηκε</span></span>
           </div>
         </div>
         <div class="af-foot">
@@ -165,7 +165,7 @@ const faqItems = [
 
 <script>
   // «Ροή αυτοματισμού»: το HTML έχει το τελικό state (όλα αναμμένα, αποτέλεσμα
-  // ορατό). Με JS + ορατότητα παίζει σε loop: νέο γεγονός αριστερά, ο παλμός
+  // ορατό). Με JS + ορατότητα παίζει σε loop: νέα εργασία αριστερά, ο παλμός
   // περνάει από τα τρία βήματα (καθένα ανάβει όταν φτάσει), το αποτέλεσμα
   // εμφανίζεται δεξιά και ο μετρητής ανεβαίνει. Όταν βγει από την οθόνη,
   // σταματά και γυρνά στο τελικό state. Ο παλμός τοποθετείται με px από τα
@@ -174,24 +174,13 @@ const faqItems = [
   const afReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (af && !afReduce && 'IntersectionObserver' in window) {
     const evEl = document.getElementById('af-ev')!;
-    const evText = document.getElementById('af-ev-text')!;
     const outEl = document.getElementById('af-out')!;
-    const outText = document.getElementById('af-out-text')!;
     const dot = document.getElementById('af-dot')!;
     const count = document.getElementById('af-count')!;
     const nodes = Array.from(af.querySelectorAll<HTMLElement>('.af-node'));
     const flow = dot.parentElement as HTMLElement; // ο παλμός είναι absolute μέσα στο .af-flow
-    const EVENTS: [string, string][] = [
-      ['Νέο αίτημα', 'Καταχωρήθηκε και απαντήθηκε'],
-      ['Νέα εγγραφή', 'Ενημερώθηκαν όλα τα αρχεία'],
-      ['Νέο μήνυμα', 'Απαντήθηκε αυτόματα'],
-      ['Νέα πληρωμή', 'Ταιριάστηκε και αρχειοθετήθηκε'],
-      ['Προθεσμία', 'Η ειδοποίηση στάλθηκε εγκαίρως'],
-      ['Τέλος ημέρας', 'Η αναφορά είναι έτοιμη'],
-    ];
     const HOP = 450;
     let timers: number[] = [];
-    let idx = 0;
     let done = 37;
     let active = false;
 
@@ -220,16 +209,13 @@ const faqItems = [
 
     const cycle = () => {
       stop();
-      const [inT, outT] = EVENTS[idx % EVENTS.length];
-      idx++;
       nodes.forEach((n) => n.classList.remove('is-on'));
       outEl.classList.remove('is-in');
       dot.style.opacity = '0';
       place(evEl, false);
-      // Νέο γεγονός: αλλαγή κειμένου + ξαναπαίξιμο του pop (reflow ανάμεσα).
+      // Νέα εργασία: ξαναπαίξιμο του pop (reflow ανάμεσα).
       evEl.classList.remove('is-new');
       void evEl.offsetWidth;
-      evText.textContent = inT;
       evEl.classList.add('is-new');
 
       later(() => { dot.style.opacity = '1'; place(nodes[0], true); }, 650);
@@ -239,12 +225,11 @@ const faqItems = [
       }, 650 + (k + 1) * HOP));
       later(() => {
         dot.style.opacity = '0';
-        outText.textContent = outT;
         outEl.classList.add('is-in');
         done++;
         count.textContent = done.toLocaleString('el-GR');
       }, 650 + 4 * HOP);
-      later(cycle, 5200);
+      later(cycle, 3800);
     };
 
     const io = new IntersectionObserver(
