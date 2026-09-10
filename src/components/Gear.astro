@@ -96,9 +96,7 @@ const images = [
     margin: 0 0 18px;
     display: flex; align-items: flex-end; justify-content: center;
     height: 236px;
-    /* απαλός «προβολέας» πίσω από τη συσκευή, χωρίς πλαίσιο, χωρίς φόντο */
-    background: radial-gradient(ellipse 60% 70% at 50% 60%, rgba(255, 255, 255, .06), transparent 70%);
-    border-radius: var(--r);
+    /* Χωρίς φόντο/προβολέα πίσω από τη συσκευή (χρήστρια 10/09/2026: «φαίνεται ένα γκρι σαν κύκλος από πίσω») */
   }
   /* Αιώρηση: το περιτύλιγμα κινείται (transform μόνο), η εικόνα με το drop-shadow
      ρασταρίζεται μία φορά. Κάθε κάρτα σε άλλη φάση (--float-delay). */
@@ -107,6 +105,7 @@ const images = [
     height: 100%; padding-bottom: 16px; box-sizing: border-box;
     animation: gear-float 5.6s ease-in-out infinite;
     animation-delay: var(--float-delay, 0s);
+    transform-origin: 50% 80%;
     will-change: transform;
   }
   .gear-img {
@@ -128,9 +127,10 @@ const images = [
     will-change: transform, opacity;
     pointer-events: none;
   }
+  /* Ελαφριά κλίση κατά την αιώρηση, όχι τελείως κατακόρυφη (χρήστρια 10/09/2026) */
   @keyframes gear-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-11px); }
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-11px) rotate(2.5deg); }
   }
   @keyframes gear-shadow {
     0%, 100% { transform: translateX(-50%) scaleX(1); opacity: .95; }

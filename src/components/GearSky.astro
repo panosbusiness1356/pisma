@@ -81,26 +81,30 @@ const items = [
     top: 60vh;
     animation-name: skyD750; animation-duration: 20s;
   }
+  /* Καθεμιά με δική της βασική κλίση (όχι κατακόρυφες), διαγώνια πλεύση και αργή περιστροφή γύρω από αυτήν. */
   @keyframes skyPocket {
-    0%   { transform: translate3d(0, 0, 0) rotate(-3deg); }
-    35%  { transform: translate3d(10px, -22px, 0) rotate(2deg); }
-    70%  { transform: translate3d(-8px, -34px, 0) rotate(-1deg); }
-    100% { transform: translate3d(0, 0, 0) rotate(-3deg); }
+    0%   { transform: translate3d(0, 0, 0) rotate(-14deg) scale(1); }
+    35%  { transform: translate3d(16px, -26px, 0) rotate(-8deg) scale(1.03); }
+    70%  { transform: translate3d(-12px, -44px, 0) rotate(-18deg) scale(1.01); }
+    100% { transform: translate3d(0, 0, 0) rotate(-14deg) scale(1); }
   }
   @keyframes skyG7x {
-    0%   { transform: translate3d(0, 0, 0) rotate(2deg); }
-    30%  { transform: translate3d(-14px, -26px, 0) rotate(-2deg); }
-    65%  { transform: translate3d(8px, -40px, 0) rotate(1deg); }
-    100% { transform: translate3d(0, 0, 0) rotate(2deg); }
+    0%   { transform: translate3d(0, 0, 0) rotate(9deg) scale(1); }
+    30%  { transform: translate3d(-18px, -30px, 0) rotate(14deg) scale(1.03); }
+    65%  { transform: translate3d(10px, -48px, 0) rotate(5deg) scale(1.01); }
+    100% { transform: translate3d(0, 0, 0) rotate(9deg) scale(1); }
   }
   @keyframes skyD750 {
-    0%   { transform: translate3d(0, 0, 0) rotate(-2deg); }
-    40%  { transform: translate3d(12px, -30px, 0) rotate(2deg); }
-    75%  { transform: translate3d(-10px, -14px, 0) rotate(-1deg); }
-    100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
+    0%   { transform: translate3d(0, 0, 0) rotate(-8deg) scale(1); }
+    40%  { transform: translate3d(16px, -34px, 0) rotate(-3deg) scale(1.03); }
+    75%  { transform: translate3d(-12px, -16px, 0) rotate(-12deg) scale(1.01); }
+    100% { transform: translate3d(0, 0, 0) rotate(-8deg) scale(1); }
   }
   @media (prefers-reduced-motion: reduce) {
     .sky { animation: none; }
+    .sky--pocket { transform: rotate(-14deg); }
+    .sky--g7x { transform: rotate(9deg); }
+    .sky--d750 { transform: rotate(-8deg); }
     .gear-sky { transition: none; }
   }
 </style>
