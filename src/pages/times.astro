@@ -353,7 +353,6 @@ const faqItems = [
         doneEl.hidden = false;
         confettiIn(offerCard);
         (window as any).pismaSound?.play?.('on');
-        window.dispatchEvent(new CustomEvent('pisma-mascot', { detail: { action: 'cheer' } })); // ο Ντοτ πανηγυρίζει
         // Μετά από λίγο η οθόνη επιτυχίας δίνει ξανά τη θέση της στη φόρμα
         setTimeout(() => {
           doneEl.hidden = true;

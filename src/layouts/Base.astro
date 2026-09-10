@@ -120,23 +120,6 @@ const themeByQuery = import.meta.env.DEV;
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0B0B0B" />
-    <!-- Speculation Rules: η επόμενη σελίδα ΠΡΟ-ΑΠΟΔΙΔΕΤΑΙ (prerender) μόλις ο δρομέας σταθεί πάνω σε εσωτερικό
-         link (moderate = hover ~200 ms / pointerdown σε αφή), έτσι το κλικ ανοίγει στιγμιαία και η μετάβαση
-         (@view-transition, global.css) παίζει πάνω σε έτοιμη σελίδα. Εκτός: τα αυτόνομα demo, τα URL με query
-         (θέμα/builder), και ό,τι έχει data-no-prerender. Το Astro prefetch (astro.config) μένει ως δίχτυ για
-         browsers χωρίς Speculation Rules. Το intro της αρχικής και το GA ξέρουν από document.prerendering. -->
-    <script type="speculationrules" is:inline set:html={JSON.stringify({
-      prerender: [{
-        where: { and: [
-          { href_matches: '/*' },
-          { not: { href_matches: '/demo/*' } },
-          { not: { href_matches: '/*\\?*' } },
-          { not: { href_matches: '/*#*' } },
-          { not: { selector_matches: '[data-no-prerender]' } },
-        ] },
-        eagerness: 'moderate',
-      }],
-    })} />
     {themePreview && <link rel="stylesheet" href="/themes/_media.css" />}
     {themePreview && <link rel="stylesheet" href={`/themes/${themePreview}.css`} />}
     {themePreview && <script is:inline defer src="/themes/_media.js" data-theme={themePreview}></script>}
@@ -175,13 +158,6 @@ const themeByQuery = import.meta.env.DEV;
     <Footer />
     <Mascot />
     <Consent />
-    <script>
-      // Μεταβάσεις σελίδων (@view-transition στο global.css): όταν η νέα σελίδα ήρθε με μετάβαση,
-      // η δική της είσοδος .page-in δεν χρειάζεται (θα ήταν διπλό ξεθώριασμα).
-      window.addEventListener('pagereveal', (e) => {
-        if ((e as Event & { viewTransition?: unknown }).viewTransition) document.documentElement.classList.add('vt-in');
-      });
-    </script>
 
     <script>
       // Smooth scroll με αδράνεια (Lenis), ίδιο σύστημα με τα σύγχρονα studio sites.
@@ -481,8 +457,6 @@ const themeByQuery = import.meta.env.DEV;
       @media (prefers-reduced-motion: reduce) {
         .page-in { animation: none; }
       }
-      /* Ήρθε με μετάβαση σελίδας (view transition): το ξεθώριασμα το έκανε ήδη ο browser. */
-      html.vt-in .page-in { animation: none; }
       /* Οθόνες αφής: χωρίς page-in. Η κίνηση ολόκληρου του <main> έφτιαχνε layer ίσο με ΟΛΗ τη σελίδα (σε DPR 3
          εκατοντάδες MB raster) ακριβώς στο φόρτωμα. Τα στοιχεία του hero έχουν έτσι κι αλλιώς δική τους είσοδο
          (blur-in), και το φόντο είναι μαύρο σε μαύρο, το ξεθώριασμα του section δεν φαινόταν, το κόστος του ναι. */

@@ -60,8 +60,6 @@ const cloudB = dots.slice(half);
   const stops = [...document.querySelectorAll<HTMLElement>('[data-mascot-stop]')];
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const touchScreen = window.matchMedia('(pointer: coarse)').matches;
-  /* 404: «χαμένος», χωρίς ποντίκι τα μάτια ψάχνουν γύρω-γύρω (η σελίδα βάζει data-mascot-mood="lost"). */
-  const lost = !!document.querySelector('[data-mascot-mood="lost"]');
   const isMobile = () => window.matchMedia('(max-width: 680px)').matches;
 
   const W = () => (isMobile() ? 80 : 110);
@@ -399,10 +397,6 @@ const cloudB = dots.slice(half);
         } else if (dist > 24) {
           tx = dx;
           ty = dy;
-        } else if (lost) {
-          /* 404 χωρίς ποντίκι: ψάχνει, αργή περιπλάνηση των ματιών */
-          tx = Math.cos(nowT / 900) * 200;
-          ty = Math.sin(nowT / 1300) * 90;
         }
         const len = Math.hypot(tx, ty) || 1;
         const max = 7;
@@ -501,31 +495,6 @@ const cloudB = dots.slice(half);
       else showBubble(GREETING, 'right');
     }
   });
-
-  /* Αντιδράσεις (11/09/2026):
-     - «cheer»: όταν σταλεί μια φόρμα, χοροπηδά και στρίβει (window event 'pisma-mascot', detail.action).
-     - νύστα: 14 s χωρίς ποντίκι/scroll/αφή/πλήκτρο, τα μάτια μισοκλείνουν, ξυπνά με την πρώτη κίνηση.
-     - «lost» (404): χωρίς ποντίκι τα μάτια ψάχνουν γύρω-γύρω (βλ. loop). */
-  window.addEventListener('pisma-mascot', (e) => {
-    const action = (e as CustomEvent<{ action?: string }>).detail?.action;
-    if (action === 'cheer') {
-      el.classList.remove('is-sleepy', 'is-cheer');
-      void el.offsetWidth;
-      el.classList.add('is-cheer');
-      setTimeout(() => el.classList.remove('is-cheer'), 1500);
-    }
-  });
-  if (!reduce) {
-    let sleepTimer = 0;
-    const doze = () => el.classList.add('is-sleepy');
-    const stir = () => {
-      el.classList.remove('is-sleepy');
-      clearTimeout(sleepTimer);
-      sleepTimer = window.setTimeout(doze, 14000);
-    };
-    for (const ev of ['pointermove', 'pointerdown', 'scroll', 'touchstart', 'keydown'] as const) window.addEventListener(ev, stir, { passive: true });
-    stir();
-  }
 </script>
 
 <style>
@@ -586,19 +555,6 @@ const cloudB = dots.slice(half);
     60% { transform: scale(.94, 1.08) translateY(-4px); }
     100% { transform: scale(1) translateY(0); }
   }
-  /* Πανηγύρι (στάλθηκε φόρμα): τριπλό χοροπήδημα με στροφή. */
-  #pisma-mascot.is-cheer svg { animation: m-cheer 1.4s cubic-bezier(.34, 1.4, .64, 1); }
-  @keyframes m-cheer {
-    0% { transform: translateY(0) rotate(0); }
-    18% { transform: translateY(-22px) rotate(-14deg) scale(1.06); }
-    36% { transform: translateY(0) rotate(0) scale(1.08, .92); }
-    54% { transform: translateY(-16px) rotate(12deg); }
-    72% { transform: translateY(0) scale(1.06, .94); }
-    86% { transform: translateY(-7px); }
-    100% { transform: translateY(0) rotate(0); }
-  }
-  /* Νύστα (14 s χωρίς κίνηση): τα μάτια μισοκλείνουν, χωρίς βλεφάρισμα. */
-  #pisma-mascot.is-sleepy .d-eyes { animation: none; transform: scaleY(.42); transition: transform .9s ease; }
 
   /* Οθόνες αφής: η αργή περιστροφή του σύννεφου (75 s) δεν φαίνεται σε 80 px, αλλά ξαναζωγραφίζει
      το SVG 60 φορές το δευτερόλεπτο, μένουν το λίκνισμα και το βλεφάρισμα. */

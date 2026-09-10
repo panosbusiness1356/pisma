@@ -1,8 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
-import SiteCheck from '../../components/SiteCheck.astro';
-import SlotPicker from '../../components/SlotPicker.astro';
 import { SITE, ELEGXOS } from '../../config';
 
 const schema = {
@@ -25,9 +23,6 @@ const schema = {
     priceCurrency: 'EUR',
   },
 };
-
-// WhatsApp με έτοιμο μήνυμα (wa.me?text=), ίδιο νούμερο με το τηλέφωνο.
-const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello, I would like the free PISMA Check for my business: ")}`;
 
 const steps = [
   {
@@ -57,9 +52,6 @@ const steps = [
   >
     {ELEGXOS.minutes} minutes, two scores, <span class="accent">zero cost</span>.
   </PageHero>
-
-  <!-- 1β. Στιγμιαίος έλεγχος site (PageSpeed Insights), οδηγεί στην κράτηση -->
-  <SiteCheck lang="en" />
 
   <!-- 2. Με τι φεύγετε -->
   <section class="section section--tight" aria-labelledby="takeaway-title">
@@ -162,7 +154,7 @@ const steps = [
       <div class="sec-head sec-head--center">
         <p class="kicker">Booking</p>
         <h2 id="booking-title">Book your Check</h2>
-        <p>Pick what suits you. We confirm the time by message.</p>
+        <p>Fill in your details and we'll offer you 2–3 time slots later this week.</p>
       </div>
 
       <form class="card booking reveal" id="booking-form" data-email={SITE.email} novalidate>
@@ -183,10 +175,6 @@ const steps = [
           <input type="email" id="f-email" name="email" autocomplete="email" required />
         </div>
         <input type="text" name="_honey" class="f-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
-        <!-- Γεμίζει από τον στιγμιαίο έλεγχο (SiteCheck): διεύθυνση και σκορ, ταξιδεύουν με το email -->
-        <input type="hidden" name="site" id="f-site" />
-
-        <SlotPicker lang="en" />
 
         <fieldset class="mode">
           <legend>How would you prefer to do it?</legend>
@@ -217,16 +205,9 @@ const steps = [
             <path d="M15 27 l8 8 l15 -16" fill="none" />
           </svg>
           <p class="fd-title">Your booking has been sent!</p>
-          <p class="fd-sub">We confirm your time by message.</p>
+          <p class="fd-sub">We'll offer you 2–3 time slots later this week.</p>
         </div>
       </form>
-
-      <p class="booking-alt reveal">
-        <span>Or message us directly:</span>
-        <a class="wa-btn" href={waHref} target="_blank" rel="noopener" data-no-prerender>
-          <img src="/logos/whatsapp-icon.svg" alt="" width="20" height="20" loading="lazy" />Free Check on WhatsApp
-        </a>
-      </p>
     </div>
   </section>
 
@@ -297,7 +278,6 @@ const steps = [
       msg.classList.remove('is-error', 'is-ok');
       confettiIn(form);
       (window as any).pismaSound?.play?.('on');
-      window.dispatchEvent(new CustomEvent('pisma-mascot', { detail: { action: 'cheer' } })); // ο Ντοτ πανηγυρίζει
       setTimeout(() => form.classList.remove('is-done'), 6000);
     } catch {
       btn.disabled = false;
@@ -398,20 +378,6 @@ const steps = [
   .booking { max-width: 640px; margin-inline: auto; }
   .booking-btn { width: 100%; margin-top: 6px; }
   .booking .btn-note { text-align: center; }
-
-  /* WhatsApp κάτω από τη φόρμα, με έτοιμο μήνυμα */
-  .booking-alt {
-    max-width: 640px; margin: 18px auto 0;
-    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 14px;
-    color: var(--muted); font-size: .95rem;
-  }
-  .wa-btn {
-    display: inline-flex; align-items: center; gap: 9px;
-    color: var(--navy); font-weight: 700; text-decoration: none;
-    border: 1.5px solid var(--line-strong); border-radius: 999px; padding: 10px 18px;
-    transition: border-color .15s ease, transform .15s ease;
-  }
-  .wa-btn:hover { border-color: var(--orange); transform: translateY(-1px); }
 
   .mode { border: 0; padding: 0; margin: 0 0 22px; }
   .mode legend { font-weight: 600; font-size: .95rem; color: var(--navy); margin-bottom: 8px; padding: 0; }
