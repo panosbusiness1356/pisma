@@ -3,7 +3,7 @@
 // Δύο «ναυαρχίδες» σε διπλό πλάτος (site, star), το «μάτι» κλείνει ως φαρδιά ρηχή λωρίδα,
 // και πάνω σε κάθε κάρτα: πραγματικά λογότυπα όπου υπάρχει brand (Google Maps, Google,
 // ChatGPT, Instagram/Facebook/TikTok), αλλιώς έγχρωμο flat SVG αντικείμενο.
-// Χωρίς μωβ αποχρώσεις — μόνο ζεστή πορτοκαλί λάμψη στις μεγάλες (ρητό αίτημα).
+// Χωρίς μωβ αποχρώσεις, μόνο ζεστή πορτοκαλί λάμψη στις μεγάλες (ρητό αίτημα).
 // Παλέτα αντικειμένων («Σκηνή» 06/09/2026): λευκό/γκρι + πορτοκαλί, πράσινο ΜΟΝΟ για τικ.
 interface Service {
   t: string;
@@ -11,10 +11,12 @@ interface Service {
   icon: string;
   href?: string;
   /* Προαιρετικές παρακάμψεις των defaults που βγαίνουν από το icon: */
-  size?: 'big' | 'strip' | 'strip3';
+  size?: 'big' | 'strip' | 'strip3' | 'strip4' | 'card'; /* 'card' = απλή κάρτα, παρακάμπτει το default του icon */
   art?: string;
   logos?: string[];
   stars?: boolean;
+  /* Δικό της κείμενο link (αλλιώς το κοινό cta) */
+  cta?: string;
 }
 interface Props {
   services: Service[];
@@ -22,7 +24,7 @@ interface Props {
 }
 const { services, cta } = Astro.props;
 
-// Έγχρωμα αντικείμενα (viewBox 0 0 96 72) — μόνο για υπηρεσίες χωρίς πραγματικό brand
+// Έγχρωμα αντικείμενα (viewBox 0 0 96 72), μόνο για υπηρεσίες χωρίς πραγματικό brand
 const art: Record<string, string> = {
   site: `
     <rect x="8" y="8" width="80" height="56" rx="7" fill="#F4F4F4"/>
@@ -123,6 +125,21 @@ const art: Record<string, string> = {
     <circle cx="61" cy="27" r="2.6" style="fill:var(--orange-cta)"/>
     <rect x="62" y="38" width="28" height="20" rx="6" fill="#2FA36B"/>
     <path d="M73 42.5l9 5.5-9 5.5z" fill="#fff"/>`,
+  /* Αυτοματισμοί κατά παραγγελία: κόμβος που ενώνει τα προγράμματα του πελάτη */
+  custom: `
+    <rect x="6" y="10" width="26" height="20" rx="5" fill="#F4F4F4"/>
+    <rect x="11" y="16" width="14" height="3" rx="1.5" fill="#2B2B2B"/><rect x="11" y="22" width="9" height="2.6" rx="1.3" fill="#BDBDBD"/>
+    <rect x="64" y="10" width="26" height="20" rx="5" fill="#F4F4F4"/>
+    <path d="M69 17h16M71.5 21v5M77 21v5M82.5 21v5" stroke="#2B2B2B" stroke-width="2" stroke-linecap="round"/>
+    <rect x="6" y="42" width="26" height="20" rx="5" fill="#F4F4F4"/>
+    <path d="M11 47h16M14 52h10M14 56h6" stroke="#BDBDBD" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M11 47h16" stroke="#2B2B2B" stroke-width="2.4" stroke-linecap="round"/>
+    <rect x="64" y="42" width="26" height="20" rx="5" fill="#2B2B2B"/>
+    <rect x="68" y="46" width="18" height="12" rx="2.5" fill="#F4F4F4"/>
+    <rect x="71" y="49" width="8" height="2.4" rx="1.2" fill="#2B2B2B"/><rect x="71" y="53" width="12" height="2.2" rx="1.1" fill="#BDBDBD"/>
+    <path d="M32 20L44 32M64 20L52 32M32 52L44 40M64 52L52 40" style="stroke:var(--orange)" stroke-width="2.6" stroke-linecap="round"/>
+    <circle cx="48" cy="36" r="10" style="fill:var(--orange-cta)" stroke="#161616" stroke-width="3"/>
+    <path d="M48 31v10M43 36h10" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>`,
 };
 
 // Πραγματικά λογότυπα (self-hosted στο public/logos/) όπου υπάρχει brand
@@ -143,12 +160,12 @@ const sizeOf = (s: Service) =>
   s.size ?? (s.icon === 'site' || s.icon === 'star' ? 'big' : s.icon === 'eye' ? 'strip' : undefined);
 const sizeClass = (s: Service) => {
   const size = sizeOf(s);
-  return size === 'big' ? 'svc-big' : size === 'strip' ? 'svc-strip' : size === 'strip3' ? 'svc-strip svc-strip3' : '';
+  return size === 'big' ? 'svc-big' : size === 'strip' ? 'svc-strip' : size === 'strip3' ? 'svc-strip svc-strip3' : size === 'strip4' ? 'svc-strip svc-strip4' : '';
 };
 const logosOf = (s: Service) => s.logos ?? logos[s.icon];
 const artOf = (s: Service) => s.art ?? (art[s.icon] ? s.icon : undefined);
 const starsOf = (s: Service) => s.stars ?? s.icon === 'star';
-const isStrip = (s: Service) => sizeOf(s) === 'strip' || sizeOf(s) === 'strip3';
+const isStrip = (s: Service) => sizeOf(s) === 'strip' || sizeOf(s) === 'strip3' || sizeOf(s) === 'strip4';
 ---
 
 <div class="svc-grid">
@@ -178,12 +195,13 @@ const isStrip = (s: Service) => sizeOf(s) === 'strip' || sizeOf(s) === 'strip3';
         <div>
           <h3>{s.t}</h3>
           <p>{s.d}</p>
+          {s.href && <span class="card-arrow">{s.cta ?? cta}</span>}
         </div>
       ) : (
         <>
           <h3>{s.t}</h3>
           <p>{s.d}</p>
-          {s.href && <span class="card-arrow">{cta}</span>}
+          {s.href && <span class="card-arrow">{s.cta ?? cta}</span>}
         </>
       )}
     </Tag>
