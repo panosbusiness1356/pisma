@@ -238,8 +238,11 @@ const faqItems = [
     // Αυτόματη περιήγηση (αίτημα χρήστριας): μόλις φορτώσει το δείγμα και το
     // laptop είναι ορατό, η οθόνη σκρολάρει μόνη της — μία «οθόνη» τη φορά,
     // με παύση σε κάθε ενότητα, και στο τέλος γυρνά ομαλά στην κορυφή και
-    // ξαναρχίζει. Σταματά οριστικά μόλις ο επισκέπτης πιάσει την οθόνη
-    // (ρόδα, αφή, κλικ, πληκτρολόγιο). Με reduced motion δεν τρέχει.
+    // ξαναρχίζει. Παύει μόλις ο επισκέπτης πιάσει την οθόνη (ρόδα, αφή, κλικ,
+    // πληκτρολόγιο)· όταν η σκηνή βγει τελείως από την οθόνη, γυρνά στην κορυφή
+    // και στην επόμενη είσοδο ξαναρχίζει από την αρχή (και στο κινητό, όπου το
+    // άγγιγμα κατά το scroll της σελίδας την πιάνει εύκολα). Με reduced motion
+    // δεν τρέχει.
     const spStage = document.getElementById('sp-stage');
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (spStage && !reduce) {
@@ -310,7 +313,7 @@ const faqItems = [
       const stop = () => { stopped = true; };
       const armStop = () => {
         const w = frameWin(); if (!w) return;
-        for (const ev of ['wheel', 'touchstart', 'pointerdown', 'keydown']) w.addEventListener(ev, stop, { passive: true, once: true });
+        for (const ev of ['wheel', 'touchstart', 'pointerdown', 'keydown']) w.addEventListener(ev, stop, { passive: true });
       };
       // Δεν περιμένουμε το «load» της iframe (καθυστερεί όσο κατεβαίνουν τα
       // βίντεο του δείγματος) — ξεκινάμε μόλις είναι έτοιμο το DOM του.
@@ -324,11 +327,13 @@ const faqItems = [
       }, 250);
       if ('IntersectionObserver' in window) {
         new IntersectionObserver((es) => {
-          visible = es[0].isIntersecting;
-          // Μόλις βγει από την οθόνη (και ο επισκέπτης δεν την έχει πιάσει),
-          // γυρνά αμέσως στην κορυφή, ώστε να ξαναφανεί από την αρχή.
-          if (visible) tour(); else if (!stopped) scrollTo(0);
-        }, { threshold: .35 }).observe(spStage);
+          const e = es[0];
+          visible = e.isIntersecting && e.intersectionRatio >= .35;
+          // Μόλις βγει ΤΕΛΕΙΩΣ από την οθόνη, γυρνά αμέσως στην κορυφή και
+          // ξεκλειδώνει τυχόν παύση από άγγιγμα, ώστε να ξαναφανεί από την αρχή.
+          // (Όχι σε μερική ορατότητα: εκεί ο επισκέπτης μπορεί να σκρολάρει.)
+          if (visible) tour(); else if (!e.isIntersecting) { stopped = false; scrollTo(0); }
+        }, { threshold: [0, .35] }).observe(spStage);
       } else { visible = true; tour(); }
       document.addEventListener('visibilitychange', () => { if (!document.hidden && visible) tour(); });
     }

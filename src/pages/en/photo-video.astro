@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import Gear from '../../components/Gear.astro';
 import { SITE, eurEn } from '../../config';
 import { CATEGORIES_EN } from '../../data/pricing.en';
 
@@ -34,40 +35,40 @@ const schema = {
     description: `${eurEn(o.price)} one-off.`,
   })),
   description:
-    'Photos and short videos shot at your business premises — products, dishes, space, team — ready for your website, online store, Google and social media.',
+    'Photos and short videos shot at your business premises (products, dishes, space, team), ready for your website, online store, Google and social media.',
 };
 
 const why = [
   {
-    t: 'Customers see you — not stock',
+    t: 'Customers see you',
     d: 'A photo from the internet is one the customer has seen on ten other sites. Your shop window, your dish, your face: that builds trust before they even call.',
     icon: 'eye',
   },
   {
-    t: 'One shoot — material for months',
+    t: 'One shoot, material for months',
     d: 'In one visit we get everything the website, the Google profile and social media need. Dozens of photos and short videos, organised and ready to upload.',
     icon: 'stack',
   },
   {
     t: 'Ready for every channel',
-    d: 'Vertical for reels and stories, horizontal for the website, square for Google. We deliver in the right sizes — you never crop anything yourself.',
+    d: 'Vertical for reels and stories, horizontal for the website, square for Google. We deliver in the right sizes, so you never crop anything yourself.',
     icon: 'frames',
   },
 ];
 
 const shoot = [
-  { t: 'Space & shop window', d: 'The shop as a first-time customer sees it walking in — bright, clean, welcoming.' },
+  { t: 'Space & shop window', d: 'The shop as a first-time customer sees it walking in: bright, clean, welcoming.' },
   { t: 'Products', d: 'For your store, catalogue and social: on a neutral background or inside your space, with the details that sell.' },
-  { t: 'Dishes & drinks', d: 'For the menu, Google and Instagram — the dish as it comes out of the kitchen, in its natural light.' },
+  { t: 'Dishes & drinks', d: 'For the menu, Google and Instagram: the dish as it comes out of the kitchen, in its natural light.' },
   { t: 'You & the team', d: 'People want to know who they are trusting. Portraits and working moments, no posing.' },
-  { t: 'Short videos', d: 'Reels and stories: the process, the before/after, a "hello" from you. Whatever stops the thumb.' },
-  { t: 'Before / After', d: 'For any job that changes something — hair salon, garage, renovation. The most convincing photo there is.' },
+  { t: 'Short videos', d: 'Reels and stories: the process, the before/after, a "hello" from you. Whatever catches attention.' },
+  { t: 'Before / After', d: 'For any job that changes something (hair salon, garage, renovation). The most convincing photo there is.' },
 ];
 
 const steps = [
   {
     t: 'We agree what you need',
-    d: 'Website, store, Google, social — or all of them. The shot list comes from that.',
+    d: 'Website, store, Google, social, or all of them. The shot list comes from that.',
   },
   {
     t: 'Appointment at your premises',
@@ -78,7 +79,7 @@ const steps = [
     d: 'Colour, light, cropping to the right size for every channel. Editing for the videos.',
   },
   {
-    t: 'Delivery — and upload',
+    t: 'Delivery and upload',
     d: 'You get everything organised in a folder. If we run your website or social media, it goes up as well.',
   },
 ];
@@ -90,7 +91,7 @@ const faqItems = [
   },
   {
     q: 'Who owns the photos and videos?',
-    a: 'You do, entirely. Use them wherever you like — website, social, print, ads — with no conditions and no expiry.',
+    a: 'You do, entirely. Use them wherever you like (website, social, print, ads), with no conditions and no expiry.',
   },
   {
     q: 'Do I need to prepare anything?',
@@ -98,28 +99,28 @@ const faqItems = [
   },
   {
     q: 'Do you edit the videos too?',
-    a: 'Yes. We deliver finished videos — cut, with music where it fits, in each channel’s dimensions. You never open an editing program.',
+    a: 'Yes. We deliver finished videos: cut, with music where it fits, in each channel’s dimensions. You never open an editing program.',
   },
   {
     q: 'I already have monthly social media management with you. Do I need anything extra?',
-    a: 'If your management is "content by PISMA", the photos and videos for the posts come from us and are already included. A separate shoot is for bigger needs — e.g. every product of an online store, or a new website.',
+    a: 'If your management is "content by PISMA", the photos and videos for the posts come from us and are already included. A separate shoot is for bigger needs, e.g. every product of an online store, or a new website.',
   },
   {
     q: 'How much does it cost?',
-    a: `Three clear options, one-off: ${space.label.toLowerCase()} ${eurEn(space.price)}, ${products.label.toLowerCase()} ${eurEn(products.price)}, ${video.label.toLowerCase()} ${eurEn(video.price)}. Combine them as you like on the pricing page — you know the amount before we book the appointment.`,
+    a: `Three clear options, one-off: ${space.label.toLowerCase()} ${eurEn(space.price)}, ${products.label.toLowerCase()} ${eurEn(products.price)}, ${video.label.toLowerCase()} ${eurEn(video.price)}. Combine them as you like on the pricing page, and you know the amount before we book the appointment.`,
   },
 ];
 ---
 
 <Base
   title="Photography & Video for your business | PISMA"
-  description={`Photos and short videos shot at your premises for your website, store, Google and social media: products, dishes, space, team. From ${eurEn(minPrice)} one-off. Not stock.`}
+  description={`Photos and short videos shot at your premises for your website, store, Google and social media: products, dishes, space, team. From ${eurEn(minPrice)} one-off, with no stock images.`}
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
     kicker="Photography & Video"
-    sub="Photos and short videos shot at your premises — for the website, the online store, the Google profile and social media. No images from the internet."
+    sub="Photos and short videos shot at your premises for the website, the online store, the Google profile and social media, with no images from the internet."
   >
     Your business, <span class="accent">as it really is</span>
   </PageHero>
@@ -183,7 +184,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">How it works</p>
-        <h2 id="flow-title">Four steps — one appointment.</h2>
+        <h2 id="flow-title">Four steps, one appointment.</h2>
       </div>
       <ol class="steps">
         {steps.map((s, i) => (
@@ -197,12 +198,15 @@ const faqItems = [
     </div>
   </section>
 
+  <!-- 4b. Our gear -->
+  <Gear lang="en" />
+
   <!-- 5. Price -->
   <section class="section" aria-labelledby="price-title">
     <div class="container container--narrow">
       <div class="card price-card reveal">
         <div class="price-main">
-          <p class="kicker">Prices — public, the same for everyone</p>
+          <p class="kicker">Prices: public, the same for everyone</p>
           <h2 id="price-title">
             From <span class="price-num num">{eurEn(minPrice)}</span> one-off
           </h2>
@@ -217,7 +221,7 @@ const faqItems = [
         <div class="price-cta">
           <a class="btn btn--orange" href="/en/pricing/">Build your package →</a>
           <a class="btn btn--ghost" href="/en/contact/">Tell us what you need</a>
-          <span class="btn-note">No online payment — we close it over the phone.</span>
+          <span class="btn-note">No online payment. We close it over the phone.</span>
         </div>
       </div>
     </div>
@@ -237,7 +241,7 @@ const faqItems = [
   <!-- 7. CTA -->
   <CtaBand
     title="Time people saw you as you really are."
-    sub="Tell us what you need — website, store, Google or social — and we book an appointment at your premises."
+    sub="Tell us what you need (website, store, Google or social) and we book an appointment at your premises."
     ctaText="Tell us what you need"
     ctaHref="/en/contact/"
     note="Same-day reply · no lock-in"

@@ -269,6 +269,18 @@
         "4391"
       ],
       "port": 4391
+    },
+    {
+      "name": "pisma-gear-4370",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4370"
+      ],
+      "port": 4370
     }
   ]
 }
