@@ -1,0 +1,361 @@
+---
+// ΠΡΟΣΩΡΙΝΗ σελίδα δοκιμών (μόνο dev, δεν μπαίνει στο build): εννέα αφηρημένες,
+// μοντέρνες κινήσεις «αυτοματισμού» χωρίς σενάρια ή κείμενα, για επιλογή με αριθμό.
+import '../styles/fonts.css';
+import '../styles/global.css';
+
+const variants = [
+  { n: 1, t: 'Χάος σε τάξη', d: 'Σκόρπια σωματίδια μαζεύονται μόνα τους σε τέλειο πλέγμα και ξαναδιαλύονται.' },
+  { n: 2, t: 'Δίκτυο', d: 'Κόμβοι συνδεδεμένοι μεταξύ τους, παλμοί ταξιδεύουν συνεχώς από κόμβο σε κόμβο.' },
+  { n: 3, t: 'Σύγκλιση', d: 'Πολλές ροές μπαίνουν, ενώνονται σε έναν πυρήνα και βγαίνει μία.' },
+  { n: 4, t: 'Πλέγμα', d: 'Κύμα φωτός σαρώνει ένα πλέγμα από κελιά, κάποια ανάβουν πορτοκαλί.' },
+  { n: 5, t: 'Τροχιά', d: 'Πυρήνας με δακτυλίους σε κίνηση, οι δορυφόροι στέλνουν παλμούς στο κέντρο.' },
+  { n: 6, t: 'Μπάρες', d: 'Έξι γραμμές προόδου γεμίζουν μόνες τους η μία μετά την άλλη και ξαναρχίζουν.' },
+  { n: 7, t: 'Σήμα', d: 'Μια θορυβώδης γραμμή ισιώνει καθώς περνάει η σάρωση: από χειροκίνητο σε αυτόματο.' },
+  { n: 8, t: 'Ρολόι', d: 'Δείκτης γυρίζει 24 ώρες, τα λεπτά ανάβουν πίσω του, σπίθες όταν κάτι ολοκληρώνεται.' },
+  { n: 9, t: 'Πύλη', d: 'Άδεια πλακίδια περνούν από μια φωτεινή πύλη και βγαίνουν γεμάτα.' },
+];
+---
+<html lang="el">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Δοκιμές: κίνηση αυτοματισμού</title>
+</head>
+<body>
+  <main class="wrap">
+    <header class="top">
+      <p class="kicker">Μόνο local</p>
+      <h1>Κίνηση αυτοματισμού, εννέα εκδοχές.</h1>
+      <p class="muted">Όλες αφηρημένες, χωρίς σενάρια. Πείτε τον αριθμό που σας αρέσει.</p>
+    </header>
+
+    {variants.map((v) => (
+      <section class="v" id={`v${v.n}`}>
+        <div class="v-head">
+          <span class="v-num num">{String(v.n).padStart(2, '0')}</span>
+          <div>
+            <h2>{v.t}</h2>
+            <p>{v.d}</p>
+          </div>
+        </div>
+        <div class={`stage s${v.n}`} data-v={v.n}>
+          {v.n === 1 && <canvas></canvas>}
+          {v.n === 2 && <canvas></canvas>}
+          {v.n === 3 && (
+            <svg viewBox="0 0 900 320" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <filter id="g3"><feGaussianBlur stdDeviation="6" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+              </defs>
+              {[40, 88, 136, 184, 232, 280].map((y, i) => (
+                <path class="in" d={`M 0 ${y} C 240 ${y}, 300 160, 450 160`} style={`animation-delay:${-i * 0.23}s`} />
+              ))}
+              <path class="out" d="M 450 160 L 900 160" />
+              <circle class="core-ring" cx="450" cy="160" r="14" />
+              <circle class="core" cx="450" cy="160" r="9" filter="url(#g3)" />
+            </svg>
+          )}
+          {v.n === 4 && <div class="grid"></div>}
+          {v.n === 5 && <canvas></canvas>}
+          {v.n === 6 && (
+            <div class="bars">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div class="bar">
+                  <span class="bar-i num">{String(i).padStart(2, '0')}</span>
+                  <span class="bar-track"><span class="bar-fill"></span></span>
+                  <span class="bar-ok"></span>
+                </div>
+              ))}
+            </div>
+          )}
+          {v.n === 7 && (
+            <svg viewBox="0 0 900 320" preserveAspectRatio="none" aria-hidden="true">
+              <path class="sig" d="M 0 160 L 900 160" />
+              <line class="scan" x1="0" y1="20" x2="0" y2="300" />
+            </svg>
+          )}
+          {v.n === 8 && (
+            <svg viewBox="0 0 900 320" aria-hidden="true">
+              <g class="ticks" transform="translate(450 160)"></g>
+              <g class="sparks" transform="translate(450 160)"></g>
+              <line class="hand" x1="450" y1="160" x2="450" y2="52" />
+              <circle cx="450" cy="160" r="4" fill="#FF7A50" />
+              <text class="num" x="450" y="205" text-anchor="middle">24/7</text>
+            </svg>
+          )}
+          {v.n === 9 && (
+            <div class="gate-wrap">
+              <span class="gate"></span>
+              {[0, 1, 2, 3, 4].map((i) => (
+                <span class="tile" style={`animation-delay:${i * 1.3}s`}><i></i></span>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    ))}
+  </main>
+
+  <script>
+    window.addEventListener('error', (e) => ((window as any).__errs ||= []).push(e.message + ' @' + e.lineno + ':' + e.colno));
+    const R = (a: number, b: number) => a + Math.random() * (b - a);
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const fit = (c: HTMLCanvasElement) => {
+      c.width = Math.round(c.clientWidth * dpr);
+      c.height = Math.round(c.clientHeight * dpr);
+    };
+
+    // 1. Χάος σε τάξη
+    (() => {
+      const c = document.querySelector<HTMLCanvasElement>('.s1 canvas')!;
+      const ctx = c.getContext('2d')!;
+      const N = 180, cols = 18, rows = 10;
+      let P: { cx: number; cy: number; tx: number; ty: number; o: boolean }[] = [];
+      let cycle = -1;
+      const layout = () => {
+        fit(c);
+        const gw = c.width * 0.62, gh = c.height * 0.62, ox = (c.width - gw) / 2, oy = (c.height - gh) / 2;
+        P = Array.from({ length: N }, (_, i) => ({
+          cx: R(0, c.width), cy: R(0, c.height),
+          tx: ox + (i % cols) * gw / (cols - 1), ty: oy + Math.floor(i / cols) * gh / (rows - 1),
+          o: Math.random() < 0.08,
+        }));
+      };
+      layout(); addEventListener('resize', layout);
+      const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+      const frame = (ts: number) => {
+        const T = 7000, p = (ts % T) / T, cyc = Math.floor(ts / T);
+        if (cyc !== cycle) { cycle = cyc; P.forEach((q) => { q.cx = R(0, c.width); q.cy = R(0, c.height); }); }
+        const k = p < 0.38 ? ease(p / 0.38) : p < 0.62 ? 1 : p < 0.92 ? 1 - ease((p - 0.62) / 0.3) : 0;
+        ctx.clearRect(0, 0, c.width, c.height);
+        for (const q of P) {
+          const x = q.cx + (q.tx - q.cx) * k, y = q.cy + (q.ty - q.cy) * k;
+          ctx.beginPath(); ctx.arc(x, y, (q.o ? 2.6 : 1.7) * dpr, 0, 7);
+          ctx.fillStyle = q.o ? '#FF7A50' : `rgba(255,255,255,${0.3 + 0.55 * k})`; ctx.fill();
+        }
+        requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+    })();
+
+    // 2. Δίκτυο
+    (() => {
+      const c = document.querySelector<HTMLCanvasElement>('.s2 canvas')!;
+      const ctx = c.getContext('2d')!;
+      fit(c); addEventListener('resize', () => fit(c));
+      type Node = { x: number; y: number; vx: number; vy: number; glow: number };
+      const nodes: Node[] = Array.from({ length: 34 }, () => ({ x: R(0.06, 0.94), y: R(0.1, 0.9), vx: R(-1, 1) * 0.00004, vy: R(-1, 1) * 0.00004, glow: 0 }));
+      const edges: [number, number][] = [];
+      nodes.forEach((n, i) => {
+        const near = nodes.map((m, j) => ({ j, d: (m.x - n.x) ** 2 + ((m.y - n.y) * 0.36) ** 2 })).filter((e) => e.j !== i).sort((a, b) => a.d - b.d).slice(0, 2);
+        near.forEach((e) => { if (!edges.some(([a, b]) => (a === i && b === e.j) || (a === e.j && b === i))) edges.push([i, e.j]); });
+      });
+      const pulses: { e: number; t: number; dir: 1 | -1 }[] = [];
+      let last = 0, spawn = 0;
+      const frame = (ts: number) => {
+        const dt = Math.min(50, ts - last); last = ts; spawn += dt;
+        if (spawn > 260 && pulses.length < 14) { spawn = 0; pulses.push({ e: Math.floor(R(0, edges.length)), t: 0, dir: Math.random() < 0.5 ? 1 : -1 }); }
+        const W = c.width, H = c.height;
+        nodes.forEach((n) => { n.x += n.vx * dt; n.y += n.vy * dt; if (n.x < 0.04 || n.x > 0.96) n.vx *= -1; if (n.y < 0.08 || n.y > 0.92) n.vy *= -1; n.glow = Math.max(0, n.glow - dt / 700); });
+        ctx.clearRect(0, 0, W, H);
+        ctx.lineWidth = 1 * dpr; ctx.strokeStyle = 'rgba(255,255,255,.13)';
+        edges.forEach(([a, b]) => { ctx.beginPath(); ctx.moveTo(nodes[a].x * W, nodes[a].y * H); ctx.lineTo(nodes[b].x * W, nodes[b].y * H); ctx.stroke(); });
+        for (let i = pulses.length - 1; i >= 0; i--) {
+          const p = pulses[i]; p.t += dt / 900;
+          const [a, b] = edges[p.e]; const from = p.dir === 1 ? nodes[a] : nodes[b], to = p.dir === 1 ? nodes[b] : nodes[a];
+          if (p.t >= 1) { to.glow = 1; pulses.splice(i, 1); continue; }
+          const x = (from.x + (to.x - from.x) * p.t) * W, y = (from.y + (to.y - from.y) * p.t) * H;
+          ctx.beginPath(); ctx.arc(x, y, 2.4 * dpr, 0, 7); ctx.fillStyle = '#FF7A50'; ctx.shadowColor = '#FF7A50'; ctx.shadowBlur = 12 * dpr; ctx.fill(); ctx.shadowBlur = 0;
+        }
+        nodes.forEach((n) => {
+          const x = n.x * W, y = n.y * H;
+          if (n.glow > 0) { ctx.beginPath(); ctx.arc(x, y, (5 + 10 * (1 - n.glow)) * dpr, 0, 7); ctx.strokeStyle = `rgba(255,122,80,${n.glow * 0.7})`; ctx.stroke(); }
+          ctx.beginPath(); ctx.arc(x, y, 2.2 * dpr, 0, 7); ctx.fillStyle = `rgba(255,255,255,${0.55 + 0.45 * n.glow})`; ctx.fill();
+        });
+        requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+    })();
+
+    // 4. Πλέγμα
+    (() => {
+      const g = document.querySelector<HTMLElement>('.s4 .grid')!;
+      const cols = 30, rows = 9;
+      const cells: HTMLElement[] = [];
+      for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) {
+        const d = document.createElement('i'); d.style.setProperty('--d', `${(x + y) * 55}ms`); g.appendChild(d); cells.push(d);
+      }
+      setInterval(() => {
+        const d = cells[Math.floor(R(0, cells.length))]; d.classList.add('hot'); setTimeout(() => d.classList.remove('hot'), 650);
+      }, 140);
+    })();
+
+    // 5. Τροχιά
+    (() => {
+      const c = document.querySelector<HTMLCanvasElement>('.s5 canvas')!;
+      const ctx = c.getContext('2d')!;
+      fit(c); addEventListener('resize', () => fit(c));
+      const rings = [{ r: 0.17, n: 3, w: 0.00045 }, { r: 0.29, n: 5, w: -0.00028 }, { r: 0.41, n: 8, w: 0.00018 }];
+      const pulses: { ring: number; k: number; t: number }[] = [];
+      let last = 0, spawn = 0, flash = 0;
+      const frame = (ts: number) => {
+        const dt = Math.min(50, ts - last); last = ts; spawn += dt; flash = Math.max(0, flash - dt / 500);
+        const W = c.width, H = c.height, cx = W / 2, cy = H / 2, S = H;
+        if (spawn > 650) { spawn = 0; const ring = Math.floor(R(0, 3)); pulses.push({ ring, k: Math.floor(R(0, rings[ring].n)), t: 0 }); }
+        ctx.clearRect(0, 0, W, H);
+        rings.forEach((rg) => { ctx.beginPath(); ctx.arc(cx, cy, rg.r * S, 0, 7); ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.lineWidth = 1 * dpr; ctx.stroke(); });
+        const pos = (ri: number, k: number) => { const rg = rings[ri]; const a = ts * rg.w + (k / rg.n) * Math.PI * 2; return [cx + Math.cos(a) * rg.r * S, cy + Math.sin(a) * rg.r * S]; };
+        for (let i = pulses.length - 1; i >= 0; i--) {
+          const p = pulses[i]; p.t += dt / 800; if (p.t >= 1) { flash = 1; pulses.splice(i, 1); continue; }
+          const [x, y] = pos(p.ring, p.k); const e = 1 - Math.pow(1 - p.t, 2);
+          ctx.beginPath(); ctx.arc(x + (cx - x) * e, y + (cy - y) * e, 2.4 * dpr, 0, 7); ctx.fillStyle = '#FF7A50'; ctx.shadowColor = '#FF7A50'; ctx.shadowBlur = 10 * dpr; ctx.fill(); ctx.shadowBlur = 0;
+        }
+        rings.forEach((rg, ri) => { for (let k = 0; k < rg.n; k++) { const [x, y] = pos(ri, k); ctx.beginPath(); ctx.arc(x, y, 2.6 * dpr, 0, 7); ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.fill(); } });
+        const breathe = 1 + 0.08 * Math.sin(ts / 600) + 0.35 * flash;
+        ctx.beginPath(); ctx.arc(cx, cy, 11 * dpr * breathe, 0, 7); ctx.fillStyle = '#FF7A50'; ctx.shadowColor = '#FF7A50'; ctx.shadowBlur = (22 + 30 * flash) * dpr; ctx.fill(); ctx.shadowBlur = 0;
+        requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+    })();
+
+    // 6. Μπάρες
+    (() => {
+      const bars = Array.from(document.querySelectorAll<HTMLElement>('.s6 .bar'));
+      const run = () => {
+        bars.forEach((b) => b.classList.remove('is-fill', 'is-ok', 'is-reset'));
+        bars.forEach((b, i) => {
+          setTimeout(() => b.classList.add('is-fill'), 300 + i * 950);
+          setTimeout(() => b.classList.add('is-ok'), 300 + i * 950 + 850);
+        });
+        setTimeout(() => { bars.forEach((b) => b.classList.add('is-reset')); bars.forEach((b) => b.classList.remove('is-fill', 'is-ok')); setTimeout(run, 400); }, 300 + bars.length * 950 + 1400);
+      };
+      run();
+    })();
+
+    // 7. Σήμα
+    (() => {
+      const svg = document.querySelector<SVGSVGElement>('.s7 svg')!;
+      const path = svg.querySelector<SVGPathElement>('.sig')!;
+      const scan = svg.querySelector<SVGLineElement>('.scan')!;
+      const N = 140, W = 900;
+      const jit = Array.from({ length: N }, () => R(-1, 1));
+      const frame = (ts: number) => {
+        const T = 5200, p = (ts % T) / T;
+        const sx = p < 0.78 ? (p / 0.78) * (W + 80) - 40 : W + 40;
+        let d = '';
+        for (let i = 0; i < N; i++) {
+          const x = (i / (N - 1)) * W;
+          const amp = Math.min(1, Math.max(0, (x - sx) / 90));
+          const y = 160 + amp * (jit[i] * 34 + Math.sin(i * 0.7 + ts * 0.004) * 14 + Math.sin(i * 2.3 - ts * 0.007) * 9);
+          d += (i ? ' L ' : 'M ') + x.toFixed(1) + ' ' + y.toFixed(1);
+        }
+        path.setAttribute('d', d);
+        scan.setAttribute('x1', String(sx)); scan.setAttribute('x2', String(sx));
+        scan.style.opacity = sx > W ? '0' : '1';
+        requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+    })();
+
+    // 8. Ρολόι
+    (() => {
+      const svg = document.querySelector<SVGSVGElement>('.s8 svg')!;
+      const ticks = svg.querySelector<SVGGElement>('.ticks')!;
+      const sparks = svg.querySelector<SVGGElement>('.sparks')!;
+      const hand = svg.querySelector<SVGLineElement>('.hand')!;
+      const NS = 'http://www.w3.org/2000/svg', N = 72, RR = 118;
+      const els: SVGLineElement[] = [];
+      for (let i = 0; i < N; i++) {
+        const a = (i / N) * Math.PI * 2 - Math.PI / 2;
+        const l = document.createElementNS(NS, 'line');
+        const r1 = RR - (i % 6 === 0 ? 12 : 6);
+        l.setAttribute('x1', String(Math.cos(a) * r1)); l.setAttribute('y1', String(Math.sin(a) * r1));
+        l.setAttribute('x2', String(Math.cos(a) * RR)); l.setAttribute('y2', String(Math.sin(a) * RR));
+        ticks.appendChild(l); els.push(l);
+      }
+      let lastIdx = -1, sparkAt = 0;
+      const frame = (ts: number) => {
+        const ang = (ts / 14000) * 360 % 360;
+        hand.setAttribute('transform', `rotate(${ang} 450 160)`);
+        const idx = Math.floor((ang / 360) * N);
+        els.forEach((l, i) => { const dist = (idx - i + N) % N; l.style.opacity = String(Math.max(0.12, 0.95 - dist / 22)); l.style.stroke = dist < 1 ? '#FF7A50' : '#fff'; });
+        if (idx !== lastIdx) { lastIdx = idx; if (ts - sparkAt > 700 && Math.random() < 0.35) { sparkAt = ts; const a = (idx / N) * Math.PI * 2 - Math.PI / 2; const s = document.createElementNS(NS, 'circle'); s.setAttribute('cx', String(Math.cos(a) * (RR + 14))); s.setAttribute('cy', String(Math.sin(a) * (RR + 14))); s.setAttribute('r', '3'); sparks.appendChild(s); setTimeout(() => s.remove(), 900); } }
+        requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+    })();
+  </script>
+
+  <style is:global>
+    body { background: var(--bg); color: var(--ink); }
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 48px 20px 80px; }
+    .top { text-align: center; margin-bottom: 40px; }
+    .top h1 { font-size: clamp(28px, 4vw, 40px); margin: 14px 0 8px; }
+    .v { margin-bottom: 44px; }
+    .v-head { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 12px; }
+    .v-num { font-size: 1.4rem; color: var(--orange); line-height: 1.2; }
+    .v-head h2 { font-size: 1.2rem; margin: 0 0 4px; }
+    .v-head p { margin: 0; color: var(--muted); font-size: .92rem; max-width: none; }
+    .stage {
+      position: relative; height: 320px; overflow: hidden;
+      background: var(--card); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow);
+    }
+    .stage::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(600px 240px at 50% 55%, rgba(255, 122, 80, .07), transparent 70%); }
+    .stage canvas, .stage svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    /* 3. Σύγκλιση */
+    .s3 .in { fill: none; stroke: rgba(255, 255, 255, .45); stroke-width: 1.4; stroke-dasharray: 7 11; animation: dash3 1.1s linear infinite; }
+    .s3 .out { fill: none; stroke: #FF7A50; stroke-width: 2.2; stroke-dasharray: 12 8; animation: dash3 .6s linear infinite; }
+    @keyframes dash3 { to { stroke-dashoffset: -18; } }
+    .s3 .core { fill: #FF7A50; animation: breathe3 2.4s ease-in-out infinite; transform-origin: 450px 160px; }
+    .s3 .core-ring { fill: none; stroke: #FF7A50; stroke-width: 1.2; opacity: 0; animation: ring3 2.4s ease-out infinite; transform-origin: 450px 160px; }
+    @keyframes breathe3 { 50% { transform: scale(1.18); } }
+    @keyframes ring3 { 0% { opacity: .8; transform: scale(.7); } 100% { opacity: 0; transform: scale(2.4); } }
+
+    /* 4. Πλέγμα */
+    .s4 .grid { position: absolute; inset: 34px 40px; display: grid; grid-template-columns: repeat(30, 1fr); grid-template-rows: repeat(9, 1fr); gap: 6px; }
+    .s4 .grid i { display: block; border-radius: 3px; background: #fff; opacity: .08; animation: wave4 3.8s ease-in-out infinite; animation-delay: var(--d); transition: background-color .25s, opacity .25s; }
+    @keyframes wave4 { 0%, 100% { opacity: .07; } 22% { opacity: .55; } 44% { opacity: .1; } }
+    .s4 .grid i.hot { background: #FF7A50; opacity: 1; box-shadow: 0 0 14px rgba(255, 122, 80, .7); }
+
+    /* 6. Μπάρες */
+    .s6 .bars { position: absolute; inset: 0; display: grid; align-content: center; gap: 22px; padding: 0 60px; }
+    .s6 .bar { display: grid; grid-template-columns: 34px 1fr 16px; align-items: center; gap: 16px; }
+    .s6 .bar-i { font-size: .74rem; color: var(--muted); }
+    .s6 .bar-track { position: relative; height: 4px; border-radius: 999px; background: rgba(255, 255, 255, .1); overflow: hidden; }
+    .s6 .bar-fill { position: absolute; inset: 0; width: 0; border-radius: 999px; background: #fff; transition: width .85s cubic-bezier(.2, .8, .3, 1); }
+    .s6 .bar.is-fill .bar-fill { width: 100%; }
+    .s6 .bar.is-reset .bar-fill { transition: none; }
+    .s6 .bar-ok { width: 10px; height: 10px; border-radius: 50%; background: #FF7A50; opacity: 0; transform: scale(.4); transition: opacity .3s, transform .4s cubic-bezier(.3, 1.6, .4, 1); box-shadow: 0 0 12px rgba(255, 122, 80, .8); }
+    .s6 .bar.is-ok .bar-ok { opacity: 1; transform: scale(1); }
+    .s6 .bar.is-reset .bar-ok { transition: none; }
+
+    /* 7. Σήμα */
+    .s7 .sig { fill: none; stroke: #fff; stroke-width: 1.6; stroke-linejoin: round; opacity: .9; }
+    .s7 .scan { stroke: #FF7A50; stroke-width: 2; filter: drop-shadow(0 0 8px rgba(255, 122, 80, .9)); }
+
+    /* 8. Ρολόι */
+    .s8 .ticks line { stroke: #fff; stroke-width: 1.6; stroke-linecap: round; }
+    .s8 .hand { stroke: #FF7A50; stroke-width: 2; stroke-linecap: round; filter: drop-shadow(0 0 6px rgba(255, 122, 80, .8)); }
+    .s8 .sparks circle { fill: #FF7A50; animation: spark8 .9s ease-out forwards; }
+    @keyframes spark8 { 0% { opacity: 1; r: 3; } 100% { opacity: 0; r: 9; } }
+    .s8 text { fill: var(--muted); font-size: 13px; letter-spacing: .08em; }
+
+    /* 9. Πύλη */
+    .s9 .gate-wrap { position: absolute; inset: 0; }
+    .s9 .gate { position: absolute; left: 50%; top: 40px; bottom: 40px; width: 2px; background: #FF7A50; box-shadow: 0 0 24px 4px rgba(255, 122, 80, .55); animation: gate9 2.2s ease-in-out infinite; }
+    @keyframes gate9 { 50% { box-shadow: 0 0 36px 8px rgba(255, 122, 80, .75); } }
+    .s9 .tile { position: absolute; top: 50%; left: 0; width: 44px; height: 44px; margin-top: -22px; border-radius: 10px; border: 1.5px solid rgba(255, 255, 255, .35); display: grid; place-items: center; animation: tile9 6.5s linear infinite; }
+    .s9 .tile i { width: 10px; height: 10px; border-radius: 50%; background: #FF7A50; opacity: 0; transform: scale(.3); }
+    @keyframes tile9 {
+      0% { transform: translateX(-70px); background: transparent; border-color: rgba(255, 255, 255, .35); }
+      49.5% { background: transparent; border-color: rgba(255, 255, 255, .35); }
+      50.5% { background: #fff; border-color: #fff; }
+      100% { transform: translateX(calc(100vw)); background: #fff; border-color: #fff; }
+    }
+    .s9 .tile i { animation: dot9 6.5s linear infinite; animation-delay: inherit; }
+    @keyframes dot9 { 0%, 50% { opacity: 0; transform: scale(.3); } 56%, 100% { opacity: 1; transform: scale(1); } }
+  </style>
+</body>
+</html>
