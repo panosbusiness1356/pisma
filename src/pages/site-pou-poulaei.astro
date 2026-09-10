@@ -268,22 +268,25 @@ const faqItems = [
         };
         requestAnimationFrame(tick);
       });
-      // Στάσεις = η αρχή κάθε ενότητας του δείγματος (header / section / footer),
-      // ώστε κάθε ενότητα να «κάθεται» σωστά στην οθόνη. Σε πολύ ψηλές ενότητες
-      // μπαίνει και ενδιάμεση στάση για να μη χάνεται περιεχόμενο.
+      // Στάσεις = ΜΟΝΟ η κορυφή κάθε ενότητας του δείγματος (header / section /
+      // footer), ακριβώς όπως προσγειώνουν τις ενότητες τα δικά του links
+      // (block: start). Καμία ενδιάμεση στάση μέσα σε ψηλές ενότητες και καμία
+      // στάση σε λεπτές λωρίδες (κάτω από 45 % της οθόνης, π.χ. στατιστικά):
+      // και τα δύο έδειχναν την οθόνη «μισή-μισή» (χρήστρια 10/09/2026). Το
+      // footer είναι πάντα στάση, όσο κοντό κι αν είναι.
       const stops = () => {
         const w = frameWin(); const d = w?.document; if (!w || !d) return [];
         const vh = w.innerHeight, max = maxY();
         const els = Array.from(d.querySelectorAll('header, section, footer'))
           .filter((el) => !el.parentElement?.closest('header, section, footer'));
-        const tops = els.map((el) => Math.round(el.getBoundingClientRect().top + w.scrollY)).filter((t) => t > 0 && t < max + vh);
         const out = new Set<number>([0]);
-        tops.sort((a, b) => a - b).forEach((t, i) => {
-          out.add(Math.min(t, max));
-          const next = tops[i + 1] ?? max + vh;
-          for (let y = t + vh * .9; y < next - vh * .5 && y < max; y += vh * .9) out.add(Math.round(y));
-        });
-        out.add(max);
+        for (const el of els) {
+          const r = el.getBoundingClientRect();
+          const top = Math.round(r.top + w.scrollY);
+          if (top <= 0 || r.height <= 0) continue;
+          if (el.tagName !== 'FOOTER' && r.height < vh * .45) continue;
+          out.add(Math.min(top, max));
+        }
         return Array.from(out).sort((a, b) => a - b);
       };
       const tour = async () => {
