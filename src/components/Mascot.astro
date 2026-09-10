@@ -303,7 +303,11 @@ const cloudB = dots.slice(half);
             /* Το rect του τίτλου το πολύ κάθε 100 ms (όχι κάθε καρέ: forced layout πάνω σε κινούμενη σελίδα). */
             if (!hlRect || nowT - hlRectAt > 100) { hlRect = hlSpan.getBoundingClientRect(); hlRectAt = nowT; }
             const sr = hlRect;
-            const yLine = sr.bottom - H() * 0.35;
+            /* Ύψος πάνω στη γραμμή: στο desktop το 65 % του σώματος κρέμεται κάτω από την υπογράμμιση (μαρκαδόρος).
+               Στο κινητό το «PISMA.» αρχίζει 3 px κάτω από τον τίτλο, οπότε έτσι ο Ντοτ καθόταν πάνω στο «MA» όσο
+               τελείωνε τη γραμμή, ακριβώς όταν περνούσε η λωρίδα φωτός, και το «MA» φαινόταν να μένει φωτισμένο
+               περισσότερο (χρήστρια 11/09/2026). Εκεί κάθεται ψηλότερα: μόνο το 22 % κάτω από τη γραμμή. */
+            const yLine = sr.bottom - H() * (isMobile() ? 0.78 : 0.35);
             if (phase === 'approach') {
               t = { x: sr.left - W() * 0.55, y: yLine, idx: -2, side: 'right' };
               if (Math.hypot(t.x - px, t.y - py) < 24) phase = 'draw';
@@ -312,7 +316,9 @@ const cloudB = dots.slice(half);
               t = { x: sr.right - W() * 0.4, y: yLine, idx: -2, side: 'right' };
               const p = Math.min(1, Math.max(0, (px + W() / 2 - sr.left) / sr.width));
               hlPath!.style.strokeDashoffset = String(hlLen * (1 - p));
-              if (p >= 0.97) {
+              /* Τέλος στο 95 %: η προσέγγιση είναι ασυμπτωτική και το τελευταίο 3 % κόστιζε ~0,5 s ακίνητου
+                 Ντοτ στην άκρη της γραμμής (στο κινητό, πάνω στο «A»). Τα τελευταία 5 % τα κλείνει το finishStroke. */
+              if (p >= 0.95) {
                 phase = 'tour';
                 finishStroke();
               }
@@ -374,7 +380,9 @@ const cloudB = dots.slice(half);
         const dx = t.x - px;
         const dy = t.y - py;
         if (!birthing) {
-          const k = smooth(phase === 'tour' ? 0.032 : 0.045);
+          /* Είσοδος (προσέγγιση + γραμμή) πιο σβέλτη από την ξενάγηση: με 0,045 η τελευταία φάση της γραμμής
+             κρατούσε ~1 s (ασυμπτωτική προσέγγιση), τώρα ~0,5 s. */
+          const k = smooth(phase === 'tour' ? 0.032 : 0.075);
           px += dx * k;
           py += dy * k;
         }
