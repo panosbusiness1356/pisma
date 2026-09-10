@@ -69,7 +69,7 @@ const images = [
   <div class="container">
     <div class="sec-head">
       <p class="kicker kicker--blue">{t.kicker}</p>
-      <h2 id="gear-title">{t.title}</h2>
+      <h2 id="gear-title"><span class="full">{t.title}</span><span class="short">{t.kicker}</span></h2>
     </div>
     <div class="grid-3 gear-grid">
       {t.items.map((it, i) => (
@@ -147,5 +147,23 @@ const images = [
   @media (prefers-reduced-motion: reduce) {
     .gear-img { transition: none; }
     .gear-float, .gear-shadow { animation: none; }
+  }
+  /* Κινητό: οι κάρτες μένουν (χρήστρια 11/09/2026: «γιατί έβγαλες το section με τον εξοπλισμό μας»),
+     σε οριζόντια λωρίδα που σκρολάρει με το δάχτυλο, με φωτογραφία, ρόλο και όνομα, χωρίς περιγραφές. */
+  .short { display: none; }
+  @media (max-width: 640px) {
+    .full, .sec-head .kicker, .gear-card p:last-child { display: none; }
+    .short { display: inline; }
+    .sec-head { margin-bottom: 12px; }
+    .sec-head h2 { font-size: 1.45rem; }
+    .gear-grid {
+      display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch; padding-bottom: 6px; scrollbar-width: none;
+    }
+    .gear-grid::-webkit-scrollbar { display: none; }
+    .gear-card { flex: 0 0 58%; scroll-snap-align: start; padding: 14px 14px 12px; }
+    .gear-fig { height: 130px; margin-bottom: 10px; }
+    .gear-role { font-size: .7rem; margin-bottom: 4px; }
+    .gear-card h3 { font-size: .98rem; margin: 0; line-height: 1.25; }
   }
 </style>

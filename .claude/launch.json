@@ -281,6 +281,19 @@
         "4370"
       ],
       "port": 4370
+    },
+    {
+      "name": "pisma-gear-lan-4372",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4372",
+        "--host"
+      ],
+      "port": 4372
     }
   ]
 }

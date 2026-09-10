@@ -41,45 +41,52 @@ const schema = {
 const why = [
   {
     t: 'Οι πελάτες βλέπουν εσάς',
+    s: 'Η δική σας βιτρίνα, όχι stock από το internet.',
     d: 'Μια φωτογραφία από το internet τη βλέπει ο πελάτης και σε δέκα άλλα site. Η δική σας βιτρίνα, το δικό σας πιάτο, το δικό σας πρόσωπο: αυτό χτίζει εμπιστοσύνη πριν καν σας καλέσει.',
     icon: 'eye',
   },
   {
     t: 'Ένα γύρισμα, υλικό για μήνες',
+    s: 'Ένα ραντεβού καλύπτει site, Google και social.',
     d: 'Σε ένα ραντεβού βγαίνει ό,τι χρειάζεται για το site, το προφίλ Google και τα social. Δεκάδες φωτογραφίες και μικρά βίντεο, οργανωμένα και έτοιμα να ανέβουν.',
     icon: 'stack',
   },
   {
     t: 'Έτοιμο για κάθε κανάλι',
+    s: 'Κάθετο, οριζόντιο, τετράγωνο: πάντα στις σωστές διαστάσεις.',
     d: 'Κάθετο για reels και stories, οριζόντιο για το site, τετράγωνο για τη Google. Παραδίδουμε στις σωστές διαστάσεις, ώστε να μην κόβετε τίποτα μόνοι σας.',
     icon: 'frames',
   },
 ];
 
 const shoot = [
-  { t: 'Χώρος & βιτρίνα', d: 'Το μαγαζί όπως το βλέπει ο πελάτης που μπαίνει πρώτη φορά: φωτεινό, καθαρό, φιλόξενο.' },
-  { t: 'Προϊόντα', d: 'Για e-shop, κατάλογο και social: σε ουδέτερο φόντο ή μέσα στον χώρο σας, με τις λεπτομέρειες που πουλάνε.' },
-  { t: 'Πιάτα & ποτά', d: 'Για μενού, Google και Instagram: το πιάτο όπως βγαίνει από την κουζίνα, στο φυσικό του φως.' },
-  { t: 'Εσείς & η ομάδα', d: 'Ο κόσμος θέλει να ξέρει σε ποιον εμπιστεύεται. Πορτρέτα και στιγμές δουλειάς, χωρίς πόζες.' },
-  { t: 'Μικρά βίντεο', d: 'Reels και stories: η διαδικασία, το πριν/μετά, ένα «γεια» από εσάς. Ό,τι τραβάει την προσοχή.' },
-  { t: 'Πριν / Μετά', d: 'Για όποια δουλειά αλλάζει κάτι (κομμωτήριο, συνεργείο, ανακαίνιση). Η πιο πειστική φωτογραφία που υπάρχει.' },
+  { t: 'Χώρος & βιτρίνα', s: 'Όπως το βλέπει ο πελάτης', d: 'Το μαγαζί όπως το βλέπει ο πελάτης που μπαίνει πρώτη φορά: φωτεινό, καθαρό, φιλόξενο.' },
+  { t: 'Προϊόντα', s: 'Για e-shop και κατάλογο', d: 'Για e-shop, κατάλογο και social: σε ουδέτερο φόντο ή μέσα στον χώρο σας, με τις λεπτομέρειες που πουλάνε.' },
+  { t: 'Πιάτα & ποτά', s: 'Για μενού και Instagram', d: 'Για μενού, Google και Instagram: το πιάτο όπως βγαίνει από την κουζίνα, στο φυσικό του φως.' },
+  { t: 'Εσείς & η ομάδα', s: 'Πορτρέτα χωρίς πόζες', d: 'Ο κόσμος θέλει να ξέρει σε ποιον εμπιστεύεται. Πορτρέτα και στιγμές δουλειάς, χωρίς πόζες.' },
+  { t: 'Μικρά βίντεο', s: 'Reels και stories', d: 'Reels και stories: η διαδικασία, το πριν/μετά, ένα «γεια» από εσάς. Ό,τι τραβάει την προσοχή.' },
+  { t: 'Πριν / Μετά', s: 'Η πιο πειστική φωτογραφία', d: 'Για όποια δουλειά αλλάζει κάτι (κομμωτήριο, συνεργείο, ανακαίνιση). Η πιο πειστική φωτογραφία που υπάρχει.' },
 ];
 
 const steps = [
   {
     t: 'Λέμε τι χρειάζεστε',
+    s: 'Site, e-shop, Google ή social.',
     d: 'Site, e-shop, Google, social, ή όλα μαζί. Από αυτό βγαίνει η λίστα με τις λήψεις.',
   },
   {
     t: 'Ραντεβού στον χώρο σας',
+    s: 'Στις ήσυχες ώρες σας, χωρίς να κλείσετε.',
     d: 'Στις ήσυχες ώρες σας, χωρίς να κλείσετε. Φέρνουμε ό,τι εξοπλισμό χρειάζεται.',
   },
   {
     t: 'Επεξεργασία',
+    s: 'Χρώμα, φως, μοντάζ, σωστές διαστάσεις.',
     d: 'Χρώμα, φως, κόψιμο στις σωστές διαστάσεις για κάθε κανάλι. Μοντάζ στα βίντεο.',
   },
   {
     t: 'Παράδοση και ανέβασμα',
+    s: 'Οργανωμένα σε φάκελο ή κατευθείαν online.',
     d: 'Τα παίρνετε οργανωμένα σε φάκελο. Αν το site ή τα social τα κρατάμε εμείς, ανεβαίνουν κιόλας.',
   },
 ];
@@ -123,6 +130,7 @@ const faqItems = [
     sub="Φωτογραφίες και μικρά βίντεο τραβηγμένα στον χώρο σας για το site, το e-shop, το προφίλ Google και τα social, χωρίς εικόνες από το internet."
   >
     Η δουλειά σας, <span class="accent">όπως είναι στ’ αλήθεια</span>
+    <p class="hero-sub-m" slot="extra">Φωτογραφίες και βίντεο στον χώρο σας, για site, Google και social.</p>
   </PageHero>
   <GearSky />
 
@@ -131,11 +139,11 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">Τι κερδίζετε</p>
-        <h2 id="why-title">Τρεις λόγοι που το δικό σας υλικό πουλάει περισσότερο.</h2>
+        <h2 id="why-title"><span class="full">Τρεις λόγοι που το δικό σας υλικό πουλάει περισσότερο.</span><span class="short">Τι κερδίζετε</span></h2>
       </div>
       <div class="grid-3">
         {why.map((w) => (
-          <article class="card reveal">
+          <article class="card reveal why-card">
             <span class="icon-chip">
               {w.icon === 'eye' && (
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -154,7 +162,8 @@ const faqItems = [
               )}
             </span>
             <h3>{w.t}</h3>
-            <p>{w.d}</p>
+            <p class="full">{w.d}</p>
+            <p class="short">{w.s}</p>
           </article>
         ))}
       </div>
@@ -166,14 +175,15 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">Τι τραβάμε</p>
-        <h2 id="shoot-title">Ό,τι χρειάζεται να δει ο πελάτης πριν έρθει.</h2>
+        <h2 id="shoot-title"><span class="full">Ό,τι χρειάζεται να δει ο πελάτης πριν έρθει.</span><span class="short">Τι τραβάμε</span></h2>
       </div>
-      <div class="grid-3">
+      <div class="grid-3 shoot-grid">
         {shoot.map((s, i) => (
           <article class="card shot reveal">
             <span class="shot-num num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
             <h3>{s.t}</h3>
-            <p>{s.d}</p>
+            <p class="full">{s.d}</p>
+            <p class="short">{s.s}</p>
           </article>
         ))}
       </div>
@@ -185,14 +195,15 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">Πώς δουλεύει</p>
-        <h2 id="flow-title">Τέσσερα βήματα, ένα ραντεβού.</h2>
+        <h2 id="flow-title"><span class="full">Τέσσερα βήματα, ένα ραντεβού.</span><span class="short">Πώς δουλεύει</span></h2>
       </div>
       <ol class="steps">
         {steps.map((s, i) => (
           <li class="step reveal">
             <span class="step-num num" aria-hidden="true">{i + 1}</span>
             <h3>{s.t}</h3>
-            <p>{s.d}</p>
+            <p class="full">{s.d}</p>
+            <p class="short">{s.s}</p>
           </li>
         ))}
       </ol>
@@ -207,7 +218,7 @@ const faqItems = [
     <div class="container container--narrow">
       <div class="card price-card reveal">
         <div class="price-main">
-          <p class="kicker">Τιμές: δημόσιες, ίδιες για όλους</p>
+          <p class="kicker"><span class="full">Τιμές: δημόσιες, ίδιες για όλους</span><span class="short">Τιμές</span></p>
           <h2 id="price-title">
             Από <span class="price-num num">{eur(minPrice)}</span> εφάπαξ
           </h2>
@@ -218,6 +229,20 @@ const faqItems = [
             <strong>{video.label} {eur(video.price)}</strong> ({video.detail}).
             Στη μηνιαία διαχείριση social «με υλικό από PISMA», το υλικό των posts είναι ήδη μέσα.
           </p>
+          <ul class="price-list">
+            <li><span>{space.label}</span><strong>{eur(space.price)}</strong></li>
+            <li><span>{products.label}</span><strong>{eur(products.price)}</strong></li>
+            <li><span>{video.label}</span><strong>{eur(video.price)}</strong></li>
+          </ul>
+          <details class="price-more">
+            <summary>Τι περιλαμβάνει</summary>
+            <ul>
+              <li><strong>{space.label}:</strong> {space.detail}</li>
+              <li><strong>{products.label}:</strong> {products.detail}</li>
+              <li><strong>{video.label}:</strong> {video.detail}</li>
+            </ul>
+            <p>Στη μηνιαία διαχείριση social «με υλικό από PISMA», το υλικό των posts είναι ήδη μέσα.</p>
+          </details>
         </div>
         <div class="price-cta">
           <a class="btn btn--orange" href="/times/">Φτιάξτε το πακέτο σας →</a>
@@ -233,7 +258,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">Συχνές ερωτήσεις</p>
-        <h2 id="faq-title">Πριν ρωτήσετε, ρώτησαν άλλοι.</h2>
+        <h2 id="faq-title"><span class="full">Πριν ρωτήσετε, ρώτησαν άλλοι.</span><span class="short">Συχνές ερωτήσεις</span></h2>
       </div>
       <Faq items={faqItems} withSchema />
     </div>
@@ -278,4 +303,59 @@ const faqItems = [
   .price-cta { display: flex; flex-direction: column; gap: 12px; }
   .price-cta .btn { text-align: center; }
   .price-cta .btn-note { text-align: center; }
+
+  /* ---- Κινητό (≤ 640px): πολύ απλό, σχεδόν μόνο τίτλοι. Το πλήρες κείμενο μένει στο desktop ---- */
+  .short, .price-list, .price-more, .hero-sub-m { display: none; }
+  @media (min-width: 641px) {
+    :global(.hero .hero-extra) { display: none; }
+  }
+  @media (max-width: 640px) {
+    .full { display: none; }
+    .short { display: inline; }
+    /* Hero: μία γραμμή */
+    :global(.hero .sub) { display: none; }
+    :global(.hero .hero-extra) { margin-top: 12px; }
+    .hero-sub-m { display: block; margin: 0 auto; max-width: 30ch; color: var(--muted); font-size: 1rem; line-height: 1.45; }
+    /* Επικεφαλίδες: μόνο ο σύντομος τίτλος, χωρίς ετικέτα */
+    .sec-head .kicker { display: none; }
+    .sec-head { margin-bottom: 14px; }
+    .sec-head h2 { font-size: 1.45rem; }
+    /* Όπου η κάμερα στέκεται αριστερά (Nikon στο «Τι κερδίζετε», Canon στις FAQ), ο τίτλος πάει δεξιά */
+    [aria-labelledby="why-title"] .sec-head, [aria-labelledby="faq-title"] .sec-head { text-align: right; margin-left: auto; }
+    .grid-3 { gap: 8px; }
+    /* Τι κερδίζετε: εικονίδιο + τίτλος */
+    .why-card { display: flex; align-items: center; gap: 12px; padding: 11px 14px; }
+    .why-card .icon-chip { width: 38px; height: 38px; margin: 0; flex: none; }
+    .why-card h3 { margin: 0; font-size: .98rem; }
+    .why-card .short { display: none; }
+    /* Τι τραβάμε: αριθμός + τίτλος, δύο στήλες */
+    .shoot-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .shot { padding: 11px 12px; display: flex; align-items: center; gap: 9px; }
+    .shot-num { position: static; font-size: .68rem; padding: 2px 7px; flex: none; }
+    .shot h3 { font-size: .93rem; padding: 0; margin: 0; line-height: 1.25; }
+    .shot .short { display: none; }
+    /* Βήματα: αριθμός + τίτλος */
+    .step .short { display: none; }
+    .step h3 { margin: 0; }
+    :global(.steps) { gap: 10px; }
+    /* Τιμές: τρεις γραμμές, λεπτομέρειες με ένα άγγιγμα */
+    .price-sub { display: none; }
+    .price-main .kicker { margin-bottom: 10px; }
+    .price-list { display: grid; gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
+    .price-list li {
+      display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+      padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255, 255, 255, .03);
+    }
+    .price-list strong { color: var(--orange-text); white-space: nowrap; }
+    .price-more { display: block; margin-top: 10px; color: var(--muted); font-size: .92rem; }
+    .price-more summary { cursor: pointer; color: var(--ink); font-weight: 600; padding: 6px 0; list-style: none; }
+    .price-more summary::before { content: '+ '; color: var(--orange-text); }
+    .price-more[open] summary::before { content: '\2013  '; }
+    .price-more ul { margin: 6px 0 0; padding-left: 18px; }
+    .price-more li { margin: 4px 0; }
+    .price-more li strong { color: var(--ink); }
+    .price-more p { margin: 10px 0 0; }
+    /* CTA: τίτλος και κουμπί */
+    :global(.band-text p) { display: none; }
+  }
 </style>

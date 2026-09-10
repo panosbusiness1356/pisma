@@ -42,45 +42,52 @@ const schema = {
 const why = [
   {
     t: 'Customers see you',
+    s: 'Your own shop window, not stock from the internet.',
     d: 'A photo from the internet is one the customer has seen on ten other sites. Your shop window, your dish, your face: that builds trust before they even call.',
     icon: 'eye',
   },
   {
     t: 'One shoot, material for months',
+    s: 'One visit covers website, Google and social.',
     d: 'In one visit we get everything the website, the Google profile and social media need. Dozens of photos and short videos, organised and ready to upload.',
     icon: 'stack',
   },
   {
     t: 'Ready for every channel',
+    s: 'Vertical, horizontal, square: always the right size.',
     d: 'Vertical for reels and stories, horizontal for the website, square for Google. We deliver in the right sizes, so you never crop anything yourself.',
     icon: 'frames',
   },
 ];
 
 const shoot = [
-  { t: 'Space & shop window', d: 'The shop as a first-time customer sees it walking in: bright, clean, welcoming.' },
-  { t: 'Products', d: 'For your store, catalogue and social: on a neutral background or inside your space, with the details that sell.' },
-  { t: 'Dishes & drinks', d: 'For the menu, Google and Instagram: the dish as it comes out of the kitchen, in its natural light.' },
-  { t: 'You & the team', d: 'People want to know who they are trusting. Portraits and working moments, no posing.' },
-  { t: 'Short videos', d: 'Reels and stories: the process, the before/after, a "hello" from you. Whatever catches attention.' },
-  { t: 'Before / After', d: 'For any job that changes something (hair salon, garage, renovation). The most convincing photo there is.' },
+  { t: 'Space & shop window', s: 'As the customer sees it', d: 'The shop as a first-time customer sees it walking in: bright, clean, welcoming.' },
+  { t: 'Products', s: 'For store and catalogue', d: 'For your store, catalogue and social: on a neutral background or inside your space, with the details that sell.' },
+  { t: 'Dishes & drinks', s: 'For menu and Instagram', d: 'For the menu, Google and Instagram: the dish as it comes out of the kitchen, in its natural light.' },
+  { t: 'You & the team', s: 'Portraits, no posing', d: 'People want to know who they are trusting. Portraits and working moments, no posing.' },
+  { t: 'Short videos', s: 'Reels and stories', d: 'Reels and stories: the process, the before/after, a "hello" from you. Whatever catches attention.' },
+  { t: 'Before / After', s: 'The most convincing shot', d: 'For any job that changes something (hair salon, garage, renovation). The most convincing photo there is.' },
 ];
 
 const steps = [
   {
     t: 'We agree what you need',
+    s: 'Website, store, Google or social.',
     d: 'Website, store, Google, social, or all of them. The shot list comes from that.',
   },
   {
     t: 'Appointment at your premises',
+    s: 'Quiet hours, no closing.',
     d: 'During your quiet hours, without closing. We bring whatever equipment is needed.',
   },
   {
     t: 'Editing',
+    s: 'Colour, light, editing, right sizes.',
     d: 'Colour, light, cropping to the right size for every channel. Editing for the videos.',
   },
   {
     t: 'Delivery and upload',
+    s: 'Organised in a folder, or straight online.',
     d: 'You get everything organised in a folder. If we run your website or social media, it goes up as well.',
   },
 ];
@@ -124,6 +131,7 @@ const faqItems = [
     sub="Photos and short videos shot at your premises for the website, the online store, the Google profile and social media, with no images from the internet."
   >
     Your business, <span class="accent">as it really is</span>
+    <p class="hero-sub-m" slot="extra">Photos and video at your premises, for website, Google and social.</p>
   </PageHero>
   <GearSky />
 
@@ -132,11 +140,11 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">What you gain</p>
-        <h2 id="why-title">Three reasons your own material sells more.</h2>
+        <h2 id="why-title"><span class="full">Three reasons your own material sells more.</span><span class="short">What you gain</span></h2>
       </div>
       <div class="grid-3">
         {why.map((w) => (
-          <article class="card reveal">
+          <article class="card reveal why-card">
             <span class="icon-chip">
               {w.icon === 'eye' && (
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -155,7 +163,8 @@ const faqItems = [
               )}
             </span>
             <h3>{w.t}</h3>
-            <p>{w.d}</p>
+            <p class="full">{w.d}</p>
+            <p class="short">{w.s}</p>
           </article>
         ))}
       </div>
@@ -167,14 +176,15 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">What we shoot</p>
-        <h2 id="shoot-title">Everything a customer needs to see before they come.</h2>
+        <h2 id="shoot-title"><span class="full">Everything a customer needs to see before they come.</span><span class="short">What we shoot</span></h2>
       </div>
-      <div class="grid-3">
+      <div class="grid-3 shoot-grid">
         {shoot.map((s, i) => (
           <article class="card shot reveal">
             <span class="shot-num num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
             <h3>{s.t}</h3>
-            <p>{s.d}</p>
+            <p class="full">{s.d}</p>
+            <p class="short">{s.s}</p>
           </article>
         ))}
       </div>
@@ -186,14 +196,15 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">How it works</p>
-        <h2 id="flow-title">Four steps, one appointment.</h2>
+        <h2 id="flow-title"><span class="full">Four steps, one appointment.</span><span class="short">How it works</span></h2>
       </div>
       <ol class="steps">
         {steps.map((s, i) => (
           <li class="step reveal">
             <span class="step-num num" aria-hidden="true">{i + 1}</span>
             <h3>{s.t}</h3>
-            <p>{s.d}</p>
+            <p class="full">{s.d}</p>
+            <p class="short">{s.s}</p>
           </li>
         ))}
       </ol>
@@ -208,7 +219,7 @@ const faqItems = [
     <div class="container container--narrow">
       <div class="card price-card reveal">
         <div class="price-main">
-          <p class="kicker">Prices: public, the same for everyone</p>
+          <p class="kicker"><span class="full">Prices: public, the same for everyone</span><span class="short">Prices</span></p>
           <h2 id="price-title">
             From <span class="price-num num">{eurEn(minPrice)}</span> one-off
           </h2>
@@ -219,6 +230,20 @@ const faqItems = [
             <strong>{video.label} {eurEn(video.price)}</strong> ({video.detail}).
             With monthly social media management "content by PISMA", the material for the posts is already included.
           </p>
+          <ul class="price-list">
+            <li><span>{space.label}</span><strong>{eurEn(space.price)}</strong></li>
+            <li><span>{products.label}</span><strong>{eurEn(products.price)}</strong></li>
+            <li><span>{video.label}</span><strong>{eurEn(video.price)}</strong></li>
+          </ul>
+          <details class="price-more">
+            <summary>What is included</summary>
+            <ul>
+              <li><strong>{space.label}:</strong> {space.detail}</li>
+              <li><strong>{products.label}:</strong> {products.detail}</li>
+              <li><strong>{video.label}:</strong> {video.detail}</li>
+            </ul>
+            <p>With monthly social media management "content by PISMA", the material for the posts is already included.</p>
+          </details>
         </div>
         <div class="price-cta">
           <a class="btn btn--orange" href="/en/pricing/">Build your package →</a>
@@ -234,7 +259,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">FAQ</p>
-        <h2 id="faq-title">Before you ask, others did.</h2>
+        <h2 id="faq-title"><span class="full">Before you ask, others did.</span><span class="short">FAQ</span></h2>
       </div>
       <Faq items={faqItems} withSchema />
     </div>
@@ -279,4 +304,59 @@ const faqItems = [
   .price-cta { display: flex; flex-direction: column; gap: 12px; }
   .price-cta .btn { text-align: center; }
   .price-cta .btn-note { text-align: center; }
+
+  /* ---- Κινητό (≤ 640px): πολύ απλό, σχεδόν μόνο τίτλοι. Το πλήρες κείμενο μένει στο desktop ---- */
+  .short, .price-list, .price-more, .hero-sub-m { display: none; }
+  @media (min-width: 641px) {
+    :global(.hero .hero-extra) { display: none; }
+  }
+  @media (max-width: 640px) {
+    .full { display: none; }
+    .short { display: inline; }
+    /* Hero: μία γραμμή */
+    :global(.hero .sub) { display: none; }
+    :global(.hero .hero-extra) { margin-top: 12px; }
+    .hero-sub-m { display: block; margin: 0 auto; max-width: 30ch; color: var(--muted); font-size: 1rem; line-height: 1.45; }
+    /* Επικεφαλίδες: μόνο ο σύντομος τίτλος, χωρίς ετικέτα */
+    .sec-head .kicker { display: none; }
+    .sec-head { margin-bottom: 14px; }
+    .sec-head h2 { font-size: 1.45rem; }
+    /* Όπου η κάμερα στέκεται αριστερά (Nikon στο «Τι κερδίζετε», Canon στις FAQ), ο τίτλος πάει δεξιά */
+    [aria-labelledby="why-title"] .sec-head, [aria-labelledby="faq-title"] .sec-head { text-align: right; margin-left: auto; }
+    .grid-3 { gap: 8px; }
+    /* Τι κερδίζετε: εικονίδιο + τίτλος */
+    .why-card { display: flex; align-items: center; gap: 12px; padding: 11px 14px; }
+    .why-card .icon-chip { width: 38px; height: 38px; margin: 0; flex: none; }
+    .why-card h3 { margin: 0; font-size: .98rem; }
+    .why-card .short { display: none; }
+    /* Τι τραβάμε: αριθμός + τίτλος, δύο στήλες */
+    .shoot-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .shot { padding: 11px 12px; display: flex; align-items: center; gap: 9px; }
+    .shot-num { position: static; font-size: .68rem; padding: 2px 7px; flex: none; }
+    .shot h3 { font-size: .93rem; padding: 0; margin: 0; line-height: 1.25; }
+    .shot .short { display: none; }
+    /* Βήματα: αριθμός + τίτλος */
+    .step .short { display: none; }
+    .step h3 { margin: 0; }
+    :global(.steps) { gap: 10px; }
+    /* Τιμές: τρεις γραμμές, λεπτομέρειες με ένα άγγιγμα */
+    .price-sub { display: none; }
+    .price-main .kicker { margin-bottom: 10px; }
+    .price-list { display: grid; gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
+    .price-list li {
+      display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+      padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255, 255, 255, .03);
+    }
+    .price-list strong { color: var(--orange-text); white-space: nowrap; }
+    .price-more { display: block; margin-top: 10px; color: var(--muted); font-size: .92rem; }
+    .price-more summary { cursor: pointer; color: var(--ink); font-weight: 600; padding: 6px 0; list-style: none; }
+    .price-more summary::before { content: '+ '; color: var(--orange-text); }
+    .price-more[open] summary::before { content: '\2013  '; }
+    .price-more ul { margin: 6px 0 0; padding-left: 18px; }
+    .price-more li { margin: 4px 0; }
+    .price-more li strong { color: var(--ink); }
+    .price-more p { margin: 10px 0 0; }
+    /* CTA: τίτλος και κουμπί */
+    :global(.band-text p) { display: none; }
+  }
 </style>
