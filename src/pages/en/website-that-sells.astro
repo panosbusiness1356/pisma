@@ -36,19 +36,19 @@ const schema = {
 
 const why = [
   {
-    t: 'Fast loading',
-    d: 'Opens instantly on phone and desktop. Visitors do not wait.',
+    t: 'Fast on every device',
+    d: 'Loads instantly on phone and desktop. Visitors see your services and prices without waiting.',
     icon: 'speed',
   },
   {
-    t: 'A clear next step',
-    d: 'Call, message or quote request, easy to reach from every page.',
-    icon: 'target',
+    t: 'Ready for Google',
+    d: 'Correct technical structure from day one, so your business appears in searches for your area.',
+    icon: 'search',
   },
   {
-    t: 'Measurable results',
-    d: 'Visits, calls and traffic sources, with clear figures every month.',
-    icon: 'chart',
+    t: 'Entirely yours',
+    d: 'Domain, content and files belong to your business. Monthly services are optional.',
+    icon: 'key',
   },
 ];
 
@@ -139,7 +139,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">What is included</p>
-        <h2 id="why-title">Three essentials of every website we build.</h2>
+        <h2 id="why-title">What every website we build includes.</h2>
       </div>
       <div class="grid-3">
         {why.map((w) => (
@@ -150,14 +150,14 @@ const faqItems = [
                   <path d="M13 2.5 4.5 13.5h6l-1 8L19.5 10.5h-6z" />
                 </svg>
               )}
-              {w.icon === 'target' && (
+              {w.icon === 'search' && (
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="4.5" /><circle cx="12" cy="12" r="1" />
+                  <circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21" />
                 </svg>
               )}
-              {w.icon === 'chart' && (
+              {w.icon === 'key' && (
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M5 20V11" /><path d="M12 20V4" /><path d="M19 20v-6" />
+                  <circle cx="8" cy="14" r="4.5" /><path d="M11.5 10.5 20 2" /><path d="M16 6l3 3" /><path d="M13.5 8.5 16 11" />
                 </svg>
               )}
             </span>

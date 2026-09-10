@@ -36,19 +36,19 @@ const schema = {
 
 const why = [
   {
-    t: 'Γρήγορη φόρτωση',
-    d: 'Ανοίγει άμεσα σε κινητό και υπολογιστή. Ο επισκέπτης δεν περιμένει.',
+    t: 'Γρήγορο σε κάθε συσκευή',
+    d: 'Φορτώνει άμεσα σε κινητό και υπολογιστή. Ο επισκέπτης βλέπει τις υπηρεσίες και τις τιμές σας χωρίς αναμονή.',
     icon: 'speed',
   },
   {
-    t: 'Σαφές επόμενο βήμα',
-    d: 'Κλήση, μήνυμα ή αίτημα προσφοράς, εύκολα προσβάσιμα από κάθε σελίδα.',
-    icon: 'target',
+    t: 'Έτοιμο για τη Google',
+    d: 'Σωστή τεχνική δομή από την πρώτη μέρα, ώστε η επιχείρησή σας να εμφανίζεται στις αναζητήσεις της περιοχής της.',
+    icon: 'search',
   },
   {
-    t: 'Μετρήσιμη απόδοση',
-    d: 'Επισκέψεις, κλήσεις και πηγές επισκεψιμότητας, με καθαρά στοιχεία κάθε μήνα.',
-    icon: 'chart',
+    t: 'Δικό σας, εξ ολοκλήρου',
+    d: 'Domain, περιεχόμενο και αρχεία ανήκουν στην επιχείρησή σας. Οι μηνιαίες υπηρεσίες είναι προαιρετικές.',
+    icon: 'key',
   },
 ];
 
@@ -138,7 +138,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">Τι περιλαμβάνει</p>
-        <h2 id="why-title">Τρία βασικά χαρακτηριστικά κάθε site μας.</h2>
+        <h2 id="why-title">Τι περιλαμβάνει κάθε site μας.</h2>
       </div>
       <div class="grid-3">
         {why.map((w) => (
@@ -149,14 +149,14 @@ const faqItems = [
                   <path d="M13 2.5 4.5 13.5h6l-1 8L19.5 10.5h-6z" />
                 </svg>
               )}
-              {w.icon === 'target' && (
+              {w.icon === 'search' && (
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="4.5" /><circle cx="12" cy="12" r="1" />
+                  <circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21" />
                 </svg>
               )}
-              {w.icon === 'chart' && (
+              {w.icon === 'key' && (
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M5 20V11" /><path d="M12 20V4" /><path d="M19 20v-6" />
+                  <circle cx="8" cy="14" r="4.5" /><path d="M11.5 10.5 20 2" /><path d="M16 6l3 3" /><path d="M13.5 8.5 16 11" />
                 </svg>
               )}
             </span>
