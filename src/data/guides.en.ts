@@ -32,7 +32,7 @@ export const GUIDES_EN: GuideMeta[] = [
   },
   {
     slug: 'what-are-automations',
-    q: 'What are office automations?',
+    q: 'What are automations?',
     blurb: 'What each one does: payments, debts, reports.',
   },
   {
