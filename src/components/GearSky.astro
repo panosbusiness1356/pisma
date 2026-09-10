@@ -8,7 +8,9 @@
   αιώρηση επί τόπου. Η Canon «ρίχνει φλας» όταν περνά ο δείκτης από πάνω της.
   Η Nikon ρίχνει φλας μόνη της μία φορά στο άνοιγμα της σελίδας, διπλό «ποπ»
   όπως μια DSLR (προ-φλας και κύριο), μόλις εμφανιστεί (χρήστρια 11/09/2026:
-  «βάλε η Nikon να κάνει φλας όταν ανοίγεις τη σελίδα»).
+  «βάλε η Nikon να κάνει φλας όταν ανοίγεις τη σελίδα»). Το ίδιο και η Canon,
+  την πρώτη φορά που μπαίνει στην οθόνη με το scroll (χρήστρια 11/09/2026:
+  «κάνε το και στην g7x»), και συνεχίζει να φλασάρει με τον δείκτη.
   Αίτημα χρήστριας 11/09/2026: «βάλε τα να είναι σταθερά κάπου μέσα στη σελίδα,
   η μία κάμερα να κάνει κάτι σαν φλας όταν περνάς από μπροστά της, χώρισέ τες
   καλά μέσα στη σελίδα, μην κάνεις λάθη».
@@ -26,7 +28,7 @@
 const items = [
   { file: 'nikon-d750.webp', w: 619, h: 496, key: 'd750', flash: true, auto: true, anchor: 'section.hero', frac: 0.56 },
   { file: 'dji-osmo-pocket-4.webp', w: 335, h: 900, key: 'pocket', flash: false, auto: false, anchor: '[aria-labelledby="why-title"]', frac: 0.58 },
-  { file: 'canon-g7x-mark-iii.webp', w: 1190, h: 700, key: 'g7x', flash: true, auto: false, anchor: '[aria-labelledby="shoot-title"]', frac: 0.42 },
+  { file: 'canon-g7x-mark-iii.webp', w: 1190, h: 700, key: 'g7x', flash: true, auto: true, anchor: '[aria-labelledby="shoot-title"]', frac: 0.42 },
 ];
 ---
 
@@ -64,8 +66,10 @@ const items = [
     setTimeout(() => { place(); sky.classList.add('is-on'); }, 900);
 
     // Φλας: μία έκλαμψη (0,65 s) και μικρή «νεκρή» περίοδος ώστε να μην ξαναρχίσει
-    // πριν τελειώσει. Canon: όταν ο δείκτης περάσει από πάνω της. Nikon: μόνη της,
-    // μία φορά στο άνοιγμα, διπλό ποπ (προ-φλας + κύριο) 1,3 s αφού εμφανιστεί.
+    // πριν τελειώσει. Canon: και όταν ο δείκτης περάσει από πάνω της. Αυτόματο
+    // (data-auto, Nikon και Canon): διπλό ποπ (προ-φλας + κύριο), μία φορά, την
+    // πρώτη φορά που η κάμερα είναι στην οθόνη: η Nikon (hero) 1,3 s αφού
+    // εμφανιστεί το στρώμα, η Canon 0,35 s αφού μπει στην οθόνη με το scroll.
     // Όχι με reduced motion, ούτε όταν το στρώμα είναι κρυφό (οθόνες < 1340px).
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!reduce) {
@@ -80,13 +84,28 @@ const items = [
         cam.addEventListener('pointerenter', () => fire(cam));
       }
       const shown = () => getComputedStyle(sky).display !== 'none' && !document.hidden;
-      for (const cam of sky.querySelectorAll<HTMLElement>('[data-auto]')) {
-        setTimeout(() => {
-          if (!shown()) return;
-          cam.classList.add('is-flashing');
-          setTimeout(() => cam.classList.remove('is-flashing'), 260);
-          setTimeout(() => fire(cam), 300);
-        }, 900 + 1300);
+      const pop = (cam: HTMLElement) => {
+        if (!shown() || cam.dataset.popped) return;
+        cam.dataset.popped = '1';
+        cam.classList.add('is-flashing');
+        setTimeout(() => cam.classList.remove('is-flashing'), 260);
+        setTimeout(() => fire(cam), 300);
+      };
+      const tOn = performance.now() + 900; // πότε εμφανίζεται το στρώμα (is-on)
+      const autos = [...sky.querySelectorAll<HTMLElement>('[data-auto]')];
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((es) => {
+          for (const e of es) {
+            if (!e.isIntersecting || e.intersectionRatio < .5) continue;
+            const cam = e.target as HTMLElement;
+            io.unobserve(cam);
+            const wait = Math.max(350, tOn + 1300 - performance.now());
+            setTimeout(() => pop(cam), wait);
+          }
+        }, { threshold: [.5] });
+        autos.forEach((cam) => io.observe(cam));
+      } else {
+        autos.forEach((cam) => setTimeout(() => pop(cam), 900 + 1300));
       }
     }
   }
