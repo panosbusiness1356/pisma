@@ -36,56 +36,56 @@ const schema = {
 
 const why = [
   {
-    t: 'It does not go down, not even on holidays',
-    d: 'Shopify hosts millions of stores. You never deal with servers, backups or security updates. The store runs, and you sell.',
+    t: 'Reliable platform',
+    d: 'Hosting, security and updates by Shopify. No servers, no technical work.',
     icon: 'shield',
   },
   {
-    t: 'Payments and shipping, ready',
-    d: 'Card, cash on delivery, couriers with automatic shipping costs. Customers order in two minutes from their phone, and you get a notification.',
+    t: 'Payments and shipping',
+    d: 'Card, cash on delivery and couriers with automatic rates, from day one.',
     icon: 'cart',
   },
   {
-    t: 'You run it from your phone',
-    d: 'Orders, stock, prices: all from one app. Change a price at the register and it is already live.',
+    t: 'Managed from your phone',
+    d: 'Orders, stock and prices from one app.',
     icon: 'phone',
   },
 ];
 
 const build = [
-  'Store set-up in your colours and with your logo',
-  'Product entry: photos, descriptions, variants (sizes, colours)',
-  'Payments, shipping, VAT and the legal pages the law requires',
-  'Connection to Google, Instagram and Facebook so you sell there too',
-  'Test orders end to end before opening',
-  'Training: one session so you can run it yourself',
+  'Set-up with your logo and colours',
+  'Product entry with variants',
+  'Payments, shipping, VAT, legal pages',
+  'Connection to Google, Instagram and Facebook',
+  'Test orders before launch',
+  'Training',
 ];
 
 const manage = [
-  'New products and photos: you send, we upload',
-  'Stock and prices always right, so nothing keeps selling after it has run out',
-  'Discounts and seasonal offers (Black Friday, holidays, sale periods)',
-  'Apps, theme and updates, without anything breaking',
+  'Uploading new products and photos',
+  'Stock and price updates',
+  'Discounts and seasonal offers',
+  'Apps, theme and updates',
   'Monthly speed and security check',
-  'Monthly report: what sold, where your customers came from',
+  'Monthly sales report',
 ];
 
 const steps = [
   {
     t: 'Free PISMA Check',
-    d: `${ELEGXOS.minutes} minutes: what you sell, how you ship, how you get paid, what you already have online.`,
+    d: `${ELEGXOS.minutes} minutes: what you sell, how you ship, what you already have online.`,
   },
   {
     t: 'Written proposal',
-    d: `Within ${ELEGXOS.reportHours} hours: exactly what gets built, when it is delivered, and a fixed price.`,
+    d: `Within ${ELEGXOS.reportHours} hours, with a fixed price and delivery date.`,
   },
   {
     t: 'Build and testing',
-    d: 'We build the store, upload the products and place test orders together with you.',
+    d: 'Store, products and test orders.',
   },
   {
-    t: 'Launch and beyond',
-    d: 'The store opens. You run it after training, or we take it over month by month.',
+    t: 'Launch',
+    d: 'You run it, or we manage it monthly.',
   },
 ];
 
@@ -108,7 +108,7 @@ const faqItems = [
   },
   {
     q: 'I do not have good product photos.',
-    a: 'We take them, at your premises. See our photography and video service. A store with blurry phone photos does not sell, no matter how well it is built.',
+    a: 'We take them, at your premises. See our photography and video service.',
   },
   {
     q: 'Will I get found on Google?',
@@ -129,7 +129,7 @@ const faqItems = [
   <!-- 1. Hero -->
   <PageHero
     kicker="Shopify store"
-    sub="We build your online store on Shopify or take over the one you already have. We take care of the settings, so all you see is orders."
+    sub="We build your Shopify store or take over your existing one. Payments, shipping and settings, ready."
   >
     Your store, <span class="accent">open 24 hours</span>
   </PageHero>
@@ -139,7 +139,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">Why Shopify</p>
-        <h2 id="why-title">Three things you will never have to think about.</h2>
+        <h2 id="why-title">A stable platform, ready to sell.</h2>
       </div>
       <div class="grid-3">
         {why.map((w) => (
@@ -174,7 +174,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">What we take on</p>
-        <h2 id="ways-title">Two ways to work together, or both.</h2>
+        <h2 id="ways-title">Build, management, or both.</h2>
       </div>
       <div class="grid-2">
         <article class="card way reveal" id="build">
@@ -183,7 +183,7 @@ const faqItems = [
             <span class="way-tag">One-off</span>
           </span>
           <h3>Store build</h3>
-          <p class="way-lead">From scratch, or from your old store, up to the first real order.</p>
+          <p class="way-lead">From scratch, or migrated from another platform.</p>
           <ul class="way-list">
             {build.map((b) => <li>{b}</li>)}
           </ul>
@@ -194,7 +194,7 @@ const faqItems = [
             <span class="way-tag way-tag--blue">Monthly</span>
           </span>
           <h3>Shopify management</h3>
-          <p class="way-lead">You already have a store, but no time. We keep it updated, fast and ready for every season.</p>
+          <p class="way-lead">Your store kept updated and fast, every month.</p>
           <ul class="way-list">
             {manage.map((m) => <li>{m}</li>)}
           </ul>
@@ -208,7 +208,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">How it works</p>
-        <h2 id="flow-title">Four steps to the first order.</h2>
+        <h2 id="flow-title">Four steps.</h2>
       </div>
       <ol class="steps">
         {steps.map((s, i) => (
@@ -252,7 +252,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">FAQ</p>
-        <h2 id="faq-title">Before you ask, others did.</h2>
+        <h2 id="faq-title">FAQ.</h2>
       </div>
       <Faq items={faqItems} withSchema />
     </div>
@@ -260,8 +260,8 @@ const faqItems = [
 
   <!-- 7. CTA -->
   <CtaBand
-    title="Time your store sold while you sleep."
-    sub={`We start with the free ${ELEGXOS.minutes}-minute PISMA Check: we look at what you sell, what you already have, and what is needed.`}
+    title="Start with a free check."
+    sub={`${ELEGXOS.minutes} minutes: what you have, what is needed, at what cost.`}
     ctaText="Book the free PISMA Check"
     ctaHref="/en/free-assessment/"
     note="No online payment · no lock-in"
