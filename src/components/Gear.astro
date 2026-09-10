@@ -59,7 +59,7 @@ const t =
 
 // Ίδια σειρά με τα items (και στις δύο γλώσσες). Διαστάσεις = πραγματικά pixels των WebP.
 const images = [
-  { file: 'dji-osmo-pocket-4.webp', w: 373, h: 900, key: 'pocket' },
+  { file: 'dji-osmo-pocket-4.webp', w: 335, h: 900, key: 'pocket' },
   { file: 'canon-g7x-mark-iii.webp', w: 1190, h: 700, key: 'g7x' },
   { file: 'nikon-d750.webp', w: 619, h: 496, key: 'd750' }
 ];
@@ -91,7 +91,7 @@ const images = [
   .gear-fig {
     margin: 0 0 18px;
     display: flex; align-items: flex-end; justify-content: center;
-    height: 210px;
+    height: 236px;
     /* απαλός «προβολέας» πίσω από τη συσκευή, χωρίς πλαίσιο, χωρίς φόντο */
     background: radial-gradient(ellipse 60% 70% at 50% 60%, rgba(255, 255, 255, .06), transparent 70%);
     border-radius: var(--r);
@@ -101,8 +101,8 @@ const images = [
     filter: drop-shadow(0 22px 26px rgba(0, 0, 0, .55));
     transition: transform var(--dur) var(--ease);
   }
-  .gear-img--g7x { height: 78%; }
-  .gear-img--d750 { height: 92%; }
+  .gear-img--g7x { height: 72%; }
+  .gear-img--d750 { height: 86%; }
   .gear-card:hover .gear-img { transform: translateY(-4px); }
   .gear-role {
     font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
