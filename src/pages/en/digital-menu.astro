@@ -29,23 +29,23 @@ const schema = {
     description: `${eurEn(menu.price)} a month, no commitment.`,
   },
   description:
-    'A QR code on the table: customers scan and see your menu on their phone. Change prices and dishes anytime, with no reprints.',
+    'A digital menu with a QR code on the table: customers scan and see the menu on their phone, with price and dish changes and no reprints.',
 };
 
 const why = [
   {
     t: 'Always up to date',
-    d: "Change a price, hide a dish that ran out, add today's special, and the change shows up instantly on every table.",
+    d: 'Change prices and dishes and every table sees it instantly.',
     icon: 'fresh',
   },
   {
-    t: 'No more reprints',
-    d: 'Every change to a paper menu means a print shop, cost, and waiting. Here it means one message.',
+    t: 'No reprints',
+    d: 'Every change is made online, with no print shop and no printing cost.',
     icon: 'print',
   },
   {
-    t: 'Nothing for customers to install',
-    d: 'They scan with their camera and the menu opens in the browser. No app, no account.',
+    t: 'No app needed',
+    d: 'Customers scan with their camera and the menu opens in the browser.',
     icon: 'phone',
   },
 ];
@@ -53,38 +53,38 @@ const why = [
 const faqItems = [
   {
     q: 'How fast does a price or dish change?',
-    a: 'Instantly. Changes happen online and show up on every table the moment they are saved, with no reprints and no waiting.',
+    a: 'Instantly. Changes are made online and show up on every table the moment they are saved.',
   },
   {
     q: 'Does the customer need an app?',
-    a: 'No. They scan the QR with their phone camera and the menu opens in the browser, like a regular web page.',
+    a: 'No. They scan the QR with their phone camera and the menu opens in the browser.',
   },
   {
     q: 'What do I need to get started?',
-    a: 'Your menu, and photos if you want the dishes to show. We set it up with your colors and logo; you stick the QR on the tables.',
+    a: 'Your menu and, if you want, photos of the dishes. We set it up with your colors and logo, you place the QR on the tables.',
   },
   {
     q: 'How much does it cost?',
-    a: `${eurEn(menu.price)} a month, with no contract and no commitment. Stop whenever you want. Price and dish changes are included.`,
+    a: `${eurEn(menu.price)} a month, with no contract and no commitment. Price and dish changes are included and you can stop whenever you want.`,
   },
   {
     q: 'Does it work for delivery or the storefront?',
-    a: 'Yes. The same menu opens from a QR in the window, on the delivery bag, or from a link on your socials. One menu, the same everywhere and always up to date.',
+    a: 'Yes. The same menu opens from a QR in the window, on the delivery bag or from a link on your socials.',
   },
 ];
 ---
 
 <Base
   title="Digital Menu with QR and no reprints | PISMA"
-  description="A QR code on the table: customers scan and see your menu on their phone. Change prices and dishes anytime, with no reprints. See it live."
+  description="A digital menu with a QR code for restaurants: customers scan and see the menu on their phone, with price and dish changes and no reprints."
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
-    kicker="Digital Menu with QR"
-    sub="One QR code on the table. Customers scan, the menu opens on their phone, and every change you make shows up instantly, no print shop involved."
+    kicker="Restaurants"
+    sub="Customers scan the QR on the table and see the menu on their phone, with every change you make visible instantly."
   >
-    Your menu, <span class="accent">on your customer's phone</span>
+    Digital menu <span class="accent">with QR</span>
   </PageHero>
 
   <!-- 2. «Δείτε το ζωντανά», σκηνή σε loop όπως «Η άνοδος στη Google» στην
@@ -97,17 +97,15 @@ const faqItems = [
         <div class="dm-copy">
           <div class="sec-head">
             <p class="kicker">See it live</p>
-            <h2 id="live-title">Scan, browse, order</h2>
+            <h2 id="live-title">This is what customers see.</h2>
           </div>
           <p class="dm-sub">
-            This is how your customer experiences it: the QR opens the menu on
-            their phone. And when you change a price, every table sees it the
-            next moment.
+            The QR opens the menu on the customer's phone and every price change shows on all tables instantly.
           </p>
           <div class="dm-cta">
             <a class="btn btn--orange" href="/en/pricing/">Add it to your package →</a>
           </div>
-          <p class="dm-note">Illustrative. Your own menu is set up with your colors and dishes.</p>
+          <p class="dm-note">Illustrative, your own menu is set up with your colors and dishes.</p>
         </div>
 
         <div class="dm-stage" id="dm-stage" aria-hidden="true">
@@ -204,7 +202,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">What you get</p>
-        <h2 id="why-title">A menu that never goes stale.</h2>
+        <h2 id="why-title">What the service includes.</h2>
       </div>
       <div class="grid-3">
         {why.map((w) => (
@@ -244,8 +242,7 @@ const faqItems = [
             <span class="price-num num">{eurEn(menu.price)}</span> a month
           </h2>
           <p class="price-sub">
-            Setup with your own colors and logo, unlimited changes to prices and
-            dishes, all included. No contract, no commitment.
+            Setup with your colors and logo and unlimited changes to prices and dishes. No contract, no commitment.
           </p>
         </div>
         <div class="price-cta">
@@ -262,7 +259,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">FAQ</p>
-        <h2 id="faq-title">The questions everyone asks.</h2>
+        <h2 id="faq-title">FAQ.</h2>
       </div>
       <Faq items={faqItems} withSchema />
     </div>
@@ -270,8 +267,8 @@ const faqItems = [
 
   <!-- 6. CTA -->
   <CtaBand
-    title="Your menu, digital by tomorrow."
-    sub={`We start with the free ${ELEGXOS.minutes}-minute PISMA Check: we look at your menu and show you how it will look.`}
+    title="Start with a free check."
+    sub={`Free ${ELEGXOS.minutes}-minute PISMA Check: we look at your menu and show you how it will look.`}
     ctaText="Book the free PISMA Check"
     ctaHref="/en/free-assessment/"
     note="No online payment · no commitment"

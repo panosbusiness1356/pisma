@@ -12,7 +12,7 @@ import '../styles/fonts.css'; // self-hosted Inter/Unbounded/JetBrains Mono, ί�
 
 const title = 'Αυτοκόλλητα QR για το Εργαλείο Κριτικών | PISMA';
 const description =
-  'Διαλέξτε από 16 αυτοκόλλητα QR για τραπέζι, ταμείο, βιτρίνα και delivery, με τα χρώματα και το όνομα του μαγαζιού σας. Στέλνετε το καλάθι, σας παίρνουμε τηλέφωνο.';
+  '16 αυτοκόλλητα QR για τραπέζι, ταμείο, βιτρίνα και delivery, με τα χρώματα και το όνομα του μαγαζιού σας.';
 const canonical = `${SITE.url}/aftokollita/`;
 
 // JSON-LD: ίδια «ταυτότητα» WebSite με το Base + το προϊόν με εύρος τιμών από stickers.ts.
@@ -360,7 +360,7 @@ input{font-family:inherit}
     <div class="csec">
       <div class="tot"><span>Μία φορά</span><b id="t-once">0 €</b></div>
       <div class="tot sm"><span>Κάθε μήνα</span><b id="t-month">0 €</b></div>
-      <p class="note">Το στήσιμο το κλείνουμε στο τηλεφώνημα, γιατί κάθε μαγαζί θέλει το δικό του.</p>
+      <p class="note">Το στήσιμο συμφωνείται στο τηλεφώνημα.</p>
     </div>
   </div>
   <div class="cfoot">
@@ -599,7 +599,7 @@ function draw(animate){
       <span class="amt">${t.pr*S.cart[t.id]} €</span>
       <button class="x" aria-label="Αφαίρεση">×</button>
     </div>`).join('')
-    :'<p class="empty">Άδειο ακόμα.<br>Διαλέξτε από τη συλλογή και πατήστε «Προσθέστε το».</p>';
+    :'<p class="empty">Το καλάθι είναι άδειο.<br>Διαλέξτε αυτοκόλλητο και πατήστε «Προσθέστε το».</p>';
   $('lines').querySelectorAll('.li').forEach(r=>{
     const id=r.dataset.f;
     r.querySelectorAll('.miniq button').forEach(b=>b.onclick=()=>{

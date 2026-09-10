@@ -31,23 +31,23 @@ const schema = {
     description: `From ${eurEn(basic.price)} one-off.`,
   },
   description:
-    'A fast, clean website with a clear next step on every page: call, message or quote request.',
+    'Business website development, fast and clean, with a clear next step on every page.',
 };
 
 const why = [
   {
     t: 'Fast on every device',
-    d: 'Loads instantly on phone and desktop. Visitors see your services and prices without waiting.',
+    d: 'Loads instantly on phone and desktop.',
     icon: 'speed',
   },
   {
     t: 'Ready for Google',
-    d: 'Correct technical structure from day one, so your business appears in searches for your area.',
+    d: 'Correct technical structure for searches in your area.',
     icon: 'search',
   },
   {
     t: 'Entirely yours',
-    d: 'Domain, content and files belong to your business. Monthly services are optional.',
+    d: 'Domain, content and files belong to your business.',
     icon: 'key',
   },
 ];
@@ -55,7 +55,7 @@ const why = [
 const faqItems = [
   {
     q: 'How long until it is ready?',
-    a: 'In 2 to 4 weeks from receiving the material (texts, photos, logo). If something is missing, we help create it.',
+    a: 'In 2 to 4 weeks from receiving the material: texts, photos, logo. If something is missing, we help create it.',
   },
   {
     q: 'What do I need to bring?',
@@ -67,26 +67,26 @@ const faqItems = [
   },
   {
     q: 'How much does it cost?',
-    a: `One-off: Basic ${eurEn(basic.price)}, Standard ${eurEn(standard.price)}, Pro ${eurEn(pro.price)}. For very large businesses with many products there is an Enterprise tier, priced after consultation. Monthly services such as maintenance are optional and publicly priced on the pricing page.`,
+    a: `One-off: Basic ${eurEn(basic.price)}, Standard ${eurEn(standard.price)}, Pro ${eurEn(pro.price)}, Enterprise for very large businesses with many products, priced after consultation. Monthly services such as maintenance are optional and publicly priced on the pricing page.`,
   },
   {
     q: 'Will Google find me with this?',
-    a: 'The website is built technically correct for Google from the start. Active ranking improvement (SEO) is a separate service, described on the Digital Visibility page.',
+    a: 'The website is built technically correct for Google from the start. Active ranking improvement, SEO, is a separate service on the Digital Visibility page.',
   },
 ];
 ---
 
 <Base
   title="Business website development | PISMA"
-  description="A fast, clean website with a clear next step on every page. Live sample, public prices, delivery in 2 to 4 weeks."
+  description="Business website development with public prices, a live sample and delivery in 2 to 4 weeks."
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
     kicker="Website"
-    sub="A fast, clean website with a clear next step on every page."
+    sub="A fast website for your business, with a clear next step on every page."
   >
-    A website that <span class="accent">brings customers</span>
+    Website <span class="accent">development</span>
   </PageHero>
 
   <!-- 2. «Δείτε το ζωντανά», σκηνή laptop σε loop όπως οι άλλες σκηνές:
@@ -100,11 +100,10 @@ const faqItems = [
         <div class="sp-copy">
           <div class="sec-head">
             <p class="kicker">Live sample</p>
-            <h2 id="sp-title">See how one of our websites works.</h2>
+            <h2 id="sp-title">A sample of our work.</h2>
           </div>
           <p class="sp-sub">
-            Clean structure, fast loading and a clear call to action on every
-            page. What you see on screen is a sample of our work.
+            On screen you see a sample of our websites, with clean structure and fast loading.
           </p>
           <div class="sp-cta-row">
             <a class="btn btn--orange" href="/en/pricing/">See website pricing →</a>
@@ -139,7 +138,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">What is included</p>
-        <h2 id="why-title">What every website we build includes.</h2>
+        <h2 id="why-title">What every website includes.</h2>
       </div>
       <div class="grid-3">
         {why.map((w) => (
@@ -197,7 +196,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">FAQ</p>
-        <h2 id="faq-title">Answers to the basics.</h2>
+        <h2 id="faq-title">FAQ.</h2>
       </div>
       <Faq items={faqItems} withSchema />
     </div>
@@ -205,8 +204,8 @@ const faqItems = [
 
   <!-- 6. CTA -->
   <CtaBand
-    title="Let's get started."
-    sub={`Free ${ELEGXOS.minutes}-minute PISMA Check. We look at what you have today and what is needed.`}
+    title="Start with a free check."
+    sub={`Free ${ELEGXOS.minutes}-minute PISMA Check: what you have today and what is needed.`}
     ctaText="Book the free PISMA Check"
     ctaHref="/en/free-assessment/"
     note="No online payment · no commitment"

@@ -29,23 +29,23 @@ const schema = {
     description: `${eurEn(bookings.price)} one-off.`,
   },
   description:
-    'A website where your customers book an appointment or a table online and get an automatic reminder. No more no-shows.',
+    'A website with an online booking system: appointments or tables, with automatic reminders.',
 };
 
 const why = [
   {
     t: 'Bookings around the clock',
-    d: "Customers book whenever it suits them, even when you're closed. You don't have to take a single call.",
+    d: 'Customers book through your website, also outside opening hours.',
     icon: 'clock',
   },
   {
     t: 'Automatic reminders',
-    d: 'Before the appointment, the customer gets a reminder on their own. The "I forgot" and no-shows drop noticeably.',
+    d: 'The customer receives a reminder before the appointment.',
     icon: 'bell',
   },
   {
-    t: 'Your calendar, always up to date',
-    d: 'Every booking lands in your schedule by itself. You open the calendar and see your day, with nothing entered by hand.',
+    t: 'Up-to-date calendar',
+    d: 'Every booking is entered automatically into your schedule.',
     icon: 'cal',
   },
 ];
@@ -53,38 +53,38 @@ const why = [
 const faqItems = [
   {
     q: 'What can customers book?',
-    a: 'Anything with a time and a duration: a service appointment, a table, a session, a visit. We set up services, durations and opening hours together, and the system only shows times you are actually available.',
+    a: 'Anything with a time and a duration: a service appointment, a table, a session, a visit. We set up services, durations and opening hours together, and the system shows only the available times.',
   },
   {
     q: 'Does the customer need an app or an account?',
-    a: 'No. They book through your website, on their phone or computer, in half a minute.',
+    a: 'No. They book through your website, on a phone or computer.',
   },
   {
     q: 'How do I find out about a booking?',
-    a: 'You get an instant notification and the booking is written into your calendar. You can confirm, move or cancel it, and the customer is notified automatically.',
+    a: 'You receive a notification and the booking is entered into your calendar. You can confirm, move or cancel it, and the customer is notified automatically.',
   },
   {
     q: 'How much does it cost?',
-    a: `${eurEn(bookings.price)} one-off for the website with the booking system. No hidden subscriptions: anything monthly (like maintenance) is optional and publicly priced on our pricing page.`,
+    a: `${eurEn(bookings.price)} one-off for the website with the booking system. Anything monthly, such as maintenance, is optional and publicly priced on the pricing page.`,
   },
   {
     q: 'I already have a website. Can bookings be added to it?',
-    a: "If it's technically sound, yes: we add the booking system on top of it. Otherwise you see in writing what each option costs, and you decide.",
+    a: 'If the existing website is technically sound, we add the booking system to it. Otherwise you see the cost of each option in writing and decide.',
   },
 ];
 ---
 
 <Base
-  title="A website with online bookings: no more no-shows | PISMA"
-  description="A website where customers book an appointment or a table online, with automatic reminders. See it live: the booking, step by step, as your customer experiences it."
+  title="A website with online bookings | PISMA"
+  description="A website with an online booking system: appointments or tables, automatic reminders, calendar."
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
-    kicker="A website with online bookings"
-    sub="Customers pick a service, a day and a time right on your website, day or night. You just watch the calendar fill up."
+    kicker="Website"
+    sub="A website with a booking system: customers book online and you see it in your calendar."
   >
-    Appointments that book <span class="accent">themselves</span>
+    A website with online <span class="accent">bookings</span>
   </PageHero>
 
   <!-- 2. «See it live», η σκηνή του laptop (ίδιο pattern με τις άλλες
@@ -95,16 +95,15 @@ const faqItems = [
         <div class="lp-copy">
           <div class="sec-head">
             <p class="kicker">See it live</p>
-            <h2 id="lp-title">This is how your customer experiences it</h2>
+            <h2 id="lp-title">The booking, step by step.</h2>
           </div>
           <p class="lp-sub">
-            Customers browse, pick a time and book, day or night, without phone
-            calls. You just watch the calendar fill up.
+            The customer picks a service, a day and a time, then confirms.
           </p>
           <div class="lp-cta-row">
             <a class="btn btn--orange" href="/en/pricing/">See website pricing →</a>
           </div>
-          <p class="lp-note">Illustrative. Your own site is built for your own business.</p>
+          <p class="lp-note">Illustrative. Your own site is built for your business.</p>
         </div>
 
         <div class="lp-stage" id="lp-stage" aria-hidden="true">
@@ -182,7 +181,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">What you get</p>
-        <h2 id="why-title">Fewer phone calls, fewer no-shows.</h2>
+        <h2 id="why-title">Bookings without phone calls.</h2>
       </div>
       <div class="grid-3">
         {why.map((w) => (
@@ -223,7 +222,7 @@ const faqItems = [
           </h2>
           <p class="price-sub">
             Website and booking system together: services, opening hours,
-            automatic reminders, calendar. Anything monthly (like maintenance)
+            automatic reminders, calendar. Anything monthly, such as maintenance,
             is optional and publicly priced.
           </p>
         </div>
@@ -241,7 +240,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">FAQ</p>
-        <h2 id="faq-title">The questions everyone asks.</h2>
+        <h2 id="faq-title">FAQ.</h2>
       </div>
       <Faq items={faqItems} withSchema />
     </div>
@@ -249,8 +248,8 @@ const faqItems = [
 
   <!-- 6. CTA -->
   <CtaBand
-    title="Let the next appointment book itself."
-    sub={`We start with the free ${ELEGXOS.minutes}-minute PISMA Check: we look at how you work and show you how bookings would work for you.`}
+    title="Start with a free check."
+    sub={`${ELEGXOS.minutes} minutes: what you have, what is needed, at what cost.`}
     ctaText="Book the free PISMA Check"
     ctaHref="/en/free-assessment/"
     note="No online payment · no commitment"

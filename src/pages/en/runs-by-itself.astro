@@ -12,7 +12,7 @@ const schema = {
   name: 'Automations',
   serviceType: 'Automations for businesses',
   description:
-    'Your office routine runs on its own: payment matching, collections, an organized Excel and custom automations.',
+    'Automations for businesses: payment matching, payment reminders, an organized Excel and custom automations.',
   provider: {
     '@type': 'LocalBusiness',
     name: SITE.name,
@@ -25,42 +25,42 @@ const schema = {
 
 // Same bento order as the Greek page: [custom(strip 4)] [match(2)+chase+excel] [menu+eye(strip 3)]
 const services = [
-  { t: 'Custom automations', d: 'Anything you do with the same steps every time can run on its own, from a simple flow to a full application, on top of the software you already use.', icon: 'custom', size: 'strip4', href: '/en/contact/', cta: 'Tell us your routine →' },
-  { t: 'Automatic payment matching', d: 'Every payment finds its own invoice.', icon: 'match', size: 'big' },
-  { t: 'Automatic Debt Chaser', d: 'Polite reminders, automatically, at the right moment.', icon: 'chase', logos: ['whatsapp-icon.svg', 'viber.svg'] },
-  { t: 'An organized Excel', d: 'Your transactions in one Excel that updates itself.', icon: 'excel', logos: ['excel.svg'] },
-  { t: 'Digital Menu', d: 'A QR code on the table, the menu on their phone. Change prices with no reprints.', icon: 'menu', href: '/en/digital-menu/' },
-  { t: 'Your Spy', d: 'What your competitors are up to (prices, offers) in a regular report.', icon: 'eye', size: 'strip3' },
+  { t: 'Custom automations', d: 'Any repetitive task, on top of the software you already use.', icon: 'custom', size: 'strip4', href: '/en/contact/', cta: 'Tell us your routine →' },
+  { t: 'Automatic payment matching', d: 'Every payment is matched to its invoice automatically.', icon: 'match', size: 'big' },
+  { t: 'Automatic Debt Chaser', d: 'Automatic payment reminders at the right moment.', icon: 'chase', logos: ['whatsapp-icon.svg', 'viber.svg'] },
+  { t: 'An organized Excel', d: 'Your transactions in an Excel that updates automatically.', icon: 'excel', logos: ['excel.svg'] },
+  { t: 'Digital Menu', d: 'The menu on the phone via QR, price changes with no reprints.', icon: 'menu', href: '/en/digital-menu/' },
+  { t: 'Your Spy', d: 'Competitor prices and offers in a regular report.', icon: 'eye', size: 'strip3' },
 ];
 
 const faqItems = [
   {
     q: 'Will I have to change software?',
-    a: 'No. We build on top of what you already use: your invoicing software, your email, your phone.',
+    a: 'No. We build on top of what you already use: invoicing software, email, phone.',
   },
   {
     q: 'What if it breaks?',
-    a: 'We get alerted first, usually before you even notice. The fix is covered by your monthly maintenance.',
+    a: 'We are alerted first. The fix is covered by the monthly maintenance.',
   },
   {
     q: 'What about my data?',
-    a: 'It stays in your own accounts, on servers inside the EU, fully GDPR compliant.',
+    a: 'It stays in your own accounts, on servers inside the EU, GDPR compliant.',
   },
   {
     q: 'Will my employee lose their job?',
-    a: 'No. They will stop typing, and the hours freed up go to customers.',
+    a: 'No. Manual data entry stops and the time goes to customers.',
   },
 ];
 ---
 
 <Base
-  title="Automations: the office runs by itself | PISMA"
-  description="Payment matching, collections and an organized Excel run on their own. Whatever else your routine needs is built to order."
+  title="Automations: your business runs by itself | PISMA"
+  description="Payment matching, payment reminders and an organized Excel that run automatically, plus custom automations."
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
-    sub="We build every automation around the way your business works."
+    sub="Automations for your business routine, on top of the software you already use."
   >
     <span class="accent">Automations</span>
   </PageHero>
@@ -69,10 +69,10 @@ const faqItems = [
   <section class="section section--tight" aria-labelledby="services-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">What runs by itself</p>
-        <h2 id="services-title">Routine chores, taken off your plate.</h2>
+        <p class="kicker">Services</p>
+        <h2 id="services-title">What we automate.</h2>
       </div>
-      <ServiceCards services={services} cta="See what it does →" />
+      <ServiceCards services={services} cta="Learn more →" />
     </div>
   </section>
 
@@ -84,7 +84,7 @@ const faqItems = [
   <section class="section" aria-labelledby="flow-title">
     <div class="container">
       <div class="sec-head sec-head--center">
-        <p class="kicker kicker--ok">See it live</p>
+        <p class="kicker kicker--ok">How it works</p>
         <h2 id="flow-title">The routine runs by itself.</h2>
         <p>Every task passes through the system and comes out done, without you.</p>
       </div>
@@ -111,7 +111,7 @@ const faqItems = [
         </div>
         <div class="af-foot">
           <span class="af-count-wrap"><b class="num" id="af-count">38</b>completed today</span>
-          <span class="af-chip num">Your clicks: 0</span>
+          <span class="af-chip num">Manual actions: 0</span>
         </div>
       </div>
       <p class="af-note">Illustrative.</p>
@@ -126,8 +126,8 @@ const faqItems = [
       <div class="dk reveal">
         <div class="dk-text">
           <p class="kicker">Automation Score</p>
-          <h2 id="deiktis-title">Your routine, scored from 0 to 100.</h2>
-          <p>Ten short questions about payments, collections and organization. The fewer hours go to manual work, the higher the score.</p>
+          <h2 id="deiktis-title">A score from 0 to 100.</h2>
+          <p>Short questions about payments, collections and organization.</p>
           <a class="btn btn--orange btn--sm" href="/en/business-check/">Measure your business →</a>
         </div>
         <div class="dk-meter" aria-hidden="true">
@@ -147,7 +147,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">FAQ</p>
-        <h2 id="faq-title">What everyone asks before getting started.</h2>
+        <h2 id="faq-title">FAQ.</h2>
       </div>
       <Faq items={faqItems} withSchema />
     </div>
@@ -155,8 +155,8 @@ const faqItems = [
 
   <!-- 6. CTA -->
   <CtaBand
-    title="How much does your office run by itself?"
-    sub="Answer 12 quick questions and see your Automation Score."
+    title="Measure your Automation Score."
+    sub="12 short questions about your business."
     ctaText="Measure your Score"
     ctaHref="/en/business-check/"
     note="2 minutes · free · no personal details"

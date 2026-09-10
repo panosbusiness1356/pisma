@@ -33,36 +33,36 @@ const schema = {
     description: `${eurEn(wheel.price)} per month, no commitment, plus QR stickers as a one-off.`,
   },
   description:
-    "PISMA's tool that makes Google reviews pile up on their own. It starts with a QR sticker inside the business and it is only ever shown live, at a meeting.",
+    "PISMA's tool for more Google reviews, with a QR sticker inside the business and a live presentation only.",
 };
 
 const what = [
   {
-    t: 'Your customers enjoy it',
-    d: 'It starts with a sticker in your space, on the table, at the till or at the front desk, and turns into something your customer does with a smile.',
+    t: 'Simple for the customer',
+    d: 'It starts with a QR sticker at the table, till or front desk.',
   },
   {
-    t: 'It works without you',
-    d: 'No need to remember to ask. It is set up once and works every day, for every customer. You just watch the reviews come in.',
+    t: 'Set up once',
+    d: 'It works every day for every customer, without you asking for reviews.',
   },
   {
     t: "Within Google's rules",
-    d: 'No bought reviews, no staged ones, no reward in exchange. That was the very first requirement when we designed it, and at the meeting you will see exactly how it is respected.',
+    d: 'No bought reviews, no rewards in exchange, no review gating.',
   },
 ];
 
 const faqItems = [
   {
     q: 'What is the Reviews Tool?',
-    a: "PISMA's tool for Google reviews: it starts with a QR sticker in your shop and makes reviews pile up on their own, in a way your customers actually enjoy. Exactly how it works is not described publicly; you see it live.",
+    a: "PISMA's tool for Google reviews: it starts with a QR sticker at your premises. How it works is presented live only.",
   },
   {
     q: "Is this within Google's rules?",
-    a: 'Yes, fully. Google forbids bought reviews, rewards in exchange for reviews and review gating. The tool does none of the three. At the live meeting you will see exactly how we achieve that.',
+    a: 'Yes. Google forbids bought reviews, rewards in exchange for reviews and review gating, and the tool does none of the three.',
   },
   {
     q: 'What do I need to get started?',
-    a: 'A Google profile (if you do not have one, we set it up) and the QR stickers. Everything else we set up for you. You just stick the stickers.',
+    a: 'A Google profile, which we set up if you do not have one, and the QR stickers. We set up everything else.',
   },
   {
     q: 'How much does it cost?',
@@ -70,22 +70,22 @@ const faqItems = [
   },
   {
     q: 'Does it work for delivery too?',
-    a: 'Yes. There are stickers for the bag and the receipt, and the tool works just as well from your customer’s home.',
+    a: 'Yes, with stickers for the bag and the receipt. It works the same from the customer’s home.',
   },
 ];
 ---
 
 <Base
   title="The Reviews Tool: More Google reviews | PISMA"
-  description="PISMA's tool that makes Google reviews pile up on their own. We don't show it publicly. Book a meeting to see it live. No commitment."
+  description="PISMA's tool for more Google reviews, presented live only, with no commitment."
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
     kicker="The Reviews Tool"
-    sub="The tool that makes your customers want to leave a Google review, and enjoy doing it. How it works is something we don't show publicly."
+    sub="A tool for more Google reviews, presented live only."
   >
-    Reviews that pile up <span class="accent">on their own</span>
+    Google <span class="accent">Reviews</span>
     <div slot="extra"><NotClassicQr lang="en" /></div>
   </PageHero>
 
@@ -94,7 +94,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">What it does</p>
-        <h2 id="what-title">The result you can see. The mechanism, only in person.</h2>
+        <h2 id="what-title">Three key points.</h2>
       </div>
       <div class="grid-3">
         {what.map((w) => (
@@ -117,17 +117,16 @@ const faqItems = [
             <span class="price-num num">{eurEn(wheel.price)}</span> per month
           </h2>
           <p class="price-sub">
-            Everything included: platform, setup, stats. No contract, no commitment:
-            stop whenever you want.
+            Includes platform, setup and stats. No contract and no commitment.
           </p>
           <p class="price-sub">
-            Plus the QR stickers, one-off, <strong>from €18 per pack</strong>,
-            with 16 designs for tables, tills, windows and delivery.
+            QR stickers as a one-off, <strong>from €18 per pack</strong>,
+            in 16 designs for tables, tills, windows and delivery.
           </p>
         </div>
         <div class="price-cta">
           <a class="btn btn--orange" href="/en/qr-stickers/">Pick your stickers&nbsp;→</a>
-          <a class="btn btn--ghost" href="/en/contact/">Ask us anything</a>
+          <a class="btn btn--ghost" href="/en/contact/">Book a meeting</a>
           <span class="btn-note">No online payment. We settle it over the phone.</span>
         </div>
       </div>
@@ -139,7 +138,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">FAQ</p>
-        <h2 id="faq-title">Before you ask, others asked.</h2>
+        <h2 id="faq-title">Frequently asked questions.</h2>
       </div>
       <Faq items={faqItems} withSchema />
     </div>
@@ -148,7 +147,7 @@ const faqItems = [
   <!-- 6. CTA -->
   <CtaBand
     title="See the tool live."
-    sub="A 15-minute video call or a visit to your shop is enough to understand why we don't show it publicly."
+    sub="A 15-minute video call or a visit to your premises."
     ctaText="Book the meeting"
     ctaHref="/en/contact/"
     note="No online payment · no commitment"

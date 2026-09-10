@@ -30,13 +30,13 @@ const schema = {
 
 const services = [
   {
-    t: 'Website',
-    d: 'Fast, clean, with one clear next step on every page.',
+    t: 'Website development',
+    d: 'A fast website with one clear next step on every page.',
     icon: 'site',
     href: '/en/website-that-sells/',
   },
   {
-    t: 'A website with online bookings',
+    t: 'Website with online bookings',
     d: 'Appointments or tables booked online, with an automatic reminder.',
     icon: 'cal',
     href: '/en/booking-website/',
@@ -48,37 +48,37 @@ const services = [
     href: '/en/guides/google-maps-profile/',
   },
   {
-    t: 'First on Google (SEO)',
-    d: 'Top results for what you do, in your area.',
+    t: 'Google SEO',
+    d: 'Better Google rankings for what you do in your area.',
     icon: 'seo',
   },
   {
-    t: 'Get recommended by AI (GEO/AEO)',
-    d: 'When people ask ChatGPT "where should I go?", it says your name.',
+    t: 'AI recommendations',
+    d: 'GEO/AEO optimisation so ChatGPT recommends your business.',
     icon: 'ai',
   },
   {
     t: 'The Reviews Tool',
-    d: 'Google reviews pile up on their own. We only show it live.',
+    d: 'More Google reviews, presented live only.',
     icon: 'star',
     href: '/en/reviews/',
   },
   {
-    t: 'A Shopify store',
-    d: 'An online store ready to sell from day one.',
+    t: 'Shopify store',
+    d: 'An online store with payments and shipping ready.',
     icon: 'shopify',
     size: 'big',
     href: '/en/shopify/',
   },
   {
     t: 'Shopify management',
-    d: 'Products, stock and discounts, handled by us month by month.',
+    d: 'Products, stock and discounts, every month.',
     icon: 'shopify',
     href: '/en/shopify/#management',
   },
   {
     t: 'Photography & Video',
-    d: 'Photos and short videos at your premises. Your own material.',
+    d: 'Photos and short videos at your premises.',
     icon: 'camera',
     href: '/en/photo-video/',
   },
@@ -90,18 +90,18 @@ const services = [
   },
   {
     t: 'Digital Menu with QR',
-    d: 'A QR code on the table, the menu on their phone. Change prices with no reprints.',
+    d: "The menu on the customer's phone, updated without reprints.",
     icon: 'menu',
     href: '/en/digital-menu/',
   },
   {
     t: 'Loyalty Card',
-    d: 'A QR code at the register: stamps on every visit, a reward at the end.',
+    d: 'Stamps on every visit and a reward at the end, via QR.',
     icon: 'loyal',
   },
   {
-    t: 'An eye on the competition',
-    d: 'Where the shop across the street ranks, and where you do, every month.',
+    t: 'Competitor monitoring',
+    d: 'A monthly comparison of your visibility against competitors.',
     icon: 'eye',
     size: 'card',
   },
@@ -110,31 +110,31 @@ const services = [
 const faqItems = [
   {
     q: 'How long until SEO shows results?',
-    a: 'First signs in 2–3 months, steady growth in 4–6. Every month you see the numbers (rankings, visits, calls) and judge the progress for yourself.',
+    a: 'First signs in 2 to 3 months, steady growth in 4 to 6. Every month you receive a report with rankings, visits and calls.',
   },
   {
     q: 'What is GEO?',
-    a: "Generative Engine Optimization: getting ChatGPT, Gemini and Perplexity to recommend you when someone asks them about what you do. It's the SEO of the AI era, and it's measurable, just like the classic kind.",
+    a: 'Generative Engine Optimization: getting ChatGPT, Gemini and Perplexity to recommend you when someone asks about what you do. It is measurable, like classic SEO.',
   },
   {
     q: 'I already have a website. Do we keep it?',
-    a: "If it's technically sound, yes: we build on it and you don't pay for anything from scratch. If not, you see in writing what a fix costs versus a new one, and you decide.",
+    a: 'If it is technically sound, yes, we build on it. If not, you receive in writing the cost of a fix and the cost of a new site, and you decide.',
   },
   {
     q: 'Do I need ads to get found?',
-    a: "Not necessarily. Organic visibility builds more slowly, but it stays, and you don't pay for every click. If ads are worth it anywhere, the numbers will show it.",
+    a: 'Not necessarily: organic visibility builds more slowly, but it lasts and is not charged per click. If ads are worth it anywhere, the numbers will show it.',
   },
 ];
 ---
 
 <Base
   title="Digital Visibility: SEO, AI visibility & Reviews | PISMA"
-  description="Website, top spots on Google and recommendations from ChatGPT. We measure your visibility before and after, with numbers."
+  description="Website, Google rankings and recommendations from ChatGPT, with your visibility measured before and after."
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
-    sub="When someone searches for what you do in your area, you show up, on Google and on ChatGPT."
+    sub="A website, Google rankings and AI recommendations for your business."
   >
     Digital <span class="accent">Visibility</span>
   </PageHero>
@@ -144,7 +144,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">What we set up</p>
-        <h2 id="svc-title">Thirteen jobs with one goal: getting you found.</h2>
+        <h2 id="svc-title">Thirteen services.</h2>
       </div>
       <ServiceCards services={services} cta="See what it does →" />
     </div>
@@ -154,9 +154,9 @@ const faqItems = [
   <section class="section" aria-labelledby="chat-title">
     <div class="container container--narrow">
       <div class="sec-head sec-head--center">
-        <p class="kicker">See it live</p>
-        <h2 id="chat-title">Ask the AI</h2>
-        <p>This is roughly what a customer's question looks like today, and the answer they get.</p>
+        <p class="kicker">Example</p>
+        <h2 id="chat-title">A sample AI question.</h2>
+        <p>A typical customer question and the answer they get.</p>
       </div>
 
       <div class="chat card" id="ai-chat">
@@ -181,7 +181,7 @@ const faqItems = [
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M19 12H5M11 6l-6 6 6 6" />
                   </svg>
-                  this is where you should be
+                  your position
                 </span>
               </li>
               <li class="ai-item">
@@ -206,29 +206,29 @@ const faqItems = [
       <div class="card avi reveal">
         <div class="avi-intro">
           <p class="kicker">AI Visibility Index</p>
-          <h2 id="avi-title">Your AI visibility, in one number.</h2>
-          <p>We measure it before we start and every month after, so you see the change on paper.</p>
+          <h2 id="avi-title">Measuring AI visibility.</h2>
+          <p>Measured before we start and every month after.</p>
         </div>
         <ol class="avi-points">
           <li>
             <span class="avi-num num">1</span>
             <div>
               <h3>What it is</h3>
-              <p>How many relevant questions ("hair salon near me", "good accountant") get the AI to recommend you.</p>
+              <p>How many relevant customer questions get the AI to recommend you.</p>
             </div>
           </li>
           <li>
             <span class="avi-num num">2</span>
             <div>
-              <h3>How it's calculated</h3>
-              <p>We ask ChatGPT, Gemini and Perplexity real customer questions and record where you show up.</p>
+              <h3>How it is calculated</h3>
+              <p>We ask ChatGPT, Gemini and Perplexity and record where you show up.</p>
             </div>
           </li>
           <li>
             <span class="avi-num num">3</span>
             <div>
               <h3>Why it matters</h3>
-              <p>If the AI doesn't mention you, the customer goes elsewhere and you never find out.</p>
+              <p>If the AI does not mention you, the customer chooses another business.</p>
             </div>
           </li>
         </ol>
@@ -241,7 +241,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">Frequently asked questions</p>
-        <h2 id="faq-title">The questions everyone asks.</h2>
+        <h2 id="faq-title">Frequently asked questions.</h2>
       </div>
       <Faq items={faqItems} withSchema />
     </div>
@@ -249,7 +249,7 @@ const faqItems = [
 
   <!-- 6. Τελικό CTA -->
   <CtaBand
-    title="See how findable you are, before your competition does."
+    title="Measure your visibility."
     sub="The Dashboard gives you a visibility score in two minutes."
     ctaText="Measure your visibility"
     ctaHref="/en/business-check/"

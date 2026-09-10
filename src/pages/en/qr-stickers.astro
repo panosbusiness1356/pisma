@@ -14,7 +14,7 @@ import '../../styles/fonts.css'; // self-hosted Inter/Unbounded/JetBrains Mono, 
 
 const title = 'QR Stickers for The Reviews Tool | PISMA';
 const description =
-  'Pick from 16 QR stickers for the table, the till, the shop window and delivery, in your colors, with your business name. You send the cart, we call you.';
+  '16 QR stickers for the table, the till, the shop window and delivery, in your colors, with your business name.';
 const canonical = `${SITE.url}/en/qr-stickers/`;
 
 // JSON-LD: ίδια «ταυτότητα» WebSite με το Base + το προϊόν με εύρος τιμών από stickers.ts.
@@ -309,7 +309,7 @@ input{font-family:inherit}
   <!-- ============ top ============ -->
   <div class="top">
     <a class="logo" href="/en/"><b>PISMA<i>.</i></b><em>SHOWROOM</em></a>
-    <a class="whatlink" href="/en/reviews/">What's the tool? →</a>
+    <a class="whatlink" href="/en/reviews/">What is the tool? →</a>
     <span class="bizwrap"><input class="biz" id="f-biz" maxlength="22" placeholder="YOUR BUSINESS" aria-label="Business name"></span>
     <a class="langlink" href="/aftokollita/" aria-label="Ελληνική έκδοση">ΕΛ</a>
     <button class="cartbtn" id="cartbtn"><span>Cart</span>
@@ -362,7 +362,7 @@ input{font-family:inherit}
     <div class="csec">
       <div class="tot"><span>One-off</span><b id="t-once">€0</b></div>
       <div class="tot sm"><span>Every month</span><b id="t-month">€0</b></div>
-      <p class="note">We'll settle the setup on the call, since every shop needs its own.</p>
+      <p class="note">Setup is agreed on the call.</p>
     </div>
   </div>
   <div class="cfoot">
@@ -373,8 +373,8 @@ input{font-family:inherit}
     </div>
     <input type="text" id="f-hp" class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
     <button class="send" id="send" disabled>Send it</button>
-    <p class="senderr" id="senderr" role="alert">It didn't go through. Try again or email us at {SITE.email}</p>
-    <p class="safe">No payment now · We'll call you the next business day</p>
+    <p class="senderr" id="senderr" role="alert">Not sent. Try again or email us at {SITE.email}</p>
+    <p class="safe">No payment now · We call you the next business day</p>
   </div>
 </aside>
 
@@ -382,8 +382,8 @@ input{font-family:inherit}
 <div class="modal" id="done" role="dialog" aria-modal="true" aria-labelledby="done-title">
   <div class="mcard">
     <div class="tk"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A5D6B8" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg></div>
-    <h2 id="done-title">We got it.</h2>
-    <p>We'll call you the next business day.<br>Keep your logo handy.</p>
+    <h2 id="done-title">Received.</h2>
+    <p>We will call you the next business day.<br>Keep your logo handy.</p>
     <div class="rec" id="rec"></div>
     <div class="code" id="code"></div>
     <button class="ghostb" id="done-close">Close</button>
@@ -433,7 +433,7 @@ const X=[
 {id:'platform',n:'The Reviews Tool',pr:PLATFORM_PRICE,per:'month',lock:true,d:'The platform behind the stickers.'},
 {id:'stand',   n:'Plexiglass stand',  pr:XP.stand,  per:'once', d:'A base for the table sticker.'},
 {id:'nfc',     n:'NFC stickers',      pr:XP.nfc, per:'once', d:'Tap the phone instead of scanning. 10 pcs.'},
-{id:'logo',    n:'Logo design',       pr:XP.logo,per:'once', d:'If you don\'t have a print-ready file.'},
+{id:'logo',    n:'Logo design',       pr:XP.logo,per:'once', d:'If you do not have a print-ready file.'},
 {id:'shop2',   n:'Second location',   pr:XP.shop2, per:'month',d:'Separate code and stats.'},
 {id:'express', n:'Express printing',  pr:XP.express, per:'once', d:'3 business days instead of 7.'}
 ];
@@ -602,7 +602,7 @@ function draw(animate){
       <span class="amt">€${t.pr*S.cart[t.id]}</span>
       <button class="x" aria-label="Remove">×</button>
     </div>`).join('')
-    :'<p class="empty">Empty for now.<br>Pick from the collection and hit "Add it".</p>';
+    :'<p class="empty">Your cart is empty.<br>Pick a sticker and press "Add it".</p>';
   $('lines').querySelectorAll('.li').forEach(r=>{
     const id=r.dataset.f;
     r.querySelectorAll('.miniq button').forEach(b=>b.onclick=()=>{
