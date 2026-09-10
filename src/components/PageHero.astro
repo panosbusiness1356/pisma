@@ -1,8 +1,8 @@
 ---
 /**
- * Hero εσωτερικής σελίδας — μικρή «Σκηνή», ίδια γλώσσα με την αρχική (06/09/2026):
+ * Hero εσωτερικής σελίδας, μικρή «Σκηνή», ίδια γλώσσα με την αρχική (06/09/2026):
  * καπνός WebGL (src/scripts/smoke.ts, ρυθμίσεις «Αργά σύννεφα» όπως η αρχική) πάνω από
- * CSS ομίχλη — χωρίς λωρίδες φωτός, όπως η αρχική — όλα στο κέντρο
+ * CSS ομίχλη, χωρίς λωρίδες φωτός, όπως η αρχική, όλα στο κέντρο
  * σε στοίβα (ετικέτα → τίτλος → υπότιτλος), απλώνεται πίσω από το sticky μενού
  * και σβήνει απαλά στο φόντο. Στον τίτλο επιτρέπεται <span class="accent">: λευκό
  * με πορτοκαλί υπογράμμιση, όπως το «ένα βήμα μπροστά» της αρχικής.
@@ -34,7 +34,7 @@ const hasExtra = Astro.slots.has('extra');
 </script>
 
 <style>
-  /* Η σκηνή απλώνεται και πίσω από το sticky μενού (72px) — μενού και hero «ένα», όπως στην αρχική. */
+  /* Η σκηνή απλώνεται και πίσω από το sticky μενού (72px), μενού και hero «ένα», όπως στην αρχική. */
   .hero {
     position: relative; overflow: hidden; text-align: center;
     margin-top: -72px;
@@ -57,7 +57,7 @@ const hasExtra = Astro.slots.has('extra');
     max-width: 20ch; margin-inline: auto;
     text-shadow: 0 10px 60px rgba(0, 0, 0, .6);
   }
-  /* Η λέξη-κλειδί: λευκή με πορτοκαλί υπογράμμιση (όχι πορτοκαλί κείμενο) — όπως στην αρχική */
+  /* Η λέξη-κλειδί: λευκή με πορτοκαλί υπογράμμιση (όχι πορτοκαλί κείμενο), όπως στην αρχική */
   .hero h1 :global(.accent) {
     color: inherit;
     text-decoration: underline; text-decoration-color: var(--orange-cta);
@@ -88,14 +88,14 @@ const hasExtra = Astro.slots.has('extra');
   }
   @keyframes phIn { to { opacity: 1; filter: blur(0); transform: none; } }
 
-  /* Οθόνες αφής: (α) η CSS ομίχλη χωρίς filter: blur και χωρίς κίνηση — ένα blur(60px) σε στοιχείο 70vw που
+  /* Οθόνες αφής: (α) η CSS ομίχλη χωρίς filter: blur και χωρίς κίνηση, ένα blur(60px) σε στοιχείο 70vw που
      κινείται συνεχώς είναι από τα ακριβότερα πράγματα για GPU κινητού· (β) οι είσοδοι χωρίς blur
      (το blur animation τρέχει στο main thread). Το ξεθώριασμα/ανάδυση μένει. */
   @media (pointer: coarse) {
     .hero h1 { text-shadow: 0 4px 22px rgba(0, 0, 0, .6); } /* μικρότερο blur = φθηνό ξαναζωγράφισμα */
-    /* Η ομίχλη κινείται κανονικά (transform: compositor) — απλώς το «θόλωμα» της είναι το ίδιο το gradient,
+    /* Η ομίχλη κινείται κανονικά (transform: compositor), απλώς το «θόλωμα» της είναι το ίδιο το gradient,
        όχι filter: blur(60px) που θα ξαναϋπολογιζόταν σε κάθε καρέ πάνω σε 70vw. */
-    /* Ομίχλη σε 1/3 ανάλυση: το στοιχείο είναι 3× μικρότερο και μεγεθύνεται με scale(3) μέσα στο animation —
+    /* Ομίχλη σε 1/3 ανάλυση: το στοιχείο είναι 3× μικρότερο και μεγεθύνεται με scale(3) μέσα στο animation,
        ο browser ζωγραφίζει (raster) 9× λιγότερα pixel· ένα gradient δεν χάνει τίποτα στη μεγέθυνση. */
     .stg-fog { filter: none; transform-origin: 0 0; animation-name: phDriftLite; }
     .stg-fog--1 { width: calc(70vw / 3); height: calc(34vw / 3); background: radial-gradient(closest-side, rgba(255, 255, 255, .13) 0%, rgba(255, 255, 255, .06) 45%, transparent 100%); }
