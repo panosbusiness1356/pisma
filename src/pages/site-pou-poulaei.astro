@@ -37,17 +37,17 @@ const schema = {
 const why = [
   {
     t: 'Γρήγορο — δεν φεύγει κανείς',
-    d: 'Ανοίγει αμέσως, και στο πιο αργό κινητό. Κάθε δευτερόλεπτο καθυστέρησης είναι πελάτης που γύρισε πίσω στην Google.',
+    d: 'Ανοίγει αμέσως, και στο πιο αργό κινητό. Κάθε δευτερόλεπτο καθυστέρησης κοστίζει πελάτη.',
     icon: 'speed',
   },
   {
     t: 'Ένα ξεκάθαρο επόμενο βήμα',
-    d: 'Κλήση, μήνυμα ή προσφορά — σε κάθε σελίδα, ο επισκέπτης ξέρει τι να πατήσει. Όχι λαβύρινθος, όχι «καλλιτεχνίες» που μπερδεύουν.',
+    d: 'Κλήση, μήνυμα ή προσφορά. Σε κάθε σελίδα, ο επισκέπτης ξέρει τι να πατήσει.',
     icon: 'target',
   },
   {
     t: 'Μετρήσιμο — ξέρετε τι απέδωσε',
-    d: 'Πόσοι μπήκαν, πόσοι πάτησαν «Κάλεσε», από πού ήρθαν. Το site λογοδοτεί με νούμερα, κάθε μήνα.',
+    d: 'Πόσοι μπήκαν, πόσοι κάλεσαν, από πού ήρθαν. Νούμερα κάθε μήνα.',
     icon: 'chart',
   },
 ];
@@ -55,23 +55,23 @@ const why = [
 const faqItems = [
   {
     q: 'Σε πόσο καιρό είναι έτοιμο;',
-    a: 'Συνήθως σε 2–4 εβδομάδες από τη στιγμή που έχουμε τα υλικά (κείμενα, φωτογραφίες, λογότυπο). Αν λείπουν, βοηθάμε να φτιαχτούν.',
+    a: 'Σε 2–4 εβδομάδες από την παραλαβή των υλικών (κείμενα, φωτογραφίες, λογότυπο). Αν λείπουν, τα φτιάχνουμε μαζί.',
   },
   {
     q: 'Τι χρειάζεται να φέρω εγώ;',
-    a: 'Ό,τι έχετε: λογότυπο, φωτογραφίες, τιμοκατάλογο, δυο λόγια για τη δουλειά σας. Τα υπόλοιπα — δομή, κείμενα, στήσιμο — τα αναλαμβάνουμε εμείς.',
+    a: 'Λογότυπο, φωτογραφίες, τιμοκατάλογο και λίγα λόγια για τη δουλειά σας. Δομή, κείμενα και στήσιμο είναι δικά μας.',
   },
   {
     q: 'Το site θα είναι δικό μου;',
-    a: 'Ναι, εξ ολοκλήρου. Domain, περιεχόμενο και αρχεία ανήκουν στην επιχείρησή σας — ό,τι κι αν γίνει με τη συνεργασία μας.',
+    a: 'Ναι, εξ ολοκλήρου. Domain, περιεχόμενο και αρχεία ανήκουν στην επιχείρησή σας.',
   },
   {
     q: 'Πόσο κοστίζει;',
-    a: `Τρεις καθαρές βαθμίδες, εφάπαξ: Basic ${eur(basic.price)}, Standard ${eur(standard.price)}, Pro ${eur(pro.price)}. Ό,τι μηνιαίο (π.χ. συντήρηση) είναι προαιρετικό και δημόσια τιμολογημένο στη σελίδα τιμών.`,
+    a: `Εφάπαξ: Basic ${eur(basic.price)}, Standard ${eur(standard.price)}, Pro ${eur(pro.price)}. Κάθε μηνιαία υπηρεσία είναι προαιρετική, με δημόσια τιμή.`,
   },
   {
     q: 'Θα με βρίσκουν στη Google με αυτό;',
-    a: 'Το site χτίζεται τεχνικά σωστό για τη Google από την πρώτη μέρα. Αν θέλετε και ενεργή άνοδο θέσεων (SEO), είναι ξεχωριστή υπηρεσία — τη βλέπετε στη σελίδα της Ψηφιακής Προβολής.',
+    a: 'Χτίζεται τεχνικά σωστό για τη Google από την πρώτη μέρα. Η ενεργή άνοδος θέσεων (SEO) είναι ξεχωριστή υπηρεσία, στη σελίδα της Ψηφιακής Προβολής.',
   },
 ];
 ---
@@ -84,7 +84,7 @@ const faqItems = [
   <!-- 1. Hero -->
   <PageHero
     kicker="Site που πουλάει"
-    sub="Γρήγορο, καθαρό, με ένα ξεκάθαρο επόμενο βήμα σε κάθε σελίδα. Ο επισκέπτης δεν χαζεύει — σηκώνει το τηλέφωνο."
+    sub="Γρήγορο, καθαρό, με ένα ξεκάθαρο επόμενο βήμα σε κάθε σελίδα."
   >
     Όχι βιτρίνα — <span class="accent">εργαλείο δουλειάς</span>
   </PageHero>
@@ -99,18 +99,17 @@ const faqItems = [
         <div class="sp-copy">
           <div class="sec-head">
             <p class="kicker">Δείτε το ζωντανά</p>
-            <h2 id="sp-title">Ο επισκέπτης μπαίνει — το τηλέφωνο χτυπάει</h2>
+            <h2 id="sp-title">Ο επισκέπτης μπαίνει. Το τηλέφωνο χτυπάει.</h2>
           </div>
           <p class="sp-sub">
-            Έτσι δουλεύει ένα site-εργαλείο: μία δυνατή εικόνα, η λίστα με
-            τις τιμές, και το τηλέφωνο εκεί που σταματά το μάτι. Το «επόμενο
-            βήμα» του επισκέπτη είναι το ταμείο σας.
+            Μία δυνατή εικόνα, οι τιμές, και το τηλέφωνο εκεί που σταματά
+            το μάτι.
           </p>
           <div class="sp-cta-row">
             <a class="btn btn--orange" href="/times/">Δείτε τιμές για site →</a>
             <a class="btn btn--ghost" href="/site-demo/lyra/index.html" target="_blank" rel="noopener">Ανοίξτε το δείγμα ↗</a>
           </div>
-          <p class="sp-note">Ζωντανό δείγμα δουλειάς μας — σκρολάρετε ελεύθερα μέσα στην οθόνη. Το δικό σας site στήνεται για τη δική σας δουλειά.</p>
+          <p class="sp-note">Ζωντανό δείγμα δουλειάς μας. Σκρολάρετε μέσα στην οθόνη.</p>
         </div>
 
         <div class="sp-stage" id="sp-stage">
@@ -139,7 +138,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">Τι κερδίζετε</p>
-        <h2 id="why-title">Τρία πράγματα που ξεχωρίζουν το εργαλείο από τη βιτρίνα.</h2>
+        <h2 id="why-title">Τρία πράγματα που κάνουν τη διαφορά.</h2>
       </div>
       <div class="grid-3">
         {why.map((w) => (
@@ -179,16 +178,14 @@ const faqItems = [
             Από <span class="price-num num">{eur(basic.price)}</span> εφάπαξ
           </h2>
           <p class="price-sub">
-            Τρεις καθαρές βαθμίδες: <strong>Basic {eur(basic.price)}</strong> ({basic.detail?.toLowerCase()}),
-            <strong>Standard {eur(standard.price)}</strong> ({standard.detail?.toLowerCase()}),
-            <strong>Pro {eur(pro.price)}</strong> ({pro.detail?.toLowerCase()}).
-            Ό,τι μηνιαίο είναι προαιρετικό — και δημόσια τιμολογημένο.
+            <strong>Basic {eur(basic.price)}</strong> · <strong>Standard {eur(standard.price)}</strong> · <strong>Pro {eur(pro.price)}</strong>.
+            Κάθε μηνιαία υπηρεσία είναι προαιρετική, με δημόσια τιμή.
           </p>
         </div>
         <div class="price-cta">
           <a class="btn btn--orange" href="/times/">Φτιάξτε το πακέτο σας →</a>
           <a class="btn btn--ghost" href="/elegxos/">Δωρεάν Έλεγχος {ELEGXOS.minutes}′</a>
-          <span class="btn-note">Καμία πληρωμή online — το κλείνουμε στο τηλέφωνο.</span>
+          <span class="btn-note">Καμία πληρωμή online. Το κλείνουμε στο τηλέφωνο.</span>
         </div>
       </div>
     </div>
@@ -199,7 +196,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">Συχνές ερωτήσεις</p>
-        <h2 id="faq-title">Πριν ρωτήσετε, ρώτησαν άλλοι.</h2>
+        <h2 id="faq-title">Αυτά που ρωτούν όλοι.</h2>
       </div>
       <Faq items={faqItems} withSchema />
     </div>
@@ -208,7 +205,7 @@ const faqItems = [
   <!-- 6. CTA -->
   <CtaBand
     title="Ώρα το site σας να πιάσει δουλειά."
-    sub={`Ξεκινάμε με τον δωρεάν Έλεγχο PISMA (${ELEGXOS.minutes} λεπτά) — βλέπουμε τι έχετε σήμερα και τι αφήνει στο τραπέζι.`}
+    sub={`Ξεκινάμε με τον δωρεάν Έλεγχο PISMA (${ELEGXOS.minutes} λεπτά): τι έχετε σήμερα και τι σας λείπει.`}
     ctaText="Κλείστε τον δωρεάν Έλεγχο"
     ctaHref="/elegxos/"
     note="Καμία πληρωμή online · χωρίς δέσμευση"
@@ -288,10 +285,14 @@ const faqItems = [
       };
       const tour = async () => {
         if (running) return; running = true;
+        // Κάθε φορά που η σκηνή μπαίνει (ξανά) στην οθόνη, η περιήγηση ξεκινά
+        // από την κορυφή του δείγματος — όχι από εκεί που είχε μείνει όταν ο
+        // επισκέπτης σκρόλαρε πιο κάτω στη σελίδα (χρήστρια 10/09/2026).
+        scrollTo(0);
         while (!stopped && visible && loaded) {
           const w = frameWin(); if (!w) break;
-          let y = w.scrollY || 0;
-          await wait(y === 0 ? PAUSE_MS : 400);
+          let y = 0; scrollTo(0);
+          await wait(PAUSE_MS);
           for (;;) {
             if (stopped || !visible) break;
             const next = stops().find((s) => s > y + 4);
@@ -321,7 +322,12 @@ const faqItems = [
         clearInterval(poll); loaded = true; armStop(); tour();
       }, 250);
       if ('IntersectionObserver' in window) {
-        new IntersectionObserver((es) => { visible = es[0].isIntersecting; if (visible) tour(); }, { threshold: .35 }).observe(spStage);
+        new IntersectionObserver((es) => {
+          visible = es[0].isIntersecting;
+          // Μόλις βγει από την οθόνη (και ο επισκέπτης δεν την έχει πιάσει),
+          // γυρνά αμέσως στην κορυφή, ώστε να ξαναφανεί από την αρχή.
+          if (visible) tour(); else if (!stopped) scrollTo(0);
+        }, { threshold: .35 }).observe(spStage);
       } else { visible = true; tour(); }
       document.addEventListener('visibilitychange', () => { if (!document.hidden && visible) tour(); });
     }

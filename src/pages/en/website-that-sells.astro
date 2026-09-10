@@ -37,17 +37,17 @@ const schema = {
 const why = [
   {
     t: 'Fast — nobody leaves',
-    d: 'It opens instantly, even on the slowest phone. Every second of delay is a customer heading back to Google.',
+    d: 'Opens instantly, even on the slowest phone. Every second of delay costs a customer.',
     icon: 'speed',
   },
   {
     t: 'One clear next step',
-    d: "A call, a message or a quote — on every page, visitors know what to press. No maze, no artsy tricks that confuse.",
+    d: 'A call, a message or a quote. On every page, visitors know what to press.',
     icon: 'target',
   },
   {
     t: 'Measurable — you know what it earned',
-    d: 'How many came in, how many pressed "Call", where they came from. The website answers with numbers, every month.',
+    d: 'How many came in, how many called, where they came from. Numbers every month.',
     icon: 'chart',
   },
 ];
@@ -55,23 +55,23 @@ const why = [
 const faqItems = [
   {
     q: 'How long until it is ready?',
-    a: "Usually 2–4 weeks from the moment we have the material (texts, photos, logo). If something's missing, we help create it.",
+    a: 'In 2–4 weeks from receiving the material (texts, photos, logo). If something is missing, we create it together.',
   },
   {
     q: 'What do I need to bring?',
-    a: 'Whatever you have: logo, photos, a price list, a few words about your work. The rest — structure, copy, set-up — is on us.',
+    a: 'Logo, photos, a price list and a few words about your work. Structure, copy and set-up are on us.',
   },
   {
     q: 'Will the website be mine?',
-    a: 'Yes, entirely. Domain, content and files belong to your business — whatever happens with our collaboration.',
+    a: 'Yes, entirely. Domain, content and files belong to your business.',
   },
   {
     q: 'How much does it cost?',
-    a: `Three clear tiers, one-off: Basic ${eurEn(basic.price)}, Standard ${eurEn(standard.price)}, Pro ${eurEn(pro.price)}. Anything monthly (like maintenance) is optional and publicly priced on our pricing page.`,
+    a: `One-off: Basic ${eurEn(basic.price)}, Standard ${eurEn(standard.price)}, Pro ${eurEn(pro.price)}. Any monthly service is optional, with a public price.`,
   },
   {
     q: 'Will Google find me with this?',
-    a: 'The website is built technically right for Google from day one. If you also want active ranking growth (SEO), that is a separate service — you will find it on the Digital Visibility page.',
+    a: 'Built technically right for Google from day one. Active ranking growth (SEO) is a separate service, on the Digital Visibility page.',
   },
 ];
 ---
@@ -84,7 +84,7 @@ const faqItems = [
   <!-- 1. Hero -->
   <PageHero
     kicker="A website that sells"
-    sub="Fast, clean, with one clear next step on every page. Visitors don't browse — they pick up the phone."
+    sub="Fast, clean, with one clear next step on every page."
   >
     Not a shop window — <span class="accent">a working tool</span>
   </PageHero>
@@ -100,18 +100,17 @@ const faqItems = [
         <div class="sp-copy">
           <div class="sec-head">
             <p class="kicker">See it live</p>
-            <h2 id="sp-title">A visitor lands — your phone rings</h2>
+            <h2 id="sp-title">A visitor lands. Your phone rings.</h2>
           </div>
           <p class="sp-sub">
-            This is how a working-tool website behaves: a clear picture, prices
-            up front, and a button you never have to hunt for. The visitor's
-            "next step" is your till.
+            One strong image, the prices, and the phone right where the eye
+            stops.
           </p>
           <div class="sp-cta-row">
             <a class="btn btn--orange" href="/en/pricing/">See website pricing →</a>
             <a class="btn btn--ghost" href="/site-demo/lyra/index.html" target="_blank" rel="noopener">Open the sample ↗</a>
           </div>
-          <p class="sp-note">A live sample of our work — scroll freely inside the screen. Your own site is built for your own business.</p>
+          <p class="sp-note">A live sample of our work. Scroll inside the screen.</p>
         </div>
 
         <div class="sp-stage" id="sp-stage">
@@ -140,7 +139,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">What you get</p>
-        <h2 id="why-title">Three things that separate a tool from a shop window.</h2>
+        <h2 id="why-title">Three things that make the difference.</h2>
       </div>
       <div class="grid-3">
         {why.map((w) => (
@@ -180,17 +179,14 @@ const faqItems = [
             From <span class="price-num num">{eurEn(basic.price)}</span> one-off
           </h2>
           <p class="price-sub">
-            Three clear tiers: <strong>Basic {eurEn(basic.price)}</strong>,
-            <strong>Standard {eurEn(standard.price)}</strong> and
-            <strong>Pro {eurEn(pro.price)}</strong> — from a clean presence to a
-            bigger site with special features. Anything monthly is optional —
-            and publicly priced.
+            <strong>Basic {eurEn(basic.price)}</strong> · <strong>Standard {eurEn(standard.price)}</strong> · <strong>Pro {eurEn(pro.price)}</strong>.
+            Any monthly service is optional, with a public price.
           </p>
         </div>
         <div class="price-cta">
           <a class="btn btn--orange" href="/en/pricing/">Build your package →</a>
           <a class="btn btn--ghost" href="/en/free-assessment/">Free {ELEGXOS.minutes}-minute PISMA Check</a>
-          <span class="btn-note">No online payment — we close it over the phone.</span>
+          <span class="btn-note">No online payment. We close it over the phone.</span>
         </div>
       </div>
     </div>
@@ -210,7 +206,7 @@ const faqItems = [
   <!-- 6. CTA -->
   <CtaBand
     title="Put your website to work."
-    sub={`We start with the free ${ELEGXOS.minutes}-minute PISMA Check — we look at what you have today and what it leaves on the table.`}
+    sub={`We start with the free ${ELEGXOS.minutes}-minute PISMA Check: what you have today and what is missing.`}
     ctaText="Book the free PISMA Check"
     ctaHref="/en/free-assessment/"
     note="No online payment · no commitment"
@@ -290,10 +286,14 @@ const faqItems = [
       };
       const tour = async () => {
         if (running) return; running = true;
+        // Κάθε φορά που η σκηνή μπαίνει (ξανά) στην οθόνη, η περιήγηση ξεκινά
+        // από την κορυφή του δείγματος — όχι από εκεί που είχε μείνει όταν ο
+        // επισκέπτης σκρόλαρε πιο κάτω στη σελίδα (χρήστρια 10/09/2026).
+        scrollTo(0);
         while (!stopped && visible && loaded) {
           const w = frameWin(); if (!w) break;
-          let y = w.scrollY || 0;
-          await wait(y === 0 ? PAUSE_MS : 400);
+          let y = 0; scrollTo(0);
+          await wait(PAUSE_MS);
           for (;;) {
             if (stopped || !visible) break;
             const next = stops().find((s) => s > y + 4);
@@ -323,7 +323,12 @@ const faqItems = [
         clearInterval(poll); loaded = true; armStop(); tour();
       }, 250);
       if ('IntersectionObserver' in window) {
-        new IntersectionObserver((es) => { visible = es[0].isIntersecting; if (visible) tour(); }, { threshold: .35 }).observe(spStage);
+        new IntersectionObserver((es) => {
+          visible = es[0].isIntersecting;
+          // Μόλις βγει από την οθόνη (και ο επισκέπτης δεν την έχει πιάσει),
+          // γυρνά αμέσως στην κορυφή, ώστε να ξαναφανεί από την αρχή.
+          if (visible) tour(); else if (!stopped) scrollTo(0);
+        }, { threshold: .35 }).observe(spStage);
       } else { visible = true; tour(); }
       document.addEventListener('visibilitychange', () => { if (!document.hidden && visible) tour(); });
     }
