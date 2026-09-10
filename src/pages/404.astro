@@ -10,6 +10,8 @@ import PageHero from '../components/PageHero.astro';
 >
   <!-- Μία στατική 404 για όλο το site: το JS στο τέλος δείχνει την αγγλική
        εκδοχή όταν το λάθος URL ήταν κάτω από /en/, χωρίς JS μένει η ελληνική. -->
+  <!-- Ο Ντοτ εδώ «ψάχνει»: χωρίς ποντίκι τα μάτια του περιπλανιούνται (Mascot.astro). -->
+  <span hidden data-mascot-mood="lost"></span>
   <div data-l10n="el">
     <PageHero
       kicker="404"

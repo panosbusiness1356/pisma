@@ -75,7 +75,7 @@ const schema = {
               <div>
                 <span class="c-label">Μηνύματα</span>
                 <span class="c-value c-chat">
-                  <a href={SITE.whatsapp} target="_blank" rel="noopener"><img src="/logos/whatsapp-icon.svg" alt="" width="18" height="18" loading="lazy" />WhatsApp</a>
+                  <a href={`${SITE.whatsapp}?text=${encodeURIComponent("Γεια σας, ")}`} target="_blank" rel="noopener" data-no-prerender><img src="/logos/whatsapp-icon.svg" alt="" width="18" height="18" loading="lazy" />WhatsApp</a>
                   <a href={SITE.viber}><img src="/logos/viber.svg" alt="" width="18" height="18" loading="lazy" />Viber</a>
                 </span>
               </div>
@@ -198,6 +198,7 @@ const schema = {
         fb.textContent = '';
         confettiIn(form);
         (window as any).pismaSound?.play?.('on');
+        window.dispatchEvent(new CustomEvent('pisma-mascot', { detail: { action: 'cheer' } })); // ο Ντοτ πανηγυρίζει
         // Μετά από λίγο η οθόνη επιτυχίας δίνει ξανά τη θέση της στη φόρμα
         setTimeout(() => form.classList.remove('is-done'), 6000);
       } catch {

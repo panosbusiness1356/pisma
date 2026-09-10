@@ -1,0 +1,206 @@
+---
+// Δείγμα ψηφιακού μενού (11/09/2026): εδώ οδηγεί το ΠΡΑΓΜΑΤΙΚΟ QR της σελίδας «Ψηφιακό μενού».
+// Ο επισκέπτης σκανάρει με το κινητό του και βλέπει το μενού της εικονικής πιτσαρίας «Η Γωνιά»,
+// ίδια πιάτα και φωτογραφίες με το ομοίωμα iPhone της σελίδας. Παράμετροι: ?n=<όνομα> βάζει το
+// όνομα της επιχείρησής του (όπως το έγραψε στη σελίδα), ?t=<τραπέζι>, ?lang=en για αγγλικά.
+// Αυτόνομη σελίδα (χωρίς Base), noindex, χωρίς μενού/Ντοτ/καπνό: παριστάνει site πελάτη.
+const title = 'Η Γωνιά · Μενού';
+const items = [
+  { cat: 'pizza', img: '/menu-demo/margarita.jpg', name: 'Μαργαρίτα', en: 'Margherita', d: 'σάλτσα, μοτσαρέλα, βασιλικός', den: 'tomato, mozzarella, basil', price: '8,90', hot: true },
+  { cat: 'pizza', img: '/menu-demo/diavola.jpg', name: 'Ντιάβολα', en: 'Diavola', d: 'πικάντικο σαλάμι, καυτερό λάδι', den: 'spicy salami, chili oil', price: '10,20' },
+  { cat: 'pizza', img: '', name: 'Καπριτσιόζα', en: 'Capricciosa', d: 'ζαμπόν, μανιτάρια, αγκινάρα', den: 'ham, mushrooms, artichoke', price: '9,80' },
+  { cat: 'salad', img: '/menu-demo/choriatiki.jpg', name: 'Χωριάτικη', en: 'Greek salad', d: 'ντομάτα, φέτα, ελιές', den: 'tomato, feta, olives', price: '6,80' },
+  { cat: 'salad', img: '', name: 'Ρόκα παρμεζάνα', en: 'Rocket & parmesan', d: 'ρόκα, παρμεζάνα, βαλσάμικο', den: 'rocket, parmesan, balsamic', price: '7,20' },
+  { cat: 'drink', img: '/menu-demo/lemonada.jpg', name: 'Σπιτική λεμονάδα', en: 'Homemade lemonade', d: 'φρέσκο λεμόνι, δυόσμος', den: 'fresh lemon, mint', price: '3,50' },
+  { cat: 'drink', img: '', name: 'Εμφιαλωμένο νερό', en: 'Bottled water', d: '500 ml', den: '500 ml', price: '0,50' },
+];
+const cats = [
+  { id: 'pizza', el: 'Πίτσες', en: 'Pizzas' },
+  { id: 'salad', el: 'Σαλάτες', en: 'Salads' },
+  { id: 'drink', el: 'Ποτά', en: 'Drinks' },
+];
+---
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#1a120c" />
+  <title>{title}</title>
+  <style>
+    :root {
+      --bg: #1a120c; --bg-2: #231a13; --card: rgba(255, 255, 255, .06); --line: rgba(255, 255, 255, .1);
+      --ink: #f3e9dc; --muted: #cfc3b4; --dim: #9d8f7f; --gold: #ffd6a0; --hot: #ff7a45;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background:
+        radial-gradient(120% 50% at 50% -8%, #3d2c1f, transparent 62%),
+        linear-gradient(180deg, var(--bg-2) 0%, #130d08 100%) fixed;
+      color: var(--ink); min-height: 100dvh; display: flex; justify-content: center;
+      -webkit-font-smoothing: antialiased;
+    }
+    .app { width: 100%; max-width: 480px; padding: 18px 16px 110px; }
+
+    .hero {
+      position: relative; overflow: hidden; border-radius: 22px; padding: 22px 18px 18px;
+      background:
+        radial-gradient(90% 120% at 88% -10%, rgba(255, 214, 160, .45), transparent 55%),
+        radial-gradient(60% 90% at 0% 110%, rgba(90, 12, 0, .35), transparent 60%),
+        linear-gradient(160deg, #4a2f1f, #2b1b12);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, .45);
+    }
+    .hero-art { position: absolute; right: 14px; top: 12px; width: 54px; height: 54px; opacity: .55; }
+    .hero-art svg { width: 100%; height: 100%; fill: none; stroke: var(--gold); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .hero-art circle { fill: var(--gold); stroke: none; }
+    .name { font-size: 1.55rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; max-width: 80%; overflow-wrap: anywhere; }
+    .sub { margin-top: 6px; color: var(--muted); font-size: .92rem; }
+    .meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .meta span { font-size: .74rem; font-weight: 600; color: var(--gold); background: rgba(255, 214, 160, .12); border-radius: 999px; padding: 4px 10px; }
+
+    .pills { display: flex; gap: 8px; margin: 18px 0 8px; overflow-x: auto; scrollbar-width: none; position: sticky; top: 0; padding: 10px 0; z-index: 2; background: linear-gradient(180deg, var(--bg-2), rgba(35, 26, 19, .92) 70%, transparent); }
+    .pills::-webkit-scrollbar { display: none; }
+    .pills a {
+      flex: none; text-decoration: none; color: var(--muted); font-size: .86rem; font-weight: 600;
+      border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; background: var(--card);
+    }
+    .pills a.is-on { color: #1a120c; background: var(--gold); border-color: var(--gold); }
+
+    h2 { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); margin: 18px 4px 8px; scroll-margin-top: 64px; }
+    .row {
+      display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center;
+      padding: 10px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); margin-bottom: 8px;
+    }
+    .row.is-hot { border-color: rgba(255, 122, 69, .45); }
+    .tile { width: 56px; height: 56px; border-radius: 12px; overflow: hidden; background: rgba(255, 255, 255, .08); display: grid; place-items: center; }
+    .tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .tile svg { width: 24px; height: 24px; stroke: var(--gold); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; opacity: .6; }
+    .info b { display: block; font-size: 1rem; font-weight: 700; }
+    .info i { display: block; font-style: normal; color: var(--dim); font-size: .82rem; margin-top: 2px; }
+    .pop { display: inline-block; margin-left: 6px; font-size: .64rem; font-weight: 700; color: var(--hot); background: rgba(255, 122, 69, .15); border-radius: 999px; padding: 2px 7px; vertical-align: middle; }
+    .price { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 1rem; color: var(--gold); white-space: nowrap; }
+
+    .order {
+      position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); width: min(92%, 440px);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: var(--gold); color: #1a120c; border: 0; border-radius: 999px; padding: 15px 20px;
+      font: inherit; font-weight: 800; font-size: 1rem; cursor: pointer;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, .5);
+    }
+    .order svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .toast {
+      position: fixed; left: 50%; bottom: 84px; transform: translate(-50%, 12px); opacity: 0;
+      background: #f3e9dc; color: #1a120c; border-radius: 12px; padding: 10px 14px; font-size: .88rem; font-weight: 600;
+      transition: opacity .3s ease, transform .3s ease; pointer-events: none; max-width: 90%; text-align: center;
+    }
+    .toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+
+    .foot { margin-top: 26px; text-align: center; color: var(--dim); font-size: .78rem; line-height: 1.6; }
+    .foot a { color: var(--gold); text-decoration: none; font-weight: 600; }
+    .sample { display: inline-block; margin-bottom: 6px; font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <span class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M4.2 5.6 12 21 19.8 5.6" /><path d="M4.2 5.6a15 15 0 0 1 15.6 0" /><circle cx="10" cy="9.4" r="1.5" /><circle cx="14.4" cy="11.6" r="1.5" /><circle cx="11.6" cy="14.8" r="1.5" /></svg>
+      </span>
+      <h1 class="name" id="name">Πιτσαρία «Η Γωνιά»</h1>
+      <p class="sub"><span data-t="oven">Ξυλόφουρνος</span> · <span data-t="table">τραπέζι</span> <span id="table">12</span></p>
+      <p class="meta" aria-hidden="true"><span>★ 4,9</span><span>25–35′</span><span data-t="open">Ανοιχτά τώρα</span></p>
+    </section>
+
+    <nav class="pills" aria-label="Κατηγορίες">
+      {cats.map((c, i) => <a href={`#${c.id}`} class:list={{ 'is-on': i === 0 }} data-el={c.el} data-en={c.en}>{c.el}</a>)}
+    </nav>
+
+    {cats.map((c) => (
+      <>
+        <h2 id={c.id} data-el={c.el} data-en={c.en}>{c.el}</h2>
+        {items.filter((it) => it.cat === c.id).map((it) => (
+          <div class:list={['row', { 'is-hot': it.hot }]}>
+            <span class="tile" aria-hidden="true">
+              {it.img
+                ? <img src={it.img} alt="" width="56" height="56" loading="lazy" />
+                : <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" /><path d="M8.5 12h7M12 8.5v7" /></svg>}
+            </span>
+            <span class="info">
+              <b data-el={it.name} data-en={it.en}>{it.name}{it.hot && <em class="pop" data-t="hot">Δημοφιλές</em>}</b>
+              <i data-el={it.d} data-en={it.den}>{it.d}</i>
+            </span>
+            <b class="price">{it.price}€</b>
+          </div>
+        ))}
+      </>
+    ))}
+
+    <p class="foot">
+      <span class="sample" data-t="sample">Δείγμα</span><br />
+      <span data-t="foot">Ψηφιακό μενού από την PISMA. Το δικό σας στήνεται με τα χρώματα και τα πιάτα σας.</span><br />
+      <a href="https://pisma.gr/psifiako-menou/" id="foot-link">pisma.gr/psifiako-menou</a>
+    </p>
+  </main>
+
+  <button class="order" type="button" id="order">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.8a6 6 0 0 1 12 0c0 4.8 1.7 6 1.7 6H4.3S6 14.6 6 9.8" /><path d="M10.1 19a2.1 2.1 0 0 0 3.8 0" /></svg>
+    <span data-t="order">Παραγγελία στο τραπέζι</span>
+  </button>
+  <p class="toast" id="toast" role="status" aria-live="polite"></p>
+
+  <script>
+    const q = new URLSearchParams(location.search);
+    const en = q.get('lang') === 'en';
+    const T: Record<string, string> = en
+      ? { oven: 'Wood oven', table: 'table', open: 'Open now', hot: 'Popular', sample: 'Sample', foot: 'A digital menu by PISMA. Yours is set up with your colors and dishes.', order: 'Order at the table', toast: 'Sample: your order would go here.', cats: 'Categories' }
+      : { oven: 'Ξυλόφουρνος', table: 'τραπέζι', open: 'Ανοιχτά τώρα', hot: 'Δημοφιλές', sample: 'Δείγμα', foot: 'Ψηφιακό μενού από την PISMA. Το δικό σας στήνεται με τα χρώματα και τα πιάτα σας.', order: 'Παραγγελία στο τραπέζι', toast: 'Δείγμα: εδώ θα έμπαινε η παραγγελία σας.', cats: 'Κατηγορίες' };
+
+    // Το όνομα της επιχείρησης όπως το έγραψε ο επισκέπτης στη σελίδα της PISMA (?n=), ως κείμενο, ποτέ HTML.
+    const name = (q.get('n') || '').trim().slice(0, 40);
+    if (name) {
+      document.getElementById('name')!.textContent = name;
+      document.title = `${name} · ${en ? 'Menu' : 'Μενού'}`;
+    } else if (en) {
+      document.title = 'Η Γωνιά · Menu';
+    }
+    const table = (q.get('t') || '').replace(/\D/g, '').slice(0, 3);
+    if (table) document.getElementById('table')!.textContent = table;
+
+    if (en) {
+      document.documentElement.lang = 'en';
+      document.querySelectorAll<HTMLElement>('[data-t]').forEach((el) => { el.textContent = T[el.dataset.t!] ?? el.textContent; });
+      document.querySelectorAll<HTMLElement>('[data-en]').forEach((el) => {
+        const badge = el.querySelector('.pop');
+        el.textContent = el.dataset.en!;
+        if (badge) { badge.textContent = T.hot; el.appendChild(badge); }
+      });
+      document.querySelector('.pills')!.setAttribute('aria-label', T.cats);
+      (document.getElementById('foot-link') as HTMLAnchorElement).href = 'https://pisma.gr/en/digital-menu/';
+      document.getElementById('foot-link')!.textContent = 'pisma.gr/en/digital-menu';
+    }
+
+    // Η ενεργή κατηγορία ακολουθεί το scroll.
+    const pills = Array.from(document.querySelectorAll<HTMLAnchorElement>('.pills a'));
+    const heads = Array.from(document.querySelectorAll<HTMLElement>('h2[id]'));
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        pills.forEach((p) => p.classList.toggle('is-on', p.getAttribute('href') === '#' + e.target.id));
+      }
+    }, { rootMargin: '-64px 0px -70% 0px' });
+    heads.forEach((h) => io.observe(h));
+
+    const toast = document.getElementById('toast')!;
+    let tt = 0;
+    document.getElementById('order')!.addEventListener('click', () => {
+      toast.textContent = T.toast;
+      toast.classList.add('is-on');
+      clearTimeout(tt);
+      tt = window.setTimeout(() => toast.classList.remove('is-on'), 2600);
+    });
+  </script>
+</body>
+</html>

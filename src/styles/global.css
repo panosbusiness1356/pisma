@@ -390,3 +390,32 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
 .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--orange); }
 .field input:focus:not(:focus-visible), .field select:focus:not(:focus-visible), .field textarea:focus:not(:focus-visible) { outline: none; }
 .field .hint { font-size: .82rem; color: var(--muted); }
+
+/* ---------- Μεταβάσεις σελίδων (cross-document View Transitions) ----------
+   Το site πλοηγείται σαν εφαρμογή: η παλιά σελίδα ξεθωριάζει στη νέα (0,32 s), το μενού
+   (view-transition-name: nav) μένει σταθερό στη θέση του. Καθαρό CSS, χωρίς client router,
+   άρα τα per-page scripts τρέχουν όπως πάντα. Chrome 126+/Safari 18.2+, αλλού απλή πλοήγηση.
+   Reduced motion: χωρίς μετάβαση. */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: vt-out .22s ease-out both; }
+::view-transition-new(root) { animation: vt-in .32s var(--ease) both; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(8px); } }
+.nav-wrap { view-transition-name: nav; }
+::view-transition-group(nav) { animation-duration: .3s; }
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}
+
+/* ---------- Προβολέας δρομέα (Base.astro) ----------
+   Απαλό λευκό φως 640px πίσω από τον δρομέα, ΚΑΤΩ από το περιεχόμενο (z-index -1): φαίνεται μόνο
+   στο «πάτωμα» της Σκηνής, ανάμεσα στις κάρτες. Μόνο ποντίκι/trackpad, το JS το ανάβει στην πρώτη κίνηση. */
+.cursor-light {
+  position: fixed; left: -320px; top: -320px; width: 640px; height: 640px;
+  z-index: -1; pointer-events: none; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, .075), rgba(255, 255, 255, .03) 45%, transparent 72%);
+  opacity: 0; transition: opacity .6s ease;
+  will-change: transform;
+}
+.cursor-light.is-on { opacity: 1; }
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) { .cursor-light { display: none; } }
