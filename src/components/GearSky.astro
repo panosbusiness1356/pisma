@@ -1,28 +1,34 @@
 ---
 /*
-  «Ουρανός» εξοπλισμού: οι τρεις κάμερες (ίδια αρχεία με το Gear.astro) πλέουν
-  ανεξάρτητα σε ολόκληρη τη σελίδα Φωτογράφηση & Βίντεο, μέσα στα πλαϊνά
-  περιθώρια έξω από το container των 1120px, ώστε να μην πέφτουν ποτέ πάνω σε
-  κείμενο. Αίτημα χρήστριας 10/09/2026: «να αιωρούνται σε όλη τη σελίδα μόνα
-  τους το καθένα, μην κάνεις λάθη».
+  Οι τρεις κάμερες (ίδια αρχεία με το Gear.astro) αγκυρωμένες σε σταθερά σημεία
+  της σελίδας Φωτογράφηση & Βίντεο, κυλούν μαζί της. Μία στην αρχή, μία στη
+  μέση, μία προς το τέλος, καλά χωρισμένες, μέσα στα πλαϊνά περιθώρια έξω από το
+  container των 1120px, ώστε να μην πέφτουν ποτέ πάνω σε κείμενο. Πολύ ήπια
+  αιώρηση επί τόπου. Η Canon «ρίχνει φλας» όταν περνά ο δείκτης από πάνω της.
+  Αίτημα χρήστριας 11/09/2026: «βάλε τα να είναι σταθερά κάπου μέσα στη σελίδα,
+  η μία κάμερα να κάνει κάτι σαν φλας όταν περνάς από μπροστά της, χώρισέ τες
+  καλά μέσα στη σελίδα, μην κάνεις λάθη».
 
   Κανόνες:
+  - Στρώμα position:absolute μέσα στο <main> (που είναι position:relative),
+    ύψος όσο η σελίδα, pointer-events none (μόνο η Canon πιάνει τον δείκτη).
   - Εμφανίζεται μόνο όταν υπάρχει πραγματικό περιθώριο (≥ 1340px πλάτος).
-    Σε tablet/κινητό δεν υπάρχει χώρος χωρίς να καλύψει κείμενο, οπότε κρύβεται.
-  - Μόνο transform/opacity (compositor). Καμία επίδραση στο layout, pointer-events: none.
-  - Σβήνει όσο φαίνεται η ενότητα «Ο εξοπλισμός μας» (για να μην είναι διπλές οι κάμερες).
-  - Με prefers-reduced-motion μένουν ακίνητες.
+  - Μόνο transform/opacity/filter σε μικρά στοιχεία. Καμία επίδραση στο layout.
+  - Με prefers-reduced-motion: ακίνητες, χωρίς φλας.
 */
 const items = [
-  { file: 'dji-osmo-pocket-4.webp', w: 335, h: 900, key: 'pocket' },
-  { file: 'canon-g7x-mark-iii.webp', w: 1190, h: 700, key: 'g7x' },
-  { file: 'nikon-d750.webp', w: 619, h: 496, key: 'd750' },
+  { file: 'dji-osmo-pocket-4.webp', w: 335, h: 900, key: 'pocket', flash: false },
+  { file: 'canon-g7x-mark-iii.webp', w: 1190, h: 700, key: 'g7x', flash: true },
+  { file: 'nikon-d750.webp', w: 619, h: 496, key: 'd750', flash: false },
 ];
 ---
 
 <div class="gear-sky" aria-hidden="true" data-gear-sky>
   {items.map((i) => (
-    <img class={`sky sky--${i.key}`} src={`/gear/${i.file}`} alt="" width={i.w} height={i.h} loading="lazy" decoding="async" />
+    <span class={`sky sky--${i.key}`} data-flash={i.flash ? '' : undefined}>
+      <img src={`/gear/${i.file}`} alt="" width={i.w} height={i.h} loading="lazy" decoding="async" />
+      {i.flash && <span class="flash"></span>}
+    </span>
   ))}
 </div>
 
@@ -31,13 +37,20 @@ const items = [
   if (sky) {
     // Ήπια είσοδος αφού «κάτσει» η σελίδα (μετά το page-in του <main>).
     setTimeout(() => sky.classList.add('is-on'), 900);
-    // Όσο φαίνεται η ενότητα με τις κάρτες των καμερών, ο ουρανός σβήνει.
-    const gear = document.querySelector('.gear');
-    if (gear && 'IntersectionObserver' in window) {
-      new IntersectionObserver(
-        (es) => sky.classList.toggle('is-away', es[0].isIntersecting),
-        { threshold: 0.15 },
-      ).observe(gear);
+
+    // Φλας όταν ο δείκτης περάσει πάνω από την κάμερα (όχι με reduced motion).
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduce) {
+      for (const cam of sky.querySelectorAll<HTMLElement>('[data-flash]')) {
+        let busy = false;
+        cam.addEventListener('pointerenter', () => {
+          if (busy) return;
+          busy = true;
+          cam.classList.add('is-flashing');
+          setTimeout(() => cam.classList.remove('is-flashing'), 650);
+          setTimeout(() => { busy = false; }, 1200);
+        });
+      }
     }
   }
 </script>
@@ -45,66 +58,84 @@ const items = [
 <style>
   .gear-sky {
     --g: calc((100vw - 1120px) / 2); /* πλάτος κάθε πλαϊνού περιθωρίου */
-    position: fixed; inset: 0; z-index: 2;
-    pointer-events: none; overflow: hidden;
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 2; pointer-events: none; overflow: hidden;
     display: none;
     opacity: 0; transition: opacity 1.4s ease;
   }
   .gear-sky.is-on { opacity: 1; }
-  .gear-sky.is-away { opacity: 0; }
   @media (min-width: 1340px) {
     .gear-sky { display: block; }
   }
   .sky {
-    position: absolute; height: auto;
-    /* Χωρίς drop-shadow: πάνω στο σκούρο φόντο έβγαινε θολή μαύρη κηλίδα από πίσω (χρήστρια 10/09/2026) */
+    position: absolute; display: block;
     will-change: transform;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
   }
-  /* Καθεμιά στο κέντρο του περιθωρίου της, σε διαφορετικό ύψος, με δική της τροχιά και ρυθμό. */
+  .sky img { display: block; width: 100%; height: auto; }
+
+  /* Τρία σταθερά σημεία, καλά χωρισμένα: αρχή (hero), μέση, προς το τέλος.
+     Ποσοστά του ύψους της σελίδας, καθεμιά στο κέντρο του περιθωρίου της. */
   .sky--pocket {
-    width: min(78px, calc(var(--g) * .5));
-    left: calc(var(--g) / 2 - min(78px, calc(var(--g) * .5)) / 2);
-    top: 17vh;
-    animation-name: skyPocket; animation-duration: 17s;
+    width: min(84px, calc(var(--g) * .5));
+    left: calc(var(--g) / 2 - min(84px, calc(var(--g) * .5)) / 2);
+    top: 4%;
+    animation-name: skyPocket; animation-duration: 9s;
   }
   .sky--g7x {
-    width: min(190px, calc(var(--g) * .8));
-    right: calc(var(--g) / 2 - min(190px, calc(var(--g) * .8)) / 2);
-    top: 44vh;
-    animation-name: skyG7x; animation-duration: 23s;
+    width: min(200px, calc(var(--g) * .8));
+    right: calc(var(--g) / 2 - min(200px, calc(var(--g) * .8)) / 2);
+    top: 30%;
+    animation-name: skyG7x; animation-duration: 11s;
+    pointer-events: auto; cursor: default;
   }
   .sky--d750 {
-    width: min(170px, calc(var(--g) * .8));
-    left: calc(var(--g) / 2 - min(170px, calc(var(--g) * .8)) / 2);
-    top: 60vh;
-    animation-name: skyD750; animation-duration: 20s;
+    width: min(180px, calc(var(--g) * .8));
+    left: calc(var(--g) / 2 - min(180px, calc(var(--g) * .8)) / 2);
+    top: 80%;
+    animation-name: skyD750; animation-duration: 10s;
   }
-  /* Καθεμιά με δική της βασική κλίση (όχι κατακόρυφες), διαγώνια πλεύση και αργή περιστροφή γύρω από αυτήν. */
+  /* Ήπια αιώρηση επί τόπου, με τη βασική κλίση της καθεμιάς */
   @keyframes skyPocket {
-    0%   { transform: translate3d(0, 0, 0) rotate(-14deg) scale(1); }
-    35%  { transform: translate3d(16px, -26px, 0) rotate(-8deg) scale(1.03); }
-    70%  { transform: translate3d(-12px, -44px, 0) rotate(-18deg) scale(1.01); }
-    100% { transform: translate3d(0, 0, 0) rotate(-14deg) scale(1); }
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(-13deg); }
+    50%      { transform: translate3d(4px, -12px, 0) rotate(-10deg); }
   }
   @keyframes skyG7x {
-    0%   { transform: translate3d(0, 0, 0) rotate(9deg) scale(1); }
-    30%  { transform: translate3d(-18px, -30px, 0) rotate(14deg) scale(1.03); }
-    65%  { transform: translate3d(10px, -48px, 0) rotate(5deg) scale(1.01); }
-    100% { transform: translate3d(0, 0, 0) rotate(9deg) scale(1); }
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(8deg); }
+    50%      { transform: translate3d(-5px, -14px, 0) rotate(11deg); }
   }
   @keyframes skyD750 {
-    0%   { transform: translate3d(0, 0, 0) rotate(-8deg) scale(1); }
-    40%  { transform: translate3d(16px, -34px, 0) rotate(-3deg) scale(1.03); }
-    75%  { transform: translate3d(-12px, -16px, 0) rotate(-12deg) scale(1.01); }
-    100% { transform: translate3d(0, 0, 0) rotate(-8deg) scale(1); }
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(-7deg); }
+    50%      { transform: translate3d(5px, -12px, 0) rotate(-4deg); }
   }
+
+  /* Φλας: λευκή έκλαμψη από τη θέση του φλας της Canon (πάνω αριστερά) + στιγμιαίο φώτισμα του σώματος */
+  .flash {
+    position: absolute; left: 24%; top: 10%;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: radial-gradient(circle, #fff 0%, rgba(255, 255, 255, .95) 22%, rgba(255, 255, 255, .35) 48%, rgba(255, 255, 255, 0) 72%);
+    transform: translate(-50%, -50%) scale(.2);
+    opacity: 0; pointer-events: none;
+  }
+  .is-flashing .flash { animation: skyFlash .6s ease-out; }
+  .is-flashing img { animation: skyFlashBody .5s ease-out; }
+  @keyframes skyFlash {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(.2); }
+    8%   { opacity: 1; transform: translate(-50%, -50%) scale(1.4); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(5); }
+  }
+  @keyframes skyFlashBody {
+    0%   { filter: brightness(1); }
+    10%  { filter: brightness(2.4) contrast(1.1); }
+    100% { filter: brightness(1); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .sky { animation: none; }
-    .sky--pocket { transform: rotate(-14deg); }
-    .sky--g7x { transform: rotate(9deg); }
-    .sky--d750 { transform: rotate(-8deg); }
+    .sky, .flash, .is-flashing img { animation: none; }
+    .sky--pocket { transform: rotate(-13deg); }
+    .sky--g7x { transform: rotate(8deg); }
+    .sky--d750 { transform: rotate(-7deg); }
     .gear-sky { transition: none; }
   }
 </style>
