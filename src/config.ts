@@ -19,6 +19,11 @@ export const SITE = {
   gaId: 'G-HE6GWTRNQM',
 } as const;
 
+/** Στιγμιαίος έλεγχος site (SiteCheck.astro): κλειδί του PageSpeed Insights API (Google Cloud, δωρεάν,
+ *  25.000 μετρήσεις/ημέρα, περιορισμένο σε HTTP referrer pisma.gr). Κενό = χωρίς κλειδί: η Google μοιράζει
+ *  ένα μικρό ανώνυμο όριο σε ΟΛΟΥΣ και συχνά απαντά 429, το εργαλείο τότε δείχνει «δοκιμάστε ξανά σε λίγο». */
+export const PSI_KEY = '';
+
 /** Ο Έλεγχος PISMA */
 export const ELEGXOS = {
   minutes: 45,

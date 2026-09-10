@@ -7,6 +7,7 @@
  * Τελειώνει στην κράτηση: η διεύθυνση και τα σκορ μπαίνουν στο κρυφό πεδίο «site» της φόρμας.
  * Τίποτα δεν αποθηκεύεται από εμάς. Δίγλωσσο μέσω prop.
  */
+import { PSI_KEY } from '../config';
 interface Props { lang?: 'el' | 'en' }
 const { lang = 'el' } = Astro.props;
 
@@ -60,7 +61,7 @@ const T = {
       <p>{T.sub}</p>
     </div>
 
-    <form class="card sk reveal" id="sitecheck" data-lang={lang} novalidate>
+    <form class="card sk reveal" id="sitecheck" data-lang={lang} data-key={PSI_KEY} novalidate>
       <label class="sk-label" for="sk-url">{T.label}</label>
       <div class="sk-row">
         <input id="sk-url" type="text" inputmode="url" placeholder="www.example.gr" autocomplete="url" spellcheck="false" required />
@@ -251,6 +252,7 @@ const T = {
         api.searchParams.set('url', u.href);
         api.searchParams.set('strategy', 'mobile');
         api.searchParams.set('locale', lang);
+        if (form.dataset.key) api.searchParams.set('key', form.dataset.key);
         for (const c of CATS) api.searchParams.append('category', c);
         const res = await fetch(api.href, { signal: ctrl.signal });
         if (res.status === 429) throw new Error('busy');
