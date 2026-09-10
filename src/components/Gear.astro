@@ -16,7 +16,7 @@ const t =
   lang === 'en'
     ? {
         kicker: 'Our gear',
-        title: 'Two cameras, chosen for real-world shoots.',
+        title: 'Three cameras, chosen for real-world shoots.',
         items: [
           {
             name: 'DJI Osmo Pocket 4',
@@ -28,11 +28,16 @@ const t =
             role: 'Photo',
             d: 'A compact camera with a bright lens for products, dishes, the space and the team: sharp, natural colour, ready for site and e-shop.',
           },
+          {
+            name: 'Nikon D750',
+            role: 'Photo',
+            d: 'A full-frame DSLR for the shots that need depth: portraits of the team, the space in low light, products with a soft background.',
+          },
         ],
       }
     : {
         kicker: 'Ο εξοπλισμός μας',
-        title: 'Δύο κάμερες, διαλεγμένες για γυρίσματα στον χώρο σας.',
+        title: 'Τρεις κάμερες, διαλεγμένες για γυρίσματα στον χώρο σας.',
         items: [
           {
             name: 'DJI Osmo Pocket 4',
@@ -44,8 +49,20 @@ const t =
             role: 'Φωτογραφία',
             d: 'Compact κάμερα με φωτεινό φακό για προϊόντα, πιάτα, χώρο και ομάδα: καθαρή εικόνα, φυσικό χρώμα, έτοιμη για site και e-shop.',
           },
+          {
+            name: 'Nikon D750',
+            role: 'Φωτογραφία',
+            d: 'Full-frame DSLR για τις λήψεις που θέλουν βάθος: πορτρέτα της ομάδας, ο χώρος σε χαμηλό φως, προϊόντα με απαλό φόντο.',
+          },
         ],
       };
+
+// Ίδια σειρά με τα items (και στις δύο γλώσσες). Διαστάσεις = πραγματικά pixels των WebP.
+const images = [
+  { file: 'dji-osmo-pocket-4.webp', w: 373, h: 900, key: 'pocket' },
+  { file: 'canon-g7x-mark-iii.webp', w: 1190, h: 700, key: 'g7x' },
+  { file: 'nikon-d750.webp', w: 619, h: 496, key: 'd750' }
+];
 ---
 
 <section class="section section--tight gear" aria-labelledby="gear-title">
@@ -54,26 +71,17 @@ const t =
       <p class="kicker kicker--blue">{t.kicker}</p>
       <h2 id="gear-title">{t.title}</h2>
     </div>
-    <div class="grid-2">
-      <!-- DJI Osmo Pocket 4 -->
-      <article class="card gear-card reveal">
-        <figure class="gear-fig" aria-hidden="true">
-          <img src="/gear/dji-osmo-pocket-4.webp" alt="" width="218" height="696" loading="lazy" decoding="async" class="gear-img gear-img--pocket" />
-        </figure>
-        <p class="gear-role">{t.items[0].role}</p>
-        <h3>{t.items[0].name}</h3>
-        <p>{t.items[0].d}</p>
-      </article>
-
-      <!-- Canon PowerShot G7 X Mark III -->
-      <article class="card gear-card reveal">
-        <figure class="gear-fig" aria-hidden="true">
-          <img src="/gear/canon-g7x-mark-iii.webp" alt="" width="1190" height="700" loading="lazy" decoding="async" class="gear-img gear-img--g7x" />
-        </figure>
-        <p class="gear-role">{t.items[1].role}</p>
-        <h3>{t.items[1].name}</h3>
-        <p>{t.items[1].d}</p>
-      </article>
+    <div class="grid-3 gear-grid">
+      {t.items.map((it, i) => (
+        <article class="card gear-card reveal">
+          <figure class="gear-fig" aria-hidden="true">
+            <img src={`/gear/${images[i].file}`} alt="" width={images[i].w} height={images[i].h} loading="lazy" decoding="async" class={`gear-img gear-img--${images[i].key}`} />
+          </figure>
+          <p class="gear-role">{it.role}</p>
+          <h3>{it.name}</h3>
+          <p>{it.d}</p>
+        </article>
+      ))}
     </div>
   </div>
 </section>
@@ -83,7 +91,7 @@ const t =
   .gear-fig {
     margin: 0 0 18px;
     display: flex; align-items: flex-end; justify-content: center;
-    height: 230px;
+    height: 210px;
     /* απαλός «προβολέας» πίσω από τη συσκευή, χωρίς πλαίσιο, χωρίς φόντο */
     background: radial-gradient(ellipse 60% 70% at 50% 60%, rgba(255, 255, 255, .06), transparent 70%);
     border-radius: var(--r);
@@ -93,7 +101,8 @@ const t =
     filter: drop-shadow(0 22px 26px rgba(0, 0, 0, .55));
     transition: transform var(--dur) var(--ease);
   }
-  .gear-img--g7x { height: 82%; }
+  .gear-img--g7x { height: 78%; }
+  .gear-img--d750 { height: 92%; }
   .gear-card:hover .gear-img { transform: translateY(-4px); }
   .gear-role {
     font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
