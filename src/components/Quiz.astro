@@ -238,30 +238,25 @@ const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
   }
   const band = (v: number) => (v < 40 ? 'c-red' : v < 70 ? 'c-orange' : 'c-ok');
 
-  const counters = new Map<HTMLElement, { raf: number; failSafe: number }>();
+  /* Μέτρημα αριθμών και γέμισμα δαχτυλιδιών με setTimeout/setInterval, ΟΧΙ requestAnimationFrame:
+     σε webviews και throttled tabs το rAF αργεί ή δεν τρέχει, και οι ενδείξεις έμεναν στο 0. */
+  const counters = new Map<HTMLElement, number>();
   function stopCount(el: HTMLElement) {
-    const c = counters.get(el);
-    if (!c) return;
-    cancelAnimationFrame(c.raf);
-    window.clearTimeout(c.failSafe);
-    counters.delete(el);
+    const id = counters.get(el);
+    if (id !== undefined) { window.clearInterval(id); counters.delete(el); }
   }
   function countUp(el: HTMLElement, target: number) {
     stopCount(el);
     if (reduce) { el.textContent = String(target); return; }
     const t0 = performance.now();
     const dur = 1000;
-    const c = { raf: 0, failSafe: 0 };
-    counters.set(el, c);
-    c.failSafe = window.setTimeout(() => { el.textContent = String(target); counters.delete(el); }, dur + 200);
-    function tick(now: number) {
-      const p = Math.min((now - t0) / dur, 1);
+    const id = window.setInterval(() => {
+      const p = Math.min((performance.now() - t0) / dur, 1);
       const e = 1 - Math.pow(1 - p, 3);
       el.textContent = String(Math.round(target * e));
-      if (p < 1) c.raf = requestAnimationFrame(tick);
-      else { window.clearTimeout(c.failSafe); counters.delete(el); }
-    }
-    c.raf = requestAnimationFrame(tick);
+      if (p >= 1) { window.clearInterval(id); counters.delete(el); }
+    }, 33);
+    counters.set(el, id);
   }
   function setRing(circle: SVGCircleElement, numEl: HTMLElement, v: number) {
     circle.classList.remove('c-red', 'c-orange', 'c-ok');
@@ -273,7 +268,8 @@ const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
       return;
     }
     circle.style.strokeDashoffset = String(CIRC);
-    requestAnimationFrame(() => requestAnimationFrame(() => { circle.style.strokeDashoffset = String(off); }));
+    void circle.getBoundingClientRect(); // flush, ώστε το transition να ξεκινήσει από το κενό δαχτυλίδι
+    window.setTimeout(() => { circle.style.strokeDashoffset = String(off); }, 40);
     countUp(numEl, v);
   }
 
