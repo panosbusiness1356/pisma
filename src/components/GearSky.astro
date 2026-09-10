@@ -1,0 +1,106 @@
+---
+/*
+  «Ουρανός» εξοπλισμού: οι τρεις κάμερες (ίδια αρχεία με το Gear.astro) πλέουν
+  ανεξάρτητα σε ολόκληρη τη σελίδα Φωτογράφηση & Βίντεο, μέσα στα πλαϊνά
+  περιθώρια έξω από το container των 1120px, ώστε να μην πέφτουν ποτέ πάνω σε
+  κείμενο. Αίτημα χρήστριας 10/09/2026: «να αιωρούνται σε όλη τη σελίδα μόνα
+  τους το καθένα, μην κάνεις λάθη».
+
+  Κανόνες:
+  - Εμφανίζεται μόνο όταν υπάρχει πραγματικό περιθώριο (≥ 1340px πλάτος).
+    Σε tablet/κινητό δεν υπάρχει χώρος χωρίς να καλύψει κείμενο, οπότε κρύβεται.
+  - Μόνο transform/opacity (compositor). Καμία επίδραση στο layout, pointer-events: none.
+  - Σβήνει όσο φαίνεται η ενότητα «Ο εξοπλισμός μας» (για να μην είναι διπλές οι κάμερες).
+  - Με prefers-reduced-motion μένουν ακίνητες.
+*/
+const items = [
+  { file: 'dji-osmo-pocket-4.webp', w: 335, h: 900, key: 'pocket' },
+  { file: 'canon-g7x-mark-iii.webp', w: 1190, h: 700, key: 'g7x' },
+  { file: 'nikon-d750.webp', w: 619, h: 496, key: 'd750' },
+];
+---
+
+<div class="gear-sky" aria-hidden="true" data-gear-sky>
+  {items.map((i) => (
+    <img class={`sky sky--${i.key}`} src={`/gear/${i.file}`} alt="" width={i.w} height={i.h} loading="lazy" decoding="async" />
+  ))}
+</div>
+
+<script>
+  const sky = document.querySelector<HTMLElement>('[data-gear-sky]');
+  if (sky) {
+    // Ήπια είσοδος αφού «κάτσει» η σελίδα (μετά το page-in του <main>).
+    setTimeout(() => sky.classList.add('is-on'), 900);
+    // Όσο φαίνεται η ενότητα με τις κάρτες των καμερών, ο ουρανός σβήνει.
+    const gear = document.querySelector('.gear');
+    if (gear && 'IntersectionObserver' in window) {
+      new IntersectionObserver(
+        (es) => sky.classList.toggle('is-away', es[0].isIntersecting),
+        { threshold: 0.15 },
+      ).observe(gear);
+    }
+  }
+</script>
+
+<style>
+  .gear-sky {
+    --g: calc((100vw - 1120px) / 2); /* πλάτος κάθε πλαϊνού περιθωρίου */
+    position: fixed; inset: 0; z-index: 2;
+    pointer-events: none; overflow: hidden;
+    display: none;
+    opacity: 0; transition: opacity 1.4s ease;
+  }
+  .gear-sky.is-on { opacity: 1; }
+  .gear-sky.is-away { opacity: 0; }
+  @media (min-width: 1340px) {
+    .gear-sky { display: block; }
+  }
+  .sky {
+    position: absolute; height: auto;
+    filter: drop-shadow(0 24px 28px rgba(0, 0, 0, .55));
+    will-change: transform;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  /* Καθεμιά στο κέντρο του περιθωρίου της, σε διαφορετικό ύψος, με δική της τροχιά και ρυθμό. */
+  .sky--pocket {
+    width: min(78px, calc(var(--g) * .5));
+    left: calc(var(--g) / 2 - min(78px, calc(var(--g) * .5)) / 2);
+    top: 17vh;
+    animation-name: skyPocket; animation-duration: 17s;
+  }
+  .sky--g7x {
+    width: min(190px, calc(var(--g) * .8));
+    right: calc(var(--g) / 2 - min(190px, calc(var(--g) * .8)) / 2);
+    top: 44vh;
+    animation-name: skyG7x; animation-duration: 23s;
+  }
+  .sky--d750 {
+    width: min(170px, calc(var(--g) * .8));
+    left: calc(var(--g) / 2 - min(170px, calc(var(--g) * .8)) / 2);
+    top: 60vh;
+    animation-name: skyD750; animation-duration: 20s;
+  }
+  @keyframes skyPocket {
+    0%   { transform: translate3d(0, 0, 0) rotate(-3deg); }
+    35%  { transform: translate3d(10px, -22px, 0) rotate(2deg); }
+    70%  { transform: translate3d(-8px, -34px, 0) rotate(-1deg); }
+    100% { transform: translate3d(0, 0, 0) rotate(-3deg); }
+  }
+  @keyframes skyG7x {
+    0%   { transform: translate3d(0, 0, 0) rotate(2deg); }
+    30%  { transform: translate3d(-14px, -26px, 0) rotate(-2deg); }
+    65%  { transform: translate3d(8px, -40px, 0) rotate(1deg); }
+    100% { transform: translate3d(0, 0, 0) rotate(2deg); }
+  }
+  @keyframes skyD750 {
+    0%   { transform: translate3d(0, 0, 0) rotate(-2deg); }
+    40%  { transform: translate3d(12px, -30px, 0) rotate(2deg); }
+    75%  { transform: translate3d(-10px, -14px, 0) rotate(-1deg); }
+    100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sky { animation: none; }
+    .gear-sky { transition: none; }
+  }
+</style>
