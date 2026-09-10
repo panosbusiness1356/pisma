@@ -98,8 +98,7 @@ const images = [
     height: 236px;
     /* Χωρίς φόντο/προβολέα πίσω από τη συσκευή (χρήστρια 10/09/2026: «φαίνεται ένα γκρι σαν κύκλος από πίσω») */
   }
-  /* Αιώρηση: το περιτύλιγμα κινείται (transform μόνο), η εικόνα με το drop-shadow
-     ρασταρίζεται μία φορά. Κάθε κάρτα σε άλλη φάση (--float-delay). */
+  /* Αιώρηση: το περιτύλιγμα κινείται (transform μόνο). Κάθε κάρτα σε άλλη φάση (--float-delay). */
   .gear-float {
     display: flex; align-items: flex-end; justify-content: center;
     height: 100%; padding-bottom: 16px; box-sizing: border-box;
@@ -110,7 +109,7 @@ const images = [
   }
   .gear-img {
     display: block; height: 100%; width: auto; max-width: 100%; object-fit: contain;
-    filter: drop-shadow(0 18px 22px rgba(0, 0, 0, .5));
+    /* Χωρίς drop-shadow (χρήστρια 10/09/2026: «ακόμα υπάρχει η σκιά από πίσω») */
     transition: transform var(--dur) var(--ease);
   }
   .gear-img--g7x { height: 72%; }
@@ -120,7 +119,7 @@ const images = [
   .gear-shadow {
     position: absolute; left: 50%; bottom: 4px;
     width: 56%; height: 18px;
-    background: radial-gradient(ellipse at center, rgba(0, 0, 0, .65), rgba(0, 0, 0, 0) 70%);
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, .45), rgba(0, 0, 0, 0) 70%);
     transform: translateX(-50%) scaleX(1);
     animation: gear-shadow 5.6s ease-in-out infinite;
     animation-delay: var(--float-delay, 0s);
@@ -133,8 +132,8 @@ const images = [
     50% { transform: translateY(-11px) rotate(2.5deg); }
   }
   @keyframes gear-shadow {
-    0%, 100% { transform: translateX(-50%) scaleX(1); opacity: .95; }
-    50% { transform: translateX(-50%) scaleX(.8); opacity: .55; }
+    0%, 100% { transform: translateX(-50%) scaleX(1); opacity: .6; }
+    50% { transform: translateX(-50%) scaleX(.8); opacity: .3; }
   }
   .gear-role {
     font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
