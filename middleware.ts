@@ -1,11 +1,11 @@
 /**
- * Κλειδαριά πρόσβασης (Vercel Edge Middleware) — τρέχει ΠΡΙΝ σερβιριστεί
+ * Κλειδαριά πρόσβασης (Vercel Edge Middleware): τρέχει ΠΡΙΝ σερβιριστεί
  * οτιδήποτε, σε όλα τα paths. Χωρίς σωστό κωδικό: σελίδα κλειδώματος (401).
  *
  * - Ο κωδικός: η σταθερά CODE παρακάτω. Άλλαξέ τον εδώ και κάνε push.
  * - Ο επισκέπτης που τον βάλει σωστά θυμάται για 30 ημέρες (cookie).
  * - Ξεκλείδωμα ΟΛΩΝ: σβήσε αυτό το αρχείο (ή μετονόμασέ το) και κάνε push.
- * - Τοπικά (npm run dev / astro preview) ΔΕΝ τρέχει — μόνο στο Vercel.
+ * - Τοπικά (npm run dev / astro preview) ΔΕΝ τρέχει, μόνο στο Vercel.
  */
 
 const CODE = 'pisma2026';
@@ -17,7 +17,7 @@ export default function middleware(request: Request): Response | undefined {
   const match = cookies.match(new RegExp(`(?:^|;\\s*)${COOKIE}=([^;]*)`));
   const given = match ? decodeURIComponent(match[1]) : null;
 
-  if (given === CODE) return undefined; // σωστός κωδικός — συνέχισε κανονικά
+  if (given === CODE) return undefined; // σωστός κωδικός, συνέχισε κανονικά
 
   const wrong = given !== null && given !== '';
   return new Response(lockPage(wrong), {
@@ -36,7 +36,7 @@ function lockPage(wrong: boolean): string {
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex" />
-<title>PISMA — Ιδιωτική πρόσβαση</title>
+<title>PISMA | Ιδιωτική πρόσβαση</title>
 <style>
   * { box-sizing: border-box; margin: 0; }
   body {
@@ -81,7 +81,7 @@ function lockPage(wrong: boolean): string {
     <p>Το site είναι προσωρινά κλειδωμένο.<br />Βάλτε τον κωδικό πρόσβασης για να συνεχίσετε.</p>
     <input id="c" type="password" inputmode="text" autocomplete="off" placeholder="Κωδικός" autofocus required />
     <button type="submit">Είσοδος</button>
-    <p class="err">Λάθος κωδικός — δοκιμάστε ξανά.</p>
+    <p class="err">Λάθος κωδικός. Δοκιμάστε ξανά.</p>
   </form>
   <script>
     document.getElementById('f').addEventListener('submit', function (e) {
