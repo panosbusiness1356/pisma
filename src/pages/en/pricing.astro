@@ -264,6 +264,21 @@ const faqItems = [
     else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  // Προεπιλογή από το Ταμπλό: /times/?add=id1,id2#builder τσεκάρει τις υπηρεσίες
+  // (τα radio ξετσεκάρουν μόνα τους το «Καμία») και κατεβαίνει στον builder.
+  const addIds = new URLSearchParams(location.search).get('add');
+  if (addIds) {
+    let hit = false;
+    for (const id of addIds.split(',')) {
+      const input = inputs.find((i) => i.dataset.opt === id);
+      if (input) { input.checked = true; hit = true; }
+    }
+    if (hit) {
+      update();
+      window.setTimeout(() => scrollToEl(document.getElementById('builder')), 350);
+    }
+  }
+
   // «Στείλτε μου αυτή την προσφορά» → μετάβαση στη φόρμα.
   // Το focus γίνεται ΜΕΤΑ την κύλιση, αλλιώς το πληκτρολόγιο (κινητό)
   // διακόπτει το scroll και το πρώτο πάτημα μοιάζει νεκρό.
