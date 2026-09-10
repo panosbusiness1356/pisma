@@ -1,5 +1,6 @@
 ---
 import Guide from '../../../layouts/Guide.astro';
+import Tiles from '../../../components/guide/Tiles.astro';
 import { CATEGORIES_EN } from '../../../data/pricing.en';
 import { eurEn as eur, ELEGXOS } from '../../../config';
 
@@ -40,107 +41,28 @@ const faq = [
   lang="en"
   question="How do you get more Google reviews?"
   sub="A practical guide for every business, with no tricks and nothing technical."
-  answer="Ask every happy customer for a review the moment they thank you, and make their life easy: a link or a QR that opens Google’s review form directly. Reply to all reviews, the negative ones too, and make sure they come in steadily, a few every month, rather than many bunched up at once. And never buy or stage reviews: Google forbids it, and it can cost you your profile."
-  updated="2026-07-28"
+  updated="2026-09-10"
   faq={faq}
 >
-  <h2>Why do reviews matter so much?</h2>
-  <p>
-    Reviews are among the first things Google looks at when deciding which businesses
-    to show high up on Maps and in search. And it’s no longer just Google reading them:
-    AI tools like ChatGPT read them too when someone asks “which repair shop can I trust?”
-    or “where can I get good pizza near me?”.
-  </p>
-  <p>They look at three things, and you influence all three:</p>
-  <ul>
-    <li><strong>Volume:</strong> how many customers have shared their opinion.</li>
-    <li><strong>Freshness:</strong> when the latest review was written. Recent reviews show that the business is active.</li>
-    <li><strong>Content:</strong> what customers write. When someone writes “fast service” or “clean space”, Google and the AI tools understand what you offer, in a customer’s words rather than yours.</li>
-  </ul>
-  <p>
-    That’s why reviews are also one of the strongest steps if you want
-    <a href="/en/guides/get-recommended-by-chatgpt/">ChatGPT to recommend you</a>.
-  </p>
+  <h2>Why do reviews matter?</h2>
+  <Tiles items={[
+    { icon: 'users', t: 'Count', d: 'How many customers have had their say.' },
+    { icon: 'calendar', t: 'Freshness', d: 'Recent reviews mean "a business that is alive".' },
+    { icon: 'message', t: 'Content', d: 'What they write. Google and AI read it.' },
+  ]} />
 
-  <h2>What counts more, the total or the flow?</h2>
-  <p>
-    The flow. A business with fewer but recent reviews looks alive, while another with
-    many that are all old looks like something has changed, and the customer hesitates.
-  </p>
-  <p>
-    Google and the AI tools “think” the same way: a steady flow of new reviews is a sign
-    that the place is running and customers are happy today, not last year.
-    So don’t treat it as a one-time campaign; make it part of the daily
-    routine, like the register.
-  </p>
-
-  <h2>How do you ask for a review the right way?</h2>
-  <p>
-    At the right moment and the easy way. Most customers don’t refuse to write a couple
-    of lines; they just don’t think of it themselves, or can’t be bothered to look for where to do it.
-  </p>
-  <ul>
-    <li><strong>The right moment:</strong> when the customer thanks you: the minute they pick up the car, see the haircut, finish the meal. That’s when “would you write us a couple of lines?” comes naturally.</li>
-    <li><strong>An easy link:</strong> your Google profile gives you a link that opens the review form directly. If you haven’t set up the profile, start with the guide on the <a href="/en/guides/google-maps-profile/">Google Maps profile</a>.</li>
-    <li><strong>A QR on site:</strong> a QR at the register, on the table or on the receipt makes the link scannable in seconds, no typing. <a href="/en/reviews/">The Reviews Tool</a>, PISMA’s own tool, takes this one step further.</li>
-    <li><strong>A personal word:</strong> “a review would really help us” coming from you works better than an impersonal message.</li>
-    <li><strong>Same day:</strong> if you send the link by message, send it while the experience is fresh, not a week later.</li>
-  </ul>
-
-  <h2>Should you reply to every review?</h2>
-  <p>
-    Yes, all of them. A reply shows future customers, Google and the
-    AI tools that there’s a person behind the profile who listens.
-  </p>
-  <p>
-    For the positive ones, a short thank-you in your own words is enough, rather than the same
-    boilerplate message everywhere. For the negative ones, keep this order:
-  </p>
-  <ol>
-    <li>Don’t reply angry. Let a few hours pass, but reply within 1–2 days.</li>
-    <li>Thank them for their time and own up to whatever is actually true.</li>
-    <li>Say what you’ll do differently; one sentence is enough.</li>
-    <li>Take the conversation out of public view: “give us a call and we’ll make it right”.</li>
-  </ol>
-  <p>
-    A calm reply to a negative review often tells the next customers more
-    than a stack of five-star ratings put together.
-  </p>
-
-  <h2>What do you never do with reviews?</h2>
-  <p>
-    Anything that isn’t real. Google’s rules are clear, and breaking them
-    can cost you reviews wiped out in bulk or a restricted profile.
-  </p>
-  <ul>
-    <li><strong>Don’t buy reviews</strong> from services that sell them by the batch.</li>
-    <li><strong>Don’t have relatives and employees</strong> write as fake customers.</li>
-    <li><strong>Don’t give a gift or discount in exchange for a review.</strong> Any reward is forbidden.</li>
-    <li><strong>Don’t “gate”:</strong> that is, sending only the people you know will write nice things to Google, and the unhappy ones to a hidden form. That’s forbidden too.</li>
-  </ul>
-  <p>
-    Beyond the rules, fake reviews are easy to spot, for the algorithms
-    and for people alike. A few real ones are worth more than many staged ones.
-  </p>
+  <h2>What you never do</h2>
+  <Tiles cols={2} items={[
+    { t: 'Buying reviews', d: 'Forbidden by Google.', tone: 'bad' },
+    { t: 'Relatives and staff', d: 'Writing as if they were customers.', tone: 'bad' },
+    { t: 'Gifts or discounts', d: 'Any reward for a review is forbidden.', tone: 'bad' },
+    { t: 'Unanswered reviews', d: 'Everyone sees whether you reply.', tone: 'bad' },
+  ]} />
 
   <h2>How does PISMA help?</h2>
   <p>
-    The hard part about reviews is asking consistently, every day,
-    without forgetting. That’s why we built <a href="/en/reviews/">The Reviews Tool</a>:
-    PISMA’s tool that starts with a QR sticker on the table or at the register and
-    makes reviews pile up on their own, in a way customers actually enjoy. Exactly
-    how it works is not something we describe publicly; we only show it live, at a
-    short meeting.
-  </p>
-  <p>
-    The rules above are respected to the letter: no bought or staged
-    reviews, no reward in exchange for a review, no review gating. That was the very
-    first requirement when we designed it.
-  </p>
-  <p>
-    It costs {eur(autoReviews.price)} per month, with no commitment whatsoever, plus the
-    <a href="/en/qr-stickers/">QR stickers</a> one-off. Or start with the
-    <a href="/en/free-assessment/">free {ELEGXOS.minutes}-minute Check</a> to first see
-    where you stand on Google and AI.
+    <a href="/en/reviews/">The Reviews Tool</a>: a QR on the table or at the register, and reviews pile up on their own,
+    within Google's rules. We only show it live. {eur(autoReviews.price)} per month with no commitment,
+    plus the <a href="/en/qr-stickers/">QR stickers</a>.
   </p>
 </Guide>

@@ -1,0 +1,51 @@
+---
+/**
+ * Πλακίδια οδηγού: εικονίδιο + τίτλος + ΜΙΑ γραμμή. Αντικαθιστούν την πρόζα των οδηγών
+ * (αίτημα χρήστριας 10/09/2026: «λιτά επαγγελματικά πράγματα, οργανωμένη εμφάνιση με
+ * εικονίδια και animations»). Είσοδος με το .reveal του Base (stagger ανά αδελφό).
+ * tone 'bad' = λάθη (κόκκινο chip με Χ), 'ok' = σωστές πρακτικές (πράσινο chip με τικ).
+ */
+import { guideIcons } from './icons';
+
+interface Tile { icon?: string; t: string; d: string; tone?: 'bad' | 'ok' }
+interface Props { items: Tile[]; cols?: 2 | 3; }
+const { items, cols = 3 } = Astro.props;
+
+const iconOf = (it: Tile) => it.icon ?? (it.tone === 'bad' ? 'x' : it.tone === 'ok' ? 'check' : 'check');
+---
+
+<ul class={`gt gt--${cols}`}>
+  {items.map((it) => (
+    <li class={`gt-tile reveal ${it.tone ? `gt-tile--${it.tone}` : ''}`}>
+      <span class="icon-chip gt-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" set:html={guideIcons[iconOf(it)]} />
+      </span>
+      <h3>{it.t}</h3>
+      <p>{it.d}</p>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .gt {
+    list-style: none; padding: 0; margin: 0 0 8px;
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .gt--2 { grid-template-columns: repeat(2, 1fr); }
+  .gt-tile {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r);
+    padding: 18px 18px 16px;
+    transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .gt-tile:hover { transform: translateY(-3px); border-color: var(--line-strong); }
+  .gt-icon { width: 42px; height: 42px; border-radius: 12px; margin-bottom: 12px; }
+  .gt-icon svg { width: 22px; height: 22px; }
+  .gt-tile--bad .gt-icon { background: var(--red-soft); color: var(--red-text); }
+  .gt-tile--ok .gt-icon { background: var(--ok-soft); color: var(--ok-text); }
+  .gt-tile h3 { font-size: 1rem; margin: 0 0 4px; }
+  .gt-tile p { margin: 0; font-size: .92rem; color: var(--muted); }
+  @media (max-width: 700px) { .gt, .gt--2 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 460px) { .gt, .gt--2 { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) { .gt-tile { transition: none; } }
+</style>

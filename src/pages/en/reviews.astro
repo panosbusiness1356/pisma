@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
+import NotClassicQr from '../../components/NotClassicQr.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { SITE, ELEGXOS, eurEn } from '../../config';
@@ -56,10 +57,6 @@ const faqItems = [
     a: "PISMA's tool for Google reviews: it starts with a QR sticker in your shop and makes reviews pile up on their own, in a way your customers actually enjoy. Exactly how it works is not described publicly; you see it live.",
   },
   {
-    q: "Why don't you show how it works?",
-    a: 'Because whatever works gets copied. We only show the tool live, to you, set up for your own shop, with your name and colors. A 15-minute video call is enough to know if it is right for you.',
-  },
-  {
     q: "Is this within Google's rules?",
     a: 'Yes, fully. Google forbids bought reviews, rewards in exchange for reviews and review gating. The tool does none of the three. At the live meeting you will see exactly how we achieve that.',
   },
@@ -89,6 +86,7 @@ const faqItems = [
     sub="The tool that makes your customers want to leave a Google review, and enjoy doing it. How it works is something we don't show publicly."
   >
     Reviews that pile up <span class="accent">on their own</span>
+    <div slot="extra"><NotClassicQr lang="en" /></div>
   </PageHero>
 
   <!-- 2. What it does (outcome, not mechanism) -->
@@ -105,26 +103,6 @@ const faqItems = [
             <p>{w.d}</p>
           </article>
         ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- 3. Why we keep it private -->
-  <section class="section" aria-labelledby="secret-title">
-    <div class="container container--narrow">
-      <div class="card secret-card reveal">
-        <p class="kicker">Why we keep it private</p>
-        <h2 id="secret-title">Whatever works gets copied.</h2>
-        <p class="secret-sub">
-          That is why the tool is not explained on any page. It is only shown live.
-          On a 15-minute video call or in person at your shop, you see it the way your
-          customer will, set up with your shop's name and colors.
-        </p>
-        <div class="secret-cta">
-          <a class="btn btn--orange" href="/en/contact/">Book to see it live</a>
-          <a class="btn btn--ghost" href="/en/free-assessment/">Free {ELEGXOS.minutes}-minute PISMA Check</a>
-        </div>
-        <p class="btn-note">15 minutes is enough to know if it is right for you.</p>
       </div>
     </div>
   </section>

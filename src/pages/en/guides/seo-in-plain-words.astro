@@ -1,5 +1,6 @@
 ---
 import Guide from '../../../layouts/Guide.astro';
+import Tiles from '../../../components/guide/Tiles.astro';
 import { CATEGORIES_EN } from '../../../data/pricing.en';
 import { eurEn, ELEGXOS } from '../../../config';
 
@@ -41,101 +42,31 @@ const faq = [
   slug="seo-in-plain-words"
   question="What is SEO?"
   sub="For business owners who keep hearing “SEO” and finally want to understand what it is, without the tech talk."
-  answer="SEO (Search Engine Optimization) means shaping your website and your profile so that Google shows you when someone searches for what you offer, without paying for advertising. Google recommends the pages that answer the user’s question best and most reliably; SEO’s job is to make you that answer. The same now goes for AI tools like ChatGPT, which recommend businesses using similar logic."
-  updated="2026-07-28"
+  updated="2026-09-10"
   faq={faq}
 >
-  <h2>What does SEO mean, and how is it different from advertising?</h2>
-  <p>
-    SEO stands for Search Engine Optimization. In practice, it means setting up your presence on the
-    internet so that when someone searches “electrician near me” or “where to eat pizza”, you are
-    the one who shows up.
-  </p>
-  <p>
-    The difference from advertising is simple: with ads you pay for every appearance, and the
-    moment you stop paying, you disappear. SEO is work that builds up (pages, profiles,
-    reviews) and keeps bringing people in without you paying for each appearance. It takes longer than
-    advertising, but what you build stays yours.
-  </p>
+  <h2>SEO or advertising?</h2>
+  <Tiles cols={2} items={[
+    { icon: 'euro', t: 'Advertising', d: 'You pay for every impression. Stop paying, and you disappear.' },
+    { icon: 'chart', t: 'SEO', d: 'Built once, keeps bringing people in. It stays yours.' },
+  ]} />
 
-  <h2>How does Google “think”?</h2>
-  <p>
-    Google is, at its core, a machine that answers questions. Every search is a question, even
-    when there is no question mark, and Google wants to show first the page that gives the most
-    useful and trustworthy answer.
-  </p>
-  <p>To decide that, it looks at things like:</p>
-  <ul>
-    <li><strong>What your page answers:</strong> does it speak clearly to what the user is looking for, or is it vague?</li>
-    <li><strong>How easy it is to read:</strong> does it load fast, does it work properly on mobile?</li>
-    <li><strong>Whether others trust you:</strong> reviews, mentions, an up-to-date profile.</li>
-  </ul>
-  <p>
-    You don’t need to trick Google; that doesn’t work anymore anyway. You need to genuinely
-    be the best answer for the customers in your area.
-  </p>
+  <h2>What does Google look at?</h2>
+  <Tiles items={[
+    { icon: 'text', t: 'Pages that answer', d: 'What the customer is looking for.' },
+    { icon: 'phone', t: 'Speed and mobile', d: 'If it is slow, the customer leaves.' },
+    { icon: 'star', t: 'Google profile and reviews', d: 'The first thing the customer sees.' },
+  ]} />
 
-  <h2>What actually matters for your business?</h2>
-  <p>
-    You don’t need everything the big companies do. For your business, four things are
-    essential:
-  </p>
-  <ul>
-    <li>
-      <strong>Pages that answer questions.</strong> One page for each key question your customers
-      ask: what you offer, where, how you work. A shop-window site that only says
-      “welcome” does not do this.
-    </li>
-    <li>
-      <strong>Speed and mobile.</strong> Most customers look you up on their phone. If the site
-      is slow or hard to read there, they leave before they even see what you do.
-    </li>
-    <li>
-      <strong>Google profile and reviews.</strong> For local searches, your
-      <a href="/en/guides/google-maps-profile/">profile on Google and Maps</a> is often the
-      first thing a customer sees, even before the website itself.
-    </li>
-    <li>
-      <strong>Consistent details.</strong> Same name, same address, same phone number
-      everywhere: on the site, on the Google profile, on social. Search engines get confused by
-      mismatches, and customers even more so.
-    </li>
-  </ul>
-
-  <h2>What changes with AI, and what are AEO and GEO?</h2>
-  <p>
-    The new chapter is that customers no longer search only on Google; they also ask AI tools
-    like ChatGPT: “where can I get my brakes done in the southern suburbs?”. And instead of a long
-    list of links, AI gives one answer, with a few specific business recommendations.
-  </p>
-  <p>
-    This is where two new terms come in: AEO (Answer Engine Optimization) and GEO (Generative
-    Engine Optimization), which means being inside the answers AI gives. The good news is that
-    whatever you do right for SEO helps here too, because AI learns from the same sources: your
-    website, your profile, your reviews. We wrote a separate guide on
-    <a href="/en/guides/get-recommended-by-chatgpt/">how to get recommended by ChatGPT</a>.
-  </p>
-
-  <h2>What can you do on your own, today?</h2>
-  <p>Before you pay for anything, do these; they are free and only take a little time:</p>
-  <ol>
-    <li>Search Google for your service and your area, the way a customer would type it. Do you show up? Where?</li>
-    <li>Ask ChatGPT the same thing. Does it mention you? Who does it recommend?</li>
-    <li>Fill in your Google profile completely: hours, photos, services, description.</li>
-    <li>Check that your name, address and phone number are identical on your site, Google and social.</li>
-    <li>Open your website on a phone. Is it easy to read? Can you find the phone number in one move?</li>
-    <li>Write one page or post that answers your customers’ most frequent question.</li>
-  </ol>
+  <h2>What changes with AI?</h2>
+  <Tiles cols={2} items={[
+    { icon: 'bot', t: 'One answer, not a list', d: 'ChatGPT suggests a few names. There is no "page two".' },
+    { icon: 'link', t: 'The same sources', d: 'What counts for Google counts for AI too.' },
+  ]} />
 
   <h2>How does PISMA help?</h2>
   <p>
-    The <strong>Visibility on Google & AI</strong> service covers exactly this: SEO, AEO and GEO
-    together. The initial setup costs {eurEn(aiSetup.price)} one-off and monthly management is
-    {eurEn(aiMonthly.price)} per month, with a monthly report on what was done and what was
-    measured, with no commitment and no contract. We measure where you stand before we start and
-    re-measure at 3 months, so you can judge by the numbers. If you first just want
-    to see where you are, book the free <a href="/en/free-assessment/">PISMA Check</a>:
-    {ELEGXOS.minutes} minutes, and you leave with a written picture of your Google, AI and
-    day-to-day operations.
+    Visibility on Google & AI: setup {eurEn(aiSetup.price)} one-off, management {eurEn(aiMonthly.price)} per month,
+    with a monthly report and no commitment. Or start with the free <a href="/en/free-assessment/">{ELEGXOS.minutes}-minute Check</a>.
   </p>
 </Guide>

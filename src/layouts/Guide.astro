@@ -1,6 +1,6 @@
 ---
 /**
- * Layout οδηγού, answer-first άρθρο για SEO/AEO/GEO:
+ * Layout οδηγού, λιτό άρθρο (Tiles/Steps με εικονίδια) για SEO/AEO/GEO:
  * ερώτηση-τίτλος, «σύντομη απάντηση» πρώτη, πρόζα, FAQ με schema, CTA.
  * Εκπέμπει Article JSON-LD· το FAQPage βγαίνει από το <Faq withSchema>.
  */
@@ -19,21 +19,18 @@ interface Props {
   /** Η ερώτηση-τίτλος της σελίδας (h1) */
   question: string;
   sub?: string;
-  /** Η σύντομη απάντηση (2–3 προτάσεις), εμφανίζεται πρώτη, πριν την πρόζα */
-  answer: string;
   /** ISO ημερομηνία τελευταίας ενημέρωσης, π.χ. '2026-07-28' */
   updated: string;
   faq?: { q: string; a: string }[];
   /** 'en' για τους αγγλικούς οδηγούς, αλλάζει chrome, URLs και schema. */
   lang?: 'el' | 'en';
 }
-const { title, description, slug, question, sub, answer, updated, faq = [], lang = 'el' } = Astro.props;
+const { title, description, slug, question, sub, updated, faq = [], lang = 'el' } = Astro.props;
 
 const T = {
   el: {
     base: '/odigoi/',
     kicker: 'Οδηγός',
-    shortAnswer: 'Η σύντομη απάντηση',
     updatedLabel: 'Τελευταία ενημέρωση:',
     allGuides: 'Όλοι οι οδηγοί',
     faqKicker: 'Συχνές ερωτήσεις',
@@ -50,7 +47,6 @@ const T = {
   en: {
     base: '/en/guides/',
     kicker: 'Guide',
-    shortAnswer: 'The short answer',
     updatedLabel: 'Last updated:',
     allGuides: 'All guides',
     faqKicker: 'FAQ',
@@ -101,16 +97,6 @@ const schema = [
 <Base title={title} description={description} schema={schema}>
   <PageHero kicker={T.kicker} sub={sub}>{question}</PageHero>
 
-  <!-- Η σύντομη απάντηση, πάντα πρώτη, πριν από οτιδήποτε άλλο -->
-  <section class="section--tight" aria-label={T.shortAnswer}>
-    <div class="container container--narrow">
-      <div class="card answer reveal">
-        <p class="answer-kicker">{T.shortAnswer}</p>
-        <p class="answer-text">{answer}</p>
-      </div>
-    </div>
-  </section>
-
   <article class="section--tight">
     <div class="container container--narrow guide-prose">
       <slot />
@@ -143,14 +129,6 @@ const schema = [
 </Base>
 
 <style>
-  /* Κουτί σύντομης απάντησης */
-  .answer { border-left: 3px solid var(--orange); }
-  .answer-kicker {
-    font-size: .76rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-    color: var(--orange-text); margin-bottom: 10px;
-  }
-  .answer-text { font-size: 1.1rem; color: var(--ink); max-width: 62ch; }
-
   /* Πρόζα οδηγού, τα στοιχεία έρχονται από slot, άρα :global κάτω από wrapper */
   .guide-prose { max-width: 760px; }
   .guide-prose :global(h2) {
