@@ -19,6 +19,12 @@
   - Στρώμα position:absolute μέσα στο <main> (που είναι position:relative),
     ύψος όσο η σελίδα, pointer-events none (μόνο η Canon πιάνει τον δείκτη).
   - Εμφανίζεται μόνο όταν υπάρχει πραγματικό περιθώριο (≥ 1340px πλάτος).
+  - Tablet (641 έως 1339px, iPad): δεν υπάρχει πλαϊνό περιθώριο, οπότε οι τρεις
+    κάμερες κάθονται δεξιά από τον τίτλο της ενότητάς τους (anchorM), στο κενό
+    που αφήνει η επικεφαλίδα (max-width 680px, αριστερή στοίχιση). Το JS μετρά το
+    πραγματικό πλάτος του κειμένου του τίτλου και μικραίνει ή κρύβει την κάμερα
+    αν δεν χωρά (χρήστρια 11/09/2026: «οι κάμερες μέσα στη σελίδα όταν ανοίγω
+    το iPad δεν φαίνονται»).
   - Μόνο transform/opacity/filter σε μικρά στοιχεία. Καμία επίδραση στο layout.
   - Με prefers-reduced-motion: ακίνητες, χωρίς φλας.
 */
@@ -26,15 +32,15 @@
 // Nikon αριστερά στο hero, DJI δεξιά στο «Τι κερδίζετε», Canon αριστερά στο «Τι τραβάμε».
 // anchor = η ενότητα, frac = σε ποιο ύψος της ενότητας κάθεται το κέντρο της κάμερας.
 const items = [
-  { file: 'nikon-d750.webp', w: 619, h: 496, key: 'd750', flash: true, auto: true, anchor: 'section.hero', frac: 0.56, anchorM: '#why-title', fracM: 0.5 },
-  { file: 'dji-osmo-pocket-4.webp', w: 335, h: 900, key: 'pocket', flash: false, auto: false, anchor: '[aria-labelledby="why-title"]', frac: 0.58, anchorM: '#shoot-title', fracM: 0.5 },
-  { file: 'canon-g7x-mark-iii.webp', w: 1190, h: 700, key: 'g7x', flash: true, auto: true, anchor: '[aria-labelledby="shoot-title"]', frac: 0.42, anchorM: '#faq-title', fracM: 0.5 },
+  { file: 'nikon-d750.webp', w: 619, h: 496, key: 'd750', flash: true, auto: true, anchor: 'section.hero', frac: 0.56, anchorM: '#why-title', fracM: 0.5, wt: 150 },
+  { file: 'dji-osmo-pocket-4.webp', w: 335, h: 900, key: 'pocket', flash: false, auto: false, anchor: '[aria-labelledby="why-title"]', frac: 0.58, anchorM: '#shoot-title', fracM: 0.5, wt: 62 },
+  { file: 'canon-g7x-mark-iii.webp', w: 1190, h: 700, key: 'g7x', flash: true, auto: true, anchor: '[aria-labelledby="shoot-title"]', frac: 0.42, anchorM: '#faq-title', fracM: 0.5, wt: 150 },
 ];
 ---
 
 <div class="gear-sky" aria-hidden="true" data-gear-sky>
   {items.map((i) => (
-    <span class={`sky sky--${i.key}`} data-flash={i.flash ? '' : undefined} data-auto={i.auto ? '' : undefined} data-anchor={i.anchor} data-frac={i.frac} data-anchor-m={i.anchorM} data-frac-m={i.fracM}>
+    <span class={`sky sky--${i.key}`} data-flash={i.flash ? '' : undefined} data-auto={i.auto ? '' : undefined} data-anchor={i.anchor} data-frac={i.frac} data-anchor-m={i.anchorM} data-frac-m={i.fracM} data-wt={i.wt}>
       <img src={`/gear/${i.file}`} alt="" width={i.w} height={i.h} loading="lazy" decoding="async" />
       {i.flash && <span class="flash"></span>}
     </span>
@@ -49,17 +55,46 @@ const items = [
     const cams = [...sky.querySelectorAll<HTMLElement>('.sky')];
     const mainEl = sky.parentElement as HTMLElement; // το <main>, position: relative
     const place = () => {
-      // Κινητό (≤ 640px): άλλη άγκυρα (ο σύντομος τίτλος της ενότητας), βλ. anchorM/fracM.
+      // Κινητό (≤ 640px) και tablet (641 έως 1339px): άλλη άγκυρα (ο τίτλος της ενότητας), βλ. anchorM/fracM.
       const mobile = matchMedia('(max-width: 640px)').matches;
-      const mainTop = mainEl.getBoundingClientRect().top;
+      const tablet = !mobile && matchMedia('(max-width: 1339px)').matches;
+      const mainRect = mainEl.getBoundingClientRect();
+      const mainTop = mainRect.top;
       for (const cam of cams) {
-        const sel = (mobile && cam.dataset.anchorM) || cam.dataset.anchor || '';
+        const sel = ((mobile || tablet) && cam.dataset.anchorM) || cam.dataset.anchor || '';
         const sec = document.querySelector<HTMLElement>(sel);
         if (!sec) continue;
-        const frac = Number((mobile && cam.dataset.fracM) || cam.dataset.frac || 0.5);
+        const frac = Number(((mobile || tablet) && cam.dataset.fracM) || cam.dataset.frac || 0.5);
         const r = sec.getBoundingClientRect();
-        const h = cam.getBoundingClientRect().height || cam.offsetHeight;
-        cam.style.top = `${Math.round(r.top - mainTop + r.height * frac - h / 2)}px`;
+        const h0 = () => cam.getBoundingClientRect().height || cam.offsetHeight;
+        let top = 0;
+        if (tablet) {
+          // Δεξιά από το κείμενο του τίτλου: μετράμε το μελάνι (Range), όχι το block που πιάνει όλο το πλάτος.
+          const rng = document.createRange();
+          rng.selectNodeContents(sec);
+          const txt = rng.getBoundingClientRect();
+          const gap = mainRect.right - txt.right; // ελεύθερος χώρος δεξιά από τον τίτλο
+          const img = cam.querySelector('img') as HTMLImageElement;
+          const ratio = Number(img.getAttribute('height')) / Number(img.getAttribute('width'));
+          // Κέντρο στο μπλοκ ετικέτα+τίτλος (.sec-head), και όχι ψηλότερη από αυτό συν λίγο,
+          // ώστε να μην πέφτει στις κάρτες από κάτω (η DJI είναι ψηλή και στενή).
+          const head = (sec.closest('.sec-head') || sec).getBoundingClientRect();
+          const blockH = r.bottom - head.top;
+          let w = Math.min(Number(cam.dataset.wt || 140), gap - 56, (blockH + 40) / ratio);
+          if (w < 40) { cam.style.visibility = 'hidden'; continue; }
+          cam.style.visibility = '';
+          cam.style.width = `${Math.round(w)}px`;
+          cam.style.right = `${Math.round(Math.max(20, (gap - w) / 2))}px`;
+          cam.style.left = 'auto';
+          const h = w * ratio;
+          top = (head.top + r.bottom) / 2 - mainTop - h / 2;
+          // ποτέ κάτω από τον τίτλο (12px απόσταση, καλύπτει και την κλίση της κάμερας)
+          top = Math.min(top, r.bottom - mainTop - h - 12);
+        } else {
+          cam.style.visibility = ''; cam.style.width = ''; cam.style.right = ''; cam.style.left = '';
+          top = r.top - mainTop + r.height * frac - h0() / 2;
+        }
+        cam.style.top = `${Math.round(top)}px`;
       }
     };
     place();
@@ -130,6 +165,14 @@ const items = [
   .gear-sky.is-on { opacity: 1; }
   @media (min-width: 1340px) {
     .gear-sky { display: block; }
+  }
+  /* Tablet (iPad, 641 έως 1339px): ορατό, οι κάμερες δεξιά από τον τίτλο κάθε ενότητας.
+     Πλάτος/right τα ορίζει το JS (μετρά το κείμενο του τίτλου)· εδώ μόνο τα fallback. */
+  @media (min-width: 641px) and (max-width: 1339px) {
+    .gear-sky { display: block; }
+    .sky--d750 { left: auto; right: 24px; width: 150px; }
+    .sky--pocket { left: auto; right: 40px; width: 62px; }
+    .sky--g7x { left: auto; right: 24px; width: 150px; }
   }
   .sky {
     position: absolute; display: block;
