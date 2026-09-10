@@ -175,27 +175,7 @@ const themeByQuery = import.meta.env.DEV;
     <Footer />
     <Mascot />
     <Consent />
-    <!-- Προβολέας δρομέα: απαλό λευκό φως στο «πάτωμα» της Σκηνής, κάτω από όλο το περιεχόμενο (z-index -1),
-         ακολουθεί το ποντίκι. Μόνο με ποντίκι/trackpad, όχι σε αφή ούτε με reduced motion. -->
-    <div class="cursor-light" id="cursor-light" aria-hidden="true"></div>
-
     <script>
-      // Προβολέας δρομέα (βλ. .cursor-light στο global.css): ένα transform ανά καρέ, μόνο όταν κινείται το ποντίκι.
-      const light = document.getElementById('cursor-light');
-      const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-      const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (light && fine && !still) {
-        let lx = -9999, ly = -9999, raf = 0;
-        const paint = () => { raf = 0; light.style.transform = `translate(${lx}px, ${ly}px)`; };
-        window.addEventListener('pointermove', (e) => {
-          lx = e.clientX; ly = e.clientY;
-          if (!light.classList.contains('is-on')) light.classList.add('is-on');
-          if (!raf) raf = requestAnimationFrame(paint);
-        }, { passive: true });
-        document.addEventListener('pointerleave', () => light.classList.remove('is-on'));
-        document.documentElement.addEventListener('mouseleave', () => light.classList.remove('is-on'));
-      }
-
       // Μεταβάσεις σελίδων (@view-transition στο global.css): όταν η νέα σελίδα ήρθε με μετάβαση,
       // η δική της είσοδος .page-in δεν χρειάζεται (θα ήταν διπλό ξεθώριασμα).
       window.addEventListener('pagereveal', (e) => {

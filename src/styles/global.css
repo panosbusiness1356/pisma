@@ -407,15 +407,3 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
   @view-transition { navigation: none; }
 }
 
-/* ---------- Προβολέας δρομέα (Base.astro) ----------
-   Απαλό λευκό φως 640px πίσω από τον δρομέα, ΚΑΤΩ από το περιεχόμενο (z-index -1): φαίνεται μόνο
-   στο «πάτωμα» της Σκηνής, ανάμεσα στις κάρτες. Μόνο ποντίκι/trackpad, το JS το ανάβει στην πρώτη κίνηση. */
-.cursor-light {
-  position: fixed; left: -320px; top: -320px; width: 640px; height: 640px;
-  z-index: -1; pointer-events: none; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(255, 255, 255, .075), rgba(255, 255, 255, .03) 45%, transparent 72%);
-  opacity: 0; transition: opacity .6s ease;
-  will-change: transform;
-}
-.cursor-light.is-on { opacity: 1; }
-@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) { .cursor-light { display: none; } }
