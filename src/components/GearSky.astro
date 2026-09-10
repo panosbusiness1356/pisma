@@ -6,6 +6,9 @@
   έδειξε η χρήστρια με κύκλους, 11/09/2026), μέσα στα πλαϊνά περιθώρια έξω από το
   container των 1120px, ώστε να μην πέφτουν ποτέ πάνω σε κείμενο. Πολύ ήπια
   αιώρηση επί τόπου. Η Canon «ρίχνει φλας» όταν περνά ο δείκτης από πάνω της.
+  Η Nikon ρίχνει φλας μόνη της μία φορά στο άνοιγμα της σελίδας, διπλό «ποπ»
+  όπως μια DSLR (προ-φλας και κύριο), μόλις εμφανιστεί (χρήστρια 11/09/2026:
+  «βάλε η Nikon να κάνει φλας όταν ανοίγεις τη σελίδα»).
   Αίτημα χρήστριας 11/09/2026: «βάλε τα να είναι σταθερά κάπου μέσα στη σελίδα,
   η μία κάμερα να κάνει κάτι σαν φλας όταν περνάς από μπροστά της, χώρισέ τες
   καλά μέσα στη σελίδα, μην κάνεις λάθη».
@@ -21,15 +24,15 @@
 // Nikon αριστερά στο hero, DJI δεξιά στο «Τι κερδίζετε», Canon αριστερά στο «Τι τραβάμε».
 // anchor = η ενότητα, frac = σε ποιο ύψος της ενότητας κάθεται το κέντρο της κάμερας.
 const items = [
-  { file: 'nikon-d750.webp', w: 619, h: 496, key: 'd750', flash: false, anchor: 'section.hero', frac: 0.56 },
-  { file: 'dji-osmo-pocket-4.webp', w: 335, h: 900, key: 'pocket', flash: false, anchor: '[aria-labelledby="why-title"]', frac: 0.58 },
-  { file: 'canon-g7x-mark-iii.webp', w: 1190, h: 700, key: 'g7x', flash: true, anchor: '[aria-labelledby="shoot-title"]', frac: 0.42 },
+  { file: 'nikon-d750.webp', w: 619, h: 496, key: 'd750', flash: true, auto: true, anchor: 'section.hero', frac: 0.56 },
+  { file: 'dji-osmo-pocket-4.webp', w: 335, h: 900, key: 'pocket', flash: false, auto: false, anchor: '[aria-labelledby="why-title"]', frac: 0.58 },
+  { file: 'canon-g7x-mark-iii.webp', w: 1190, h: 700, key: 'g7x', flash: true, auto: false, anchor: '[aria-labelledby="shoot-title"]', frac: 0.42 },
 ];
 ---
 
 <div class="gear-sky" aria-hidden="true" data-gear-sky>
   {items.map((i) => (
-    <span class={`sky sky--${i.key}`} data-flash={i.flash ? '' : undefined} data-anchor={i.anchor} data-frac={i.frac}>
+    <span class={`sky sky--${i.key}`} data-flash={i.flash ? '' : undefined} data-auto={i.auto ? '' : undefined} data-anchor={i.anchor} data-frac={i.frac}>
       <img src={`/gear/${i.file}`} alt="" width={i.w} height={i.h} loading="lazy" decoding="async" />
       {i.flash && <span class="flash"></span>}
     </span>
@@ -60,18 +63,30 @@ const items = [
     // Ήπια είσοδος αφού «κάτσει» η σελίδα (μετά το page-in του <main>).
     setTimeout(() => { place(); sky.classList.add('is-on'); }, 900);
 
-    // Φλας όταν ο δείκτης περάσει πάνω από την κάμερα (όχι με reduced motion).
+    // Φλας: μία έκλαμψη (0,65 s) και μικρή «νεκρή» περίοδος ώστε να μην ξαναρχίσει
+    // πριν τελειώσει. Canon: όταν ο δείκτης περάσει από πάνω της. Nikon: μόνη της,
+    // μία φορά στο άνοιγμα, διπλό ποπ (προ-φλας + κύριο) 1,3 s αφού εμφανιστεί.
+    // Όχι με reduced motion, ούτε όταν το στρώμα είναι κρυφό (οθόνες < 1340px).
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!reduce) {
+      const fire = (cam: HTMLElement) => {
+        if (cam.dataset.busy) return;
+        cam.dataset.busy = '1';
+        cam.classList.add('is-flashing');
+        setTimeout(() => cam.classList.remove('is-flashing'), 650);
+        setTimeout(() => { delete cam.dataset.busy; }, 1200);
+      };
       for (const cam of sky.querySelectorAll<HTMLElement>('[data-flash]')) {
-        let busy = false;
-        cam.addEventListener('pointerenter', () => {
-          if (busy) return;
-          busy = true;
+        cam.addEventListener('pointerenter', () => fire(cam));
+      }
+      const shown = () => getComputedStyle(sky).display !== 'none' && !document.hidden;
+      for (const cam of sky.querySelectorAll<HTMLElement>('[data-auto]')) {
+        setTimeout(() => {
+          if (!shown()) return;
           cam.classList.add('is-flashing');
-          setTimeout(() => cam.classList.remove('is-flashing'), 650);
-          setTimeout(() => { busy = false; }, 1200);
-        });
+          setTimeout(() => cam.classList.remove('is-flashing'), 260);
+          setTimeout(() => fire(cam), 300);
+        }, 900 + 1300);
       }
     }
   }
@@ -132,7 +147,8 @@ const items = [
     50%      { transform: translate3d(5px, -12px, 0) rotate(-4deg); }
   }
 
-  /* Φλας: λευκή έκλαμψη από τη θέση του φλας της Canon (πάνω αριστερά) + στιγμιαίο φώτισμα του σώματος */
+  /* Φλας: λευκή έκλαμψη από τη θέση του φλας κάθε κάμερας (Canon πάνω αριστερά,
+     Nikon το ενσωματωμένο φλας πάνω από την πρίσμα, στο κέντρο) + στιγμιαίο φώτισμα του σώματος */
   .flash {
     position: absolute; left: 24%; top: 10%;
     width: 44px; height: 44px; border-radius: 50%;
@@ -140,6 +156,7 @@ const items = [
     transform: translate(-50%, -50%) scale(.2);
     opacity: 0; pointer-events: none;
   }
+  .sky--d750 .flash { left: 58%; top: 5%; width: 60px; height: 60px; }
   .is-flashing .flash { animation: skyFlash .6s ease-out; }
   .is-flashing img { animation: skyFlashBody .5s ease-out; }
   @keyframes skyFlash {

@@ -1054,14 +1054,19 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent('Γεια σας! Θ�
     color: rgba(255, 255, 255, .95); text-shadow: 0 0 .1em rgba(255, 255, 255, .35); white-space: nowrap; will-change: transform;
     animation: hwShineTxt 6s ease-in-out 1.9s infinite both;
   }
+  /* Η σάρωση ξεκινά 60 % του παραθύρου (18 % της λέξης) ΠΡΙΝ το «P» και τελειώνει άλλο τόσο ΜΕΤΑ την τελεία:
+     με ease-in-out οι αργές φάσεις (αρχή/τέλος) πέφτουν έξω από τα γράμματα, και το φως περνά με την ίδια
+     ταχύτητα από το «P» ως την τελεία. Πριν, το αργό τέλος έπεφτε πάνω στο «MA.» και έμενε φωτισμένο
+     περισσότερο (χρήστρια 11/09/2026: «το MA από το PISMA σαν να μένει περισσότερο»). Το αντίγραφο
+     (.hw-shine-txt) μετακινείται αντίθετα κατά το ίδιο ποσό (60 % παραθύρου = 18 % του δικού του πλάτους). */
   @keyframes hwShineWin {
-    0% { transform: translateX(-100%); opacity: 1; }
-    40% { transform: translateX(333.34%); opacity: 1; }
-    41%, 100% { transform: translateX(333.34%); opacity: 0; }
+    0% { transform: translateX(-160%); opacity: 1; }
+    40% { transform: translateX(393.34%); opacity: 1; }
+    41%, 100% { transform: translateX(393.34%); opacity: 0; }
   }
   @keyframes hwShineTxt {
-    0% { transform: translateX(30%); }
-    40%, 100% { transform: translateX(-100%); }
+    0% { transform: translateX(48%); }
+    40%, 100% { transform: translateX(-118%); }
   }
   /* Λάμψη πίσω από το «PISMA.» (οθόνες αφής, αντί για text-shadow 80 px που ακρίβαινε κάθε ξαναζωγράφισμα) */
   .hw-glow { display: none; position: absolute; left: 4%; right: 4%; top: -10%; bottom: -10%; pointer-events: none; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 255, 255, .11), rgba(255, 255, 255, .04) 60%, transparent); }
