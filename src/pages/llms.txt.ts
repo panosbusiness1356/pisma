@@ -8,8 +8,8 @@ import { CATEGORIES } from '../data/pricing';
 import { GUIDES } from '../data/guides';
 import { GUIDES_EN } from '../data/guides.en';
 
-const line = (o: { label: string; detail?: string; price: number; type: string }) =>
-  `- ${o.label}${o.detail ? ` (${o.detail})` : ''}: ${eur(o.price)} ${o.type === 'monthly' ? 'τον μήνα' : 'εφάπαξ'}`;
+const line = (o: { label: string; detail?: string; price: number; type: string; quote?: boolean }) =>
+  `- ${o.label}${o.detail ? ` (${o.detail})` : ''}: ${o.quote ? 'τιμή κατόπιν συνεννόησης' : `${eur(o.price)} ${o.type === 'monthly' ? 'τον μήνα' : 'εφάπαξ'}`}`;
 
 const body = `# ${SITE.name}
 
@@ -58,7 +58,7 @@ ${GUIDES.map((g) => `- [${g.q}](${SITE.url}/odigoi/${g.slug}/): ${g.blurb}`).joi
 - [Αυτοματισμοί γραφείου](${SITE.url}/doulevei-mono-tou/): πληρωμές, εισπράξεις, αναφορές στο αυτόματο
 - [Ψηφιακό Μενού με QR](${SITE.url}/psifiako-menou/): το μενού στο κινητό του πελάτη, αλλαγές χωρίς επανεκτυπώσεις
 - [Site με online κρατήσεις](${SITE.url}/site-kratiseis/): ραντεβού και τραπέζια που κλείνονται online, με αυτόματη υπενθύμιση
-- [Site που πουλάει](${SITE.url}/site-pou-poulaei/): γρήγορο site με ένα ξεκάθαρο επόμενο βήμα, ώστε ο επισκέπτης να σας τηλεφωνήσει
+- [Site](${SITE.url}/site-pou-poulaei/): γρήγορο site με ένα ξεκάθαρο επόμενο βήμα, ώστε ο επισκέπτης να σας τηλεφωνήσει
 - [E-shop σε Shopify](${SITE.url}/shopify/): κατασκευή ηλεκτρονικού καταστήματος σε Shopify ή μηνιαία διαχείριση υπάρχοντος (προϊόντα, αποθέματα, εκπτώσεις, apps, ενημερώσεις), με δημόσιες τιμές (παραπάνω)
 - [Φωτογράφηση & Βίντεο](${SITE.url}/fotografisi-video/): φωτογραφίες και μικρά βίντεο τραβηγμένα στον χώρο της επιχείρησης (προϊόντα, πιάτα, χώρος, ομάδα) για site, e-shop, Google και social (όχι stock)
 - [Τιμές](${SITE.url}/times/): όλες οι τιμές δημόσια, builder πακέτου

@@ -14,7 +14,7 @@ const pro = optionById('web-pro')!;
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'Site που πουλάει',
+  name: 'Site',
   serviceType: 'Κατασκευή ιστοσελίδων για επιχειρήσεις',
   areaServed: SITE.region,
   provider: {
@@ -67,7 +67,7 @@ const faqItems = [
   },
   {
     q: 'Πόσο κοστίζει;',
-    a: `Εφάπαξ: Basic ${eur(basic.price)}, Standard ${eur(standard.price)}, Pro ${eur(pro.price)}. Οι μηνιαίες υπηρεσίες, όπως η συντήρηση, είναι προαιρετικές και έχουν δημόσια τιμή στη σελίδα τιμών.`,
+    a: `Εφάπαξ: Basic ${eur(basic.price)}, Standard ${eur(standard.price)}, Pro ${eur(pro.price)}. Για πολύ μεγάλες επιχειρήσεις με πολλά προϊόντα υπάρχει η βαθμίδα Enterprise, με τιμή που ορίζεται μετά από συνεννόηση. Οι μηνιαίες υπηρεσίες, όπως η συντήρηση, είναι προαιρετικές και έχουν δημόσια τιμή στη σελίδα τιμών.`,
   },
   {
     q: 'Θα με βρίσκουν στη Google με αυτό;',
@@ -83,7 +83,7 @@ const faqItems = [
 >
   <!-- 1. Hero -->
   <PageHero
-    kicker="Site που πουλάει"
+    kicker="Site"
     sub="Γρήγορη, καθαρή ιστοσελίδα με σαφές επόμενο βήμα σε κάθε σελίδα."
   >
     Ένα site που <span class="accent">φέρνει πελάτες</span>
@@ -178,7 +178,7 @@ const faqItems = [
             Από <span class="price-num num">{eur(basic.price)}</span> εφάπαξ
           </h2>
           <p class="price-sub">
-            <strong>Basic {eur(basic.price)}</strong> · <strong>Standard {eur(standard.price)}</strong> · <strong>Pro {eur(pro.price)}</strong>.
+            <strong>Basic {eur(basic.price)}</strong> · <strong>Standard {eur(standard.price)}</strong> · <strong>Pro {eur(pro.price)}</strong> · <strong>Enterprise</strong> κατόπιν συνεννόησης.
             Δημόσιες τιμές, ίδιες για όλους. Οι μηνιαίες υπηρεσίες είναι προαιρετικές.
           </p>
         </div>
@@ -213,7 +213,7 @@ const faqItems = [
 </Base>
 
 <script>
-  // «Site που πουλάει» (laptop): μέσα στην οθόνη ένα premium site τριών
+  // «Site» (laptop): μέσα στην οθόνη ένα premium site τριών
   // οθονών, και η κίνηση είναι απλώς η περιήγηση, αργό scroll προς τα κάτω
   // με παύσεις σε κάθε ενότητα, και επιστροφή στην κορυφή. Χωρίς JS ή με
   // reduced motion: στατικό hero.
@@ -357,7 +357,7 @@ const faqItems = [
 </script>
 
 <style>
-  /* ---------- «Site που πουλάει», laptop ---------- */
+  /* ---------- «Site», laptop ---------- */
   /* Δίστηλη διάταξη σε desktop (κείμενο αριστερά, laptop δεξιά), στοίβαγμα
      σε στενές οθόνες, ίδιο μοτίβο με τις άλλες σκηνές. */
   .sp-grid {

@@ -14,7 +14,7 @@ const pro = optionById('web-pro')!;
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'A website that sells',
+  name: 'Website',
   serviceType: 'Business website development',
   areaServed: SITE.regionEn,
   provider: {
@@ -67,7 +67,7 @@ const faqItems = [
   },
   {
     q: 'How much does it cost?',
-    a: `One-off: Basic ${eurEn(basic.price)}, Standard ${eurEn(standard.price)}, Pro ${eurEn(pro.price)}. Monthly services such as maintenance are optional and publicly priced on the pricing page.`,
+    a: `One-off: Basic ${eurEn(basic.price)}, Standard ${eurEn(standard.price)}, Pro ${eurEn(pro.price)}. For very large businesses with many products there is an Enterprise tier, priced after consultation. Monthly services such as maintenance are optional and publicly priced on the pricing page.`,
   },
   {
     q: 'Will Google find me with this?',
@@ -83,7 +83,7 @@ const faqItems = [
 >
   <!-- 1. Hero -->
   <PageHero
-    kicker="A website that sells"
+    kicker="Website"
     sub="A fast, clean website with a clear next step on every page."
   >
     A website that <span class="accent">brings customers</span>
@@ -179,7 +179,7 @@ const faqItems = [
             From <span class="price-num num">{eurEn(basic.price)}</span> one-off
           </h2>
           <p class="price-sub">
-            <strong>Basic {eurEn(basic.price)}</strong> · <strong>Standard {eurEn(standard.price)}</strong> · <strong>Pro {eurEn(pro.price)}</strong>.
+            <strong>Basic {eurEn(basic.price)}</strong> · <strong>Standard {eurEn(standard.price)}</strong> · <strong>Pro {eurEn(pro.price)}</strong> · <strong>Enterprise</strong> on request.
             Public prices, the same for everyone. Monthly services are optional.
           </p>
         </div>
@@ -214,7 +214,7 @@ const faqItems = [
 </Base>
 
 <script>
-  // «Site που πουλάει» (laptop): μέσα στην οθόνη ένα premium site τριών
+  // «Site» (laptop): μέσα στην οθόνη ένα premium site τριών
   // οθονών, και η κίνηση είναι απλώς η περιήγηση, αργό scroll προς τα κάτω
   // με παύσεις σε κάθε ενότητα, και επιστροφή στην κορυφή. Χωρίς JS ή με
   // reduced motion: στατικό hero.
@@ -358,7 +358,7 @@ const faqItems = [
 </script>
 
 <style>
-  /* ---------- «Site που πουλάει», laptop ---------- */
+  /* ---------- «Site», laptop ---------- */
   /* Δίστηλη διάταξη σε desktop (κείμενο αριστερά, laptop δεξιά), στοίβαγμα
      σε στενές οθόνες, ίδιο μοτίβο με τις άλλες σκηνές. */
   .sp-grid {

@@ -18,6 +18,8 @@ export interface PricingOption {
   detail?: string;
   price: number;
   type: PriceType;
+  /** Τιμή κατόπιν συνεννόησης: η price είναι 0 και ΔΕΝ μπαίνει σε αθροίσματα ή schema. */
+  quote?: boolean;
 }
 
 export interface PricingCategory {
@@ -39,6 +41,7 @@ export const CATEGORIES: PricingCategory[] = [
       { id: 'web-basic', label: 'Basic', detail: 'Καθαρή παρουσία: αρχική, υπηρεσίες, επικοινωνία', price: 220, type: 'once' },
       { id: 'web-standard', label: 'Standard', detail: 'Πλήρες site με περισσότερες σελίδες και φόρμες', price: 320, type: 'once' },
       { id: 'web-pro', label: 'Pro', detail: 'Μεγαλύτερο site με ειδικές λειτουργίες', price: 450, type: 'once' },
+      { id: 'web-enterprise', label: 'Enterprise', detail: 'Για πολύ μεγάλες επιχειρήσεις με πολλά προϊόντα', price: 0, type: 'once', quote: true },
       { id: 'web-bookings', label: 'Site με online κρατήσεις', detail: 'Οι πελάτες σας κλείνουν ραντεβού ή τραπέζι online και παίρνουν αυτόματη υπενθύμιση, για λιγότερα χαμένα ραντεβού', price: 450, type: 'once' },
       { id: 'web-shopify', label: 'E-shop σε Shopify', detail: 'Στήσιμο καταστήματος, έως 50 προϊόντα, πληρωμές, αποστολές, εκπαίδευση', price: 690, type: 'once' },
       { id: 'web-shopify-large', label: 'E-shop σε Shopify (μεγάλο)', detail: 'Έως 300 προϊόντα, μεταφορά από άλλη πλατφόρμα, σύνδεση με Google, Instagram και Facebook', price: 990, type: 'once' },

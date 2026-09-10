@@ -19,6 +19,7 @@ const OPT: Record<string, { label: string; detail?: string }> = {
   'web-basic': { label: 'Basic', detail: 'A clean presence: home, services, contact' },
   'web-standard': { label: 'Standard', detail: 'A full site with more pages and forms' },
   'web-pro': { label: 'Pro', detail: 'A larger site with custom features' },
+  'web-enterprise': { label: 'Enterprise', detail: 'For very large businesses with many products' },
   'web-bookings': { label: 'Site with online bookings', detail: 'Customers book an appointment or a table online and get an automatic reminder, so there are fewer no-shows' },
   'web-shopify': { label: 'Shopify store', detail: 'Store set-up, up to 50 products, payments, shipping, training' },
   'web-shopify-large': { label: 'Shopify store (large)', detail: 'Up to 300 products, migration from another platform, connection to Google, Instagram and Facebook' },

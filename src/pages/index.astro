@@ -51,7 +51,7 @@ const schema = {
     itemListElement: CATEGORIES.map((c) => ({
       '@type': 'OfferCatalog',
       name: c.title,
-      itemListElement: c.options.map((o) => ({
+      itemListElement: c.options.filter((o) => !o.quote).map((o) => ({
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
