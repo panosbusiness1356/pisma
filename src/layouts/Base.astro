@@ -70,6 +70,38 @@ const themeByQuery = import.meta.env.DEV;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {isHome && (
+      <>
+        <script is:inline>
+          // Intro αρχικής (Intro.astro): η απόφαση παίρνεται ΕΔΩ, στο head, πριν φτάσει έστω ένα byte
+          // του body στον browser. Σε αργό δίκτυο το HTML έρχεται σε κομμάτια και ο browser ζωγραφίζει
+          // ό,τι έχει (μενού, hero) ΠΡΙΝ φτάσει το script που καθόταν μέσα στο hero: για ~1 s φαινόταν η
+          // αρχική και μετά έπεφτε το πέπλο (χρήστρια 11/09/2026). Τώρα: πέπλο από την πρώτη ζωγραφιά
+          // (body::after, data-intro-pre) μέχρι να παραληφθεί το div.intro, που το αντικαθιστά χωρίς κενό.
+          (function () {
+            try {
+              if (matchMedia('(prefers-reduced-motion: reduce)').matches || sessionStorage.getItem('pisma-intro')) return;
+              var h = document.documentElement;
+              h.setAttribute('data-intro', ''); h.setAttribute('data-intro-run', ''); h.setAttribute('data-intro-pre', '');
+              // Δίχτυ ασφαλείας αν το module script δεν τρέξει ποτέ: 7 s ΟΡΑΤΟΥ χρόνου. Σε καρτέλα στο παρασκήνιο
+              // ή σε prerender δεν τρέχει το requestAnimationFrame, το intro περιμένει να φανεί η σελίδα, και το
+              // ρολόι δεν πρέπει να μετρά (αλλιώς το πέπλο έφευγε πριν καν το δει κανείς και έμενε σκέτη η αρχική).
+              var clear = function () { h.removeAttribute('data-intro'); h.removeAttribute('data-intro-run'); h.removeAttribute('data-intro-pre'); };
+              var arm = function () { setTimeout(clear, 7000); };
+              var hidden = function () { return document.prerendering || document.visibilityState === 'hidden'; };
+              if (!hidden()) return arm();
+              var onShow = function () {
+                if (hidden()) return;
+                document.removeEventListener('visibilitychange', onShow); document.removeEventListener('prerenderingchange', onShow);
+                arm();
+              };
+              document.addEventListener('visibilitychange', onShow); document.addEventListener('prerenderingchange', onShow);
+            } catch (e) {}
+          })();
+        </script>
+        <style is:inline>html[data-intro-pre] body::after{content:"";position:fixed;inset:0;z-index:2147483001;background:#0B0B0B;pointer-events:none}</style>
+      </>
+    )}
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
