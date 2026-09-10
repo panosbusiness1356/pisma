@@ -23,12 +23,12 @@ const schema = {
   areaServed: SITE.regionEn,
 };
 
-// Same bento order as the Greek page: [custom(strip 4)] [match(2)+excel+chase] [menu+eye(strip 3)]
+// Same bento order as the Greek page: [custom(strip 4)] [match(2)+chase+excel] [menu+eye(strip 3)]
 const services = [
   { t: 'Custom automations', d: 'Anything you do with the same steps every time can run on its own, from a simple flow to a full application, on top of the software you already use.', icon: 'custom', size: 'strip4', href: '/en/contact/', cta: 'Tell us your routine →' },
   { t: 'Automatic payment matching', d: 'Every payment finds its own invoice.', icon: 'match', size: 'big' },
-  { t: 'An organized Excel', d: 'Your transactions in one Excel that updates itself.', icon: 'excel', logos: ['excel.svg'] },
   { t: 'Automatic Debt Chaser', d: 'Polite reminders, automatically, at the right moment.', icon: 'chase', logos: ['whatsapp-icon.svg', 'viber.svg'] },
+  { t: 'An organized Excel', d: 'Your transactions in one Excel that updates itself.', icon: 'excel', logos: ['excel.svg'] },
   { t: 'Digital Menu', d: 'A QR code on the table, the menu on their phone. Change prices with no reprints.', icon: 'menu', href: '/en/digital-menu/' },
   { t: 'Your Spy', d: 'What your competitors are up to (prices, offers) in a regular report.', icon: 'eye', size: 'strip3' },
 ];
