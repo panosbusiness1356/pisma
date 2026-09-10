@@ -19,7 +19,8 @@ const t = en ? STRINGS_EN : STRINGS;
 const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
 ---
 
-<div class="card quiz reveal" id="tablo-quiz" data-lang={lang} data-total={TOTAL}>
+<!-- Χωρίς .reveal: το filter/will-change της εισόδου άφηνε μαύρα κουτιά πάνω στα γράμματα των ερωτήσεων (Chrome/Windows) -->
+<div class="card quiz" id="tablo-quiz" data-lang={lang} data-total={TOTAL}>
   <div class="quiz-top">
     <button class="quiz-back" type="button" id="quiz-back" hidden>{t.back}</button>
     <div class="dots" id="quiz-dots" aria-hidden="true">

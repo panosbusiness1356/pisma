@@ -14,7 +14,7 @@
  * - Οι τιμές ΔΕΝ γράφονται εδώ, διαβάζονται από το pricing.ts στο render.
  */
 
-export type BizType = 'food' | 'appt' | 'retail' | 'b2b';
+export type BizType = 'food' | 'appt' | 'retail' | 'b2b' | 'other';
 export type Dim = 'vis' | 'auto';
 
 export interface QuizType {
@@ -82,10 +82,11 @@ export interface QuizStrings {
 }
 
 export const TYPES: QuizType[] = [
-  { id: 'food', label: 'Εστίαση', detail: 'Τραπέζια, μενού, παραγγελίες' },
-  { id: 'appt', label: 'Ραντεβού ή κρατήσεις', detail: 'Ο πελάτης κλείνει ώρα ή διαμονή' },
-  { id: 'retail', label: 'Προϊόντα', detail: 'Κατάστημα ή e-shop' },
-  { id: 'b2b', label: 'Έργα και υπηρεσίες', detail: 'Με προσφορά και τιμολόγιο' },
+  { id: 'food', label: 'Εστίαση', detail: 'Καφέ, εστιατόριο, μπαρ, delivery, φούρνος' },
+  { id: 'appt', label: 'Ραντεβού ή κρατήσεις', detail: 'Κομμωτήριο, ιατρείο, γυμναστήριο, σχολή, κατάλυμα, συνεργείο' },
+  { id: 'retail', label: 'Προϊόντα', detail: 'Κατάστημα, e-shop, χονδρική, φαρμακείο' },
+  { id: 'b2b', label: 'Έργα και υπηρεσίες', detail: 'Τεχνικοί, λογιστές, μεσίτες, εργολάβοι, υπηρεσίες σε επιχειρήσεις' },
+  { id: 'other', label: 'Άλλο', detail: 'Κάτι διαφορετικό ή συνδυασμός' },
 ];
 
 export const QUESTIONS: QuizQuestion[] = [
@@ -520,6 +521,89 @@ export const QUESTIONS: QuizQuestion[] = [
     q: 'Ο ανταγωνισμός βγάζει νέα τιμή ή νέα υπηρεσία. Πότε το μαθαίνετε;',
     dim: 'auto',
     types: ['b2b'],
+    priority: 11,
+    opts: [
+      { label: 'Μάλλον ποτέ', v: 0 },
+      { label: 'Τυχαία, από πελάτες', v: 1 },
+      { label: 'Όποτε κοιτάξουμε εμείς', v: 2 },
+      { label: 'Αμέσως, έρχεται ενημέρωση', v: 3 },
+    ],
+    recs: [
+      { id: 'auto-spy', why: 'Χωρίς εικόνα ανταγωνισμού' },
+      { id: 'auto-spy', why: 'Ανταγωνισμός από τρίτους' },
+      { id: 'auto-spy', why: 'Ανταγωνισμός με το χέρι' },
+      null,
+    ],
+  },
+
+  /* Άλλο: 4 ερωτήσεις που ισχύουν για κάθε επιχείρηση */
+  {
+    key: 'return-other',
+    name: 'Επιστροφή πελατών',
+    q: 'Πόσοι πελάτες σας ξανάρχονται;',
+    dim: 'auto',
+    types: ['other'],
+    priority: 8,
+    opts: [
+      { label: 'Δεν το ξέρουμε', v: 0 },
+      { label: 'Λίγοι', v: 1 },
+      { label: 'Οι περισσότεροι, χωρίς να κάνουμε κάτι', v: 2 },
+      { label: 'Οι περισσότεροι, με πρόγραμμα επιβράβευσης', v: 3 },
+    ],
+    recs: [
+      { id: 'auto-loyalty', why: 'Χωρίς μέτρηση επιστροφών' },
+      { id: 'auto-loyalty', why: 'Λίγοι ξανάρχονται' },
+      { id: 'auto-loyalty', why: 'Επιστροφή χωρίς σύστημα' },
+      null,
+    ],
+  },
+  {
+    key: 'debt-other',
+    name: 'Οφειλές',
+    q: 'Σας χρωστάνε πελάτες; Ποιος το παρακολουθεί;',
+    dim: 'auto',
+    types: ['other'],
+    priority: 8,
+    opts: [
+      { label: 'Πληρώνουν επί τόπου, δεν υπάρχουν οφειλές', v: null },
+      { label: 'Κανείς, συνήθως το αφήνουμε', v: 0 },
+      { label: 'Εμείς, όποτε το θυμηθούμε', v: 1 },
+      { label: 'Εμείς, με λίστα', v: 2 },
+      { label: 'Σύστημα, βλέπουμε μόνο ποιος πλήρωσε', v: 3 },
+    ],
+    recs: [
+      { id: 'auto-debt', why: 'Οφειλές χωρίς παρακολούθηση' },
+      { id: 'auto-debt', why: 'Οφειλές όποτε θυμηθείτε' },
+      { id: 'auto-debt', why: 'Οφειλές με το χέρι' },
+      null,
+    ],
+  },
+  {
+    key: 'excel-other',
+    name: 'Οργάνωση στοιχείων',
+    q: 'Πού κρατάτε πελάτες, τζίρο και έξοδα;',
+    dim: 'auto',
+    types: ['other'],
+    priority: 10,
+    opts: [
+      { label: 'Στο μυαλό και σε χαρτιά', v: 0 },
+      { label: 'Σκόρπια σε αρχεία και μηνύματα', v: 1 },
+      { label: 'Σε Excel που ενημερώνουμε με το χέρι', v: 2 },
+      { label: 'Σε αρχείο που ενημερώνεται μόνο του', v: 3 },
+    ],
+    recs: [
+      { id: 'auto-excel', why: 'Στοιχεία σε χαρτιά' },
+      { id: 'auto-excel', why: 'Στοιχεία σκόρπια' },
+      { id: 'auto-excel', why: 'Excel με το χέρι' },
+      null,
+    ],
+  },
+  {
+    key: 'spy-other',
+    name: 'Ανταγωνισμός',
+    q: 'Ο ανταγωνισμός βγάζει προσφορά ή νέα τιμή. Πότε το μαθαίνετε;',
+    dim: 'auto',
+    types: ['other'],
     priority: 11,
     opts: [
       { label: 'Μάλλον ποτέ', v: 0 },

@@ -4,10 +4,11 @@
 import type { QuizQuestion, QuizStrings, QuizType } from './quiz';
 
 export const TYPES_EN: QuizType[] = [
-  { id: 'food', label: 'Food & drink', detail: 'Tables, menu, orders' },
-  { id: 'appt', label: 'Appointments or bookings', detail: 'Customers book a time or a stay' },
-  { id: 'retail', label: 'Products', detail: 'A shop or an online store' },
-  { id: 'b2b', label: 'Projects and services', detail: 'With quotes and invoices' },
+  { id: 'food', label: 'Food & drink', detail: 'Cafe, restaurant, bar, delivery, bakery' },
+  { id: 'appt', label: 'Appointments or bookings', detail: 'Salon, clinic, gym, school, accommodation, garage' },
+  { id: 'retail', label: 'Products', detail: 'Shop, online store, wholesale, pharmacy' },
+  { id: 'b2b', label: 'Projects and services', detail: 'Tradespeople, accountants, agents, contractors, B2B services' },
+  { id: 'other', label: 'Other', detail: 'Something different, or a mix' },
 ];
 
 export const QUESTIONS_EN: QuizQuestion[] = [
@@ -442,6 +443,89 @@ export const QUESTIONS_EN: QuizQuestion[] = [
     q: 'A competitor launches a new price or a new service. When do you find out?',
     dim: 'auto',
     types: ['b2b'],
+    priority: 11,
+    opts: [
+      { label: 'Probably never', v: 0 },
+      { label: 'By chance, from customers', v: 1 },
+      { label: 'Whenever we look ourselves', v: 2 },
+      { label: 'Right away, we get notified', v: 3 },
+    ],
+    recs: [
+      { id: 'auto-spy', why: 'No view of the competition' },
+      { id: 'auto-spy', why: 'Competition news second-hand' },
+      { id: 'auto-spy', why: 'Competition checked by hand' },
+      null,
+    ],
+  },
+
+  /* Other: 4 questions that apply to any business */
+  {
+    key: 'return-other',
+    name: 'Repeat customers',
+    q: 'How many of your customers come back?',
+    dim: 'auto',
+    types: ['other'],
+    priority: 8,
+    opts: [
+      { label: 'We do not know', v: 0 },
+      { label: 'Few', v: 1 },
+      { label: 'Most, without us doing anything', v: 2 },
+      { label: 'Most, with a rewards program', v: 3 },
+    ],
+    recs: [
+      { id: 'auto-loyalty', why: 'Repeat visits not measured' },
+      { id: 'auto-loyalty', why: 'Few come back' },
+      { id: 'auto-loyalty', why: 'Repeat visits without a system' },
+      null,
+    ],
+  },
+  {
+    key: 'debt-other',
+    name: 'Receivables',
+    q: 'Do customers owe you money? Who keeps track?',
+    dim: 'auto',
+    types: ['other'],
+    priority: 8,
+    opts: [
+      { label: 'They pay on the spot, nothing is owed', v: null },
+      { label: 'Nobody, we usually let it go', v: 0 },
+      { label: 'We do, when we remember', v: 1 },
+      { label: 'We do, with a list', v: 2 },
+      { label: 'A system, we only see who paid', v: 3 },
+    ],
+    recs: [
+      { id: 'auto-debt', why: 'Receivables not tracked' },
+      { id: 'auto-debt', why: 'Receivables when you remember' },
+      { id: 'auto-debt', why: 'Receivables by hand' },
+      null,
+    ],
+  },
+  {
+    key: 'excel-other',
+    name: 'Organized data',
+    q: 'Where do you keep customers, takings and expenses?',
+    dim: 'auto',
+    types: ['other'],
+    priority: 10,
+    opts: [
+      { label: 'In our heads and on paper', v: 0 },
+      { label: 'Scattered across files and messages', v: 1 },
+      { label: 'In an Excel we update by hand', v: 2 },
+      { label: 'In a file that updates itself', v: 3 },
+    ],
+    recs: [
+      { id: 'auto-excel', why: 'Data on paper' },
+      { id: 'auto-excel', why: 'Data scattered' },
+      { id: 'auto-excel', why: 'Excel by hand' },
+      null,
+    ],
+  },
+  {
+    key: 'spy-other',
+    name: 'Competition',
+    q: 'A competitor launches an offer or a new price. When do you find out?',
+    dim: 'auto',
+    types: ['other'],
     priority: 11,
     opts: [
       { label: 'Probably never', v: 0 },
