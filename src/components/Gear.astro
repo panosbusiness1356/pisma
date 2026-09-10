@@ -74,8 +74,11 @@ const images = [
     <div class="grid-3 gear-grid">
       {t.items.map((it, i) => (
         <article class="card gear-card reveal">
-          <figure class="gear-fig" aria-hidden="true">
-            <img src={`/gear/${images[i].file}`} alt="" width={images[i].w} height={images[i].h} loading="lazy" decoding="async" class={`gear-img gear-img--${images[i].key}`} />
+          <figure class="gear-fig" aria-hidden="true" style={`--float-delay:${-(i * 1.9).toFixed(1)}s`}>
+            <span class="gear-float">
+              <img src={`/gear/${images[i].file}`} alt="" width={images[i].w} height={images[i].h} loading="lazy" decoding="async" class={`gear-img gear-img--${images[i].key}`} />
+            </span>
+            <span class="gear-shadow"></span>
           </figure>
           <p class="gear-role">{it.role}</p>
           <h3>{it.name}</h3>
@@ -89,6 +92,7 @@ const images = [
 <style>
   .gear-card { display: flex; flex-direction: column; }
   .gear-fig {
+    position: relative;
     margin: 0 0 18px;
     display: flex; align-items: flex-end; justify-content: center;
     height: 236px;
@@ -96,14 +100,42 @@ const images = [
     background: radial-gradient(ellipse 60% 70% at 50% 60%, rgba(255, 255, 255, .06), transparent 70%);
     border-radius: var(--r);
   }
+  /* Αιώρηση: το περιτύλιγμα κινείται (transform μόνο), η εικόνα με το drop-shadow
+     ρασταρίζεται μία φορά. Κάθε κάρτα σε άλλη φάση (--float-delay). */
+  .gear-float {
+    display: flex; align-items: flex-end; justify-content: center;
+    height: 100%; padding-bottom: 16px; box-sizing: border-box;
+    animation: gear-float 5.6s ease-in-out infinite;
+    animation-delay: var(--float-delay, 0s);
+    will-change: transform;
+  }
   .gear-img {
     display: block; height: 100%; width: auto; max-width: 100%; object-fit: contain;
-    filter: drop-shadow(0 22px 26px rgba(0, 0, 0, .55));
+    filter: drop-shadow(0 18px 22px rgba(0, 0, 0, .5));
     transition: transform var(--dur) var(--ease);
   }
   .gear-img--g7x { height: 72%; }
   .gear-img--d750 { height: 86%; }
   .gear-card:hover .gear-img { transform: translateY(-4px); }
+  /* Σκιά δαπέδου: μικραίνει και ξεθωριάζει όσο η συσκευή ανεβαίνει */
+  .gear-shadow {
+    position: absolute; left: 50%; bottom: 4px;
+    width: 56%; height: 18px;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, .65), rgba(0, 0, 0, 0) 70%);
+    transform: translateX(-50%) scaleX(1);
+    animation: gear-shadow 5.6s ease-in-out infinite;
+    animation-delay: var(--float-delay, 0s);
+    will-change: transform, opacity;
+    pointer-events: none;
+  }
+  @keyframes gear-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-11px); }
+  }
+  @keyframes gear-shadow {
+    0%, 100% { transform: translateX(-50%) scaleX(1); opacity: .95; }
+    50% { transform: translateX(-50%) scaleX(.8); opacity: .55; }
+  }
   .gear-role {
     font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
     color: var(--orange-text); margin-bottom: 6px;
@@ -115,5 +147,6 @@ const images = [
   }
   @media (prefers-reduced-motion: reduce) {
     .gear-img { transition: none; }
+    .gear-float, .gear-shadow { animation: none; }
   }
 </style>
