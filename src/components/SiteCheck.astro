@@ -289,6 +289,8 @@ const T = {
 
 <style>
   .sk { max-width: 760px; margin-inline: auto; }
+  /* Το display των μπλοκ δεν πρέπει να νικά το hidden */
+  .sk-progress[hidden], .sk-result[hidden], .sk-error[hidden], .sk-shot[hidden] { display: none; }
   .sk-label { display: block; font-weight: 600; font-size: .95rem; color: var(--navy); margin-bottom: 8px; }
   .sk-row { display: flex; gap: 10px; }
   .sk-row input {
@@ -366,17 +368,18 @@ const T = {
   .sk-score span { display: block; margin-top: 4px; font-size: .7rem; font-weight: 600; color: var(--muted); }
   .sk-ftitle { margin: 18px 0 8px; font-size: .8rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
   .sk-findings { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
-  .sk-findings li {
+  /* Τα ευρήματα φτιάχνονται από JS (χωρίς scope attribute): :global */
+  .sk-findings :global(li) {
     display: flex; justify-content: space-between; gap: 12px; align-items: baseline;
     padding: 10px 12px; border-radius: 10px;
     background: var(--bg-soft); border: 1px solid var(--line);
     font-size: .92rem; color: var(--ink);
   }
-  .sk-findings li::before { content: ''; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); align-self: center; }
-  .sk-findings li span { flex: 1; }
-  .sk-findings li b { flex: none; font-size: .82rem; color: var(--orange-text); }
-  .sk-findings li.is-clean { color: var(--ok-text); }
-  .sk-findings li.is-clean::before { background: var(--ok); }
+  .sk-findings :global(li::before) { content: ''; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); align-self: center; }
+  .sk-findings :global(li span) { flex: 1; }
+  .sk-findings :global(li b) { flex: none; font-size: .82rem; color: var(--orange-text); }
+  .sk-findings :global(li.is-clean) { color: var(--ok-text); }
+  .sk-findings :global(li.is-clean::before) { background: var(--ok); }
   .sk-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 20px; }
   @media (max-width: 640px) {
     .sk-result { grid-template-columns: 1fr; }

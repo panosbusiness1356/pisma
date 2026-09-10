@@ -95,19 +95,20 @@ const T = {
     display: grid; grid-template-columns: auto repeat(3, minmax(0, 1fr)); gap: 6px 8px; align-items: center;
   }
   .slots-head { font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); text-align: center; }
-  .slots-day { font-size: .86rem; font-weight: 600; color: var(--ink); white-space: nowrap; padding-right: 6px; font-variant-numeric: tabular-nums; }
-  .slots-cell {
+  /* Τα κελιά/ημέρες φτιάχνονται από JS: χωρίς scope attribute, άρα :global */
+  .slots-grid :global(.slots-day) { font-size: .86rem; font-weight: 600; color: var(--ink); white-space: nowrap; padding-right: 6px; font-variant-numeric: tabular-nums; }
+  .slots-grid :global(.slots-cell) {
     height: 38px; border-radius: 10px; cursor: pointer;
     border: 1.5px solid var(--line); background: var(--bg-soft);
     transition: border-color .15s ease, background-color .15s ease, transform .15s ease;
     position: relative;
   }
-  .slots-cell:hover:not(:disabled) { border-color: var(--orange); }
-  .slots-cell[aria-pressed="true"] { border-color: var(--orange); background: var(--orange-soft); }
-  .slots-cell[aria-pressed="true"]::after {
+  .slots-grid :global(.slots-cell:hover:not(:disabled)) { border-color: var(--orange); }
+  .slots-grid :global(.slots-cell[aria-pressed="true"]) { border-color: var(--orange); background: var(--orange-soft); }
+  .slots-grid :global(.slots-cell[aria-pressed="true"]::after) {
     content: ''; position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; border-radius: 50%;
     background: var(--orange); transform: translate(-50%, -50%);
   }
-  .slots-cell:disabled { opacity: .35; cursor: not-allowed; }
-  .slots-cell:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+  .slots-grid :global(.slots-cell:disabled) { opacity: .35; cursor: not-allowed; }
+  .slots-grid :global(.slots-cell:focus-visible) { outline: 2px solid var(--orange); outline-offset: 2px; }
 </style>

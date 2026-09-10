@@ -4,6 +4,12 @@ import PageHero from '../../components/PageHero.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { SITE, ELEGXOS, eurEn } from '../../config';
+import QRCode from 'qrcode';
+
+// Πραγματικό QR (SVG στο build): ανοίγει το δείγμα μενού /demo/menou/ στο κινητό του επισκέπτη.
+// Με όνομα επιχείρησης (πεδίο dm-name) ξαναχτίζεται στον browser με ?n=<όνομα> (βλ. script).
+const DEMO_URL = `${SITE.url}/demo/menou/?lang=en`;
+const qrSvg = await QRCode.toString(DEMO_URL, { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#111111', light: '#FFFFFF' } });
 import { optionById } from '../../data/pricing';
 
 // Μία πηγή αλήθειας για την τιμή: pricing.ts (auto-menu).
@@ -102,6 +108,14 @@ const faqItems = [
           <p class="dm-sub">
             The QR opens the menu on the customer's phone and every price change shows on all tables instantly.
           </p>
+          <div class="dm-try">
+            <label class="dm-try-label" for="dm-name">Your business name</label>
+            <input id="dm-name" class="dm-try-input" type="text" maxlength="40" placeholder="e.g. Corner Pizzeria" autocomplete="organization" spellcheck="false" />
+          </div>
+          <div class="dm-qr">
+            <div class="dm-qr-card" id="dm-qr" data-url={DEMO_URL} set:html={qrSvg}></div>
+            <p class="dm-qr-text"><b>Scan with your phone.</b> The sample menu opens, with the name you typed.</p>
+          </div>
           <div class="dm-cta">
             <a class="btn btn--orange" href="/en/pricing/">Add it to your package →</a>
           </div>
@@ -354,6 +368,42 @@ const faqItems = [
       { threshold: 0.35 }
     );
     dmIo.observe(dmStage);
+  }
+</script>
+
+<script>
+  // Demo με το όνομά τους (11/09/2026): ό,τι γράφει ο επισκέπτης περνά ζωντανά στο ομοίωμα iPhone
+  // (όνομα, «διεύθυνση», banner κάμερας) και στο QR, που ξαναχτίζεται στον browser με ?n=<όνομα>,
+  // ώστε στο δικό του κινητό να ανοίξει το δείγμα με το όνομα της επιχείρησής του. Η βιβλιοθήκη QR
+  // κατεβαίνει μόνο όταν γράψει κάτι (dynamic import), το αρχικό QR είναι έτοιμο SVG από το build.
+  const nameIn = document.getElementById('dm-name') as HTMLInputElement | null;
+  const qrBox = document.getElementById('dm-qr');
+  if (nameIn && qrBox) {
+    const heroName = document.querySelector<HTMLElement>('.dm-hero-name');
+    const urlEl = document.querySelector<HTMLElement>('.dm-url');
+    const chip = document.getElementById('dm-camchip');
+    const urlText = urlEl ? (Array.from(urlEl.childNodes).find((n) => n.nodeType === 3) as Text | undefined) : undefined;
+    const base = qrBox.dataset.url!;
+    const defaults = { name: heroName?.textContent || '', url: (urlText?.nodeValue || '').trim(), chip: chip?.textContent || '', qr: qrBox.innerHTML };
+    const map: Record<string, string> = { α: 'a', ά: 'a', β: 'v', γ: 'g', δ: 'd', ε: 'e', έ: 'e', ζ: 'z', η: 'i', ή: 'i', θ: 'th', ι: 'i', ί: 'i', ϊ: 'i', ΐ: 'i', κ: 'k', λ: 'l', μ: 'm', ν: 'n', ξ: 'x', ο: 'o', ό: 'o', π: 'p', ρ: 'r', σ: 's', ς: 's', τ: 't', υ: 'y', ύ: 'y', ϋ: 'y', ΰ: 'y', φ: 'f', χ: 'ch', ψ: 'ps', ω: 'o', ώ: 'o' };
+    const slug = (s: string) => s.toLowerCase().split('').map((ch) => map[ch] ?? ch).join('').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 24) || 'menu';
+    let qrLib: Promise<typeof import('qrcode')> | null = null;
+    let timer = 0;
+    let seq = 0;
+    const apply = async () => {
+      const name = nameIn.value.trim().slice(0, 40);
+      if (heroName) heroName.textContent = name || defaults.name;
+      const host = name ? `menu-${slug(name)}.gr` : defaults.url;
+      if (urlText) urlText.nodeValue = host;
+      if (chip) chip.textContent = name ? `${host} · ${defaults.chip.split('·').pop()!.trim()}` : defaults.chip;
+      const my = ++seq;
+      if (!name) { qrBox.innerHTML = defaults.qr; return; }
+      qrLib ??= import('qrcode');
+      const QR = await qrLib;
+      const svg = await QR.toString(`${base}${base.includes('?') ? '&' : '?'}n=${encodeURIComponent(name)}`, { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#111111', light: '#FFFFFF' } });
+      if (my === seq) qrBox.innerHTML = svg;
+    };
+    nameIn.addEventListener('input', () => { clearTimeout(timer); timer = window.setTimeout(apply, 350); });
   }
 </script>
 
@@ -655,4 +705,19 @@ const faqItems = [
   .price-cta { display: flex; flex-direction: column; gap: 12px; }
   .price-cta .btn { text-align: center; }
   .price-cta .btn-note { text-align: center; }
+  /* Demo με το όνομά τους + πραγματικό QR (11/09/2026) */
+  .dm-try { margin: -10px 0 18px; display: grid; gap: 6px; max-width: 420px; }
+  .dm-try-label { font-weight: 600; font-size: .95rem; color: var(--navy); }
+  .dm-try-input {
+    border: 1.5px solid var(--line-strong); border-radius: 12px; background: var(--bg-soft);
+    padding: 12px 16px; width: 100%; transition: border-color .15s ease;
+  }
+  .dm-try-input:focus { border-color: var(--orange); }
+  .dm-try-input:focus:not(:focus-visible) { outline: none; }
+  .dm-qr { display: flex; align-items: center; gap: 16px; margin: 0 0 26px; max-width: 420px; }
+  .dm-qr-card { flex: none; width: 112px; height: 112px; padding: 10px; background: #fff; border-radius: 14px; box-shadow: var(--shadow); }
+  .dm-qr-card :global(svg) { width: 100%; height: 100%; display: block; }
+  .dm-qr-text { margin: 0; font-size: .9rem; color: var(--muted); max-width: 30ch; }
+  .dm-qr-text b { display: block; color: var(--navy); font-weight: 700; margin-bottom: 2px; }
+
 </style>
