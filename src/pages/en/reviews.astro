@@ -126,7 +126,7 @@ const faqItems = [
           </p>
         </div>
         <div class="price-cta">
-          <a class="btn btn--orange" href="/en/qr-stickers/">Pick your stickers →</a>
+          <a class="btn btn--orange" href="/en/qr-stickers/">Pick your stickers&nbsp;→</a>
           <a class="btn btn--ghost" href="/en/contact/">Ask us anything</a>
           <span class="btn-note">No online payment. We settle it over the phone.</span>
         </div>
@@ -156,27 +156,10 @@ const faqItems = [
 </Base>
 
 <style>
-  /* ---- Secret ---- */
-  .secret-card {
-    text-align: center;
-    padding: clamp(28px, 4.5vw, 52px);
-  }
-  .secret-card .kicker { margin-bottom: 14px; }
-  .secret-sub {
-    color: var(--muted);
-    max-width: 52ch;
-    margin: 14px auto 22px;
-  }
-  .secret-cta {
-    display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
-    margin-bottom: 12px;
-  }
-  .secret-card .btn-note { margin: 0; }
-
   /* ---- Price ---- */
   .price-card {
     display: grid;
-    grid-template-columns: 1.2fr minmax(min(240px, 100%), .8fr);
+    grid-template-columns: 1fr minmax(min(280px, 100%), .95fr);
     gap: clamp(24px, 4vw, 48px);
     align-items: center;
     padding: clamp(26px, 4vw, 48px);
@@ -189,6 +172,6 @@ const faqItems = [
   .price-sub { margin-top: 12px; color: var(--muted); }
   .price-sub strong { color: var(--ink); }
   .price-cta { display: flex; flex-direction: column; gap: 12px; }
-  .price-cta .btn { text-align: center; }
+  .price-cta .btn { text-align: center; white-space: normal; padding-inline: 16px; font-size: .95rem; }
   .price-cta .btn-note { text-align: center; }
 </style>
