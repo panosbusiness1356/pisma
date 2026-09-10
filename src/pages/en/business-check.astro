@@ -6,22 +6,22 @@ import { SITE, ELEGXOS } from '../../config';
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'The Dashboard — Measure your business',
+  name: 'The Dashboard: Measure your business',
   url: `${SITE.url}/en/business-check/`,
   inLanguage: 'en',
   description:
-    'Interactive 10-question test — one for each tool: a visibility score and an automation score out of 100.',
+    'Interactive 10-question test, one for each tool: a visibility score and an automation score out of 100.',
   isPartOf: { '@type': 'WebSite', name: SITE.name, url: SITE.url },
 };
 
 /*
- * Μία ερώτηση για κάθε εργαλείο του τιμοκαταλόγου (pricing.ts) — σειρά: Προβολή → Αυτοματοποίηση.
+ * Μία ερώτηση για κάθε εργαλείο του τιμοκαταλόγου (pricing.ts), σειρά: Προβολή → Αυτοματοποίηση.
  * Μεθοδολογία: κάθε ερώτηση ρωτά ένα ΓΕΓΟΝΟΣ που ο ιδιοκτήτης αναγνωρίζει (όχι αυτοβαθμολόγηση),
  * με ενιαία σκάλα 4 επιλογών: τίποτα (0) → σποραδικά (0.5) → με το χέρι, τακτικά (1) → συστηματικά/αυτόματα (2).
- * Οι διατυπώσεις είναι ουδέτερες — καμία επιλογή δεν ντροπιάζει, για να απαντιέται με ειλικρίνεια.
+ * Οι διατυπώσεις είναι ουδέτερες, καμία επιλογή δεν ντροπιάζει, για να απαντιέται με ειλικρίνεια.
  */
 const questions = [
-  /* — Προβολή: πώς σε βρίσκουν — */
+  /*, Προβολή: πώς σε βρίσκουν, */
   {
     key: 'site',
     /* Εργαλείο: Ιστοσελίδα (web-basic/standard/pro) */
@@ -39,7 +39,7 @@ const questions = [
     q: 'Your Google (Maps) profile?',
     opts: [
       { label: "It doesn't exist", v: '0' },
-      { label: "It exists — haven't opened it in months", v: '0.5' },
+      { label: "It exists, but I haven't opened it in months", v: '0.5' },
       { label: 'Filled in, I check it now and then', v: '1' },
       { label: 'Complete: hours, photos, services', v: '2' },
     ],
@@ -51,7 +51,7 @@ const questions = [
     opts: [
       { label: 'None', v: '0' },
       { label: 'One or two, at random', v: '0.5' },
-      { label: 'A few — when I ask', v: '1' },
+      { label: 'A few, when I ask', v: '1' },
       { label: 'They come in steadily, every week', v: '2' },
     ],
   },
@@ -72,18 +72,18 @@ const questions = [
     q: 'Does ChatGPT recommend you?',
     opts: [
       { label: 'No idea', v: '0' },
-      { label: 'I tried it — nothing', v: '0.5' },
+      { label: 'I tried it, nothing', v: '0.5' },
       { label: 'It finds me, but gets things wrong', v: '1' },
-      { label: 'It recommends me — and gets it right', v: '2' },
+      { label: 'It recommends me and gets it right', v: '2' },
     ],
   },
-  /* — Αυτοματοποίηση: πώς δουλεύει το γραφείο — */
+  /*, Αυτοματοποίηση: πώς δουλεύει το γραφείο, */
   {
     key: 'pay',
     /* Εργαλείο: Αυτόματο ταίριασμα πληρωμών (auto-match) */
-    q: 'Which payment settles which invoice — who figures that out?',
+    q: 'Who figures out which payment settles which invoice?',
     opts: [
-      { label: "No one — I don't track it", v: '0' },
+      { label: "No one, I don't track it", v: '0' },
       { label: 'Me, whenever I find the time', v: '0.5' },
       { label: 'Me, regularly', v: '1' },
       { label: 'They match on their own', v: '2' },
@@ -92,12 +92,12 @@ const questions = [
   {
     key: 'excel',
     /* Εργαλείο: Οργανωμένο Excel (auto-excel) */
-    q: "Last month's revenue — how easily can you find it?",
+    q: "How easily can you find last month's revenue?",
     opts: [
-      { label: 'Not easily — it takes digging', v: '0' },
+      { label: 'Not easily, it takes digging', v: '0' },
       { label: 'From scattered files and papers', v: '0.5' },
       { label: 'From a file I keep by hand', v: '1' },
-      { label: 'Instantly — it updates itself', v: '2' },
+      { label: 'Instantly, it updates itself', v: '2' },
     ],
   },
   {
@@ -105,10 +105,10 @@ const questions = [
     /* Εργαλείο: Αυτόματος Κυνηγός Οφειλών (auto-debt) */
     q: 'Who chases the people who owe you money?',
     opts: [
-      { label: 'No one — I usually let it go', v: '0' },
+      { label: 'No one, I usually let it go', v: '0' },
       { label: 'Me, whenever I remember', v: '0.5' },
       { label: 'Me, with a list', v: '1' },
-      { label: 'A system — I just see who paid', v: '2' },
+      { label: 'A system, I just see who paid', v: '2' },
     ],
   },
   {
@@ -118,8 +118,8 @@ const questions = [
     opts: [
       { label: 'No', v: '0' },
       { label: 'Roughly', v: '0.5' },
-      { label: 'Yes — I go through it myself every night', v: '1' },
-      { label: 'Yes — a ready-made summary reaches me', v: '2' },
+      { label: 'Yes, I go through it myself every night', v: '1' },
+      { label: 'Yes, a ready-made summary reaches me', v: '2' },
     ],
   },
   {
@@ -130,20 +130,20 @@ const questions = [
       { label: 'Probably never', v: '0' },
       { label: 'By chance, from other people', v: '0.5' },
       { label: 'Whenever I go look myself', v: '1' },
-      { label: 'Right away — I get an update', v: '2' },
+      { label: 'Right away, I get an update', v: '2' },
     ],
   },
 ];
 ---
 
 <Base
-  title="The Dashboard — Measure visibility and automation | PISMA"
-  description="10 quick questions, no email: see how easily customers find you and how much your office runs on its own — with scores out of 100."
+  title="The Dashboard: Measure visibility and automation | PISMA"
+  description="10 quick questions, no email: see how easily customers find you and how much your office runs on its own, with scores out of 100."
   schema={schema}
 >
   <PageHero
     kicker="The Dashboard"
-    sub="10 quick questions — one for each tool. No email, no details: your score appears right in front of you."
+    sub="10 quick questions, one for each tool. No email, no details: your score appears right in front of you."
   >
     See your <span class="accent">score</span>
   </PageHero>
@@ -212,7 +212,7 @@ const questions = [
                 Free {ELEGXOS.minutes}-minute PISMA Check with us
               </a>
             </div>
-            <p class="btn-note result-note">In the assessment we work out together what you actually need — no commitment.</p>
+            <p class="btn-note result-note">In the assessment we work out together what you actually need, with no commitment.</p>
             <div class="result-actions">
               <button type="button" class="btn btn--ghost btn--sm" id="quiz-copy" aria-live="polite">
                 Copy your results
@@ -292,7 +292,7 @@ const questions = [
     return v < 40 ? 'c-red' : v < 70 ? 'c-orange' : 'c-ok';
   }
 
-  // Ενεργά count-ups ανά στοιχείο — ακυρώνονται σε restart, αλλιώς το παλιό σκορ ξαναγράφεται.
+  // Ενεργά count-ups ανά στοιχείο, ακυρώνονται σε restart, αλλιώς το παλιό σκορ ξαναγράφεται.
   const counters = new Map();
   function stopCount(el) {
     const c = counters.get(el);
@@ -352,17 +352,17 @@ const questions = [
     const verdictEl = document.getElementById('quiz-verdict');
     const base =
       avg < 40
-        ? 'Most things are still done by hand — or not done at all. Good news: everything you just measured can be fixed.'
+        ? 'Most things are still done by hand or not done at all. Good news: everything you just measured can be fixed.'
         : avg < 70
-          ? 'Some things already work — but plenty is still held together by hand and by memory.'
+          ? 'Some things already work, but plenty is still held together by hand and by memory.'
           : "Good numbers. What's missing comes down to a few specific steps.";
     const gap = visibility - automation;
     const focus =
       Math.abs(gap) < 15
         ? ''
         : gap < 0
-          ? ' Your biggest opportunity: visibility — customers are searching for you there and not finding you.'
-          : ' Your biggest opportunity: automation — that is where your hours go every week.';
+          ? ' Your biggest opportunity: visibility. Customers are searching for you there and not finding you.'
+          : ' Your biggest opportunity: automation. That is where your hours go every week.';
     verdictEl.textContent = base + focus;
     resultSr.textContent =
       'Visibility ' + visibility + ' out of 100, Automation ' + automation + ' out of 100.';
@@ -371,10 +371,10 @@ const questions = [
   copyBtn.addEventListener('click', async () => {
     if (!last) return;
     const text =
-      'The Dashboard — Visibility: ' + last.visibility + '/100 · Automation: ' + last.automation + '/100';
+      'The Dashboard · Visibility: ' + last.visibility + '/100 · Automation: ' + last.automation + '/100';
     try {
       await navigator.clipboard.writeText(text);
-      copyBtn.textContent = 'Copied ✓';
+      copyBtn.textContent = 'Copied';
       window.setTimeout(() => { copyBtn.textContent = copyLabel; }, 2000);
     } catch {
       copyBtn.textContent = "Couldn't copy";
@@ -482,7 +482,7 @@ const questions = [
     color: var(--navy);
   }
 
-  /* Αποτελέσματα — δαχτυλίδια */
+  /* Αποτελέσματα, δαχτυλίδια */
   .rings {
     display: flex;
     justify-content: center;

@@ -8,7 +8,7 @@ const schema = {
   '@type': 'Service',
   name: 'The PISMA Check',
   serviceType: 'Visibility and automation check for businesses',
-  description: `A ${ELEGXOS.minutes}-minute appointment, in person or online. Two scores, a per-area breakdown and the cost of inaction in euros — in writing, within ${ELEGXOS.reportHours} hours.`,
+  description: `A ${ELEGXOS.minutes}-minute appointment, in person or online. Two scores, a per-area breakdown and the cost of inaction in euros, in writing within ${ELEGXOS.reportHours} hours.`,
   areaServed: SITE.regionEn,
   provider: {
     '@type': 'LocalBusiness',
@@ -31,7 +31,7 @@ const steps = [
   },
   {
     t: 'Measuring',
-    d: 'The two scores come out right in front of you — not in a presentation afterwards.',
+    d: 'The two scores come out right in front of you, during the appointment.',
   },
   {
     t: 'Written report',
@@ -41,16 +41,16 @@ const steps = [
 ---
 
 <Base
-  title={`The PISMA Check — Free ${ELEGXOS.minutes}-minute appointment`}
+  title={`The PISMA Check: free ${ELEGXOS.minutes}-minute appointment`}
   description={`Book your free PISMA Check: ${ELEGXOS.minutes} minutes, in person in the southern suburbs of Athens or online. Two scores, a per-area breakdown and the cost of inaction in euros.`}
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
     kicker="The PISMA Check"
-    sub="In person in the southern suburbs of Athens or online. You leave with a written picture of what you're losing — in customers and in euros."
+    sub="In person in the southern suburbs of Athens or online. You leave with a written picture of what you're losing, in customers and in euros."
   >
-    {ELEGXOS.minutes} minutes. Two scores. <span class="accent">Zero cost.</span>
+    {ELEGXOS.minutes} minutes, two scores, <span class="accent">zero cost</span>.
   </PageHero>
 
   <!-- 2. Με τι φεύγετε -->
@@ -86,15 +86,15 @@ const steps = [
             </svg>
           </span>
           <h3>Cost of inaction</h3>
-          <p>What every month of standing still is costing you — in euros, not in vague talk.</p>
+          <p>What every month of standing still is costing you, in euros.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 2β. «Τα δύο σκορ, ζωντανά» — σκηνή σε loop όπως «Η άνοδος στη Google»
+  <!-- 2β. «Τα δύο σκορ, ζωντανά», σκηνή σε loop όπως «Η άνοδος στη Google»
        στην αρχική: το HTML έχει το τελικό state (σκορ και κόστος συμπληρωμένα)
-       — χωρίς JS ή με reduced motion μένει στατικό· το JS το «ξαναπαίζει»
+, χωρίς JS ή με reduced motion μένει στατικό· το JS το «ξαναπαίζει»
        όσο το section είναι ορατό. -->
   <section class="section" aria-labelledby="score-title">
     <div class="container">
@@ -122,10 +122,10 @@ const steps = [
             <span>Cost of inaction</span>
             <b class="num" id="sc-cost">≈ €460/month</b>
           </div>
-          <p class="sc-stamp" id="sc-stamp">In writing, in your inbox within {ELEGXOS.reportHours} hours ✓</p>
+          <p class="sc-stamp" id="sc-stamp">In writing, in your inbox within {ELEGXOS.reportHours} hours</p>
         </div>
       </div>
-      <p class="sc-note">Illustrative — your own numbers come out at the appointment.</p>
+      <p class="sc-note">Illustrative. Your own numbers come out at the appointment.</p>
     </div>
   </section>
 
@@ -180,8 +180,8 @@ const steps = [
           <legend>How would you prefer to do it?</legend>
           <div class="mode-options">
             <label class="mode-option">
-              <input type="radio" name="mode" value={`In person — ${SITE.regionEn}`} checked />
-              <span>In person — {SITE.regionEn}</span>
+              <input type="radio" name="mode" value={`In person (${SITE.regionEn})`} checked />
+              <span>In person ({SITE.regionEn})</span>
             </label>
             <label class="mode-option">
               <input type="radio" name="mode" value="Online" />
@@ -190,7 +190,7 @@ const steps = [
           </div>
         </fieldset>
 
-        <input type="hidden" name="_subject" value="New PISMA Check booking — pisma.gr" />
+        <input type="hidden" name="_subject" value="New PISMA Check booking (pisma.gr)" />
         <input type="hidden" name="_template" value="box" />
         <input type="hidden" name="_captcha" value="false" />
 
@@ -215,8 +215,8 @@ const steps = [
   <section class="section section--tight" aria-labelledby="why-title">
     <div class="container">
       <div class="why reveal">
-        <h2 id="why-title">Why free?</h2>
-        <p>Because once you see the numbers, you don't need any pressure from us. The report is yours, whatever you decide.</p>
+        <h2 id="why-title">Why it's free</h2>
+        <p>Once you see the numbers, you don't need any pressure from us. The report is yours, whatever you decide.</p>
       </div>
     </div>
   </section>
@@ -251,14 +251,14 @@ const steps = [
 
     if (!form.checkValidity()) {
       form.reportValidity();
-      msg.textContent = "Something's still missing — check the highlighted fields.";
+      msg.textContent = "Something's still missing. Check the highlighted fields.";
       msg.classList.remove('is-ok');
       msg.classList.add('is-error');
       return;
     }
 
     const data = new FormData(form);
-    if ((data.get('_honey') as string)?.trim()) return; // bot — σιωπηλή απόρριψη
+    if ((data.get('_honey') as string)?.trim()) return; // bot, σιωπηλή απόρριψη
     btn.disabled = true;
     btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span>Sending…';
     try {
@@ -267,7 +267,7 @@ const steps = [
         headers: { Accept: 'application/json' },
         body: data,
       });
-      // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία — έλεγχος και του JSON.
+      // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία, έλεγχος και του JSON.
       const json = await res.json().catch(() => null);
       if (!res.ok || !json || String(json.success) !== 'true') throw new Error('form failed');
       form.classList.add('is-done');

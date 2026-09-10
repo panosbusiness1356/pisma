@@ -24,11 +24,11 @@ const schema = {
 const faqItems = [
   {
     q: 'Τι περιλαμβάνει η συντήρηση;',
-    a: 'Παρακολούθηση ότι όλα τρέχουν, διορθώσεις όταν κάτι στραβώσει και μικρο-βελτιώσεις στην πορεία. Όπου υπάρχει μηνιαία διαχείριση, λαμβάνετε και μηνιαίο Proof of Value report — τι σας γλίτωσε το σύστημα, σε ώρες και ευρώ.',
+    a: 'Παρακολούθηση ότι όλα τρέχουν, διορθώσεις όταν κάτι στραβώσει και μικρο-βελτιώσεις στην πορεία. Όπου υπάρχει μηνιαία διαχείριση, λαμβάνετε και μηνιαίο Proof of Value report: τι σας γλίτωσε το σύστημα, σε ώρες και ευρώ.',
   },
   {
     q: 'Θέλω κάτι που δεν είναι στη λίστα.',
-    a: `Γίνεται. Λαμβάνετε γραπτή πρόταση εντός ${ELEGXOS.reportHours} ωρών, με σταθερή τιμή — καμία έκπληξη στον λογαριασμό.`,
+    a: `Γίνεται. Λαμβάνετε γραπτή πρόταση εντός ${ELEGXOS.reportHours} ωρών, με σταθερή τιμή, χωρίς εκπλήξεις στον λογαριασμό.`,
   },
   {
     q: 'Υπάρχει δέσμευση;',
@@ -39,11 +39,11 @@ const faqItems = [
 ---
 
 <Base
-  title="Τιμές PISMA — Διαφανής τιμοκατάλογος: φτιάξτε το πακέτο σας"
+  title="Τιμές PISMA: διαφανής τιμοκατάλογος, φτιάξτε το πακέτο σας"
   description="Όλες οι τιμές δημοσιευμένες: ιστοσελίδα, Google, ορατότητα σε AI, social media, αυτοματισμοί. Φτιάχνετε το δικό σας πακέτο και βλέπετε το κόστος ζωντανά."
   schema={schema}
 >
-  <PageHero kicker="Τιμές" sub="Καμία «ζητήστε προσφορά». Όλες οι τιμές δημοσιευμένες — επιλέγετε και βλέπετε το σύνολο πριν μας καλέσετε.">
+  <PageHero kicker="Τιμές" sub="Δεν χρειάζεται να ζητήσετε προσφορά. Όλες οι τιμές είναι δημοσιευμένες: επιλέγετε και βλέπετε το σύνολο πριν μας καλέσετε.">
     Τιμές, <span class="accent">στα φανερά</span>.
   </PageHero>
 
@@ -58,7 +58,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">Φτιάξτε το πακέτο σας</p>
-        <h2 id="builder-title">Επιλέγετε — και βλέπετε το κόστος ζωντανά</h2>
+        <h2 id="builder-title">Επιλέγετε και βλέπετε το κόστος ζωντανά</h2>
         <p>Ό,τι επιλέγετε αθροίζεται αμέσως, χωρισμένο σε εφάπαξ και μηνιαίο. Τίποτα δεν είναι υποχρεωτικό.</p>
       </div>
 
@@ -74,7 +74,7 @@ const faqItems = [
                 <label class="b-opt">
                   <input type="radio" name={cat.id} value="" checked />
                   <span class="b-opt-text"><span class="b-opt-label">Καμία</span></span>
-                  <span class="b-price b-price--none">—</span>
+                  <span class="b-price b-price--none"><span class="num">0 €</span></span>
                 </label>
               )}
               {cat.options.map((o) => (
@@ -112,7 +112,7 @@ const faqItems = [
             </div>
           </div>
           <button class="btn btn--orange b-send" id="b-send" type="button">Στείλτε μου αυτή την προσφορά</button>
-          <p class="btn-note">Χωρίς δέσμευση — τη λαμβάνετε γραπτώς.</p>
+          <p class="btn-note">Χωρίς δέσμευση, τη λαμβάνετε γραπτώς.</p>
         </aside>
       </div>
     </div>
@@ -123,7 +123,7 @@ const faqItems = [
     <div class="container container--narrow">
       <div class="card offer-card reveal">
         <h2 id="offer-title">Λάβετε την προσφορά σας γραπτώς</h2>
-        <p class="offer-sub">Σας απαντάμε εντός {ELEGXOS.reportHours} ωρών — χωρίς καμία δέσμευση.</p>
+        <p class="offer-sub">Σας απαντάμε εντός {ELEGXOS.reportHours} ωρών, χωρίς καμία δέσμευση.</p>
         <form id="offer-form" action={`https://formsubmit.co/${SITE.email}`} method="POST" novalidate>
           <label class="f-field">
             <span>Ονοματεπώνυμο ή επωνυμία</span>
@@ -134,11 +134,11 @@ const faqItems = [
             <input type="text" name="contact" required autocomplete="email" inputmode="email" />
           </label>
           <label class="f-field">
-            <span>Η επιλογή σας <em>(συμπληρώνεται αυτόματα — μπορείτε να προσθέσετε σχόλιο)</em></span>
+            <span>Η επιλογή σας <em>(συμπληρώνεται αυτόματα, μπορείτε να προσθέσετε σχόλιο)</em></span>
             <textarea name="summary" id="offer-summary" rows="6"></textarea>
           </label>
           <input type="text" name="website" tabindex="-1" autocomplete="off" class="f-hp" aria-hidden="true" />
-          <input type="hidden" name="_subject" value="Νέα προσφορά από τη σελίδα Τιμών — pisma.gr" />
+          <input type="hidden" name="_subject" value="Νέα προσφορά από τη σελίδα Τιμών (pisma.gr)" />
           <input type="hidden" name="_template" value="box" />
           <input type="hidden" name="_captcha" value="false" />
           <button class="btn btn--orange" type="submit" id="offer-submit">Αποστολή προσφοράς</button>
@@ -189,7 +189,7 @@ const faqItems = [
   <!-- Τελικό CTA -->
   <CtaBand
     title="Δεν ξέρετε τι χρειάζεστε;"
-    sub={`Ο δωρεάν Έλεγχος PISMA (${ELEGXOS.minutes}′) σας δείχνει τι αξίζει να πάρετε — με νούμερα, όχι υποθέσεις.`}
+    sub={`Ο δωρεάν Έλεγχος PISMA (${ELEGXOS.minutes}′) σας δείχνει, με συγκεκριμένα νούμερα, τι αξίζει να πάρετε.`}
     ctaText="Κλείστε τον δωρεάν Έλεγχο"
     ctaHref="/elegxos/"
     note={`${ELEGXOS.price} · ${ELEGXOS.minutes} λεπτά · φεύγετε με γραπτά ευρήματα`}
@@ -230,7 +230,7 @@ const faqItems = [
   const fillSummary = (once: number, monthly: number) => {
     const lines = selected().map((i) => {
       const price = Number(i.dataset.price);
-      return `• ${i.dataset.label} — ${eur(price)}${i.dataset.ptype === 'monthly' ? '/μήνα' : ' εφάπαξ'}`;
+      return `• ${i.dataset.label} · ${eur(price)}${i.dataset.ptype === 'monthly' ? '/μήνα' : ' εφάπαξ'}`;
     });
     summaryEl.value = [
       ...(lines.length ? lines : ['(καμία επιλογή ακόμα)']),
@@ -256,7 +256,7 @@ const faqItems = [
   };
 
   // «Στείλτε μου αυτή την προσφορά» → μετάβαση στη φόρμα.
-  // Το focus γίνεται ΜΕΤΑ την κύλιση — αλλιώς το πληκτρολόγιο (κινητό)
+  // Το focus γίνεται ΜΕΤΑ την κύλιση, αλλιώς το πληκτρολόγιο (κινητό)
   // διακόπτει το scroll και το πρώτο πάτημα μοιάζει νεκρό.
   document.getElementById('b-send')?.addEventListener('click', () => {
     scrollToEl(document.getElementById('offer'));
@@ -298,7 +298,7 @@ const faqItems = [
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = new FormData(form);
-    if ((data.get('website') as string)?.length) return; // honeypot — bot
+    if ((data.get('website') as string)?.length) return; // honeypot, bot
     const name = (data.get('name') as string || '').trim();
     const contact = (data.get('contact') as string || '').trim();
     if (!name || !contact) {
@@ -318,7 +318,7 @@ const faqItems = [
           headers: { Accept: 'application/json' },
           body: data,
         });
-        // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία — έλεγχος και του JSON.
+        // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία, έλεγχος και του JSON.
         const json = await res.json().catch(() => null);
         if (!res.ok || !json || String(json.success) !== 'true') throw new Error('form failed');
         form.hidden = true;
@@ -345,10 +345,10 @@ const faqItems = [
       // Χωρίς endpoint ακόμα: άνοιγμα email με έτοιμη την προσφορά
       const url =
         'mailto:' + SITE.email +
-        '?subject=' + encodeURIComponent('Προσφορά από τη σελίδα Τιμών — ' + name) +
+        '?subject=' + encodeURIComponent('Προσφορά από τη σελίδα Τιμών: ' + name) +
         '&body=' + encodeURIComponent(body);
       window.location.href = url;
-      showMsg('Ανοίξαμε το email σας με έτοιμη την προσφορά — απλώς πατήστε αποστολή.', true);
+      showMsg('Ανοίξαμε το email σας με έτοιμη την προσφορά. Απλώς πατήστε αποστολή.', true);
     }
   });
 
@@ -399,7 +399,7 @@ const faqItems = [
   .offer-card h2 { font-size: 1.35rem; margin-bottom: 6px; }
   .offer-sub { color: var(--muted); margin-bottom: 20px; }
   #offer-form { display: grid; gap: 14px; }
-  /* Το author display:grid υπερισχύει του hidden — ρητό override */
+  /* Το author display:grid υπερισχύει του hidden, ρητό override */
   #offer-form[hidden] { display: none; }
   .f-field span { display: block; font-size: .88rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
   .f-field em { font-style: normal; font-weight: 400; color: var(--muted); }

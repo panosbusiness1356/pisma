@@ -5,7 +5,7 @@ import { SITE, ELEGXOS, PROMISE, eurEn } from '../../config';
 import { sumOf } from '../../data/pricing';
 import { CATEGORIES_EN } from '../../data/pricing.en';
 
-// Πλήρης «ταυτότητα» της PISMA για Google & AI — αναπληρώνει το (προσωρινά
+// Πλήρης «ταυτότητα» της PISMA για Google & AI, αναπληρώνει το (προσωρινά
 // ανύπαρκτο) Google Business Profile. Ο τιμοκατάλογος βγαίνει από το pricing.en.ts.
 const schema = {
   '@context': 'https://schema.org',
@@ -45,7 +45,7 @@ const schema = {
     'Office automation',
   ],
   description:
-    'Digital presence and process automation for businesses. Website and Shopify store, visibility on Google and AI, reviews, photography and video, automations — measured before and after, with no lock-in.',
+    'Digital presence and process automation for businesses. Website and Shopify store, visibility on Google and AI, reviews, photography and video, automations, measured before and after, with no lock-in.',
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'PISMA services & prices',
@@ -75,7 +75,7 @@ const steps = [
 ];
 
 
-/* Μίνι-preview του builder (section Τιμολόγηση) — πραγματικές υπηρεσίες και
+/* Μίνι-preview του builder (section Τιμολόγηση), πραγματικές υπηρεσίες και
    τιμές από το pricing.ts (labels από pricing.en.ts), ώστε το demo να μη δείχνει
    ποτέ ξεπερασμένα ποσά. Τα labels των generic βαθμίδων («Standard», «Setup»)
    παίρνουν το όνομα της κατηγορίας τους για να στέκουν μόνα τους. */
@@ -88,7 +88,7 @@ const optionByIdEn = (id: string) => {
 };
 const bdDefs: { id: string; label?: string }[] = [
   { id: 'web-standard', label: 'Standard Website' },
-  { id: 'gbp-setup', label: 'Google Profile — Setup' },
+  { id: 'gbp-setup', label: 'Google Profile Setup' },
   { id: 'auto-reviews' },
   { id: 'care-web' },
 ];
@@ -104,7 +104,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
 ---
 
 <Base
-  title="PISMA — Digital presence & automation for businesses"
+  title="PISMA | Digital presence & automation for businesses"
   description="PISMA builds your presence across your website, Shopify store, Google and AI tools, and automates your office routine. Fixed prices, measurable results."
   schema={schema}
 >
@@ -115,7 +115,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     data-mascot-stop
     data-mascot-side="right"
     data-mascot-anchor="#hero-title"
-    data-mascot-say="Welcome to PISMA. Keep scrolling — I'll show you the essentials."
+    data-mascot-say="Welcome to PISMA. Keep scrolling and I'll show you the essentials."
   >
     <!-- «Σκηνή» (αίτημα χρήστριας 06/09/2026): καπνός WebGL που κινείται αργά (smoke.ts) πάνω από CSS ομίχλη,
          «PISMA.» μεγάλο στη ροή. Τα χρωματιστά αιωρούμενα λογότυπα αφαιρέθηκαν (δεν ταιριάζουν στο ασπρόμαυρο). -->
@@ -134,7 +134,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
         Your business, <span class="hero-hl">on another level<svg class="hl-stroke" viewBox="0 0 320 30" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="hlGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--cta-lite)" /><stop offset="1" stop-color="var(--cta-deep)" /></linearGradient></defs><path d="M6 15 C 60 9, 130 21, 200 14 C 245 10, 285 12, 314 13 C 260 18, 200 22, 120 21 C 90 20.5, 72 19, 58 18" fill="none" stroke="url(#hlGrad)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" opacity=".95" /></svg></span>.
       </h1>
       <script is:inline>
-        // Κρύβει την υπογράμμιση πριν το πρώτο paint — θα τη «ζωγραφίσει» ο Ντοτ.
+        // Κρύβει την υπογράμμιση πριν το πρώτο paint, θα τη «ζωγραφίσει» ο Ντοτ.
         (function () {
           var p = document.querySelector('.hl-stroke path');
           if (p && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -149,7 +149,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
 
       <div class="hero-ctas blur-in" style="--d:.46s">
         <span class="btn-frame">
-          <a class="btn btn--orange" href="/en/business-check/">Measure your business — 2 min</a>
+          <a class="btn btn--orange" href="/en/business-check/">Measure your business in 2 min</a>
         </span>
         <a class="btn btn--ghost" href="/en/free-assessment/">Free {ELEGXOS.minutes}-minute PISMA Check</a>
       </div>
@@ -179,7 +179,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     </div>
   </section>
 
-  <!-- 1β. Πριν → Μετά — δική του ενότητα, ΕΞΩ από τη σκηνή του hero (αίτημα χρήστριας 06/09/2026) -->
+  <!-- 1β. Πριν → Μετά, δική του ενότητα, ΕΞΩ από τη σκηνή του hero (αίτημα χρήστριας 06/09/2026) -->
   <section class="section section--tight ba-section">
     <div class="container">
     <div class="hero-ba">
@@ -208,7 +208,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
           </ul>
         </div>
       </div>
-      <p class="ba-note">We measure your own numbers before we start — and again at 3 months.</p>
+      <p class="ba-note">We measure your own numbers before we start, and again at 3 months.</p>
     </div>
     </div>
   </section>
@@ -254,10 +254,10 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
           <h3>Digital Visibility</h3>
           <ul class="svc-list">
             <li>A website designed to turn visitors into customers</li>
-            <li>A Shopify store — built for you, or managed month by month</li>
+            <li>A Shopify store, built for you or managed month by month</li>
             <li>Rankings on Google Search and Google Maps in your area</li>
             <li>Recommendations from AI tools like ChatGPT</li>
-            <li>Social media that stay alive — with photos and video shot at your premises</li>
+            <li>Social media that stay alive, with photos and video shot at your premises</li>
           </ul>
           <a class="card-arrow" href="/en/get-found/">Learn more →</a>
         </article>
@@ -297,9 +297,9 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     </div>
   </section>
 
-  <!-- 2β. Κριτικές Google — «Η άνοδος στη Google»: όσο πέφτουν αστέρια-κριτικές,
+  <!-- 2β. Κριτικές Google, «Η άνοδος στη Google»: όσο πέφτουν αστέρια-κριτικές,
        η επιχείρηση σκαρφαλώνει από την 3η στην 1η θέση των αποτελεσμάτων.
-       Το HTML έχει το τελικό state (#1, κορώνα) — χωρίς JS ή με reduced motion
+       Το HTML έχει το τελικό state (#1, κορώνα), χωρίς JS ή με reduced motion
        μένει στατικό· το JS το «ξαναπαίζει» σε loop όσο το section είναι ορατό. -->
   <section
     class="section section--tight"
@@ -317,7 +317,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
         </div>
         <p class="rev-sub">
           Every new review counts: your rating rises and your business climbs
-          the rankings — right where customers are searching.
+          the rankings, right where customers are searching.
         </p>
         <div class="rev-cta">
           <a class="btn btn--ghost" href="/en/reviews/">See what the Reviews Tool does</a>
@@ -357,7 +357,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
               <span class="rev-ring" id="rev-ring"></span>
             </div>
           </div>
-          <p class="rev-win" id="rev-win">The area's first choice ✓</p>
+          <p class="rev-win" id="rev-win">The area's first choice</p>
           <div class="rev-skel">
             <div class="rev-skel-row"><span style="width:62%"></span><span style="width:38%"></span></div>
             <div class="rev-skel-row"><span style="width:48%"></span><span style="width:55%"></span></div>
@@ -376,13 +376,13 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     aria-labelledby="method-title"
     data-mascot-stop
     data-mascot-side="right"
-    data-mascot-say={`Every project starts with the free ${ELEGXOS.minutes}-minute PISMA Check — you get the findings in writing.`}
+    data-mascot-say={`Every project starts with the free ${ELEGXOS.minutes}-minute PISMA Check, and you get the findings in writing.`}
   >
     <span class="flogo sflogo" aria-hidden="true" style="right:4%;top:40px;--w:24px;--dur:5.9s"><img src="/logos/google-maps.svg" alt="" loading="lazy" /></span>
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--yellow">Methodology</p>
-        <h2 id="method-title">How we work — in 4 steps</h2>
+        <h2 id="method-title">How we work, in 4 steps</h2>
       </div>
       <ol class="steps">
         {steps.map((s, i) => (
@@ -396,25 +396,25 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     </div>
   </section>
 
-  <!-- 6. Τιμολόγηση — φτιάξτε το δικό σας πακέτο -->
+  <!-- 6. Τιμολόγηση, φτιάξτε το δικό σας πακέτο -->
   <section
     class="section section--tight"
     aria-labelledby="pricing-title"
     data-mascot-stop
     data-mascot-side="left"
-    data-mascot-say="No ready-made packages — you pick what you need and watch the total update live."
+    data-mascot-say="No ready-made packages: you pick what you need and watch the total update live."
   >
     <span class="flogo sflogo" aria-hidden="true" style="left:4%;top:2px;--w:22px;--dur:6.4s"><img src="/logos/linkedin-icon.svg" alt="" loading="lazy" /></span>
     <span class="flogo sflogo" aria-hidden="true" style="right:4%;top:42px;--w:26px;--dur:6.8s"><img src="/logos/facebook.svg" alt="" loading="lazy" /></span>
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">Pricing</p>
-        <h2 id="pricing-title">No ready-made packages — you build your own</h2>
-        <p>Every price is public. You pick only what you need — and know the cost before we ever speak.</p>
+        <h2 id="pricing-title">No ready-made packages: you build your own</h2>
+        <p>Every price is public. You pick only what you need and know the cost before we ever speak.</p>
       </div>
 
       <div class="card bd reveal" id="builder-demo">
-        <!-- Αριστερά: μίνι-preview του builder — δείγμα με πραγματικές τιμές -->
+        <!-- Αριστερά: μίνι-preview του builder, δείγμα με πραγματικές τιμές -->
         <div class="bd-mock" aria-hidden="true">
           <p class="bd-mock-title">Your quote <span class="tag tag--demo">Sample</span></p>
           <ul class="bd-list">
@@ -441,21 +441,21 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
               <span class="bd-n num">1</span>
               <div>
                 <h3>Pick your services</h3>
-                <p>Website, Google, the Reviews Tool, automations — tick only what your business needs.</p>
+                <p>Website, Google, the Reviews Tool, automations: tick only what your business needs.</p>
               </div>
             </li>
             <li>
               <span class="bd-n num">2</span>
               <div>
                 <h3>Watch the total update live</h3>
-                <p>One-off and monthly, no fine print — the sum updates right in front of you.</p>
+                <p>One-off and monthly, no fine print. The sum updates right in front of you.</p>
               </div>
             </li>
             <li>
               <span class="bd-n num">3</span>
               <div>
                 <h3>Get it in writing</h3>
-                <p>No online payment — you send the quote over and we talk.</p>
+                <p>No online payment. You send the quote over and we talk.</p>
               </div>
             </li>
           </ol>
@@ -475,7 +475,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
           <p class="kicker">The company</p>
           <h2 id="who-title">You talk to the person doing the work</h2>
           <p>
-            You work directly with the person who designs and builds your project — no
+            You work directly with the person who designs and builds your project, with no
             sales department. Everything we build belongs to your business.
           </p>
           <div class="who-bridge" aria-hidden="true">
@@ -494,13 +494,13 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     aria-labelledby="final-title"
     data-mascot-stop
     data-mascot-side="right"
-    data-mascot-say={`Start with the free PISMA Check — ${ELEGXOS.minutes} minutes, no commitment.`}
+    data-mascot-say={`Start with the free PISMA Check: ${ELEGXOS.minutes} minutes, no commitment.`}
   >
     <span class="flogo sflogo" aria-hidden="true" style="left:5%;top:12px;--w:24px;--dur:5.4s"><img src="/logos/viber.svg" alt="" loading="lazy" /></span>
     <div class="container">
       <h2 id="final-title">Start with the free<br /><span class="grad-text">{ELEGXOS.minutes}-minute PISMA Check</span></h2>
       <p>
-        We map where you're losing customers and time — and you get the findings in writing.
+        We map where you're losing customers and time, and you get the findings in writing.
       </p>
       <a class="btn btn--orange" href="/en/free-assessment/">Book the free PISMA Check</a>
       <p class="btn-note">{ELEGXOS.minutes} minutes · completely free · no commitment</p>
@@ -530,7 +530,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     hw.addEventListener('pointermove', (e) => { [tx, ty] = pos(e); kick(); });
     hw.addEventListener('pointerleave', () => { over = false; hw.classList.remove('spot-on'); });
   }
-  // Parallax λογοτύπων στο scroll + μετρητής κριτικών — σέβονται το reduced motion.
+  // Parallax λογοτύπων στο scroll + μετρητής κριτικών, σέβονται το reduced motion.
   const reduceFx = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 
@@ -549,7 +549,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     }
   }
 
-  // Κινήσεις sections: οπλίζονται μόνο εδώ (.fx-armed) — χωρίς JS όλα ορατά.
+  // Κινήσεις sections: οπλίζονται μόνο εδώ (.fx-armed), χωρίς JS όλα ορατά.
   // Κάθε section πυροδοτεί (.fx-on) μία φορά, όταν μπει αρκετά στην οθόνη.
   const fxIds = ['svc-title', 'method-title', 'pricing-title', 'who-title', 'final-title'];
   const fxSections = fxIds
@@ -572,7 +572,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   }
 
   // Μίνι-preview builder (Τιμολόγηση): οι υπηρεσίες «τικάρονται» μία-μία και το
-  // σύνολο μεγαλώνει ζωντανά. Το HTML έχει το τελικό state — το JS απλώς το
+  // σύνολο μεγαλώνει ζωντανά. Το HTML έχει το τελικό state, το JS απλώς το
   // ξανα-παίζει στο πρώτο scroll. Χωρίς JS ή με reduced motion: τελικό state.
   const bdDemo = document.getElementById('builder-demo');
   if (bdDemo && !reduceFx && 'IntersectionObserver' in window) {
@@ -617,7 +617,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   // «Η άνοδος στη Google» (Κριτικές): το HTML έχει το τελικό state (#1, κορώνα,
   // 4.9/87). Με JS + ορατότητα: επαναφορά στην 3η θέση και ζωντανή άνοδος σε
   // loop· όταν βγει από την οθόνη, σταματά και γυρνά στο τελικό state.
-  // Τα δυναμικά στοιχεία (αστέρια/κομφετί) παίρνουν inline styles — τα scoped
+  // Τα δυναμικά στοιχεία (αστέρια/κομφετί) παίρνουν inline styles, τα scoped
   // styles του Astro δεν πιάνουν JS-created elements.
   const revStage = document.getElementById('rev-stage');
   if (revStage && !reduceFx && 'IntersectionObserver' in window) {
@@ -648,7 +648,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     };
 
     // Αστέρια εν πτήσει: κρατιούνται σε set ώστε, όταν η σειρά αλλάζει θέση,
-    // να ΞΑΝΑΣΤΟΧΕΥΟΥΝ εν κινήσει την καινούργια της θέση — αλλιώς όσα είχαν
+    // να ΞΑΝΑΣΤΟΧΕΥΟΥΝ εν κινήσει την καινούργια της θέση, αλλιώς όσα είχαν
     // ξεκινήσει πριν την άνοδο προσγειώνονταν εκεί που ήταν η σειρά πριν.
     const starFlight = new Set<HTMLElement>();
     const starTarget = (fx: number) => {
@@ -769,7 +769,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
 
 <style>
   /* ---------- Κριτικές: «Η άνοδος στη Google» ---------- */
-  /* Δίστηλη διάταξη: κείμενο αριστερά, iPhone δεξιά — σε στενές οθόνες
+  /* Δίστηλη διάταξη: κείμενο αριστερά, iPhone δεξιά, σε στενές οθόνες
      στοιβάζονται (κείμενο πάνω, κινητό από κάτω, κεντραρισμένο). */
   .rev-grid {
     display: grid;
@@ -848,7 +848,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     padding: 5px 12px; font-size: .74rem; font-weight: 600;
     transition: opacity .5s, transform .5s;
   }
-  /* Σκιώδη «επόμενα αποτελέσματα» — γεμίζουν φυσικά το κάτω μέρος της οθόνης */
+  /* Σκιώδη «επόμενα αποτελέσματα», γεμίζουν φυσικά το κάτω μέρος της οθόνης */
   .rev-skel { flex: 1; display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
   .rev-skel-row {
     border: 1px solid #eceef0; border-radius: 12px; padding: 11px 12px;
@@ -877,9 +877,9 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
 
   /* ---------- Hero ---------- */
   /* overflow-x μόνο: το κάθετο clip έκοβε τις δέσμες (beams) στο όριο του main
-     και άφηνε ορατή οριζόντια «γραμμή» κάτω από το μενού — τώρα η λάμψη
+     και άφηνε ορατή οριζόντια «γραμμή» κάτω από το μενού, τώρα η λάμψη
      συνεχίζει ενιαία ως την κορυφή, πίσω από το sticky nav. */
-  /* Η σκηνή απλώνεται και πίσω από το sticky μενού (72px) — μενού και hero «ένα» (αίτημα χρήστριας). */
+  /* Η σκηνή απλώνεται και πίσω από το sticky μενού (72px), μενού και hero «ένα» (αίτημα χρήστριας). */
   .hero { margin-top: -72px; min-height: min(100svh, 940px); display: flex; flex-direction: column; justify-content: center; padding-top: calc(clamp(32px, 5vw, 64px) + 72px); padding-bottom: clamp(48px, 7vw, 80px); position: relative; overflow-x: clip; }
   /* ΟΛΑ στο κέντρο (αίτημα χρήστριας): τίτλος, «PISMA.», κουμπιά, αριθμοί, παράγραφος. */
   .hero-inner { text-align: center; position: relative; z-index: 1; width: 100%; display: flex; flex-direction: column; align-items: center; }
@@ -891,7 +891,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     color: var(--orange-text);
     text-wrap: balance;
   }
-  /* Desktop: μία πρόταση σε ΜΙΑ γραμμή (αίτημα χρήστριας) — το μέγεθος ακολουθεί το πλάτος. */
+  /* Desktop: μία πρόταση σε ΜΙΑ γραμμή (αίτημα χρήστριας), το μέγεθος ακολουθεί το πλάτος. */
   .hero h1 { max-width: none; margin-inline: auto; white-space: nowrap; font-size: clamp(2rem, 3.6vw, 3.4rem); line-height: 1.05; letter-spacing: -.03em; text-shadow: 0 10px 60px rgba(0, 0, 0, .6); }
   @media (max-width: 860px) { .hero h1 { white-space: normal; max-width: 18ch; } }
   .hero-hl { position: relative; white-space: nowrap; }
@@ -904,12 +904,12 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 36px; }
   .hero .btn-note { margin-top: 14px; margin-inline: auto; }
 
-  /* WhatsApp & Viber — γυαλιστερά brand pills με λευκό δίσκο για το εικονίδιο */
+  /* WhatsApp & Viber, γυαλιστερά brand pills με λευκό δίσκο για το εικονίδιο */
   .hero-chat {
     display: flex; flex-direction: column; align-items: center;
     gap: 8px; margin-top: 20px;
   }
-  /* Split-button (επιλογή 6): ένα pill χωρισμένο στη μέση — WhatsApp | Viber */
+  /* Split-button (επιλογή 6): ένα pill χωρισμένο στη μέση, WhatsApp | Viber */
   .split {
     display: inline-flex; border-radius: 999px;
     background: var(--card); border: 1px solid var(--line);
@@ -980,7 +980,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   .sflogo { display: none; pointer-events: none; z-index: 2; }
 
   /* Είσοδος: απαλή ανάδυση με ξεθόλωμα (επιλογή χρήστη).
-     Παίζει στο span — το λίκνισμα (translate/rotate στο img) και το parallax
+     Παίζει στο span, το λίκνισμα (translate/rotate στο img) και το parallax
      (inline transform από JS) δεν συγκρούονται μαζί της. */
   @keyframes flogoIn {
     from { opacity: 0; translate: 0 22px; filter: blur(8px); }
@@ -1023,7 +1023,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     font-family: var(--font-display, 'Unbounded', 'Inter', sans-serif); font-weight: 800;
     font-size: clamp(4.6rem, 16vw, 15rem); line-height: .95; letter-spacing: .01em;
     white-space: nowrap; user-select: none; cursor: default;
-    /* Συμπαγή γράμματα, όπως το logo — ο καπνός φαίνεται μέσα από αυτά */
+    /* Συμπαγή γράμματα, όπως το logo, ο καπνός φαίνεται μέσα από αυτά */
     color: rgba(255,255,255,.17); text-shadow: 0 0 80px rgba(255,255,255,.22);
   }
   /* Εφέ 2+3 (επιλογή χρήστριας): τα γράμματα μπαίνουν ένα-ένα μέσα από θόλωμα με μια
@@ -1047,7 +1047,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   /* Λωρίδα φωτός (εφέ 3): ένα «παράθυρο» (.hw-shine-win) γλιστρά πάνω από ένα λευκό αντίγραφο του «PISMA.»
      και το αντίγραφο μετακινείται αντίθετα ώστε να μένει ακίνητο πάνω στα γράμματα. Δύο transform animations
      = τρέχουν εξ ολοκλήρου στον compositor, 0 ξαναζωγραφίσματα. (Το παλιό ::after με background-position
-     ξαναζωγράφιζε 6 τεράστια γράμματα με σκιά 80 px σε κάθε καρέ — στο κινητό πάγωνε την οθόνη κάθε 6 s.)
+     ξαναζωγράφιζε 6 τεράστια γράμματα με σκιά 80 px σε κάθε καρέ, στο κινητό πάγωνε την οθόνη κάθε 6 s.)
      Το παράθυρο: 24 % του πλάτους της λέξης, με μαλακή διαγώνια μάσκα. Ίδιοι χρόνοι: 6 s, ανά 1,9 s, ορατό στο 0-40 %. */
   .hw-shine { position: absolute; inset: 0; overflow: hidden; pointer-events: none; font-style: normal; font-weight: inherit; }
   .hw-shine-win {
@@ -1078,7 +1078,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     .hw-shine { display: none; }
   }
   /* Hover «Προβολέας»: στρώμα ::before με το ίδιο κείμενο, φως στο σημείο του ποντικιού
-     (--mx/--my από το JS), background-clip: text — ευθυγραμμισμένο ακριβώς με τα γράμματα. */
+     (--mx/--my από το JS), background-clip: text, ευθυγραμμισμένο ακριβώς με τα γράμματα. */
   @media (hover: hover) and (pointer: fine) {
     .hero-word::before {
       content: attr(data-text); position: absolute; left: 0; right: 0; top: 0;
@@ -1095,15 +1095,15 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
      συνεχώς = το ακριβότερο πράγμα για GPU κινητού)· τα γράμματα «PISMA.» μπαίνουν με ξεθώριασμα + ανάδυση
      χωρίς blur/λάμψη (color/text-shadow/blur = main thread, repaint 6 μεγάλων γραμμάτων σε κάθε καρέ). */
   @media (pointer: coarse) {
-    /* Η ομίχλη κινείται κανονικά (transform: compositor) — το «θόλωμά» της είναι το ίδιο το gradient, όχι filter.
-       Και σε 1/3 ανάλυση: το στοιχείο είναι 3× μικρότερο και μεγεθύνεται με scale(3) μέσα στο animation —
+    /* Η ομίχλη κινείται κανονικά (transform: compositor), το «θόλωμά» της είναι το ίδιο το gradient, όχι filter.
+       Και σε 1/3 ανάλυση: το στοιχείο είναι 3× μικρότερο και μεγεθύνεται με scale(3) μέσα στο animation, 
        9× λιγότερα pixel στο raster, ένα gradient δεν χάνει τίποτα στη μεγέθυνση. */
     .stg-fog { filter: none; transform-origin: 0 0; animation-name: stgDriftLite; }
     .stg-fog--1 { width: calc(70vw / 3); height: calc(40vw / 3); background: radial-gradient(closest-side, rgba(255,255,255,.15) 0%, rgba(255,255,255,.07) 45%, transparent 100%); }
     .stg-fog--2 { width: calc(60vw / 3); height: calc(36vw / 3); background: radial-gradient(closest-side, rgba(255,255,255,.11) 0%, rgba(255,255,255,.05) 45%, transparent 100%); }
     .stg-fog--3 { width: calc(90vw / 3); height: calc(30vw / 3); background: radial-gradient(closest-side, rgba(255,255,255,.17) 0%, rgba(255,255,255,.08) 45%, transparent 100%); }
     @keyframes stgDriftLite { from { transform: scale(3); } to { transform: translate(6vw, -3vw) scale(3.36); } }
-    /* Γράμματα «PISMA.»: ίδιο εφέ (θόλωμα + στιγμιαία λάμψη) σε δύο animations — ομαλή ανάδυση (compositor)
+    /* Γράμματα «PISMA.»: ίδιο εφέ (θόλωμα + στιγμιαία λάμψη) σε δύο animations, ομαλή ανάδυση (compositor)
        + η όψη (blur/χρώμα/λάμψη) σε 6 βήματα = 6 ξαναζωγραφίσματα ανά γράμμα αντί για 66. */
     .hero-word span { will-change: transform; animation: hwInMove 1.1s cubic-bezier(.22, 1, .36, 1) forwards, hwInLook 1.1s steps(6, jump-end) forwards; }
     @keyframes hwInMove { 0% { opacity: 0; transform: translateY(26px) scale(1.06); } 100% { opacity: 1; transform: none; } }
@@ -1285,7 +1285,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   .final-cta { text-align: center; position: relative; }
   .final-cta::before {
     content: ''; position: absolute; inset: 0; pointer-events: none;
-    /* Το φωτοστέφανο σβήνει ΜΕΣΑ στο section — όχι κομμένο στο όριο με το footer */
+    /* Το φωτοστέφανο σβήνει ΜΕΣΑ στο section, όχι κομμένο στο όριο με το footer */
     background: radial-gradient(46% 52% at 50% 60%, rgba(var(--cta-rgb), .13), transparent 72%);
   }
   .final-cta h2 { font-size: clamp(1.9rem, 4.6vw, 3.2rem); max-width: 24ch; margin-inline: auto; }
@@ -1300,7 +1300,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     .sflogo { display: none; }
     .hero-kicker { margin-bottom: 16px; }
     /* Πιο «άδεια» κορυφή (απόφαση χρήστριας): στην πρώτη οθόνη μένουν τίτλος +
-       ένα κουμπί. Η περιγραφή ΔΕΝ κόβεται — κατεβαίνει κάτω από τα κουμπιά,
+       ένα κουμπί. Η περιγραφή ΔΕΝ κόβεται, κατεβαίνει κάτω από τα κουμπιά,
        μικρότερη και πιο αχνή, και το δεύτερο κουμπί γίνεται απλό link. */
     .hero-inner { display: flex; flex-direction: column; align-items: center; }
     .hero h1 { font-size: clamp(1.7rem, 8.2vw, 2.3rem); }
@@ -1309,13 +1309,13 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     .hero-word { order: 3; }
     .hero-ctas { order: 4; }
     .hero .btn-note { order: 5; }
-    /* Τα pills WhatsApp/Viber μένουν ψηλά — κανάλι με τη μικρότερη τριβή. */
+    /* Τα pills WhatsApp/Viber μένουν ψηλά, κανάλι με τη μικρότερη τριβή. */
     .hero-chat { order: 6; }
     .hero .sub { order: 8; }
     /* Οι αριθμοί-δεσμεύσεις κατεβαίνουν κάτω από την περιγραφή στο κινητό. */
     .hero-stats { order: 7; margin-top: 22px; gap: 8px 22px; }
     .hero-stats strong { font-size: 1.05rem; }
-    /* Το animation ακολουθεί τη νέα οπτική σειρά — η περιγραφή εμφανίζεται τελευταία. */
+    /* Το animation ακολουθεί τη νέα οπτική σειρά, η περιγραφή εμφανίζεται τελευταία. */
     .hero .sub { font-size: .92rem; margin-top: 26px; max-width: 40ch; animation-delay: .56s; }
     .sub-more { display: none; }
     .hero-ctas { margin-top: 30px; }
@@ -1396,7 +1396,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     margin: 14px auto 0; width: fit-content; max-width: 34ch;
   }
 
-  /* Εταιρία: «Εσείς ——— PISMA.» — τη γραμμή τη σχηματίζει ο Ντοτ σε desktop,
+  /* Εταιρία: «Εσείς, , , PISMA.», τη γραμμή τη σχηματίζει ο Ντοτ σε desktop,
      αλλιώς μένει η στατική. */
   .who-bridge { display: flex; align-items: center; gap: 14px; margin-top: 24px; max-width: 560px; }
   .wb-chip {
@@ -1410,7 +1410,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   }
 
   /* ---------- Κινήσεις sections (εγκρίσεις 25/07/2026) ----------
-     Οπλίζονται ΜΟΝΟ όταν το JS βάλει .fx-armed — χωρίς JS όλα ορατά. */
+     Οπλίζονται ΜΟΝΟ όταν το JS βάλει .fx-armed, χωρίς JS όλα ορατά. */
   .fx-uline {
     display: block; height: 4px; width: clamp(140px, 30%, 230px);
     margin-top: 12px; border-radius: 999px;

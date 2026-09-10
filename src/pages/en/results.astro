@@ -7,7 +7,7 @@ import { SITE, ELEGXOS } from '../../config';
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'Results — Numbers, not words',
+  name: 'Results you can measure',
   description:
     'How we measure the results of every collaboration: a baseline before we start, a re-measurement at 3 months, and the numbers we track.',
   url: `${SITE.url}/en/results/`,
@@ -15,14 +15,14 @@ const schema = {
   isPartOf: { '@type': 'WebSite', name: SITE.name, url: SITE.url },
 };
 
-/** Οι μετρικές που παρακολουθούμε — trend: up = θέλουμε να ανέβει, down = να πέσει. */
+/** Οι μετρικές που παρακολουθούμε, trend: up = θέλουμε να ανέβει, down = να πέσει. */
 const metrics = [
-  { title: 'Customers from Google & AI', desc: "They find you in search and in ChatGPT's answers — and they call you.", trend: 'up' },
+  { title: 'Customers from Google & AI', desc: "They find you in search and in ChatGPT's answers, and they call you.", trend: 'up' },
   { title: 'Search ranking', desc: 'On Google and in AI answers.', trend: 'up' },
   { title: 'Google reviews', desc: 'New reviews coming in, month after month.', trend: 'up' },
   { title: 'Hours at the office', desc: 'Anything mechanical gets handed over to automation.', trend: 'down' },
   { title: 'Website visits', desc: 'More people see your work.', trend: 'up' },
-  { title: 'Social media presence', desc: 'Steady posts every week — none of your time spent.', trend: 'up' },
+  { title: 'Social media presence', desc: 'Steady posts every week, with none of your time spent.', trend: 'up' },
 ] as const;
 
 const steps = [
@@ -39,14 +39,14 @@ const steps = [
   {
     num: '03',
     title: "If the numbers didn't climb",
-    desc: "We'll be the first to tell you — and no contract is keeping you here.",
+    desc: "We'll be the first to tell you, and no contract is keeping you here.",
   },
 ] as const;
 ---
 
 <Base
   title="Results: measured before and after | PISMA"
-  description="How do you know it's working? We measure where you are today, measure again at 3 months, and show you what changed — calls, reviews, Google ranking, office hours."
+  description="How do you know it's working? We measure where you are today, measure again at 3 months, and show you what changed: calls, reviews, Google ranking, office hours."
   schema={schema}
 >
   <PageHero
@@ -110,7 +110,7 @@ const steps = [
     </div>
   </section>
 
-  <!-- Τι κερδίζεις — η άνοδος -->
+  <!-- Τι κερδίζεις, η άνοδος -->
   <section class="section section--tight" aria-labelledby="rise-title">
     <div class="container">
       <div class="sec-head sec-head--center">
@@ -174,7 +174,7 @@ const steps = [
           <text x="512" y="242" class="rise-label" text-anchor="end">in 3 months</text>
         </svg>
         <p class="rise-final" id="rise-final">
-          <span>And you? Fewer hours at the office ✓</span>
+          <span>And you, with fewer hours at the office</span>
         </p>
       </div>
     </div>
@@ -182,7 +182,7 @@ const steps = [
 
   <CtaBand
     title="We start by measuring."
-    sub="In the PISMA Check we measure where you stand today — and show you, live, the systems we run for ourselves."
+    sub="In the PISMA Check we measure where you stand today and show you, live, the systems we run for ourselves."
     ctaText="Book the PISMA Check"
     ctaHref="/en/free-assessment/"
     note={`${ELEGXOS.priceEn} · ${ELEGXOS.minutes} minutes · no commitment`}
@@ -190,7 +190,7 @@ const steps = [
 </Base>
 
 <style>
-  /* Βήματα «Πώς μετράμε» — αριθμός σε mono, πορτοκαλί */
+  /* Βήματα «Πώς μετράμε», αριθμός σε mono, πορτοκαλί */
   .mstep-num {
     font-family: var(--font-mono);
     color: var(--orange);
@@ -326,7 +326,7 @@ const steps = [
 
     function cycle() {
       if (!running) return;
-      // Clear the previous cycle's timers — otherwise the array grows unbounded
+      // Clear the previous cycle's timers, otherwise the array grows unbounded
       timers.forEach(clearTimeout);
       timers = [];
       reset();

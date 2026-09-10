@@ -1,19 +1,19 @@
 /**
- * Ευρετήριο αγγλικών οδηγών — αντιστοιχεί 1:1 στο guides.ts.
- * Τα slugs εδώ είναι τα αγγλικά (κάτω από /en/guides/) — βλ. και src/i18n.ts.
+ * Ευρετήριο αγγλικών οδηγών, αντιστοιχεί 1:1 στο guides.ts.
+ * Τα slugs εδώ είναι τα αγγλικά (κάτω από /en/guides/), βλ. και src/i18n.ts.
  */
 import type { GuideMeta } from './guides';
 
 export const GUIDES_EN: GuideMeta[] = [
   {
     slug: 'seo-in-plain-words',
-    q: 'What is SEO — in plain words?',
+    q: 'What is SEO?',
     blurb: 'No technical jargon: what actually matters for your business.',
   },
   {
     slug: 'get-recommended-by-chatgpt',
     q: 'How do you get ChatGPT to recommend you?',
-    blurb: "Customers now ask AI too — here's what it looks at before it answers.",
+    blurb: "Customers now ask AI too. Here's what it looks at before it answers.",
   },
   {
     slug: 'google-maps-profile',
@@ -23,7 +23,7 @@ export const GUIDES_EN: GuideMeta[] = [
   {
     slug: 'more-google-reviews',
     q: 'How do you get more Google reviews?',
-    blurb: 'How to ask the right way, how to reply — and what never to do.',
+    blurb: 'How to ask the right way, how to reply, and what never to do.',
   },
   {
     slug: 'website-cost',
@@ -33,7 +33,7 @@ export const GUIDES_EN: GuideMeta[] = [
   {
     slug: 'what-are-automations',
     q: 'What are office automations?',
-    blurb: 'What each one does — payments, debts, reports — in plain words.',
+    blurb: 'What each one does: payments, debts, reports.',
   },
   {
     slug: 'social-media-management',

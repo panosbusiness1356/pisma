@@ -26,26 +26,26 @@ const schema = {
 const faqItems = [
   {
     q: 'What does care include?',
-    a: 'We keep an eye on everything, fix anything that breaks and make small improvements along the way. Wherever there is monthly management, you also get a monthly Proof of Value report — what the system saved you, in hours and euros.',
+    a: 'We keep an eye on everything, fix anything that breaks and make small improvements along the way. Wherever there is monthly management, you also get a monthly Proof of Value report: what the system saved you, in hours and euros.',
   },
   {
     q: "I need something that isn't on the list.",
-    a: `No problem. You get a written proposal within ${ELEGXOS.reportHours} hours, at a fixed price — no surprises on the bill.`,
+    a: `No problem. You get a written proposal within ${ELEGXOS.reportHours} hours, at a fixed price, with no surprises on the bill.`,
   },
   {
     q: 'Is there a lock-in?',
-    a: 'No, there is no annual commitment. You stay because the numbers keep making the case — not because a contract says so.',
+    a: 'No, there is no annual commitment. You stay because the numbers keep making the case.',
   },
 ];
 
 ---
 
 <Base
-  title="PISMA Pricing — Transparent price list: build your own package"
+  title="PISMA Pricing: transparent price list, build your own package"
   description="Every price published: website, Google, visibility in AI, social media, automations. Build your own package and watch the cost add up live."
   schema={schema}
 >
-  <PageHero kicker="Pricing" sub="No “request a quote”. Every price is published — you pick and see the total before you ever call us.">
+  <PageHero kicker="Pricing" sub="No need to request a quote. Every price is published: you pick and see the total before you ever call us.">
     Pricing, <span class="accent">out in the open</span>.
   </PageHero>
 
@@ -60,7 +60,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">Build your package</p>
-        <h2 id="builder-title">Pick what you need — and watch the cost live</h2>
+        <h2 id="builder-title">Pick what you need and watch the cost live</h2>
         <p>Everything you select adds up instantly, split into one-off and monthly. Nothing is mandatory.</p>
       </div>
 
@@ -76,7 +76,7 @@ const faqItems = [
                 <label class="b-opt">
                   <input type="radio" name={cat.id} value="" checked />
                   <span class="b-opt-text"><span class="b-opt-label">None</span></span>
-                  <span class="b-price b-price--none">—</span>
+                  <span class="b-price b-price--none"><span class="num">€0</span></span>
                 </label>
               )}
               {cat.options.map((o) => (
@@ -114,7 +114,7 @@ const faqItems = [
             </div>
           </div>
           <button class="btn btn--orange b-send" id="b-send" type="button">Send me this quote</button>
-          <p class="btn-note">No commitment — you get it in writing.</p>
+          <p class="btn-note">No commitment, and you get it in writing.</p>
         </aside>
       </div>
     </div>
@@ -125,7 +125,7 @@ const faqItems = [
     <div class="container container--narrow">
       <div class="card offer-card reveal">
         <h2 id="offer-title">Get your quote in writing</h2>
-        <p class="offer-sub">We reply within {ELEGXOS.reportHours} hours — with zero commitment.</p>
+        <p class="offer-sub">We reply within {ELEGXOS.reportHours} hours, with zero commitment.</p>
         <form id="offer-form" action={`https://formsubmit.co/${SITE.email}`} method="POST" novalidate>
           <label class="f-field">
             <span>Full name or business name</span>
@@ -136,11 +136,11 @@ const faqItems = [
             <input type="text" name="contact" required autocomplete="email" inputmode="email" />
           </label>
           <label class="f-field">
-            <span>Your selection <em>(filled in automatically — feel free to add a comment)</em></span>
+            <span>Your selection <em>(filled in automatically, feel free to add a comment)</em></span>
             <textarea name="summary" id="offer-summary" rows="6"></textarea>
           </label>
           <input type="text" name="website" tabindex="-1" autocomplete="off" class="f-hp" aria-hidden="true" />
-          <input type="hidden" name="_subject" value="New quote from the Pricing page (EN) — pisma.gr" />
+          <input type="hidden" name="_subject" value="New quote from the Pricing page (EN) on pisma.gr" />
           <input type="hidden" name="_template" value="box" />
           <input type="hidden" name="_captcha" value="false" />
           <button class="btn btn--orange" type="submit" id="offer-submit">Send my quote</button>
@@ -191,7 +191,7 @@ const faqItems = [
   <!-- Τελικό CTA -->
   <CtaBand
     title="Not sure what you need?"
-    sub={`The free ${ELEGXOS.minutes}-minute PISMA Check shows you what's actually worth getting — with numbers, not guesses.`}
+    sub={`The free ${ELEGXOS.minutes}-minute PISMA Check shows you, with real numbers, what's actually worth getting.`}
     ctaText="Book the free PISMA Check"
     ctaHref="/en/free-assessment/"
     note={`${ELEGXOS.priceEn} · ${ELEGXOS.minutes} minutes · you leave with written findings`}
@@ -232,7 +232,7 @@ const faqItems = [
   const fillSummary = (once: number, monthly: number) => {
     const lines = selected().map((i) => {
       const price = Number(i.dataset.price);
-      return `• ${i.dataset.label} — ${eur(price)}${i.dataset.ptype === 'monthly' ? '/month' : ' one-off'}`;
+      return `• ${i.dataset.label} · ${eur(price)}${i.dataset.ptype === 'monthly' ? '/month' : ' one-off'}`;
     });
     summaryEl.value = [
       ...(lines.length ? lines : ['(nothing selected yet)']),
@@ -258,7 +258,7 @@ const faqItems = [
   };
 
   // «Στείλτε μου αυτή την προσφορά» → μετάβαση στη φόρμα.
-  // Το focus γίνεται ΜΕΤΑ την κύλιση — αλλιώς το πληκτρολόγιο (κινητό)
+  // Το focus γίνεται ΜΕΤΑ την κύλιση, αλλιώς το πληκτρολόγιο (κινητό)
   // διακόπτει το scroll και το πρώτο πάτημα μοιάζει νεκρό.
   document.getElementById('b-send')?.addEventListener('click', () => {
     scrollToEl(document.getElementById('offer'));
@@ -300,7 +300,7 @@ const faqItems = [
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = new FormData(form);
-    if ((data.get('website') as string)?.length) return; // honeypot — bot
+    if ((data.get('website') as string)?.length) return; // honeypot, bot
     const name = (data.get('name') as string || '').trim();
     const contact = (data.get('contact') as string || '').trim();
     if (!name || !contact) {
@@ -320,7 +320,7 @@ const faqItems = [
           headers: { Accept: 'application/json' },
           body: data,
         });
-        // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία — έλεγχος και του JSON.
+        // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία, έλεγχος και του JSON.
         const json = await res.json().catch(() => null);
         if (!res.ok || !json || String(json.success) !== 'true') throw new Error('form failed');
         form.hidden = true;
@@ -347,10 +347,10 @@ const faqItems = [
       // Χωρίς endpoint ακόμα: άνοιγμα email με έτοιμη την προσφορά
       const url =
         'mailto:' + SITE.email +
-        '?subject=' + encodeURIComponent('Quote from the Pricing page — ' + name) +
+        '?subject=' + encodeURIComponent('Quote from the Pricing page: ' + name) +
         '&body=' + encodeURIComponent(body);
       window.location.href = url;
-      showMsg('We opened your email app with the quote ready — just hit send.', true);
+      showMsg('We opened your email app with the quote ready. Just hit send.', true);
     }
   });
 
@@ -401,7 +401,7 @@ const faqItems = [
   .offer-card h2 { font-size: 1.35rem; margin-bottom: 6px; }
   .offer-sub { color: var(--muted); margin-bottom: 20px; }
   #offer-form { display: grid; gap: 14px; }
-  /* Το author display:grid υπερισχύει του hidden — ρητό override */
+  /* Το author display:grid υπερισχύει του hidden, ρητό override */
   #offer-form[hidden] { display: none; }
   .f-field span { display: block; font-size: .88rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
   .f-field em { font-style: normal; font-weight: 400; color: var(--muted); }

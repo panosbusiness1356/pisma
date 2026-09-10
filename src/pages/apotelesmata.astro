@@ -7,7 +7,7 @@ import { SITE, ELEGXOS } from '../config';
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'Αποτελέσματα — Νούμερα, όχι λόγια',
+  name: 'Αποτελέσματα που μετριούνται',
   description:
     'Πώς μετράμε τα αποτελέσματα κάθε συνεργασίας: καταγραφή πριν ξεκινήσουμε, επαναμέτρηση στους 3 μήνες, και τα νούμερα που παρακολουθούμε.',
   url: `${SITE.url}/apotelesmata/`,
@@ -15,9 +15,9 @@ const schema = {
   isPartOf: { '@type': 'WebSite', name: SITE.name, url: SITE.url },
 };
 
-/** Οι μετρικές που παρακολουθούμε — trend: up = θέλουμε να ανέβει, down = να πέσει. */
+/** Οι μετρικές που παρακολουθούμε, trend: up = θέλουμε να ανέβει, down = να πέσει. */
 const metrics = [
-  { title: 'Πελάτες από Google & AI', desc: 'Σας βρίσκουν στην αναζήτηση και στις απαντήσεις του ChatGPT — και σας παίρνουν τηλέφωνο.', trend: 'up' },
+  { title: 'Πελάτες από Google & AI', desc: 'Σας βρίσκουν στην αναζήτηση και στις απαντήσεις του ChatGPT και σας παίρνουν τηλέφωνο.', trend: 'up' },
   { title: 'Θέση στην αναζήτηση', desc: 'Στη Google και στις απαντήσεις των εργαλείων AI.', trend: 'up' },
   { title: 'Κριτικές στη Google', desc: 'Συνεχώς νέες κριτικές, μήνα με τον μήνα.', trend: 'up' },
   { title: 'Ώρες στο γραφείο', desc: 'Ό,τι γίνεται μηχανικά, το κάνει ο αυτοματισμός.', trend: 'down' },
@@ -46,7 +46,7 @@ const steps = [
 
 <Base
   title="Αποτελέσματα: μετρημένα πριν και μετά | PISMA"
-  description="Πώς ξέρετε ότι δουλεύει; Μετράμε πού είστε σήμερα, ξαναμετράμε στους 3 μήνες, και σας δείχνουμε τι άλλαξε — τηλέφωνα, κριτικές, θέση στη Google, ώρες γραφείου."
+  description="Πώς ξέρετε ότι δουλεύει; Μετράμε πού είστε σήμερα, ξαναμετράμε στους 3 μήνες, και σας δείχνουμε τι άλλαξε: τηλέφωνα, κριτικές, θέση στη Google, ώρες γραφείου."
   schema={schema}
 >
   <PageHero
@@ -110,7 +110,7 @@ const steps = [
     </div>
   </section>
 
-  <!-- Τι κερδίζεις — η άνοδος -->
+  <!-- Τι κερδίζεις, η άνοδος -->
   <section class="section section--tight" aria-labelledby="rise-title">
     <div class="container">
       <div class="sec-head sec-head--center">
@@ -174,7 +174,7 @@ const steps = [
           <text x="512" y="242" class="rise-label" text-anchor="end">σε 3 μήνες</text>
         </svg>
         <p class="rise-final" id="rise-final">
-          <span>Κι εσείς με λιγότερες ώρες στο γραφείο ✓</span>
+          <span>Κι εσείς με λιγότερες ώρες στο γραφείο</span>
         </p>
       </div>
     </div>
@@ -182,7 +182,7 @@ const steps = [
 
   <CtaBand
     title="Ξεκινάμε με μέτρηση."
-    sub="Στον Έλεγχο μετράμε πού είστε σήμερα — και σας δείχνουμε ζωντανά τα συστήματα που τρέχουμε για εμάς."
+    sub="Στον Έλεγχο μετράμε πού είστε σήμερα και σας δείχνουμε ζωντανά τα συστήματα που τρέχουμε για εμάς."
     ctaText="Κλείστε τον Έλεγχο"
     ctaHref="/elegxos/"
     note={`${ELEGXOS.price} · ${ELEGXOS.minutes} λεπτά · χωρίς δέσμευση`}
@@ -190,7 +190,7 @@ const steps = [
 </Base>
 
 <style>
-  /* Βήματα «Πώς μετράμε» — αριθμός σε mono, πορτοκαλί */
+  /* Βήματα «Πώς μετράμε», αριθμός σε mono, πορτοκαλί */
   .mstep-num {
     font-family: var(--font-mono);
     color: var(--orange);
@@ -326,7 +326,7 @@ const steps = [
 
     function cycle() {
       if (!running) return;
-      // Καθάρισμα των timers του προηγούμενου κύκλου — αλλιώς ο πίνακας μεγαλώνει επ' άπειρον
+      // Καθάρισμα των timers του προηγούμενου κύκλου, αλλιώς ο πίνακας μεγαλώνει επ' άπειρον
       timers.forEach(clearTimeout);
       timers = [];
       reset();

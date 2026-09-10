@@ -31,23 +31,23 @@ const schema = {
     description: `From ${eurEn(basic.price)} one-off.`,
   },
   description:
-    "A fast, clean website with one clear next step on every page — visitors don't browse, they pick up the phone.",
+    'A fast, clean website with a clear next step on every page: call, message or quote request.',
 };
 
 const why = [
   {
-    t: 'Fast — nobody leaves',
-    d: 'Opens instantly, even on the slowest phone. Every second of delay costs a customer.',
+    t: 'Fast loading',
+    d: 'Opens instantly on phone and desktop. Visitors do not wait.',
     icon: 'speed',
   },
   {
-    t: 'One clear next step',
-    d: 'A call, a message or a quote. On every page, visitors know what to press.',
+    t: 'A clear next step',
+    d: 'Call, message or quote request, easy to reach from every page.',
     icon: 'target',
   },
   {
-    t: 'Measurable — you know what it earned',
-    d: 'How many came in, how many called, where they came from. Numbers every month.',
+    t: 'Measurable results',
+    d: 'Visits, calls and traffic sources, with clear figures every month.',
     icon: 'chart',
   },
 ];
@@ -55,42 +55,42 @@ const why = [
 const faqItems = [
   {
     q: 'How long until it is ready?',
-    a: 'In 2–4 weeks from receiving the material (texts, photos, logo). If something is missing, we create it together.',
+    a: 'In 2 to 4 weeks from receiving the material (texts, photos, logo). If something is missing, we help create it.',
   },
   {
     q: 'What do I need to bring?',
-    a: 'Logo, photos, a price list and a few words about your work. Structure, copy and set-up are on us.',
+    a: 'Logo, photos, a price list and a short description of the business. Structure, copy and set-up are handled by us.',
   },
   {
     q: 'Will the website be mine?',
-    a: 'Yes, entirely. Domain, content and files belong to your business.',
+    a: 'Yes. Domain, content and files belong to your business.',
   },
   {
     q: 'How much does it cost?',
-    a: `One-off: Basic ${eurEn(basic.price)}, Standard ${eurEn(standard.price)}, Pro ${eurEn(pro.price)}. Any monthly service is optional, with a public price.`,
+    a: `One-off: Basic ${eurEn(basic.price)}, Standard ${eurEn(standard.price)}, Pro ${eurEn(pro.price)}. Monthly services such as maintenance are optional and publicly priced on the pricing page.`,
   },
   {
     q: 'Will Google find me with this?',
-    a: 'Built technically right for Google from day one. Active ranking growth (SEO) is a separate service, on the Digital Visibility page.',
+    a: 'The website is built technically correct for Google from the start. Active ranking improvement (SEO) is a separate service, described on the Digital Visibility page.',
   },
 ];
 ---
 
 <Base
-  title="A website that sells — not a shop window, a working tool | PISMA"
-  description="A fast, clean website with one clear next step on every page. See it live: a visitor lands, presses Call now — and your phone rings."
+  title="Business website development | PISMA"
+  description="A fast, clean website with a clear next step on every page. Live sample, public prices, delivery in 2 to 4 weeks."
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
     kicker="A website that sells"
-    sub="Fast, clean, with one clear next step on every page."
+    sub="A fast, clean website with a clear next step on every page."
   >
-    Not a shop window — <span class="accent">a working tool</span>
+    A website that <span class="accent">brings customers</span>
   </PageHero>
 
-  <!-- 2. «Δείτε το ζωντανά» — σκηνή laptop σε loop όπως οι άλλες σκηνές:
-       το HTML έχει το τελικό state (site πλήρες, κλήση σε εξέλιξη) — χωρίς
+  <!-- 2. «Δείτε το ζωντανά», σκηνή laptop σε loop όπως οι άλλες σκηνές:
+       το HTML έχει το τελικό state (site πλήρες, κλήση σε εξέλιξη), χωρίς
        JS ή με reduced motion μένει στατικό· το JS το «ξαναπαίζει» όσο το
        section είναι ορατό: η σελίδα χτίζεται, ο κέρσορας πατά «Κάλεσε τώρα»
        και το τηλέφωνο της επιχείρησης χτυπάει. -->
@@ -99,18 +99,18 @@ const faqItems = [
       <div class="sp-grid">
         <div class="sp-copy">
           <div class="sec-head">
-            <p class="kicker">See it live</p>
-            <h2 id="sp-title">A visitor lands. Your phone rings.</h2>
+            <p class="kicker">Live sample</p>
+            <h2 id="sp-title">See how one of our websites works.</h2>
           </div>
           <p class="sp-sub">
-            One strong image, the prices, and the phone right where the eye
-            stops.
+            Clean structure, fast loading and a clear call to action on every
+            page. What you see on screen is a sample of our work.
           </p>
           <div class="sp-cta-row">
             <a class="btn btn--orange" href="/en/pricing/">See website pricing →</a>
             <a class="btn btn--ghost" href="/site-demo/lyra/index.html" target="_blank" rel="noopener">Open the sample ↗</a>
           </div>
-          <p class="sp-note">A live sample of our work. Scroll inside the screen.</p>
+          <p class="sp-note">You can browse inside the screen.</p>
         </div>
 
         <div class="sp-stage" id="sp-stage">
@@ -123,7 +123,7 @@ const faqItems = [
                   <span class="sp-url">lyra-wines.gr</span>
                 </div>
                 <div class="sp-view" id="sp-view">
-                  <iframe class="sp-iframe" id="sp-iframe" src="/site-demo/lyra/index.html" title="Live sample — Lyra Winery" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+                  <iframe class="sp-iframe" id="sp-iframe" src="/site-demo/lyra/index.html" title="Live sample: Lyra Winery" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
                 </div>
               </div>
             </div>
@@ -138,8 +138,8 @@ const faqItems = [
   <section class="section" aria-labelledby="why-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker kicker--blue">What you get</p>
-        <h2 id="why-title">Three things that make the difference.</h2>
+        <p class="kicker kicker--blue">What is included</p>
+        <h2 id="why-title">Three essentials of every website we build.</h2>
       </div>
       <div class="grid-3">
         {why.map((w) => (
@@ -174,19 +174,19 @@ const faqItems = [
     <div class="container container--narrow">
       <div class="card price-card reveal">
         <div class="price-main">
-          <p class="kicker">Prices — public, the same for everyone</p>
+          <p class="kicker">Prices</p>
           <h2 id="price-title">
             From <span class="price-num num">{eurEn(basic.price)}</span> one-off
           </h2>
           <p class="price-sub">
             <strong>Basic {eurEn(basic.price)}</strong> · <strong>Standard {eurEn(standard.price)}</strong> · <strong>Pro {eurEn(pro.price)}</strong>.
-            Any monthly service is optional, with a public price.
+            Public prices, the same for everyone. Monthly services are optional.
           </p>
         </div>
         <div class="price-cta">
           <a class="btn btn--orange" href="/en/pricing/">Build your package →</a>
           <a class="btn btn--ghost" href="/en/free-assessment/">Free {ELEGXOS.minutes}-minute PISMA Check</a>
-          <span class="btn-note">No online payment. We close it over the phone.</span>
+          <span class="btn-note">No online payment. Agreements are made by phone.</span>
         </div>
       </div>
     </div>
@@ -197,7 +197,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">FAQ</p>
-        <h2 id="faq-title">The questions everyone asks.</h2>
+        <h2 id="faq-title">Answers to the basics.</h2>
       </div>
       <Faq items={faqItems} withSchema />
     </div>
@@ -205,8 +205,8 @@ const faqItems = [
 
   <!-- 6. CTA -->
   <CtaBand
-    title="Put your website to work."
-    sub={`We start with the free ${ELEGXOS.minutes}-minute PISMA Check: what you have today and what is missing.`}
+    title="Let's get started."
+    sub={`Free ${ELEGXOS.minutes}-minute PISMA Check. We look at what you have today and what is needed.`}
     ctaText="Book the free PISMA Check"
     ctaHref="/en/free-assessment/"
     note="No online payment · no commitment"
@@ -215,11 +215,11 @@ const faqItems = [
 
 <script>
   // «Site που πουλάει» (laptop): μέσα στην οθόνη ένα premium site τριών
-  // οθονών, και η κίνηση είναι απλώς η περιήγηση — αργό scroll προς τα κάτω
+  // οθονών, και η κίνηση είναι απλώς η περιήγηση, αργό scroll προς τα κάτω
   // με παύσεις σε κάθε ενότητα, και επιστροφή στην κορυφή. Χωρίς JS ή με
   // reduced motion: στατικό hero.
   // Μέσα στην οθόνη παίζει το πραγματικό δείγμα site (Οινοποιείο «Λύρα») σε
-  // desktop απόδοση 1180px με σμίκρυνση — ο επισκέπτης σκρολάρει μέσα του
+  // desktop απόδοση 1180px με σμίκρυνση, ο επισκέπτης σκρολάρει μέσα του
   // όπως σε κανονικό υπολογιστή.
   const spView = document.getElementById('sp-view');
   const spFrame = document.getElementById('sp-iframe') as HTMLIFrameElement | null;
@@ -236,7 +236,7 @@ const faqItems = [
     else window.addEventListener('resize', fit);
 
     // Αυτόματη περιήγηση (αίτημα χρήστριας): μόλις φορτώσει το δείγμα και το
-    // laptop είναι ορατό, η οθόνη σκρολάρει μόνη της — μία «οθόνη» τη φορά,
+    // laptop είναι ορατό, η οθόνη σκρολάρει μόνη της, μία «οθόνη» τη φορά,
     // με παύση σε κάθε ενότητα, και στο τέλος γυρνά ομαλά στην κορυφή και
     // ξαναρχίζει. Παύει μόλις ο επισκέπτης πιάσει την οθόνη (ρόδα, αφή, κλικ,
     // πληκτρολόγιο)· όταν η σκηνή βγει τελείως από την οθόνη, γυρνά στην κορυφή
@@ -290,7 +290,7 @@ const faqItems = [
       const tour = async () => {
         if (running) return; running = true;
         // Κάθε φορά που η σκηνή μπαίνει (ξανά) στην οθόνη, η περιήγηση ξεκινά
-        // από την κορυφή του δείγματος — όχι από εκεί που είχε μείνει όταν ο
+        // από την κορυφή του δείγματος, όχι από εκεί που είχε μείνει όταν ο
         // επισκέπτης σκρόλαρε πιο κάτω στη σελίδα (χρήστρια 10/09/2026). Σε παύση
         // από άγγιγμα δεν πειράζουμε τη θέση που διάλεξε ο ίδιος.
         if (!stopped) scrollTo(0);
@@ -317,7 +317,7 @@ const faqItems = [
         for (const ev of ['wheel', 'touchstart', 'pointerdown', 'keydown']) w.addEventListener(ev, stop, { passive: true });
       };
       // Δεν περιμένουμε το «load» της iframe (καθυστερεί όσο κατεβαίνουν τα
-      // βίντεο του δείγματος) — ξεκινάμε μόλις είναι έτοιμο το DOM του.
+      // βίντεο του δείγματος), ξεκινάμε μόλις είναι έτοιμο το DOM του.
       const ready = () => {
         const w = frameWin(); const d = w?.document;
         return !!(w && d && w.location.href !== 'about:blank' && d.readyState !== 'loading' && d.body && maxY() > 0);
@@ -342,9 +342,9 @@ const faqItems = [
 </script>
 
 <style>
-  /* ---------- «Site που πουλάει» — laptop ---------- */
+  /* ---------- «Site που πουλάει», laptop ---------- */
   /* Δίστηλη διάταξη σε desktop (κείμενο αριστερά, laptop δεξιά), στοίβαγμα
-     σε στενές οθόνες — ίδιο μοτίβο με τις άλλες σκηνές. */
+     σε στενές οθόνες, ίδιο μοτίβο με τις άλλες σκηνές. */
   .sp-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
@@ -394,7 +394,7 @@ const faqItems = [
     height: 1px; background: rgba(0, 0, 0, .18);
   }
 
-  /* Η σελίδα μέσα στην οθόνη — φωτεινό editorial site κτήματος: ζεστή
+  /* Η σελίδα μέσα στην οθόνη, φωτεινό editorial site κτήματος: ζεστή
      άμμος, βαθύ λαδί και τερακότα (συγγενική με τα ιταλικά estates παλέτα,
      όχι αντιγραφή), μεγάλα serif κεφαλαία με αραίωση. */
   .sp-page {

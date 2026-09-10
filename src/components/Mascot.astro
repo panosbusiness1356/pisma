@@ -1,10 +1,10 @@
 ---
 /**
- * Ντοτ — η τελεία της PISMA που ζωντάνεψε.
+ * Ντοτ, η τελεία της PISMA που ζωντάνεψε.
  * Σύννεφο από πορτοκαλί κουκίδες με googly μάτια που ακολουθούν τον κέρσορα.
  * Ξεναγεί τον επισκέπτη: ταξιδεύει από section σε section (data-mascot-stop),
  * αλλάζει πλευρές και δείχνει συννεφάκι με το μήνυμα κάθε στάσης.
- * Οι κουκίδες παράγονται με seeded τυχαιότητα στο build — ίδιο σχήμα σε κάθε build.
+ * Οι κουκίδες παράγονται με seeded τυχαιότητα στο build, ίδιο σχήμα σε κάθε build.
  */
 const palette = ['#FF7A45', '#FF9159', '#E8481F', '#FFB27A', '#FFD9A8'];
 let seed = 7;
@@ -96,7 +96,7 @@ const cloudB = dots.slice(half);
   const spawnEl = resolveSpawn();
 
   /* Το ορατό κέντρο του σημείου γέννησης. Για χαρακτήρα όπως η τελεία του logo
-     το getBoundingClientRect() δίνει όλο το κουτί γραμμής (line box) — η ορατή
+     το getBoundingClientRect() δίνει όλο το κουτί γραμμής (line box), η ορατή
      κουκίδα όμως κάθεται στη γραμμή βάσης, κι έτσι το κέντρο του κουτιού πέφτει
      πιο πάνω/δίπλα ανάλογα με γραμματοσειρά και οθόνη. Μετράμε το πραγματικό
      «μελάνι» του γλυφικού με canvas TextMetrics για σημείο ακριβείας. */
@@ -126,7 +126,7 @@ const cloudB = dots.slice(half);
   };
 
   /* Ο μικρός Ντοτ συρρικνώνεται γύρω από το transform-origin του .m-motion
-     (50% 60%) — άρα εκεί πρέπει να κάτσει το σημείο γέννησης, όχι στο 50% 50%. */
+     (50% 60%), άρα εκεί πρέπει να κάτσει το σημείο γέννησης, όχι στο 50% 50%. */
   const ORIGIN_Y = 0.6;
   const spawnPos = () => {
     const p = inkCenter(spawnEl!);
@@ -150,7 +150,7 @@ const cloudB = dots.slice(half);
   let born = false;
 
   /* Χορογραφία εισόδου: πετάει ως το «μόνο του» και ζωγραφίζει την υπογράμμιση
-     σαν μαρκαδόρο, συγχρονισμένη με τη θέση του — μετά ξεκινά η ξενάγηση. */
+     σαν μαρκαδόρο, συγχρονισμένη με τη θέση του, μετά ξεκινά η ξενάγηση. */
   const hlSpan = document.querySelector<HTMLElement>('.hero-hl');
   const hlPath = document.querySelector<SVGPathElement>('.hl-stroke path');
   const hlLen = hlPath?.style.strokeDasharray ? parseFloat(hlPath.style.strokeDasharray) : 0;
@@ -228,7 +228,7 @@ const cloudB = dots.slice(half);
     return { x: sideX(side), y, idx, side };
   };
 
-  /* Συννεφάκι: αφαιρέθηκε — αποσπούσε την προσοχή και έπαιρνε χώρο.
+  /* Συννεφάκι: αφαιρέθηκε, αποσπούσε την προσοχή και έπαιρνε χώρο.
      Ο Ντοτ απλώς πηγαίνει στα σημεία που θέλουν προσοχή. Οι συναρτήσεις
      μένουν ως no-ops ώστε η χορογραφία να μείνει ανέπαφη. */
   const showBubble = (_msg: string | undefined, _side: string) => {};
@@ -252,7 +252,7 @@ const cloudB = dots.slice(half);
          αλλιώς σε οθόνες 120/144Hz ο Ντοτ ταξιδεύει 2-3x πιο γρήγορα απ' ό,τι στα 60Hz. */
       let lastT = performance.now();
       /* Οι στάσεις μετρώνται (getBoundingClientRect) μόνο όταν αλλάξει scroll/viewport
-         ή κάθε 250ms — όχι σε κάθε καρέ, που έκανε layout thrash σε κινητά. */
+         ή κάθε 250ms, όχι σε κάθε καρέ, που έκανε layout thrash σε κινητά. */
       let tCache: ReturnType<typeof targetPos> | null = null;
       let tKey = '';
       let tAt = 0;
@@ -267,7 +267,7 @@ const cloudB = dots.slice(half);
         tCache = targetPos(); tKey = key; tAt = nowT;
         return tCache;
       };
-      /* Ύπνος: όταν ο Ντοτ ηρεμήσει (θέση, μάτια, κλίση σταθερά — ούτε γέννηση ούτε είσοδος),
+      /* Ύπνος: όταν ο Ντοτ ηρεμήσει (θέση, μάτια, κλίση σταθερά, ούτε γέννηση ούτε είσοδος),
          ο βρόχος σταματά· ξυπνά με scroll/resize/pointer ή όταν αλλάξει το layout της σελίδας.
          Πριν έτρεχε 60 φορές το δευτερόλεπτο για πάντα, ακόμη και κρυμμένος. */
       let idleFrames = 0;
@@ -278,8 +278,8 @@ const cloudB = dots.slice(half);
       let prevEyeX = 0, prevEyeY = 0, prevRot = 0;
       const loop = (nowT: number) => {
         /* Software rendering (html.gpu-soft, το βάζει το smoke.ts): κάθε καρέ κίνησης κοστίζει ~100 ms
-           στο main thread — ο Ντοτ παρκάρει στη στάση του και σταματά ο βρόχος (ξυπνά ξανά μόνο από scroll).
-           Η υπογράμμιση εμφανίζεται ολόκληρη αμέσως — δεν θα τη ζωγραφίσει ο Ντοτ. */
+           στο main thread, ο Ντοτ παρκάρει στη στάση του και σταματά ο βρόχος (ξυπνά ξανά μόνο από scroll).
+           Η υπογράμμιση εμφανίζεται ολόκληρη αμέσως, δεν θα τη ζωγραφίσει ο Ντοτ. */
         if (document.documentElement.classList.contains('gpu-soft')) {
           phase = 'tour';
           finishStroke();
@@ -331,7 +331,7 @@ const cloudB = dots.slice(half);
         const now = performance.now();
         const birthing = dotPos && now < birth.start + birth.dur;
         if (birthing) {
-          /* Ξαναμετράμε (κάθε 100 ms — όχι κάθε καρέ): αν φορτώσει αργά η γραμματοσειρά ή κουνηθεί
+          /* Ξαναμετράμε (κάθε 100 ms, όχι κάθε καρέ): αν φορτώσει αργά η γραμματοσειρά ή κουνηθεί
              το layout, ο Ντοτ μένει καρφωμένος πάνω στην κουκίδα. */
           /* …αλλά ΟΧΙ όσο παίζει το spring: το getBoundingClientRect/measureText θα ήταν forced layout πάνω στη γέννηση. */
           if (!pulsed && nowT - spawnAt > 100) { dotPos = spawnPos(); spawnAt = nowT; }
@@ -346,19 +346,19 @@ const cloudB = dots.slice(half);
                 const k = sw < 40 ? 2.2 : sw < 140 ? 1.35 : 1.12;
                 if (getComputedStyle(spawnEl!).display === 'inline') spawnEl!.style.display = 'inline-block';
                 /* Ο παλμός μόνο σε μικρά στοιχεία: στον h1 (εσωτερικές σελίδες) μια δεύτερη transform-animation πάνω
-                   στην είσοδό του τον έβγαζε από τον compositor («incompatible animations») — και σε 12 % δεν φαινόταν. */
+                   στην είσοδό του τον έβγαζε από τον compositor («incompatible animations»), και σε 12 % δεν φαινόταν. */
                 if (sw < 140) spawnEl!.animate(
                   [{ transform: 'scale(1)' }, { transform: `scale(${k})` }, { transform: 'scale(1)' }],
                   { duration: 550, easing: 'ease-out' }
                 );
               } catch { /* χωρίς παλμό */ }
-              /* Το φούσκωμα (spring 0,08 → 1) ως Web Animation στον compositor — ΟΧΙ καρέ-καρέ από JS: αν το main
+              /* Το φούσκωμα (spring 0,08 → 1) ως Web Animation στον compositor, ΟΧΙ καρέ-καρέ από JS: αν το main
                  thread απασχοληθεί εκείνη τη στιγμή (γραμματοσειρές, μεταγλώττιση καπνού, ήχος), το JS-driven
                  φούσκωμα έδειχνε «2 fps» στο κινητό ενώ όλα τα άλλα εφέ έτρεχαν κανονικά. Ίδια καμπύλη (easeOutBack).
                  Το inline transform παίρνει από τώρα την τελική τιμή· όσο παίζει το animation την υπερκαλύπτει. */
               /* Όσο παίζει το spring, ΤΙΠΟΤΑ δεν ξαναζωγραφίζει το SVG: παύση στις εσωτερικές κινήσεις του (σύννεφο, βλεφάρισμα)
                  και καμία γραφή στα μάτια/θέση (πιο κάτω). Έτσι ο compositor κρατά ΜΙΑ εικόνα (raster) του Ντοτ στην τελική
-                 κλίμακα και μόνο τη μεγεθύνει — αλλιώς κάθε αλλαγή ξαναζωγράφιζε τους 135 κύκλους σε νέα κλίμακα, καρέ-καρέ. */
+                 κλίμακα και μόνο τη μεγεθύνει, αλλιώς κάθε αλλαγή ξαναζωγράφιζε τους 135 κύκλους σε νέα κλίμακα, καρέ-καρέ. */
               el.classList.add('is-birthing');
               scale = 1;
               lastMot = 'rotate(0.00deg) scale(1.000)';
@@ -386,7 +386,7 @@ const cloudB = dots.slice(half);
         const lean = Math.max(-10, Math.min(10, dx * 0.028 + (vel / f) * 0.25));
         rot += (lean - rot) * smooth(0.06);
 
-        /* Τα μάτια κοιτούν τον κέρσορα — ή προς τα εκεί που ταξιδεύει. */
+        /* Τα μάτια κοιτούν τον κέρσορα, ή προς τα εκεί που ταξιδεύει. */
         const cx = px + W() / 2;
         const cy = py + H() / 2;
         let tx = 0;
@@ -405,12 +405,12 @@ const cloudB = dots.slice(half);
         eyeX += ((tx / len) * max * k - eyeX) * ek;
         eyeY += ((ty / len) * max * k - eyeY) * ek;
         /* Γράψιμο στο DOM ΜΟΝΟ όταν αλλάζει η τιμή: κάθε αλλαγή στα μάτια/κλίση ξαναζωγραφίζει
-           το SVG των 135 κύκλων — όταν ο Ντοτ κάθεται ακίνητος, το καρέ δεν κοστίζει τίποτα. */
+           το SVG των 135 κύκλων, όταν ο Ντοτ κάθεται ακίνητος, το καρέ δεν κοστίζει τίποτα. */
         const q = (v: number, step: number) => (Math.round(v / step) * step).toFixed(2); // κβάντιση: αόρατη, 10× λιγότερα repaints
       const qEye = touchScreen ? 1 : .25, qRot = touchScreen ? .5 : .1; // οθόνες αφής: χωρίς ποντίκι, πιο χοντρά βήματα = λιγότερα SVG layouts
         const posStr = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px)`;
         if (posStr !== lastPos) { lastPos = posStr; el.style.transform = posStr; }
-        /* Τα μάτια και η κλίση αλλάζουν το ίδιο το SVG (repaint των 135 κύκλων) — μόνο
+        /* Τα μάτια και η κλίση αλλάζουν το ίδιο το SVG (repaint των 135 κύκλων), μόνο
            όταν η αλλαγή περνά το κατώφλι (0,25 px / 0,1°). */
         const eyeStr = `translate(${q(eyeX, qEye)}px, ${q(eyeY, qEye)}px)`;
         if (eyeStr !== lastEye && !(birthing && pulsed)) { // όχι όσο παίζει το spring (βλ. γέννηση)
@@ -455,11 +455,11 @@ const cloudB = dots.slice(half);
     }
   };
 
-  /* Το intro της αρχικής (Intro.astro) σκεπάζει όλο το site — και το logo — με μαύρο
+  /* Το intro της αρχικής (Intro.astro) σκεπάζει όλο το site, και το logo, με μαύρο
      πέπλο για ~2,7 s (λιγότερο με skip). Αν γεννιόταν στα 600 ms όπως πριν, ο Ντοτ θα
      ξεπεταγόταν κάτω από το πέπλο και κανείς δεν θα τον έβλεπε. Γι' αυτό περιμένει το
      τέλος του intro (το <html> χάνει το data-intro-run: κανονικό τέλος, skip ή δίχτυ 7 s)
-     και γεννιέται 600 ms μετά — ακριβώς όπως γεννιόταν 600 ms μετά το φόρτωμα. Από εκεί
+     και γεννιέται 600 ms μετά, ακριβώς όπως γεννιόταν 600 ms μετά το φόρτωμα. Από εκεί
      και πέρα η χορογραφία είναι η ίδια όπως πάντα: υπογράμμιση, στάση δίπλα στον τίτλο, ξενάγηση.
      Χωρίς intro (επόμενες σελίδες, reduced motion, 2η επίσκεψη) ξεκινά αμέσως. */
   const introRunning = () => document.documentElement.hasAttribute('data-intro-run');
@@ -503,11 +503,11 @@ const cloudB = dots.slice(half);
     width: 110px; opacity: 0; cursor: pointer;
     will-change: transform;
     transition: opacity .7s ease;
-    /* Μόνο οι ζωγραφισμένες κουκίδες πιάνουν κλικ — οι άδειες γωνίες του
+    /* Μόνο οι ζωγραφισμένες κουκίδες πιάνουν κλικ, οι άδειες γωνίες του
        κουτιού αφήνουν τα taps να περνούν στο περιεχόμενο από κάτω. */
     pointer-events: none;
   }
-  /* Η απαλή πορτοκαλί λάμψη κάτω από τον Ντοτ: στατικό gradient, ΟΧΙ filter: drop-shadow —
+  /* Η απαλή πορτοκαλί λάμψη κάτω από τον Ντοτ: στατικό gradient, ΟΧΙ filter: drop-shadow, 
      το filter ξανα-ραστεροποιούσε και τους 135 κύκλους σε κάθε καρέ (μάτια, κλίση, περιστροφή)
      και ήταν ο κύριος λόγος που «κολλούσε» το κινητό. Ίδια εικόνα, μηδενικό κόστος. */
   #pisma-mascot::before {
@@ -520,7 +520,7 @@ const cloudB = dots.slice(half);
   #pisma-mascot svg { overflow: visible; width: 100%; height: auto; }
 
   .m-motion { transform-origin: 50% 60%; will-change: transform; }
-  /* Γέννηση: όσο παίζει το spring, το SVG μένει παγωμένο — μία εικόνα, καμία ξαναζωγραφιά (βλ. JS) */
+  /* Γέννηση: όσο παίζει το spring, το SVG μένει παγωμένο, μία εικόνα, καμία ξαναζωγραφιά (βλ. JS) */
   #pisma-mascot.is-birthing .d-spin, #pisma-mascot.is-birthing .d-spin2, #pisma-mascot.is-birthing .d-eyes { animation-play-state: paused; } /* δικό του layer: η κλίση/κλίμακα δεν ξαναζωγραφίζει το SVG */
   .m-bob { animation: m-bob 4.6s ease-in-out infinite alternate; }
   @keyframes m-bob {
@@ -528,7 +528,7 @@ const cloudB = dots.slice(half);
     to { transform: translateY(5px) scale(1.03); }
   }
 
-  /* Το σύννεφο κουκίδων γυρίζει αργά — δύο στρώσεις, αντίθετες φορές. */
+  /* Το σύννεφο κουκίδων γυρίζει αργά, δύο στρώσεις, αντίθετες φορές. */
   .d-spin, .d-spin2 {
     transform-box: fill-box;
     transform-origin: center;
@@ -557,14 +557,14 @@ const cloudB = dots.slice(half);
   }
 
   /* Οθόνες αφής: η αργή περιστροφή του σύννεφου (75 s) δεν φαίνεται σε 80 px, αλλά ξαναζωγραφίζει
-     το SVG 60 φορές το δευτερόλεπτο — μένουν το λίκνισμα και το βλεφάρισμα. */
+     το SVG 60 φορές το δευτερόλεπτο, μένουν το λίκνισμα και το βλεφάρισμα. */
   @media (pointer: coarse) {
     .d-spin, .d-spin2 { animation: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     .m-bob, .d-spin, .d-spin2, .d-eyes { animation: none; }
   }
-  /* Software rendering (χωρίς GPU): καμία κίνηση — δες smoke.ts (html.gpu-soft) */
+  /* Software rendering (χωρίς GPU): καμία κίνηση, δες smoke.ts (html.gpu-soft) */
   :global(html.gpu-soft) .m-bob, :global(html.gpu-soft) .d-spin, :global(html.gpu-soft) .d-spin2, :global(html.gpu-soft) .d-eyes { animation: none; }
   @media print { #pisma-mascot { display: none; } }
 </style>

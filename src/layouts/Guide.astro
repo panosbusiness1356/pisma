@@ -1,6 +1,6 @@
 ---
 /**
- * Layout οδηγού — answer-first άρθρο για SEO/AEO/GEO:
+ * Layout οδηγού, answer-first άρθρο για SEO/AEO/GEO:
  * ερώτηση-τίτλος, «σύντομη απάντηση» πρώτη, πρόζα, FAQ με schema, CTA.
  * Εκπέμπει Article JSON-LD· το FAQPage βγαίνει από το <Faq withSchema>.
  */
@@ -19,12 +19,12 @@ interface Props {
   /** Η ερώτηση-τίτλος της σελίδας (h1) */
   question: string;
   sub?: string;
-  /** Η σύντομη απάντηση (2–3 προτάσεις) — εμφανίζεται πρώτη, πριν την πρόζα */
+  /** Η σύντομη απάντηση (2–3 προτάσεις), εμφανίζεται πρώτη, πριν την πρόζα */
   answer: string;
   /** ISO ημερομηνία τελευταίας ενημέρωσης, π.χ. '2026-07-28' */
   updated: string;
   faq?: { q: string; a: string }[];
-  /** 'en' για τους αγγλικούς οδηγούς — αλλάζει chrome, URLs και schema. */
+  /** 'en' για τους αγγλικούς οδηγούς, αλλάζει chrome, URLs και schema. */
   lang?: 'el' | 'en';
 }
 const { title, description, slug, question, sub, answer, updated, faq = [], lang = 'el' } = Astro.props;
@@ -42,7 +42,7 @@ const T = {
     guides: 'Οδηγοί',
     locale: 'el-GR',
     ctaTitle: 'Θέλετε να τα δούμε μαζί, στη δική σας επιχείρηση;',
-    ctaSub: 'Ο Έλεγχος PISMA: μετράμε πού στέκεστε σε Google, AI και καθημερινή λειτουργία — και φεύγετε με γραπτή εικόνα.',
+    ctaSub: 'Ο Έλεγχος PISMA: μετράμε πού στέκεστε σε Google, AI και καθημερινή λειτουργία, και φεύγετε με γραπτή εικόνα.',
     ctaText: 'Κλείστε τον δωρεάν Έλεγχο',
     ctaHref: '/elegxos/',
     ctaNote: `${ELEGXOS.minutes} λεπτά · χωρίς καμία δέσμευση`,
@@ -59,7 +59,7 @@ const T = {
     guides: 'Guides',
     locale: 'en-US',
     ctaTitle: 'Want to walk through this together, for your own business?',
-    ctaSub: 'The PISMA Check: we measure where you stand on Google, AI and day-to-day operations — and you leave with a written picture.',
+    ctaSub: 'The PISMA Check: we measure where you stand on Google, AI and day-to-day operations, and you leave with a written picture.',
     ctaText: 'Book the free Check',
     ctaHref: '/en/free-assessment/',
     ctaNote: `${ELEGXOS.minutes} minutes · no commitment`,
@@ -101,7 +101,7 @@ const schema = [
 <Base title={title} description={description} schema={schema}>
   <PageHero kicker={T.kicker} sub={sub}>{question}</PageHero>
 
-  <!-- Η σύντομη απάντηση — πάντα πρώτη, πριν από οτιδήποτε άλλο -->
+  <!-- Η σύντομη απάντηση, πάντα πρώτη, πριν από οτιδήποτε άλλο -->
   <section class="section--tight" aria-label={T.shortAnswer}>
     <div class="container container--narrow">
       <div class="card answer reveal">
@@ -151,7 +151,7 @@ const schema = [
   }
   .answer-text { font-size: 1.1rem; color: var(--ink); max-width: 62ch; }
 
-  /* Πρόζα οδηγού — τα στοιχεία έρχονται από slot, άρα :global κάτω από wrapper */
+  /* Πρόζα οδηγού, τα στοιχεία έρχονται από slot, άρα :global κάτω από wrapper */
   .guide-prose { max-width: 760px; }
   .guide-prose :global(h2) {
     font-size: clamp(1.35rem, 2.6vw, 1.8rem);

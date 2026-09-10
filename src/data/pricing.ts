@@ -1,9 +1,9 @@
 /**
- * Τιμοκατάλογος PISMA — ΟΛΕΣ οι τιμές του site ζουν εδώ.
+ * Τιμοκατάλογος PISMA, ΟΛΕΣ οι τιμές του site ζουν εδώ.
  *
  * - Νέο automation/υπηρεσία = μία νέα γραμμή στο αντίστοιχο options[].
  * - Οι τιμές social είναι το ΧΑΜΗΛΟ άκρο των ζωνών (απόφαση 15/07/2026).
- * - Έτοιμα πακέτα ΔΕΝ υπάρχουν (απόφαση 27/07/2026) — ο πελάτης φτιάχνει το
+ * - Έτοιμα πακέτα ΔΕΝ υπάρχουν (απόφαση 27/07/2026), ο πελάτης φτιάχνει το
  *   δικό του στον builder του /times/ και πληρώνει το άθροισμα των υπηρεσιών.
  * - FORM_ENDPOINT: βάλε εδώ το endpoint της υπηρεσίας φορμών (π.χ. Formspree
  *   «https://formspree.io/f/XXXXXXX») για αποθήκευση lead. Όσο είναι κενό,
@@ -33,15 +33,15 @@ export const CATEGORIES: PricingCategory[] = [
   {
     id: 'website',
     title: 'Ιστοσελίδα',
-    desc: 'Κατασκευή ή ανακατασκευή — μία επιλογή.',
+    desc: 'Κατασκευή ή ανακατασκευή, μία επιλογή.',
     mode: 'radio',
     options: [
       { id: 'web-basic', label: 'Basic', detail: 'Καθαρή παρουσία: αρχική, υπηρεσίες, επικοινωνία', price: 220, type: 'once' },
       { id: 'web-standard', label: 'Standard', detail: 'Πλήρες site με περισσότερες σελίδες και φόρμες', price: 320, type: 'once' },
       { id: 'web-pro', label: 'Pro', detail: 'Μεγαλύτερο site με ειδικές λειτουργίες', price: 450, type: 'once' },
-      { id: 'web-bookings', label: 'Site με online κρατήσεις', detail: 'Οι πελάτες σας κλείνουν ραντεβού ή τραπέζι online και παίρνουν αυτόματη υπενθύμιση — τέλος τα «μου έστησε»', price: 450, type: 'once' },
+      { id: 'web-bookings', label: 'Site με online κρατήσεις', detail: 'Οι πελάτες σας κλείνουν ραντεβού ή τραπέζι online και παίρνουν αυτόματη υπενθύμιση, για λιγότερα χαμένα ραντεβού', price: 450, type: 'once' },
       { id: 'web-shopify', label: 'E-shop σε Shopify', detail: 'Στήσιμο καταστήματος, έως 50 προϊόντα, πληρωμές, αποστολές, εκπαίδευση', price: 690, type: 'once' },
-      { id: 'web-shopify-large', label: 'E-shop σε Shopify — μεγάλο', detail: 'Έως 300 προϊόντα, μεταφορά από άλλη πλατφόρμα, σύνδεση με Google, Instagram και Facebook', price: 990, type: 'once' },
+      { id: 'web-shopify-large', label: 'E-shop σε Shopify (μεγάλο)', detail: 'Έως 300 προϊόντα, μεταφορά από άλλη πλατφόρμα, σύνδεση με Google, Instagram και Facebook', price: 990, type: 'once' },
     ],
   },
   {
@@ -56,7 +56,7 @@ export const CATEGORIES: PricingCategory[] = [
   {
     id: 'ai',
     title: 'Ορατότητα σε Google & AI',
-    desc: 'SEO · GEO · AEO — να εμφανίζεστε και στις απαντήσεις εργαλείων AI.',
+    desc: 'SEO · GEO · AEO: να εμφανίζεστε και στις απαντήσεις εργαλείων AI.',
     mode: 'checkbox',
     options: [
       { id: 'ai-setup', label: 'Αρχικό setup', price: 420, type: 'once' },
@@ -66,31 +66,31 @@ export const CATEGORIES: PricingCategory[] = [
   {
     id: 'social',
     title: 'Social media',
-    desc: 'Μία επιλογή — ανάλογα με το ποιος βγάζει το υλικό.',
+    desc: 'Μία επιλογή, ανάλογα με το ποιος βγάζει το υλικό.',
     mode: 'radio',
     options: [
       { id: 'soc-setup', label: 'Ξεκαθάρισμα και στήσιμο', detail: 'Εφάπαξ, χωρίς μηνιαία συνδρομή', price: 150, type: 'once' },
-      { id: 'soc-1p-pisma', label: '1 πλατφόρμα — υλικό από PISMA', detail: '8–12 posts τον μήνα', price: 200, type: 'monthly' },
-      { id: 'soc-23p-pisma', label: '2–3 πλατφόρμες — υλικό από PISMA', detail: '15–20 posts + stories τον μήνα', price: 400, type: 'monthly' },
-      { id: 'soc-1p-own', label: '1 πλατφόρμα — δικό σας υλικό', detail: '8–12 posts τον μήνα', price: 140, type: 'monthly' },
-      { id: 'soc-23p-own', label: '2–3 πλατφόρμες — δικό σας υλικό', detail: '15–20 posts τον μήνα', price: 280, type: 'monthly' },
+      { id: 'soc-1p-pisma', label: '1 πλατφόρμα, υλικό από PISMA', detail: '8–12 posts τον μήνα', price: 200, type: 'monthly' },
+      { id: 'soc-23p-pisma', label: '2–3 πλατφόρμες, υλικό από PISMA', detail: '15–20 posts + stories τον μήνα', price: 400, type: 'monthly' },
+      { id: 'soc-1p-own', label: '1 πλατφόρμα, δικό σας υλικό', detail: '8–12 posts τον μήνα', price: 140, type: 'monthly' },
+      { id: 'soc-23p-own', label: '2–3 πλατφόρμες, δικό σας υλικό', detail: '15–20 posts τον μήνα', price: 280, type: 'monthly' },
     ],
   },
   {
     id: 'media',
     title: 'Φωτογράφηση & Βίντεο',
-    desc: 'Στον χώρο σας — διαλέξτε ό,τι χρειάζεστε.',
+    desc: 'Στον χώρο σας. Διαλέξτε ό,τι χρειάζεστε.',
     mode: 'checkbox',
     options: [
-      { id: 'media-space', label: 'Φωτογράφηση χώρου & ομάδας', detail: 'Στον χώρο σας — επεξεργασμένες φωτογραφίες σε διαστάσεις για site, Google και social', price: 180, type: 'once' },
-      { id: 'media-products', label: 'Φωτογράφηση προϊόντων', detail: 'Για e-shop ή κατάλογο, επεξεργασμένες — σε ουδέτερο φόντο ή μέσα στον χώρο σας', price: 240, type: 'once' },
+      { id: 'media-space', label: 'Φωτογράφηση χώρου & ομάδας', detail: 'Στον χώρο σας, επεξεργασμένες φωτογραφίες σε διαστάσεις για site, Google και social', price: 180, type: 'once' },
+      { id: 'media-products', label: 'Φωτογράφηση προϊόντων', detail: 'Για e-shop ή κατάλογο, επεξεργασμένες, σε ουδέτερο φόντο ή μέσα στον χώρο σας', price: 240, type: 'once' },
       { id: 'media-video', label: 'Βίντεο για social', detail: 'Μικρά βίντεο με μοντάζ, σε διαστάσεις reels και stories', price: 150, type: 'once' },
     ],
   },
   {
     id: 'auto',
     title: 'Αυτοματισμοί',
-    desc: 'Διαλέξτε όσους θέλετε — η λίστα μεγαλώνει συνεχώς.',
+    desc: 'Διαλέξτε όσους θέλετε. Η λίστα μεγαλώνει συνεχώς.',
     mode: 'checkbox',
     options: [
       { id: 'auto-match', label: 'Αυτόματο ταίριασμα πληρωμών', price: 450, type: 'once' },
@@ -98,9 +98,9 @@ export const CATEGORIES: PricingCategory[] = [
       { id: 'auto-day', label: 'Η Ημέρα σας σε Ένα Μήνυμα', price: 10, type: 'monthly' },
       { id: 'auto-debt', label: 'Αυτόματος Κυνηγός Οφειλών', price: 25, type: 'monthly' },
       { id: 'auto-spy', label: 'Ο Κατάσκοπός σας', price: 20, type: 'monthly' },
-      { id: 'auto-reviews', label: 'Κριτικές Google', detail: 'Κάνει τις κριτικές Google να μαζεύονται μόνες τους — το δείχνουμε μόνο ζωντανά', price: 39, type: 'monthly' },
-      { id: 'auto-loyalty', label: 'Κάρτα Πιστότητας', detail: 'QR στο ταμείο: ο πελάτης μαζεύει σφραγίδες σε κάθε επίσκεψη και κερδίζει δώρο — και ξανάρχεται', price: 19, type: 'monthly' },
-      { id: 'auto-menu', label: 'Ψηφιακό Μενού', detail: 'QR στο τραπέζι: ο πελάτης σκανάρει και βλέπει το μενού στο κινητό του — αλλάζετε τιμές και πιάτα όποτε θέλετε, χωρίς επανεκτυπώσεις', price: 15, type: 'monthly' },
+      { id: 'auto-reviews', label: 'Κριτικές Google', detail: 'Κάνει τις κριτικές Google να μαζεύονται μόνες τους. Το δείχνουμε μόνο ζωντανά', price: 39, type: 'monthly' },
+      { id: 'auto-loyalty', label: 'Κάρτα Πιστότητας', detail: 'QR στο ταμείο: ο πελάτης μαζεύει σφραγίδες σε κάθε επίσκεψη, κερδίζει δώρο και ξανάρχεται', price: 19, type: 'monthly' },
+      { id: 'auto-menu', label: 'Ψηφιακό Μενού', detail: 'QR στο τραπέζι: ο πελάτης σκανάρει και βλέπει το μενού στο κινητό του. Αλλάζετε τιμές και πιάτα όποτε θέλετε, χωρίς επανεκτυπώσεις', price: 15, type: 'monthly' },
     ],
   },
   {
@@ -110,17 +110,17 @@ export const CATEGORIES: PricingCategory[] = [
     mode: 'checkbox',
     options: [
       { id: 'care-web', label: 'Συντήρηση ιστοσελίδας', detail: 'Ενημερώσεις, ασφάλεια, μικροαλλαγές', price: 29, type: 'monthly' },
-      { id: 'care-shopify', label: 'Διαχείριση Shopify', detail: 'Νέα προϊόντα, αποθέματα, εκπτώσεις, apps, ενημερώσεις — και μηνιαία αναφορά πωλήσεων', price: 49, type: 'monthly' },
+      { id: 'care-shopify', label: 'Διαχείριση Shopify', detail: 'Νέα προϊόντα, αποθέματα, εκπτώσεις, apps, ενημερώσεις και μηνιαία αναφορά πωλήσεων', price: 49, type: 'monthly' },
     ],
   },
 ];
 
-/** Endpoint υπηρεσίας φορμών για αποθήκευση lead — κενό = fallback σε email. */
+/** Endpoint υπηρεσίας φορμών για αποθήκευση lead, κενό = fallback σε email. */
 // FormSubmit (χωρίς λογαριασμό): οι υποβολές πάνε στο info@pisma.gr.
-// Το /ajax/ endpoint επιστρέφει JSON — ταιριάζει με το fetch της φόρμας.
+// Το /ajax/ endpoint επιστρέφει JSON, ταιριάζει με το fetch της φόρμας.
 export const FORM_ENDPOINT = 'https://formsubmit.co/ajax/info@pisma.gr';
 
-/** Βοηθητικά — κοινά για build και client. */
+/** Βοηθητικά, κοινά για build και client. */
 export const ALL_OPTIONS: PricingOption[] = CATEGORIES.flatMap((c) => c.options);
 
 export const optionById = (id: string): PricingOption | undefined =>

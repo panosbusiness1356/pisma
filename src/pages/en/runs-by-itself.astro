@@ -12,7 +12,7 @@ const schema = {
   name: 'Office automations',
   serviceType: 'Office automations for businesses',
   description:
-    'Your office routine runs on its own: payment matching, collections, an organized Excel, a daily report.',
+    'Your office routine runs on its own: payment matching, collections, an organized Excel and custom automations.',
   provider: {
     '@type': 'LocalBusiness',
     name: SITE.name,
@@ -23,22 +23,20 @@ const schema = {
   areaServed: SITE.regionEn,
 };
 
-// Same bento order as the Greek page: [match(2)+excel+chase] [day+star(2)+loyal] [menu+eye(strip 3)]
+// Same bento order as the Greek page: [custom(strip 4)] [match(2)+excel+chase] [menu+eye(strip 3)]
 const services = [
+  { t: 'Custom automations', d: 'Anything you do with the same steps every time can run on its own, from a simple flow to a full application, on top of the software you already use.', icon: 'custom', size: 'strip4', href: '/en/contact/', cta: 'Tell us your routine →' },
   { t: 'Automatic payment matching', d: 'Every payment finds its own invoice.', icon: 'match', size: 'big' },
   { t: 'An organized Excel', d: 'Your transactions in one Excel that updates itself.', icon: 'excel', logos: ['excel.svg'] },
   { t: 'Automatic Debt Chaser', d: 'Polite reminders, automatically, at the right moment.', icon: 'chase', logos: ['whatsapp-icon.svg', 'viber.svg'] },
-  { t: 'Your Day in One Message', d: "Every afternoon, one message: what came in, what went out, what's pending.", icon: 'day', logos: ['whatsapp-icon.svg'] },
-  { t: 'The Reviews Tool', d: 'Google reviews pile up on their own. We only show it live.', icon: 'star', href: '/en/reviews/' },
-  { t: 'Loyalty Card', d: 'A QR code at the register: stamps on every visit, a reward at the end.', icon: 'loyal' },
   { t: 'Digital Menu', d: 'A QR code on the table, the menu on their phone. Change prices with no reprints.', icon: 'menu', href: '/en/digital-menu/' },
-  { t: 'Your Spy', d: 'What your competitors are up to — prices, offers — in a regular report.', icon: 'eye', size: 'strip3' },
+  { t: 'Your Spy', d: 'What your competitors are up to (prices, offers) in a regular report.', icon: 'eye', size: 'strip3' },
 ];
 
 const faqItems = [
   {
     q: 'Will I have to change software?',
-    a: 'No. We build on top of what you already use — your invoicing software, your email, your phone.',
+    a: 'No. We build on top of what you already use: your invoicing software, your email, your phone.',
   },
   {
     q: 'What if it breaks?',
@@ -50,14 +48,14 @@ const faqItems = [
   },
   {
     q: 'Will my employee lose their job?',
-    a: 'No — they will stop typing. The hours freed up go to customers, not data entry.',
+    a: 'No. They will stop typing, and the hours freed up go to customers.',
   },
 ];
 ---
 
 <Base
-  title="Office automations — The office runs by itself | PISMA"
-  description="Payment matching, collections, an organized Excel and a daily report all run on their own — you only see the result."
+  title="Office automations: the office runs by itself | PISMA"
+  description="Payment matching, collections and an organized Excel run on their own. Whatever else your routine needs is built to order."
   schema={schema}
 >
   <!-- 1. Hero -->
@@ -73,21 +71,21 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">What runs by itself</p>
-        <h2 id="services-title">Eight routine chores, taken off your plate.</h2>
+        <h2 id="services-title">Routine chores, taken off your plate.</h2>
       </div>
       <ServiceCards services={services} cta="See what it does →" />
     </div>
   </section>
 
-  <!-- 2β. «Το ταίριασμα, ζωντανά» — σκηνή σε loop όπως «Η άνοδος στη Google»
-       στην αρχική: το HTML έχει το τελικό state (όλα ταιριασμένα) — χωρίς JS
+  <!-- 2β. «Το ταίριασμα, ζωντανά», σκηνή σε loop όπως «Η άνοδος στη Google»
+       στην αρχική: το HTML έχει το τελικό state (όλα ταιριασμένα), χωρίς JS
        ή με reduced motion μένει στατικό· το JS το «ξαναπαίζει» όσο φαίνεται. -->
   <section class="section" aria-labelledby="match-title">
     <div class="container">
       <div class="sec-head sec-head--center">
         <p class="kicker kicker--ok">See it live</p>
         <h2 id="match-title">Every payment finds its invoice</h2>
-        <p>Three payments land in the bank — and match themselves, one by one.</p>
+        <p>Three payments land in the bank and match themselves, one by one.</p>
       </div>
 
       <div class="mt-stage" id="mt-stage" aria-hidden="true">
@@ -123,14 +121,14 @@ const faqItems = [
               </div>
             </div>
           </div>
-          <p class="mt-win" id="mt-win">All matched — without a single click ✓</p>
+          <p class="mt-win" id="mt-win">All matched, without a single click</p>
         </div>
       </div>
       <p class="mt-note">Illustrative.</p>
     </div>
   </section>
 
-  <!-- 3. Η μέρα σε αριθμούς — οι τελικοί αριθμοί υπάρχουν στο HTML (fallback
+  <!-- 3. Η μέρα σε αριθμούς, οι τελικοί αριθμοί υπάρχουν στο HTML (fallback
        χωρίς JS)· το JS τους μηδενίζει και τους «μετράει» μία φορά όταν το
        section φανεί. Ίδια νούμερα με το παλιό τερματικό (14/1.230€/3). -->
   <section class="section section--tight" aria-labelledby="live-title">
@@ -173,7 +171,7 @@ const faqItems = [
         <div class="deiktis-text">
           <p class="kicker">Automation Score</p>
           <h2 id="deiktis-title">One number, from <span class="num">0</span> to <span class="num">100</span>.</h2>
-          <p>It measures how many hours a month go to manual work, across three areas. The fewer the hours, the higher the score — at 100, the routine runs without you.</p>
+          <p>It measures how many hours a month go to manual work, across three areas. The fewer the hours, the higher the score. At 100, the routine runs without you.</p>
           <a class="card-arrow" href="/en/business-check/">Measure it on The Dashboard →</a>
         </div>
         <ul class="deiktis-areas" aria-label="Areas the Score measures">
@@ -209,7 +207,7 @@ const faqItems = [
 <script>
   // «Η μέρα σε αριθμούς»: οι τελικοί αριθμοί υπάρχουν στο HTML (fallback χωρίς
   // JS). Το JS τους μηδενίζει και, όταν το section μπει στην οθόνη, μετράει
-  // προς τα πάνω ΜΙΑ φορά — κλιμακωτά ανά στήλη. Οι ταχύτητες διαβάζονται από
+  // προς τα πάνω ΜΙΑ φορά, κλιμακωτά ανά στήλη. Οι ταχύτητες διαβάζονται από
   // τα --pd-count-duration/--pd-stagger του CSS. Reduced motion: τελικοί
   // αριθμοί αμέσως, καμία κίνηση.
   // EN: το € μπαίνει ΜΠΡΟΣΤΑ (data-prefix) και οι αριθμοί μορφοποιούνται en-US.
@@ -280,7 +278,7 @@ const faqItems = [
   // «Το ταίριασμα, ζωντανά»: το HTML έχει το τελικό state (όλα ταιριασμένα).
   // Με JS + ορατότητα: επαναφορά σε «3 εκκρεμή» και ζωντανό ταίριασμα σε loop·
   // όταν βγει από την οθόνη, σταματά και γυρνά στο τελικό state. Τα ιπτάμενα
-  // ποσά παίρνουν inline styles — τα scoped styles δεν πιάνουν JS elements.
+  // ποσά παίρνουν inline styles, τα scoped styles δεν πιάνουν JS elements.
   const mtStage = document.getElementById('mt-stage');
   const mtReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (mtStage && !mtReduce && 'IntersectionObserver' in window) {
@@ -373,7 +371,7 @@ const faqItems = [
 
   /* ---- «Η μέρα σε αριθμούς» ---- */
   .pd {
-    /* timing — τα διαβάζει το JS */
+    /* timing, τα διαβάζει το JS */
     --pd-count-duration: 2600;
     --pd-stagger: 220;
     max-width: 860px;
@@ -429,7 +427,7 @@ const faqItems = [
   }
   .pd--animate.pd--in .pd__cell { opacity: 1; transform: none; }
 
-  /* mobile: 2x2 — οι κάθετες γραμμές φεύγουν */
+  /* mobile: 2x2, οι κάθετες γραμμές φεύγουν */
   @media (max-width: 719px) {
     .pd__row { flex-wrap: wrap; }
     .pd__cell { flex: 0 0 50%; padding: 20px 0 0; }

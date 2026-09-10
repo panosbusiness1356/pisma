@@ -9,7 +9,7 @@ import { SITE } from '../../config';
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'Digital Visibility — Get found on Google and AI',
+  name: 'Digital Visibility: Get found on Google and AI',
   serviceType: 'Website development, Shopify store development, Shopify management, Google Business Profile, SEO, GEO/AEO, Social media, Google Reviews, Photography and video',
   areaServed: SITE.regionEn,
   provider: {
@@ -25,7 +25,7 @@ const schema = {
     },
   },
   description:
-    'A website that sells, top spots on Google and recommendations from ChatGPT — with your visibility measured before and after.',
+    'A website that sells, top spots on Google and recommendations from ChatGPT, with your visibility measured before and after.',
 };
 
 const services = [
@@ -72,7 +72,7 @@ const services = [
   },
   {
     t: 'Shopify management',
-    d: 'Products, stock, discounts — month by month, by us.',
+    d: 'Products, stock and discounts, handled by us month by month.',
     icon: 'shopify',
     href: '/en/shopify/#management',
   },
@@ -95,41 +95,47 @@ const services = [
     href: '/en/digital-menu/',
   },
   {
+    t: 'Loyalty Card',
+    d: 'A QR code at the register: stamps on every visit, a reward at the end.',
+    icon: 'loyal',
+  },
+  {
     t: 'An eye on the competition',
     d: 'Where the shop across the street ranks, and where you do, every month.',
     icon: 'eye',
+    size: 'card',
   },
 ];
 
 const faqItems = [
   {
     q: 'How long until SEO shows results?',
-    a: 'First signs in 2–3 months, steady growth in 4–6. Every month you see the numbers — rankings, visits, calls — and judge the progress for yourself.',
+    a: 'First signs in 2–3 months, steady growth in 4–6. Every month you see the numbers (rankings, visits, calls) and judge the progress for yourself.',
   },
   {
     q: 'What is GEO?',
-    a: "Generative Engine Optimization: getting ChatGPT, Gemini and Perplexity to recommend you when someone asks them about what you do. It's the SEO of the AI era — and it's measurable, just like the classic kind.",
+    a: "Generative Engine Optimization: getting ChatGPT, Gemini and Perplexity to recommend you when someone asks them about what you do. It's the SEO of the AI era, and it's measurable, just like the classic kind.",
   },
   {
-    q: 'I already have a website — do we keep it?',
-    a: "If it's technically sound, yes — we build on it and you don't pay for anything from scratch. If not, you see in writing what a fix costs versus a new one, and you decide.",
+    q: 'I already have a website. Do we keep it?',
+    a: "If it's technically sound, yes: we build on it and you don't pay for anything from scratch. If not, you see in writing what a fix costs versus a new one, and you decide.",
   },
   {
     q: 'Do I need ads to get found?',
-    a: "Not necessarily. Organic visibility builds more slowly, but it stays — and you don't pay for every click. If ads are worth it anywhere, the numbers will show it — you'll never hear a \"you just have to\" from us.",
+    a: "Not necessarily. Organic visibility builds more slowly, but it stays, and you don't pay for every click. If ads are worth it anywhere, the numbers will show it.",
   },
 ];
 ---
 
 <Base
-  title="Digital Visibility — SEO, AI visibility & Reviews | PISMA"
-  description="A website that sells, top spots on Google and recommendations from ChatGPT. We measure your visibility before and after — with numbers, not promises."
+  title="Digital Visibility: SEO, AI visibility & Reviews | PISMA"
+  description="A website that sells, top spots on Google and recommendations from ChatGPT. We measure your visibility before and after, with numbers."
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
     kicker="Pillar one"
-    sub="When someone searches for what you do in your area — you show up. On Google and on ChatGPT."
+    sub="When someone searches for what you do in your area, you show up, on Google and on ChatGPT."
   >
     Digital <span class="accent">Visibility</span>
   </PageHero>
@@ -139,19 +145,19 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker">What we set up</p>
-        <h2 id="svc-title">Twelve jobs. One goal: getting you found.</h2>
+        <h2 id="svc-title">Thirteen jobs with one goal: getting you found.</h2>
       </div>
       <ServiceCards services={services} cta="See what it does →" />
     </div>
   </section>
 
-  <!-- 3. Ρώτα το AI — demo -->
+  <!-- 3. Ρώτα το AI, demo -->
   <section class="section" aria-labelledby="chat-title">
     <div class="container container--narrow">
       <div class="sec-head sec-head--center">
         <p class="kicker">See it live</p>
         <h2 id="chat-title">Ask the AI</h2>
-        <p>This is roughly what a customer's question looks like today — and the answer they get.</p>
+        <p>This is roughly what a customer's question looks like today, and the answer they get.</p>
       </div>
 
       <div class="chat card" id="ai-chat">
@@ -202,14 +208,14 @@ const faqItems = [
         <div class="avi-intro">
           <p class="kicker">AI Visibility Index</p>
           <h2 id="avi-title">Your AI visibility, in one number.</h2>
-          <p>We measure it before we start and every month after — so you see the change on paper.</p>
+          <p>We measure it before we start and every month after, so you see the change on paper.</p>
         </div>
         <ol class="avi-points">
           <li>
             <span class="avi-num num">1</span>
             <div>
               <h3>What it is</h3>
-              <p>How many relevant questions — "hair salon near me", "good accountant" — get the AI to recommend you.</p>
+              <p>How many relevant questions ("hair salon near me", "good accountant") get the AI to recommend you.</p>
             </div>
           </li>
           <li>
@@ -223,7 +229,7 @@ const faqItems = [
             <span class="avi-num num">3</span>
             <div>
               <h3>Why it matters</h3>
-              <p>If the AI doesn't mention you, the customer goes elsewhere — and you never find out.</p>
+              <p>If the AI doesn't mention you, the customer goes elsewhere and you never find out.</p>
             </div>
           </li>
         </ol>
@@ -244,7 +250,7 @@ const faqItems = [
 
   <!-- 6. Τελικό CTA -->
   <CtaBand
-    title="See how findable you are — before your competition does."
+    title="See how findable you are, before your competition does."
     sub="The Dashboard gives you a visibility score in two minutes."
     ctaText="Measure your visibility"
     ctaHref="/en/business-check/"
@@ -253,7 +259,7 @@ const faqItems = [
 </Base>
 
 <script>
-  // «Ρώτα το AI»: τα μηνύματα υπάρχουν ήδη στο HTML — το JS μόνο τα κρύβει
+  // «Ρώτα το AI»: τα μηνύματα υπάρχουν ήδη στο HTML, το JS μόνο τα κρύβει
   // (is-armed) και τα «ξαναπαίζει» σε loop όσο το chat είναι ορατό: ερώτηση →
   // «γράφει…» → απάντηση → παλμός στη δική σας θέση. Όταν βγει από την οθόνη,
   // σταματά και μένει στο τελικό state. Χωρίς JS, όλα ορατά από την αρχή.
@@ -298,7 +304,7 @@ const faqItems = [
       );
       io.observe(chat);
     }
-    // Με reduced-motion (ή χωρίς IO): καμία κλάση — τελικό state αμέσως.
+    // Με reduced-motion (ή χωρίς IO): καμία κλάση, τελικό state αμέσως.
   }
 </script>
 
@@ -396,11 +402,11 @@ const faqItems = [
   .chat.is-play .ai-item:nth-child(2) { transition-delay: 2.7s; }
   .chat.is-play .ai-item:nth-child(3) { transition-delay: 3s; }
 
-  /* Επαναφορά loop χωρίς transitions — στιγμιαίο «σβήσιμο» πριν τον νέο κύκλο */
+  /* Επαναφορά loop χωρίς transitions, στιγμιαίο «σβήσιμο» πριν τον νέο κύκλο */
   .chat.is-snap .msg,
   .chat.is-snap .ai-item { transition: none !important; }
 
-  /* «Γράφει…» — φαίνεται μόνο στο διάστημα is-typing, μεταξύ ερώτησης και απάντησης */
+  /* «Γράφει…», φαίνεται μόνο στο διάστημα is-typing, μεταξύ ερώτησης και απάντησης */
   .msg-typing { display: none; }
   .chat.is-typing .msg-typing {
     display: inline-flex; align-items: center; gap: 5px;

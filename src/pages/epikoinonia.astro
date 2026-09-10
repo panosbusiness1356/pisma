@@ -8,7 +8,7 @@ const telHref = 'tel:' + SITE.phone.replace(/\s+/g, '');
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'ContactPage',
-  name: 'Επικοινωνία — PISMA',
+  name: 'Επικοινωνία | PISMA',
   url: `${SITE.url}/epikoinonia/`,
   mainEntity: {
     '@type': 'LocalBusiness',
@@ -28,11 +28,11 @@ const schema = {
 ---
 
 <Base
-  title="Επικοινωνία — Πείτε μας τι σας πνίγει | PISMA"
-  description="Στείλτε μήνυμα ή πάρτε τηλέφωνο — απαντάμε άνθρωπος προς άνθρωπο, συνήθως αυθημερόν. Ραντεβού από κοντά στα νότια προάστια της Αθήνας ή online."
+  title="Επικοινωνία: Πείτε μας τι σας πνίγει | PISMA"
+  description="Στείλτε μήνυμα ή πάρτε τηλέφωνο. Απαντάμε άνθρωπος προς άνθρωπο, συνήθως αυθημερόν. Ραντεβού από κοντά στα νότια προάστια της Αθήνας ή online."
   schema={schema}
 >
-  <PageHero kicker="Επικοινωνία" sub="Απαντάμε άνθρωπος προς άνθρωπο — συνήθως αυθημερόν.">
+  <PageHero kicker="Επικοινωνία" sub="Απαντάμε άνθρωπος προς άνθρωπο, συνήθως αυθημερόν.">
     Πείτε μας τι σας <span class="accent">πνίγει</span>.
   </PageHero>
 
@@ -116,7 +116,7 @@ const schema = {
             <label for="cf-message">Μήνυμα</label>
             <textarea id="cf-message" name="message" rows="5" required></textarea>
           </div>
-          <input type="hidden" name="_subject" value="Νέο μήνυμα από τη σελίδα Επικοινωνίας — pisma.gr" />
+          <input type="hidden" name="_subject" value="Νέο μήνυμα από τη σελίδα Επικοινωνίας (pisma.gr)" />
           <input type="hidden" name="_template" value="box" />
           <input type="hidden" name="_captcha" value="false" />
           <!-- Honeypot: τα bots το συμπληρώνουν, το FormSubmit απορρίπτει σιωπηλά -->
@@ -164,7 +164,7 @@ const schema = {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = new FormData(form);
-      if ((data.get('_honey') as string)?.trim()) return; // bot — σιωπηλή απόρριψη
+      if ((data.get('_honey') as string)?.trim()) return; // bot, σιωπηλή απόρριψη
       btn.disabled = true;
       btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span>Αποστολή…';
       try {
@@ -173,7 +173,7 @@ const schema = {
           headers: { Accept: 'application/json' },
           body: data,
         });
-        // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία — έλεγχος και του JSON.
+        // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία, έλεγχος και του JSON.
         const json = await res.json().catch(() => null);
         if (!res.ok || !json || String(json.success) !== 'true') throw new Error('form failed');
         form.classList.add('is-done');
@@ -246,7 +246,7 @@ const schema = {
 
   /* Φόρμα */
   .f-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
-  /* Το feedback γράφεται μόνο σε αποτυχία — κόκκινη απόχρωση, όχι πράσινη */
+  /* Το feedback γράφεται μόνο σε αποτυχία, κόκκινη απόχρωση, όχι πράσινη */
   .feedback {
     margin-top: 16px; padding: 14px 18px; border-radius: 12px;
     background: var(--red-soft); color: var(--red-text); font-size: .95rem;

@@ -1,18 +1,18 @@
 ---
-// Showroom αυτοκόλλητων QR — ο φυσικός «διακόπτης» του Εργαλείου Κριτικών.
+// Showroom αυτοκόλλητων QR, ο φυσικός «διακόπτης» του Εργαλείου Κριτικών.
 // Σκόπιμα σκούρο και αυτόνομο (δεν χρησιμοποιεί το Base): λειτουργεί ως
 // showroom προϊόντος, τύπου car configurator. Η τιμή της πλατφόρμας έρχεται
-// από το pricing.ts (auto-reviews) — μία πηγή αλήθειας.
+// από το pricing.ts (auto-reviews), μία πηγή αλήθειας.
 // Οι τιμές των αυτοκόλλητων και των έξτρα ζουν στο src/data/stickers.ts
-// (κοινές με το /en/qr-stickers/) — εδώ μόνο τα ελληνικά λεκτικά.
+// (κοινές με το /en/qr-stickers/), εδώ μόνο τα ελληνικά λεκτικά.
 import { SITE } from '../config';
 import Consent from '../components/Consent.astro';
 import { STICKER_PRICES } from '../data/stickers';
-import '../styles/fonts.css'; // self-hosted Inter/Unbounded/JetBrains Mono — ίδιες με το υπόλοιπο site
+import '../styles/fonts.css'; // self-hosted Inter/Unbounded/JetBrains Mono, ίδιες με το υπόλοιπο site
 
-const title = 'Αυτοκόλλητα QR — Το Εργαλείο Κριτικών | PISMA';
+const title = 'Αυτοκόλλητα QR για το Εργαλείο Κριτικών | PISMA';
 const description =
-  'Διαλέξτε από 16 αυτοκόλλητα QR για τραπέζι, ταμείο, βιτρίνα και delivery — με τα χρώματα και το όνομα του μαγαζιού σας. Στέλνετε το καλάθι, σας παίρνουμε τηλέφωνο.';
+  'Διαλέξτε από 16 αυτοκόλλητα QR για τραπέζι, ταμείο, βιτρίνα και delivery, με τα χρώματα και το όνομα του μαγαζιού σας. Στέλνετε το καλάθι, σας παίρνουμε τηλέφωνο.';
 const canonical = `${SITE.url}/aftokollita/`;
 
 // JSON-LD: ίδια «ταυτότητα» WebSite με το Base + το προϊόν με εύρος τιμών από stickers.ts.
@@ -29,7 +29,7 @@ const schema = [
   {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: 'Αυτοκόλλητα QR — Το Εργαλείο Κριτικών',
+    name: 'Αυτοκόλλητα QR για το Εργαλείο Κριτικών',
     description,
     url: canonical,
     image: `${SITE.url}/og.png`,
@@ -69,19 +69,19 @@ const schema = [
 <meta property="og:image" content={`${SITE.url}/og.png`}>
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content={`${SITE.name} — ${SITE.tagline}`}>
+<meta property="og:image:alt" content={`${SITE.name} · ${SITE.tagline}`}>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content={`${SITE.url}/og.png`}>
 <meta name="theme-color" content="#0B0B0B">
 {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
 <!-- Η Noto Sans Display (γραμματοσειρά ΤΟΥ ΠΡΟΪΟΝΤΟΣ στα SVG των αυτοκόλλητων)
-     είναι πλέον self-hosted στο fonts.css — κανένα εξωτερικό αίτημα. -->
+     είναι πλέον self-hosted στο fonts.css, κανένα εξωτερικό αίτημα. -->
 <style is:global>
-/* Tokens του site (src/styles/global.css) — το showroom μιλά την ίδια γλώσσα. */
+/* Tokens του site (src/styles/global.css), το showroom μιλά την ίδια γλώσσα. */
 :root{
   --bg0:#0B0B0B;--bg1:#111111;--card:#151515;--card2:#1B1B1B;--line:rgba(255,255,255,.09);--line2:rgba(255,255,255,.16);
   --txt:#E4E4E4;--head:#FFFFFF;--dim:#9C9C9C;
-  /* Το showroom δεν φορτώνει το global.css — τα tokens του accent ορίζονται εδώ (ίδιες τιμές) */
+  /* Το showroom δεν φορτώνει το global.css, τα tokens του accent ορίζονται εδώ (ίδιες τιμές) */
   --orange:#FF7A50;--orange-cta:#EE4F27;--orange-text:#FFA284;--orange-rgb:255,122,80;--grad-1:#CC431C;--grad-2:#BE3A17;--grad-3:#AC3213;
   --acc:var(--orange);--acc-text:var(--orange-text);--acc-soft:rgba(var(--orange-rgb),.13);
   --grad:linear-gradient(92deg,var(--grad-1) 0%,var(--grad-2) 55%,var(--grad-3) 100%);
@@ -99,7 +99,7 @@ button{font-family:inherit;color:inherit}
 input{font-family:inherit}
 
 .app{min-height:100svh;display:flex;flex-direction:column;overflow-x:clip}
-/* ^ το clip κόβει το glow (.spot::before) που ξεχείλωνε οριζόντια σε κινητό —
+/* ^ το clip κόβει το glow (.spot::before) που ξεχείλωνε οριζόντια σε κινητό, 
    η λωρίδα .strip σκρολάρει εσωτερικά, δεν επηρεάζεται */
 
 /* ================= top ================= */
@@ -360,7 +360,7 @@ input{font-family:inherit}
     <div class="csec">
       <div class="tot"><span>Μία φορά</span><b id="t-once">0 €</b></div>
       <div class="tot sm"><span>Κάθε μήνα</span><b id="t-month">0 €</b></div>
-      <p class="note">Το στήσιμο το κλείνουμε στο τηλεφώνημα — κάθε μαγαζί θέλει το δικό του.</p>
+      <p class="note">Το στήσιμο το κλείνουμε στο τηλεφώνημα, γιατί κάθε μαγαζί θέλει το δικό του.</p>
     </div>
   </div>
   <div class="cfoot">
@@ -371,7 +371,7 @@ input{font-family:inherit}
     </div>
     <input type="text" id="f-hp" class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
     <button class="send" id="send" disabled>Στείλτε το</button>
-    <p class="senderr" id="senderr" role="alert">Δεν στάλθηκε — δοκιμάστε ξανά ή γράψτε μας στο {SITE.email}</p>
+    <p class="senderr" id="senderr" role="alert">Δεν στάλθηκε. Δοκιμάστε ξανά ή γράψτε μας στο {SITE.email}</p>
     <p class="safe">Καμία πληρωμή τώρα · Σας παίρνουμε τηλέφωνο την επόμενη εργάσιμη</p>
   </div>
 </aside>
@@ -392,7 +392,7 @@ input{font-family:inherit}
 import { FORM_ENDPOINT, optionById } from '../data/pricing';
 import { STICKER_PRICES as SP, STICKER_EXTRA_PRICES as XP } from '../data/stickers';
 
-/* Η πλατφόρμα του Εργαλείου Κριτικών τιμολογείται από το pricing.ts — μία πηγή αλήθειας. */
+/* Η πλατφόρμα του Εργαλείου Κριτικών τιμολογείται από το pricing.ts, μία πηγή αλήθειας. */
 const PLATFORM_PRICE = optionById('auto-reviews')?.price ?? 39;
 
 /* ================= PURE ================= */
@@ -532,7 +532,7 @@ $('dots').querySelectorAll('.dot').forEach(b=>b.onclick=()=>{
 $('words').innerHTML=WORDS.map(w=>`<button data-w="${w}" aria-pressed="${w===S.word}">${w}</button>`).join('');
 $('words').querySelectorAll('button').forEach(b=>b.onclick=()=>{
   S.word=b.dataset.w;$('words').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.w===S.word));draw()});
-/* Debounce: το draw() ξαναχτίζει 17 SVG — όχι σε κάθε πάτημα πλήκτρου */
+/* Debounce: το draw() ξαναχτίζει 17 SVG, όχι σε κάθε πάτημα πλήκτρου */
 let bizT;
 $('f-biz').addEventListener('input',e=>{S.biz=e.target.value||'ΤΟ ΜΑΓΑΖΙ ΣΑΣ';clearTimeout(bizT);bizT=setTimeout(draw,140)});
 
@@ -655,8 +655,8 @@ $('send').onclick=async()=>{
   /* honeypot: τα bots «πετυχαίνουν» σιωπηλά, χωρίς αποστολή */
   if($('f-hp').value){showDone(it,xt);return;}
 
-  const order=it.map(f=>`${f.n} × ${S.cart[f.id]} πακ. — ${f.pr*S.cart[f.id]} €`)
-    .concat(xt.map(x=>`${x.n} — ${x.pr} €${x.per==='month'?'/μήνα':''}`)).join('\n');
+  const order=it.map(f=>`${f.n} × ${S.cart[f.id]} πακ.: ${f.pr*S.cart[f.id]} €`)
+    .concat(xt.map(x=>`${x.n}: ${x.pr} €${x.per==='month'?'/μήνα':''}`)).join('\n');
   const btn=$('send'),err=$('senderr');
   btn.disabled=true;btn.textContent='Στέλνεται…';err.classList.remove('on');
   try{
@@ -664,7 +664,7 @@ $('send').onclick=async()=>{
       method:'POST',
       headers:{'Content-Type':'application/json',Accept:'application/json'},
       body:JSON.stringify({
-        _subject:`Αυτοκόλλητα QR — ${$('f-biz').value.trim()||'—'} (${once()} € + ${month()} €/μήνα)`,
+        _subject:`Αυτοκόλλητα QR: ${$('f-biz').value.trim()||'(χωρίς όνομα)'} (${once()} € + ${month()} €/μήνα)`,
         'Είδος':'Παραγγελία αυτοκόλλητων QR (Το Εργαλείο Κριτικών)',
         'Μαγαζί':$('f-biz').value.trim(),
         'Ονοματεπώνυμο':name,
@@ -676,7 +676,7 @@ $('send').onclick=async()=>{
         'Design code (paste στο Sticker Studio)':code,
       }),
     });
-    // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία — έλεγχος και του JSON.
+    // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία, έλεγχος και του JSON.
     const json=await res.json().catch(()=>null);
     if(!res.ok||!json||String(json.success)!=='true')throw new Error('send failed');
     showDone(it,xt);

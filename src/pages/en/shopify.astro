@@ -15,7 +15,7 @@ const manageOpt = optEn('care-shopify');
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'Shopify store — build and management',
+  name: 'Shopify store: build and management',
   serviceType: 'Shopify store development, Shopify store management',
   areaServed: SITE.regionEn,
   provider: {
@@ -31,23 +31,23 @@ const schema = {
     { '@type': 'Offer', name: manageOpt.label, price: manageOpt.price, priceCurrency: 'EUR', description: `${eurEn(manageOpt.price)} per month.` },
   ],
   description:
-    'An online store on Shopify, set up properly from day one — or monthly management of the store you already have: products, stock, discounts, apps, updates.',
+    'An online store on Shopify, set up properly from day one, or monthly management of the store you already have: products, stock, discounts, apps, updates.',
 };
 
 const why = [
   {
-    t: 'It does not go down — not even on holidays',
-    d: 'Shopify hosts millions of stores. You never deal with servers, backups or security updates — it runs, and you sell.',
+    t: 'It does not go down, not even on holidays',
+    d: 'Shopify hosts millions of stores. You never deal with servers, backups or security updates. The store runs, and you sell.',
     icon: 'shield',
   },
   {
     t: 'Payments and shipping, ready',
-    d: 'Card, cash on delivery, couriers with automatic shipping costs. Customers order in two minutes from their phone — and you get a notification.',
+    d: 'Card, cash on delivery, couriers with automatic shipping costs. Customers order in two minutes from their phone, and you get a notification.',
     icon: 'cart',
   },
   {
     t: 'You run it from your phone',
-    d: 'Orders, stock, prices — all from one app. Change a price at the register and it is already live.',
+    d: 'Orders, stock, prices: all from one app. Change a price at the register and it is already live.',
     icon: 'phone',
   },
 ];
@@ -62,10 +62,10 @@ const build = [
 ];
 
 const manage = [
-  'New products and photos — you send, we upload',
-  'Stock and prices always right — nothing "sold out" that still sells',
+  'New products and photos: you send, we upload',
+  'Stock and prices always right, so nothing keeps selling after it has run out',
   'Discounts and seasonal offers (Black Friday, holidays, sale periods)',
-  'Apps, theme and updates — without anything breaking',
+  'Apps, theme and updates, without anything breaking',
   'Monthly speed and security check',
   'Monthly report: what sold, where your customers came from',
 ];
@@ -84,7 +84,7 @@ const steps = [
     d: 'We build the store, upload the products and place test orders together with you.',
   },
   {
-    t: 'Launch — and after',
+    t: 'Launch and beyond',
     d: 'The store opens. You run it after training, or we take it over month by month.',
   },
 ];
@@ -92,7 +92,7 @@ const steps = [
 const faqItems = [
   {
     q: 'I already have a store on another platform. Can it move?',
-    a: 'Yes. Products, customers and order history move to Shopify, and the old store stays open until the new one works — you do not lose a single day of sales.',
+    a: 'Yes. Products, customers and order history move to Shopify, and the old store stays open until the new one works, so you do not lose a single day of sales.',
   },
   {
     q: 'How much does it cost?',
@@ -100,36 +100,36 @@ const faqItems = [
   },
   {
     q: 'Who pays the Shopify subscription?',
-    a: 'You do, directly to Shopify — the account and the store belong to your business. We only charge for our work, at the prices you see publicly on the pricing page.',
+    a: 'You do, directly to Shopify: the account and the store belong to your business. We only charge for our work, at the prices you see publicly on the pricing page.',
   },
   {
     q: 'How long until it opens?',
-    a: 'It depends on how many products you have and how ready your material is (photos, descriptions). The written proposal gives a specific date — and we keep it.',
+    a: 'It depends on how many products you have and how ready your material is (photos, descriptions). The written proposal gives a specific date, and we keep it.',
   },
   {
     q: 'I do not have good product photos.',
-    a: 'We take them, at your premises — see our photography and video service. A store with blurry phone photos does not sell, no matter how well it is built.',
+    a: 'We take them, at your premises. See our photography and video service. A store with blurry phone photos does not sell, no matter how well it is built.',
   },
   {
     q: 'Will I get found on Google?',
-    a: 'The store is built technically right for Google from day one. If you also want active ranking growth (SEO) or ads, those are separate services — you will find them on the Digital Visibility page.',
+    a: 'The store is built technically right for Google from day one. If you also want active ranking growth (SEO) or ads, those are separate services. You will find them on the Digital Visibility page.',
   },
   {
     q: 'What if I want to stop the monthly management?',
-    a: 'You stop. There is no lock-in — the store is yours and keeps working, you simply run it yourself.',
+    a: 'You stop. There is no lock-in: the store is yours and keeps working, you simply run it yourself.',
   },
 ];
 ---
 
 <Base
-  title="Shopify store — build and monthly management | PISMA"
-  description={`A Shopify store from ${eurEn(shop.price)} one-off, set up properly from day one — or monthly management of your existing store from ${eurEn(manageOpt.price)} per month. Public prices, no lock-in.`}
+  title="Shopify store: build and monthly management | PISMA"
+  description={`A Shopify store from ${eurEn(shop.price)} one-off, set up properly from day one, or monthly management of your existing store from ${eurEn(manageOpt.price)} per month. Public prices, no lock-in.`}
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
     kicker="Shopify store"
-    sub="We build your online store on Shopify — or take over the one you already have. You see orders, not settings."
+    sub="We build your online store on Shopify or take over the one you already have. We take care of the settings, so all you see is orders."
   >
     Your store, <span class="accent">open 24 hours</span>
   </PageHero>
@@ -174,7 +174,7 @@ const faqItems = [
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">What we take on</p>
-        <h2 id="ways-title">Two ways to work together — or both.</h2>
+        <h2 id="ways-title">Two ways to work together, or both.</h2>
       </div>
       <div class="grid-2">
         <article class="card way reveal" id="build">
@@ -183,7 +183,7 @@ const faqItems = [
             <span class="way-tag">One-off</span>
           </span>
           <h3>Store build</h3>
-          <p class="way-lead">From scratch — or from your old store — up to the first real order.</p>
+          <p class="way-lead">From scratch, or from your old store, up to the first real order.</p>
           <ul class="way-list">
             {build.map((b) => <li>{b}</li>)}
           </ul>
@@ -227,21 +227,21 @@ const faqItems = [
     <div class="container container--narrow">
       <div class="card price-card reveal">
         <div class="price-main">
-          <p class="kicker">Prices — public, the same for everyone</p>
+          <p class="kicker">Prices: public, the same for everyone</p>
           <h2 id="price-title">
             From <span class="price-num num">{eurEn(shop.price)}</span> one-off
           </h2>
           <p class="price-sub">
             <strong>Build {eurEn(shop.price)}</strong> ({shop.detail}) or
             <strong>large store {eurEn(shopLarge.price)}</strong> ({shopLarge.detail}).
-            <strong>Management {eurEn(manageOpt.price)} per month</strong> — optional, no lock-in.
+            <strong>Management {eurEn(manageOpt.price)} per month</strong>, optional and with no lock-in.
             The Shopify subscription is paid by you directly to Shopify.
           </p>
         </div>
         <div class="price-cta">
           <a class="btn btn--orange" href="/en/pricing/">Build your package →</a>
           <a class="btn btn--ghost" href="/en/free-assessment/">Free {ELEGXOS.minutes}-minute Check</a>
-          <span class="btn-note">No online payment — we close it over the phone.</span>
+          <span class="btn-note">No online payment. We close it over the phone.</span>
         </div>
       </div>
     </div>
@@ -261,7 +261,7 @@ const faqItems = [
   <!-- 7. CTA -->
   <CtaBand
     title="Time your store sold while you sleep."
-    sub={`We start with the free ${ELEGXOS.minutes}-minute PISMA Check — we look at what you sell, what you already have, and what is needed.`}
+    sub={`We start with the free ${ELEGXOS.minutes}-minute PISMA Check: we look at what you sell, what you already have, and what is needed.`}
     ctaText="Book the free PISMA Check"
     ctaHref="/en/free-assessment/"
     note="No online payment · no lock-in"

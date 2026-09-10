@@ -29,13 +29,13 @@ const schema = {
     description: `${eurEn(bookings.price)} one-off.`,
   },
   description:
-    'A website where your customers book an appointment or a table online and get an automatic reminder — no more no-shows.',
+    'A website where your customers book an appointment or a table online and get an automatic reminder. No more no-shows.',
 };
 
 const why = [
   {
     t: 'Bookings around the clock',
-    d: "Customers book whenever it suits them — even when you're closed. You never pick up the phone.",
+    d: "Customers book whenever it suits them, even when you're closed. You don't have to take a single call.",
     icon: 'clock',
   },
   {
@@ -45,7 +45,7 @@ const why = [
   },
   {
     t: 'Your calendar, always up to date',
-    d: 'Every booking lands in your schedule by itself. You open the calendar and see your day — nothing by hand.',
+    d: 'Every booking lands in your schedule by itself. You open the calendar and see your day, with nothing entered by hand.',
     icon: 'cal',
   },
 ];
@@ -53,7 +53,7 @@ const why = [
 const faqItems = [
   {
     q: 'What can customers book?',
-    a: 'Anything with a time and a duration: a service appointment, a table, a session, a visit. We set up services, durations and opening hours together — and the system only shows times you are actually available.',
+    a: 'Anything with a time and a duration: a service appointment, a table, a session, a visit. We set up services, durations and opening hours together, and the system only shows times you are actually available.',
   },
   {
     q: 'Does the customer need an app or an account?',
@@ -61,33 +61,33 @@ const faqItems = [
   },
   {
     q: 'How do I find out about a booking?',
-    a: 'You get an instant notification and the booking is written into your calendar. You can confirm, move or cancel it — and the customer is notified automatically.',
+    a: 'You get an instant notification and the booking is written into your calendar. You can confirm, move or cancel it, and the customer is notified automatically.',
   },
   {
     q: 'How much does it cost?',
-    a: `${eurEn(bookings.price)} one-off for the website with the booking system. No subscriptions hidden along the way — anything monthly (like maintenance) is optional and publicly priced on our pricing page.`,
+    a: `${eurEn(bookings.price)} one-off for the website with the booking system. No hidden subscriptions: anything monthly (like maintenance) is optional and publicly priced on our pricing page.`,
   },
   {
-    q: 'I already have a website — can bookings be added to it?',
-    a: "If it's technically sound, yes — we add the booking system on top of it. Otherwise you see in writing what each option costs, and you decide.",
+    q: 'I already have a website. Can bookings be added to it?',
+    a: "If it's technically sound, yes: we add the booking system on top of it. Otherwise you see in writing what each option costs, and you decide.",
   },
 ];
 ---
 
 <Base
-  title="A website with online bookings — no more no-shows | PISMA"
-  description="A website where customers book an appointment or a table online, with automatic reminders. See it live — the booking, step by step, as your customer experiences it."
+  title="A website with online bookings: no more no-shows | PISMA"
+  description="A website where customers book an appointment or a table online, with automatic reminders. See it live: the booking, step by step, as your customer experiences it."
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
     kicker="A website with online bookings"
-    sub="Customers pick a service, a day and a time right on your website — day or night. You just watch the calendar fill up."
+    sub="Customers pick a service, a day and a time right on your website, day or night. You just watch the calendar fill up."
   >
     Appointments that book <span class="accent">themselves</span>
   </PageHero>
 
-  <!-- 2. «See it live» — η σκηνή του laptop (ίδιο pattern με τις άλλες
+  <!-- 2. «See it live», η σκηνή του laptop (ίδιο pattern με τις άλλες
        σκηνές: τελικό state στο HTML, IO replay, στατικό χωρίς JS). -->
   <section class="section section--tight" aria-labelledby="lp-title">
     <div class="container">
@@ -98,13 +98,13 @@ const faqItems = [
             <h2 id="lp-title">This is how your customer experiences it</h2>
           </div>
           <p class="lp-sub">
-            Customers browse, pick a time and book — day or night, no phone
+            Customers browse, pick a time and book, day or night, without phone
             calls. You just watch the calendar fill up.
           </p>
           <div class="lp-cta-row">
             <a class="btn btn--orange" href="/en/pricing/">See website pricing →</a>
           </div>
-          <p class="lp-note">Illustrative — your own site is built for your own business.</p>
+          <p class="lp-note">Illustrative. Your own site is built for your own business.</p>
         </div>
 
         <div class="lp-stage" id="lp-stage" aria-hidden="true">
@@ -124,7 +124,7 @@ const faqItems = [
                   <div class="lp-hero">
                     <div class="lp-part lp-hcopy is-in">
                       <p class="lp-h1">Shine from the first look</p>
-                      <p class="lp-hsub">Cuts, color, styling — book online in 30 seconds.</p>
+                      <p class="lp-hsub">Cuts, color, styling. Book online in 30 seconds.</p>
                       <span class="lp-btn" id="lp-cta">Book an appointment</span>
                     </div>
                     <div class="lp-part lp-hart is-in">
@@ -217,20 +217,20 @@ const faqItems = [
     <div class="container container--narrow">
       <div class="card price-card reveal">
         <div class="price-main">
-          <p class="kicker">Price — public, the same for everyone</p>
+          <p class="kicker">Price: public, the same for everyone</p>
           <h2 id="price-title">
             <span class="price-num num">{eurEn(bookings.price)}</span> one-off
           </h2>
           <p class="price-sub">
             Website and booking system together: services, opening hours,
             automatic reminders, calendar. Anything monthly (like maintenance)
-            is optional — and publicly priced.
+            is optional and publicly priced.
           </p>
         </div>
         <div class="price-cta">
           <a class="btn btn--orange" href="/en/pricing/">Build your package →</a>
           <a class="btn btn--ghost" href="/en/free-assessment/">Free {ELEGXOS.minutes}-minute PISMA Check</a>
-          <span class="btn-note">No online payment — we close it over the phone.</span>
+          <span class="btn-note">No online payment. We close it over the phone.</span>
         </div>
       </div>
     </div>
@@ -250,7 +250,7 @@ const faqItems = [
   <!-- 6. CTA -->
   <CtaBand
     title="Let the next appointment book itself."
-    sub={`We start with the free ${ELEGXOS.minutes}-minute PISMA Check — we look at how you work and show you how bookings would work for you.`}
+    sub={`We start with the free ${ELEGXOS.minutes}-minute PISMA Check: we look at how you work and show you how bookings would work for you.`}
     ctaText="Book the free PISMA Check"
     ctaHref="/en/free-assessment/"
     note="No online payment · no commitment"
@@ -258,11 +258,11 @@ const faqItems = [
 </Base>
 
 <script>
-  // Η σκηνή του laptop — μεταφέρθηκε αυτούσια από το /en/get-found/.
+  // Η σκηνή του laptop, μεταφέρθηκε αυτούσια από το /en/get-found/.
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Στενές οθόνες: η σελίδα μέσα στο laptop αποδίδεται στο πλάτος desktop
-  // (496px = 520 − μπεζέλ) και σμικρύνεται με transform — ίδια 16:10 μορφή
+  // (496px = 520 − μπεζέλ) και σμικρύνεται με transform, ίδια 16:10 μορφή
   // όπως στον υπολογιστή, αντί να στοιβάζεται καθ' ύψος (ίδιο μοτίβο με το
   // iframe του «Site που πουλάει»).
   const lpFitPage = document.getElementById('lp-page');
@@ -281,7 +281,7 @@ const faqItems = [
       lpFitPage.classList.add('is-fit');
       lpFitPage.style.width = `${DESK}px`;
       lpFitPage.style.transform = `scale(${s})`;
-      // Το transform δεν αλλάζει το layout — μαζεύουμε το κενό που μένει κάτω
+      // Το transform δεν αλλάζει το layout, μαζεύουμε το κενό που μένει κάτω
       lpFitPage.style.marginBottom = `${-(lpFitPage.offsetHeight * (1 - s))}px`;
     };
     fit();
@@ -292,7 +292,7 @@ const faqItems = [
   // «A website with online bookings» (laptop): το HTML έχει το τελικό state
   // (site πλήρες, κράτηση επιβεβαιωμένη). Με JS + ορατότητα, σε loop: η
   // σελίδα χτίζεται κομμάτι-κομμάτι, ο κέρσορας πατά «Book» και περνάει τα
-  // ΒΗΜΑΤΑ της κράτησης — υπηρεσία → ώρα → Confirm → «booked».
+  // ΒΗΜΑΤΑ της κράτησης, υπηρεσία → ώρα → Confirm → «booked».
   // Εκτός οθόνης: τελικό state.
   const lpStage = document.getElementById('lp-stage');
   if (lpStage && !reduce && 'IntersectionObserver' in window) {
@@ -314,7 +314,7 @@ const faqItems = [
     const lpGo = (el: HTMLElement, ms: number) => {
       const pr = lpPage.getBoundingClientRect();
       const br = el.getBoundingClientRect();
-      // Σε σμίκρυνση (.is-fit) τα rects είναι scaled — γυρνάμε σε συντεταγμένες σελίδας
+      // Σε σμίκρυνση (.is-fit) τα rects είναι scaled, γυρνάμε σε συντεταγμένες σελίδας
       const k = pr.width / lpPage.offsetWidth || 1;
       lpCursor.style.transition = `opacity .3s ease, left ${ms}ms cubic-bezier(.3, .7, .25, 1), top ${ms}ms cubic-bezier(.3, .7, .25, 1)`;
       lpCursor.style.opacity = '1';
@@ -401,9 +401,9 @@ const faqItems = [
 </script>
 
 <style>
-  /* ---------- «A website with online bookings» — laptop ---------- */
+  /* ---------- «A website with online bookings», laptop ---------- */
   /* Δίστηλη διάταξη σε desktop (κείμενο αριστερά, laptop δεξιά), στοίβαγμα
-     σε στενές οθόνες — ίδιο μοτίβο με την ενότητα κριτικών της αρχικής. */
+     σε στενές οθόνες, ίδιο μοτίβο με την ενότητα κριτικών της αρχικής. */
   .lp-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
@@ -459,7 +459,7 @@ const faqItems = [
     height: 1px; background: rgba(0, 0, 0, .18);
   }
 
-  /* Η σελίδα μέσα στην οθόνη — φωτεινό άσπρο-ροζ beauty site, γεμάτο χρώμα */
+  /* Η σελίδα μέσα στην οθόνη, φωτεινό άσπρο-ροζ beauty site, γεμάτο χρώμα */
   .lp-page {
     position: relative;
     display: flex; flex-direction: column;
@@ -512,7 +512,7 @@ const faqItems = [
     padding-bottom: 9px;
     border-bottom: 1px solid rgba(0, 0, 0, .06);
   }
-  /* Κοντή ροζ hairline πάνω στο διαχωριστικό — πινελιά πολυτέλειας */
+  /* Κοντή ροζ hairline πάνω στο διαχωριστικό, πινελιά πολυτέλειας */
   .lp-nav::after {
     content: ''; position: absolute; left: 0; bottom: -1px;
     width: 58px; height: 1px;
@@ -538,7 +538,7 @@ const faqItems = [
     border-radius: 999px;
   }
   .lp-hsub { margin: 7px 0 11px; color: #7e7685; font-size: .64rem; line-height: 1.45; max-width: none; }
-  /* Ροζ κουμπί που «αναπνέει» — τραβάει το μάτι εκεί που θα γίνει το κλικ */
+  /* Ροζ κουμπί που «αναπνέει», τραβάει το μάτι εκεί που θα γίνει το κλικ */
   .lp-btn {
     display: inline-block;
     background: linear-gradient(92deg, #FF7FB2 0%, #ED5B9C 55%, #E4468C 100%);
@@ -635,7 +635,7 @@ const faqItems = [
     border-color: transparent;
     box-shadow: 0 4px 10px rgba(232, 93, 158, .35);
   }
-  /* «Another day» — άνοιγμα ημερολογίου, αν δεν βολεύει καμία ορατή */
+  /* «Another day», άνοιγμα ημερολογίου, αν δεν βολεύει καμία ορατή */
   .lp-chip--more {
     background: #fff; border: 1px dashed rgba(232, 93, 158, .5);
     color: #E85D9E;

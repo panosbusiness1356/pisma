@@ -1,12 +1,12 @@
 /**
- * i18n — ο χάρτης αντιστοίχισης σελίδων ελληνικά ↔ αγγλικά.
+ * i18n, ο χάρτης αντιστοίχισης σελίδων ελληνικά ↔ αγγλικά.
  * ΜΙΑ πηγή αλήθειας: το κουμπί EL/EN, τα hreflang και το sitemap διαβάζουν από εδώ.
  * Νέα σελίδα με αγγλική έκδοση = μία γραμμή στο PAIRS.
  */
 
 export type Lang = 'el' | 'en';
 
-/** [ελληνικό path, αγγλικό path] — πάντα με trailing slash (εκτός από τη ρίζα '/'). */
+/** [ελληνικό path, αγγλικό path], πάντα με trailing slash (εκτός από τη ρίζα '/'). */
 export const PAIRS: ReadonlyArray<readonly [string, string]> = [
   ['/', '/en/'],
   ['/se-vriskoun/', '/en/get-found/'],

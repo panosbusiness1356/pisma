@@ -4,16 +4,16 @@ import PageHero from '../components/PageHero.astro';
 ---
 
 <Base
-  title="Η σελίδα δεν βρέθηκε — PISMA"
+  title="Η σελίδα δεν βρέθηκε | PISMA"
   description="Η διεύθυνση που ανοίξατε δεν υπάρχει ή έχει μετακινηθεί. Δείτε τις βασικές σελίδες της PISMA ή γράψτε μας."
   noindex
 >
   <!-- Μία στατική 404 για όλο το site: το JS στο τέλος δείχνει την αγγλική
-       εκδοχή όταν το λάθος URL ήταν κάτω από /en/ — χωρίς JS μένει η ελληνική. -->
+       εκδοχή όταν το λάθος URL ήταν κάτω από /en/, χωρίς JS μένει η ελληνική. -->
   <div data-l10n="el">
     <PageHero
       kicker="404"
-      sub="Η διεύθυνση που ανοίξατε δεν υπάρχει ή έχει μετακινηθεί — συμβαίνει και στις καλύτερες οικογένειες."
+      sub="Η διεύθυνση που ανοίξατε δεν υπάρχει ή έχει μετακινηθεί. Συμβαίνει και στις καλύτερες οικογένειες."
     >
       Εδώ δεν υπάρχει <span class="accent">τίποτα</span>.
     </PageHero>
@@ -27,7 +27,7 @@ import PageHero from '../components/PageHero.astro';
         </div>
         <p class="nf-note">
           Αν φτάσατε εδώ από link δικό μας, πείτε το μας στη
-          <a href="/epikoinonia/">φόρμα επικοινωνίας</a> — θα το φτιάξουμε.
+          <a href="/epikoinonia/">φόρμα επικοινωνίας</a> και θα το φτιάξουμε.
         </p>
       </div>
     </section>
@@ -36,7 +36,7 @@ import PageHero from '../components/PageHero.astro';
   <div data-l10n="en" hidden>
     <PageHero
       kicker="404"
-      sub="The address you opened doesn't exist or has moved — it happens to the best of us."
+      sub="The address you opened doesn't exist or has moved. It happens to the best of us."
     >
       There's <span class="accent">nothing</span> here.
     </PageHero>
@@ -50,7 +50,7 @@ import PageHero from '../components/PageHero.astro';
         </div>
         <p class="nf-note">
           If one of our own links brought you here, tell us via the
-          <a href="/en/contact/">contact form</a> — we'll fix it.
+          <a href="/en/contact/">contact form</a> and we'll fix it.
         </p>
       </div>
     </section>
@@ -61,7 +61,7 @@ import PageHero from '../components/PageHero.astro';
   // Αν το λάθος URL ήταν αγγλικό (/en/…), δείξε τα αγγλικά.
   if (location.pathname === '/en' || location.pathname.startsWith('/en/')) {
     document.documentElement.lang = 'en';
-    document.title = 'Page not found — PISMA';
+    document.title = 'Page not found | PISMA';
     document.querySelector('[data-l10n="el"]')?.setAttribute('hidden', '');
     document.querySelector('[data-l10n="en"]')?.removeAttribute('hidden');
   }

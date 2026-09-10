@@ -29,13 +29,13 @@ const schema = {
     description: `${eurEn(menu.price)} a month, no commitment.`,
   },
   description:
-    'A QR code on the table: customers scan and see your menu on their phone. Change prices and dishes anytime — no reprints.',
+    'A QR code on the table: customers scan and see your menu on their phone. Change prices and dishes anytime, with no reprints.',
 };
 
 const why = [
   {
     t: 'Always up to date',
-    d: "Change a price, hide a dish that ran out, add today's special — the change shows up instantly on every table.",
+    d: "Change a price, hide a dish that ran out, add today's special, and the change shows up instantly on every table.",
     icon: 'fresh',
   },
   {
@@ -53,43 +53,43 @@ const why = [
 const faqItems = [
   {
     q: 'How fast does a price or dish change?',
-    a: 'Instantly. Changes happen online and show up on every table the moment they are saved — no reprints, no waiting.',
+    a: 'Instantly. Changes happen online and show up on every table the moment they are saved, with no reprints and no waiting.',
   },
   {
     q: 'Does the customer need an app?',
-    a: 'No. They scan the QR with their phone camera and the menu opens in the browser — like a regular web page.',
+    a: 'No. They scan the QR with their phone camera and the menu opens in the browser, like a regular web page.',
   },
   {
     q: 'What do I need to get started?',
-    a: 'Your menu — and photos, if you want the dishes to show. We set it up with your colors and logo; you stick the QR on the tables.',
+    a: 'Your menu, and photos if you want the dishes to show. We set it up with your colors and logo; you stick the QR on the tables.',
   },
   {
     q: 'How much does it cost?',
-    a: `${eurEn(menu.price)} a month, with no contract and no commitment — stop whenever you want. Price and dish changes are included.`,
+    a: `${eurEn(menu.price)} a month, with no contract and no commitment. Stop whenever you want. Price and dish changes are included.`,
   },
   {
     q: 'Does it work for delivery or the storefront?',
-    a: 'Yes — the same menu opens from a QR in the window, on the delivery bag, or from a link on your socials. One menu, the same everywhere, always fresh.',
+    a: 'Yes. The same menu opens from a QR in the window, on the delivery bag, or from a link on your socials. One menu, the same everywhere and always up to date.',
   },
 ];
 ---
 
 <Base
-  title="Digital Menu with QR — no reprints | PISMA"
-  description="A QR code on the table: customers scan and see your menu on their phone. Change prices and dishes anytime — no reprints. See it live."
+  title="Digital Menu with QR and no reprints | PISMA"
+  description="A QR code on the table: customers scan and see your menu on their phone. Change prices and dishes anytime, with no reprints. See it live."
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
     kicker="Digital Menu with QR"
-    sub="One QR code on the table. Customers scan, the menu opens on their phone — and every change you make shows up instantly, no print shop involved."
+    sub="One QR code on the table. Customers scan, the menu opens on their phone, and every change you make shows up instantly, no print shop involved."
   >
     Your menu, <span class="accent">on your customer's phone</span>
   </PageHero>
 
-  <!-- 2. «Δείτε το ζωντανά» — σκηνή σε loop όπως «Η άνοδος στη Google» στην
+  <!-- 2. «Δείτε το ζωντανά», σκηνή σε loop όπως «Η άνοδος στη Google» στην
        αρχική: το HTML έχει το τελικό state (μενού ανοιχτό, τιμή ενημερωμένη)
-       — χωρίς JS ή με reduced motion μένει στατικό· το JS το «ξαναπαίζει»
+, χωρίς JS ή με reduced motion μένει στατικό· το JS το «ξαναπαίζει»
        όσο το section είναι ορατό. -->
   <section class="section section--tight" aria-labelledby="live-title">
     <div class="container">
@@ -107,7 +107,7 @@ const faqItems = [
           <div class="dm-cta">
             <a class="btn btn--orange" href="/en/pricing/">Add it to your package →</a>
           </div>
-          <p class="dm-note">Illustrative — your own menu is set up with your colors and dishes.</p>
+          <p class="dm-note">Illustrative. Your own menu is set up with your colors and dishes.</p>
         </div>
 
         <div class="dm-stage" id="dm-stage" aria-hidden="true">
@@ -158,7 +158,7 @@ const faqItems = [
                 <span class="dm-order is-in" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9.8a6 6 0 0 1 12 0c0 4.8 1.7 6 1.7 6H4.3S6 14.6 6 9.8" /><path d="M10.1 19a2.1 2.1 0 0 0 3.8 0" /></svg>Order at the table</span>
               </div>
 
-              <!-- Κάμερα iPhone: φαίνεται μόνο στην αρχή κάθε κύκλου (JS) —
+              <!-- Κάμερα iPhone: φαίνεται μόνο στην αρχή κάθε κύκλου (JS), 
                    το «τραπέζι» με το αυτοκόλλητο QR, η κίτρινη αναγνώριση
                    της iOS και το banner ανοίγματος. -->
               <div class="dm-cam" id="dm-cam">
@@ -179,7 +179,7 @@ const faqItems = [
                     <span>MENU</span>
                   </div>
                   <span class="dm-corners" id="dm-corners" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-                  <span class="dm-camchip" id="dm-camchip">menu-corner.gr — Open</span>
+                  <span class="dm-camchip" id="dm-camchip">menu-corner.gr · Open</span>
                 </div>
                 <div class="dm-cam-ui" aria-hidden="true">
                   <span class="dm-cam-modes">
@@ -239,19 +239,19 @@ const faqItems = [
     <div class="container container--narrow">
       <div class="card price-card reveal">
         <div class="price-main">
-          <p class="kicker">Price — public, the same for everyone</p>
+          <p class="kicker">Price: public, the same for everyone</p>
           <h2 id="price-title">
             <span class="price-num num">{eurEn(menu.price)}</span> a month
           </h2>
           <p class="price-sub">
             Setup with your own colors and logo, unlimited changes to prices and
-            dishes — all included. No contract, no commitment.
+            dishes, all included. No contract, no commitment.
           </p>
         </div>
         <div class="price-cta">
           <a class="btn btn--orange" href="/en/pricing/">Build your package →</a>
           <a class="btn btn--ghost" href="/en/free-assessment/">Free {ELEGXOS.minutes}-minute PISMA Check</a>
-          <span class="btn-note">No online payment — we close it over the phone.</span>
+          <span class="btn-note">No online payment. We close it over the phone.</span>
         </div>
       </div>
     </div>
@@ -271,7 +271,7 @@ const faqItems = [
   <!-- 6. CTA -->
   <CtaBand
     title="Your menu, digital by tomorrow."
-    sub={`We start with the free ${ELEGXOS.minutes}-minute PISMA Check — we look at your menu and show you how it will look.`}
+    sub={`We start with the free ${ELEGXOS.minutes}-minute PISMA Check: we look at your menu and show you how it will look.`}
     ctaText="Book the free PISMA Check"
     ctaHref="/en/free-assessment/"
     note="No online payment · no commitment"
@@ -326,7 +326,7 @@ const faqItems = [
       later(() => {
         parts.forEach((p, i) => later(() => p.classList.add('is-in'), i * 160));
       }, 3300);
-      // Η τιμή αλλάζει μπροστά σου — με «τίναγμα» στο ποσό
+      // Η τιμή αλλάζει μπροστά σου, με «τίναγμα» στο ποσό
       later(() => {
         hotEl.classList.add('is-hot');
         priceEl.textContent = '€8.90';
@@ -362,7 +362,7 @@ const faqItems = [
 
 <style>
   /* ---------- «Scan, browse, order» ---------- */
-  /* Δίστηλη διάταξη σε desktop, στοίβαγμα σε στενές οθόνες — όπως η ενότητα
+  /* Δίστηλη διάταξη σε desktop, στοίβαγμα σε στενές οθόνες, όπως η ενότητα
      κριτικών της αρχικής. */
   .dm-grid {
     display: grid;
@@ -380,7 +380,7 @@ const faqItems = [
     .dm-stage { margin-inline: auto; }
   }
 
-  /* iPhone σε πραγματικές αναλογίες σώματος (1:2.06) — ίδιο κέλυφος με την
+  /* iPhone σε πραγματικές αναλογίες σώματος (1:2.06), ίδιο κέλυφος με την
      ενότητα κριτικών της αρχικής, σε μεγαλύτερο, «φυσικό» μέγεθος. */
   .dm-stage { position: relative; width: 352px; max-width: 100%; }
   .dm-phone {
@@ -393,7 +393,7 @@ const faqItems = [
     position: relative;
     display: flex; flex-direction: column;
     height: 662px;
-    /* Σκούρο premium φόντο του μενού-site — όχι λευκό */
+    /* Σκούρο premium φόντο του μενού-site, όχι λευκό */
     background:
       radial-gradient(120% 65% at 50% -8%, #3d2c1f, transparent 62%),
       linear-gradient(180deg, #231a13 0%, #171009 100%);
@@ -425,7 +425,7 @@ const faqItems = [
     .dm-screen { height: 590px; border-radius: 42px; }
   }
 
-  /* Το μενού-site — «κανονική» σελίδα με url bar, hero και κάρτες πιάτων */
+  /* Το μενού-site, «κανονική» σελίδα με url bar, hero και κάρτες πιάτων */
   .dm-app { display: flex; flex-direction: column; }
   .dm-url, .dm-hero, .dm-pills, .dm-row {
     opacity: 1; transform: none;
@@ -563,7 +563,7 @@ const faqItems = [
     .dm-hero::before, .dm-hero-art { animation: none; }
   }
 
-  /* Κάμερα iPhone — καλύπτει την οθόνη στην αρχή κάθε κύκλου.
+  /* Κάμερα iPhone, καλύπτει την οθόνη στην αρχή κάθε κύκλου.
      Το dynamic island μένει ορατό ΚΑΙ πάνω από την κάμερα (όπως στο iOS). */
   .dm-cam {
     position: absolute; inset: 0; z-index: 2;
@@ -641,7 +641,7 @@ const faqItems = [
     background: #fff; border: 3px solid #000; outline: 2.5px solid #fff;
   }
 
-  /* ---- Τιμή (ίδιο μοτίβο με τη σελίδα του Τροχού) ---- */
+  /* ---- Τιμή (ίδιο μοτίβο με τη σελίδα του Εργαλείου Κριτικών) ---- */
   .price-card {
     display: grid;
     grid-template-columns: 1.2fr minmax(min(240px, 100%), .8fr);

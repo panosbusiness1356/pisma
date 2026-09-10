@@ -6,9 +6,9 @@ import CtaBand from '../../components/CtaBand.astro';
 import { SITE, ELEGXOS, eurEn } from '../../config';
 import { optionById } from '../../data/pricing';
 
-// Το προϊόν κριτικών — μία πηγή αλήθειας: pricing.ts.
+// Το προϊόν κριτικών, μία πηγή αλήθειας: pricing.ts.
 // Τιμές αυτοκόλλητων: πίνακας F στο /aftokollita/ (εφάπαξ, από 18 € το πακέτο).
-// ΣΚΟΠΙΜΑ teaser: ο μηχανισμός του Εργαλείου Κριτικών δεν περιγράφεται πουθενά δημόσια —
+// ΣΚΟΠΙΜΑ teaser: ο μηχανισμός του Εργαλείου Κριτικών δεν περιγράφεται πουθενά δημόσια, 
 // ούτε βήματα, ούτε demo link. Παρουσιάζεται μόνο ζωντανά, σε ραντεβού.
 const wheel = optionById('auto-reviews')!;
 
@@ -29,64 +29,64 @@ const schema = {
     '@type': 'Offer',
     price: wheel.price,
     priceCurrency: 'EUR',
-    description: `${eurEn(wheel.price)} per month, no commitment — plus QR stickers as a one-off.`,
+    description: `${eurEn(wheel.price)} per month, no commitment, plus QR stickers as a one-off.`,
   },
   description:
-    "PISMA's tool that makes Google reviews pile up on their own. It starts with a QR sticker inside the business — and it is only ever shown live, at a meeting.",
+    "PISMA's tool that makes Google reviews pile up on their own. It starts with a QR sticker inside the business and it is only ever shown live, at a meeting.",
 };
 
 const what = [
   {
     t: 'Your customers enjoy it',
-    d: 'It is not another "please leave us a review" that gets walked past. It starts with a sticker in your space — on the table, at the till, at the front desk — and turns into something your customer does with a smile.',
+    d: 'It starts with a sticker in your space, on the table, at the till or at the front desk, and turns into something your customer does with a smile.',
   },
   {
     t: 'It works without you',
-    d: 'No need to remember to ask. It is set up once and works every day, for every customer — you just watch the reviews come in.',
+    d: 'No need to remember to ask. It is set up once and works every day, for every customer. You just watch the reviews come in.',
   },
   {
     t: "Within Google's rules",
-    d: 'No bought reviews, no staged ones, no reward in exchange. That was the very first requirement when we designed it — and at the meeting you will see exactly how it is respected.',
+    d: 'No bought reviews, no staged ones, no reward in exchange. That was the very first requirement when we designed it, and at the meeting you will see exactly how it is respected.',
   },
 ];
 
 const faqItems = [
   {
     q: 'What is the Reviews Tool?',
-    a: "PISMA's tool for Google reviews: it starts with a QR sticker in your shop and makes reviews pile up on their own — in a way your customers actually enjoy. Exactly how it works is not described publicly; you see it live.",
+    a: "PISMA's tool for Google reviews: it starts with a QR sticker in your shop and makes reviews pile up on their own, in a way your customers actually enjoy. Exactly how it works is not described publicly; you see it live.",
   },
   {
     q: "Why don't you show how it works?",
-    a: 'Because whatever works gets copied. We only show the tool live — to you, set up for your own shop, with your name and colors. A 15-minute video call is enough to know if it is right for you.',
+    a: 'Because whatever works gets copied. We only show the tool live, to you, set up for your own shop, with your name and colors. A 15-minute video call is enough to know if it is right for you.',
   },
   {
     q: "Is this within Google's rules?",
-    a: 'Yes, fully. Google forbids bought reviews, rewards in exchange for reviews and review gating — the tool does none of the three. At the live meeting you will see exactly how we achieve that.',
+    a: 'Yes, fully. Google forbids bought reviews, rewards in exchange for reviews and review gating. The tool does none of the three. At the live meeting you will see exactly how we achieve that.',
   },
   {
     q: 'What do I need to get started?',
-    a: 'A Google profile (if you do not have one, we set it up) and the QR stickers. Everything else we set up for you — you just stick the stickers.',
+    a: 'A Google profile (if you do not have one, we set it up) and the QR stickers. Everything else we set up for you. You just stick the stickers.',
   },
   {
     q: 'How much does it cost?',
-    a: `${eurEn(wheel.price)} per month for the platform — with no contract and no commitment. The QR stickers are a one-off payment, from €18 per pack.`,
+    a: `${eurEn(wheel.price)} per month for the platform, with no contract and no commitment. The QR stickers are a one-off payment, from €18 per pack.`,
   },
   {
     q: 'Does it work for delivery too?',
-    a: 'Yes — there are stickers for the bag and the receipt, and the tool works just as well from your customer’s home.',
+    a: 'Yes. There are stickers for the bag and the receipt, and the tool works just as well from your customer’s home.',
   },
 ];
 ---
 
 <Base
-  title="The Reviews Tool — More Google reviews | PISMA"
-  description="PISMA's tool that makes Google reviews pile up on their own. We don't show it publicly — book a meeting to see it live. No commitment."
+  title="The Reviews Tool: More Google reviews | PISMA"
+  description="PISMA's tool that makes Google reviews pile up on their own. We don't show it publicly. Book a meeting to see it live. No commitment."
   schema={schema}
 >
   <!-- 1. Hero -->
   <PageHero
     kicker="The Reviews Tool"
-    sub="The tool that makes your customers want to leave a Google review — and enjoy doing it. How? That part we don't show publicly."
+    sub="The tool that makes your customers want to leave a Google review, and enjoy doing it. How it works is something we don't show publicly."
   >
     Reviews that pile up <span class="accent">on their own</span>
   </PageHero>
@@ -113,12 +113,12 @@ const faqItems = [
   <section class="section" aria-labelledby="secret-title">
     <div class="container container--narrow">
       <div class="card secret-card reveal">
-        <p class="kicker">Why the secrecy?</p>
+        <p class="kicker">Why we keep it private</p>
         <h2 id="secret-title">Whatever works gets copied.</h2>
         <p class="secret-sub">
-          That is why the tool is not explained on any page — it is only shown live.
+          That is why the tool is not explained on any page. It is only shown live.
           On a 15-minute video call or in person at your shop, you see it the way your
-          customer will — set up with your shop's name and colors.
+          customer will, set up with your shop's name and colors.
         </p>
         <div class="secret-cta">
           <a class="btn btn--orange" href="/en/contact/">Book to see it live</a>
@@ -134,23 +134,23 @@ const faqItems = [
     <div class="container container--narrow">
       <div class="card price-card reveal">
         <div class="price-main">
-          <p class="kicker">Price — public, the same for everyone</p>
+          <p class="kicker">Price: public, the same for everyone</p>
           <h2 id="price-title">
             <span class="price-num num">{eurEn(wheel.price)}</span> per month
           </h2>
           <p class="price-sub">
-            Everything included — platform, setup, stats. No contract, no commitment:
+            Everything included: platform, setup, stats. No contract, no commitment:
             stop whenever you want.
           </p>
           <p class="price-sub">
-            Plus the QR stickers, one-off — <strong>from €18 per pack</strong>,
+            Plus the QR stickers, one-off, <strong>from €18 per pack</strong>,
             with 16 designs for tables, tills, windows and delivery.
           </p>
         </div>
         <div class="price-cta">
           <a class="btn btn--orange" href="/en/qr-stickers/">Pick your stickers →</a>
           <a class="btn btn--ghost" href="/en/contact/">Ask us anything</a>
-          <span class="btn-note">No online payment — we settle it over the phone.</span>
+          <span class="btn-note">No online payment. We settle it over the phone.</span>
         </div>
       </div>
     </div>
@@ -170,7 +170,7 @@ const faqItems = [
   <!-- 6. CTA -->
   <CtaBand
     title="See the tool live."
-    sub="A 15-minute video call or in person at your shop — and you will instantly understand why we don't show it publicly."
+    sub="A 15-minute video call or a visit to your shop is enough to understand why we don't show it publicly."
     ctaText="Book the meeting"
     ctaHref="/en/contact/"
     note="No online payment · no commitment"

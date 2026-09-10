@@ -1,7 +1,7 @@
 /**
- * Ευρετήριο οδηγών — μία πηγή για /odigoi/, /llms.txt και ό,τι άλλο τους λιστάρει.
+ * Ευρετήριο οδηγών, μία πηγή για /odigoi/, /llms.txt και ό,τι άλλο τους λιστάρει.
  * Νέος οδηγός = νέα γραμμή εδώ + αρχείο στο src/pages/odigoi/ + γραμμή στο PAIRS (i18n.ts)
- * — το sitemap.xml παράγεται αυτόματα από το PAIRS, δεν θέλει χειροκίνητη ενημέρωση.
+ *, το sitemap.xml παράγεται αυτόματα από το PAIRS, δεν θέλει χειροκίνητη ενημέρωση.
  */
 export interface GuideMeta {
   slug: string;
@@ -12,13 +12,13 @@ export interface GuideMeta {
 export const GUIDES: GuideMeta[] = [
   {
     slug: 'seo-me-apla-logia',
-    q: 'Τι είναι το SEO — με απλά λόγια;',
+    q: 'Τι είναι το SEO;',
     blurb: 'Χωρίς τεχνικούς όρους: τι μετράει πραγματικά για την επιχείρησή σας.',
   },
   {
     slug: 'na-se-proteinei-to-chatgpt',
     q: 'Πώς θα σας προτείνει το ChatGPT;',
-    blurb: 'Οι πελάτες ρωτάνε πλέον και το AI — να τι κοιτάζει για να απαντήσει.',
+    blurb: 'Οι πελάτες ρωτάνε πλέον και το AI: τι κοιτάζει για να απαντήσει.',
   },
   {
     slug: 'profil-google-maps',
@@ -28,7 +28,7 @@ export const GUIDES: GuideMeta[] = [
   {
     slug: 'perissoteres-kritikes-google',
     q: 'Πώς θα πάρετε περισσότερες κριτικές στη Google;',
-    blurb: 'Πώς να ζητάτε σωστά, πώς να απαντάτε — και τι να μην κάνετε ποτέ.',
+    blurb: 'Πώς να ζητάτε σωστά, πώς να απαντάτε και τι να μην κάνετε ποτέ.',
   },
   {
     slug: 'poso-kostizei-ena-site',
@@ -38,7 +38,7 @@ export const GUIDES: GuideMeta[] = [
   {
     slug: 'ti-einai-oi-aftomatismoi',
     q: 'Τι είναι οι αυτοματισμοί γραφείου;',
-    blurb: 'Τι κάνει ο καθένας — πληρωμές, οφειλές, αναφορές — με απλά λόγια.',
+    blurb: 'Τι κάνει ο καθένας: πληρωμές, οφειλές, αναφορές.',
   },
   {
     slug: 'diaxeirisi-social-media',

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Λύρα — Οινοποιείο</title>
+<title>Οινοποιείο Λύρα</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=GFS+Didot:ital@0;1&family=Commissioner:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -487,7 +487,7 @@ body.loaded .hero-type .mid{opacity:1}
 .ltr{display:inline-block;opacity:0;will-change:transform}
 .ltr.stay{animation:none;opacity:1;transform:none;filter:none}
 
-/* 1. fall — letters drop from above */
+/* 1. fall, letters drop from above */
 .fx-fall .ltr{transform:translateY(-1em) rotate(var(--rot,0deg))}
 .fx-fall.letters-go .ltr{animation:ldrop .75s cubic-bezier(.25,1.35,.35,1) forwards;animation-delay:var(--d,0s)}
 @keyframes ldrop{
@@ -497,7 +497,7 @@ body.loaded .hero-type .mid{opacity:1}
   100%{opacity:1;transform:none}
 }
 
-/* 2. pop — letters bubble up from nothing */
+/* 2. pop, letters bubble up from nothing */
 .fx-pop .ltr{transform:scale(0) rotate(var(--rot,0deg))}
 .fx-pop.letters-go .ltr{animation:lpop .55s cubic-bezier(.3,1.9,.4,1) forwards;animation-delay:var(--d,0s)}
 @keyframes lpop{
@@ -506,7 +506,7 @@ body.loaded .hero-type .mid{opacity:1}
   100%{opacity:1;transform:none}
 }
 
-/* 3. scatter — letters fly in from random directions */
+/* 3. scatter, letters fly in from random directions */
 .fx-scatter .ltr{transform:translate(var(--dx,0px),var(--dy,0px)) rotate(var(--rot,0deg))}
 .fx-scatter.letters-go .ltr{animation:lscatter .8s cubic-bezier(.2,.85,.3,1.1) forwards;animation-delay:var(--d,0s)}
 @keyframes lscatter{
@@ -514,7 +514,7 @@ body.loaded .hero-type .mid{opacity:1}
   100%{opacity:1;transform:none}
 }
 
-/* 4. flip — letters turn over like cards */
+/* 4. flip, letters turn over like cards */
 .fx-flip{perspective:700px}
 .fx-flip .ltr{transform:rotateY(96deg);transform-origin:50% 50%}
 .fx-flip.letters-go .ltr{animation:lflip .6s cubic-bezier(.3,1.4,.4,1) forwards;animation-delay:var(--d,0s)}
@@ -524,7 +524,7 @@ body.loaded .hero-type .mid{opacity:1}
   100%{opacity:1;transform:none}
 }
 
-/* 5. rise — letters spring up from below */
+/* 5. rise, letters spring up from below */
 .fx-rise .ltr{transform:translateY(1.1em) scaleY(.6)}
 .fx-rise.letters-go .ltr{animation:lrise2 .6s cubic-bezier(.25,1.6,.4,1) forwards;animation-delay:var(--d,0s)}
 @keyframes lrise2{
@@ -1252,7 +1252,7 @@ body{touch-action:pan-y pinch-zoom}
 <button id="soundBtn" aria-pressed="false" aria-label="Ήχος περιβάλλοντος">♪</button>
 
 <nav id="nav">
-  <a class="nav-logo" href="#top" aria-label="Λύρα — αρχική">
+  <a class="nav-logo" href="#top" aria-label="Λύρα, αρχική">
     <svg viewBox="0 0 24 24" fill="none" stroke="#C7A24B" stroke-width="1.3" aria-hidden="true">
       <path d="M6 3c0 5 1.5 7 3 8.5V17M18 3c0 5-1.5 7-3 8.5V17"/>
       <path d="M9 17h6M9 20h6M10 11.5h4"/><path d="M12 11.5V20"/>
@@ -1290,7 +1290,7 @@ body{touch-action:pan-y pinch-zoom}
   <div class="hero-shade"></div>
   <div class="hero-type">
     <div class="row"><span class="w">ΑΥΘΕΝΤΙΚΗ</span></div>
-    <p class="mid">Στην καρδιά της Νεμέας, τρεις γενιές καλλιεργούμε το Αγιωργίτικο στα 620 μέτρα — και κλείνουμε τη γη μας σε κάθε φιάλη Λύρα, από το 1974.</p>
+    <p class="mid">Στην καρδιά της Νεμέας, τρεις γενιές καλλιεργούμε το Αγιωργίτικο στα 620 μέτρα και κλείνουμε τη γη μας σε κάθε φιάλη Λύρα, από το 1974.</p>
     <div class="row"><span class="w" style="font-style:italic">ΨΥΧΗ</span></div>
     <div class="row"><span class="w">ΤΗΣ ΝΕΜΕΑΣ</span></div>
   </div>
@@ -1334,8 +1334,8 @@ body{touch-action:pan-y pinch-zoom}
     <div class="tl">
       <div class="tl-line" aria-hidden="true"><i id="tlFill"></i><b class="tl-dot" id="tlDot"></b></div>
       <div class="tl-ev reveal"><span class="tl-year">1974</span><div class="tl-body"><h3>Η αρχή</h3><p>Ο παππούς Λεωνίδας φυτεύει τα πρώτα 30 στρέμματα Αγιωργίτικου στο Κούτσι της Νεμέας.</p></div><span class="tl-idx">01</span></div>
-      <div class="tl-ev reveal"><span class="tl-year">1982</span><div class="tl-body"><h3>Πρώτη φιάλη</h3><p>Η πρώτη εμφιάλωση — 4.000 φιάλες — φτάνει στα ράφια της Αθήνας με την ετικέτα ΛΥΡΑ.</p></div><span class="tl-idx">02</span></div>
-      <div class="tl-ev reveal"><span class="tl-year">1999</span><div class="tl-body"><h3>Δεύτερη γενιά</h3><p>Η οικογένεια αποκτά αμπέλι στη Σαντορίνη — Ασύρτικο σε αιωνόβιες κουλούρες.</p></div><span class="tl-idx">03</span></div>
+      <div class="tl-ev reveal"><span class="tl-year">1982</span><div class="tl-body"><h3>Πρώτη φιάλη</h3><p>Η πρώτη εμφιάλωση (4.000 φιάλες) φτάνει στα ράφια της Αθήνας με την ετικέτα ΛΥΡΑ.</p></div><span class="tl-idx">02</span></div>
+      <div class="tl-ev reveal"><span class="tl-year">1999</span><div class="tl-body"><h3>Δεύτερη γενιά</h3><p>Η οικογένεια αποκτά αμπέλι στη Σαντορίνη, Ασύρτικο σε αιωνόβιες κουλούρες.</p></div><span class="tl-idx">03</span></div>
       <div class="tl-ev reveal"><span class="tl-year">2011</span><div class="tl-body"><h3>Βιολογική πιστοποίηση</h3><p>Όλοι οι αμπελώνες καλλιεργούνται πλέον βιολογικά.</p></div><span class="tl-idx">04</span></div>
       <div class="tl-ev reveal"><span class="tl-year">2019</span><div class="tl-body"><h3>Νάουσα</h3><p>Το Ξινόμαυρο των πλαγιών του Βερμίου μπαίνει στην οικογένεια.</p></div><span class="tl-idx">05</span></div>
       <div class="tl-ev reveal"><span class="tl-year">2024</span><div class="tl-body"><h3>50 χρόνια</h3><p>Μισός αιώνας, τρεις γενιές, τρεις αμπελώνες, μία νότα.</p></div><span class="tl-idx">06</span></div>
@@ -1377,7 +1377,7 @@ body{touch-action:pan-y pinch-zoom}
     <div class="f-copy">
       <p class="eyebrow reveal">Η φιαλη</p>
       <h2 class="big reveal d1">Λύρα Ερυθρή 2021</h2>
-      <p class="lead reveal d2">Το Αγιωργίτικο της Νεμέας στην πιο καθαρή του μορφή — δώδεκα μήνες σε γαλλικό δρύινο βαρέλι, αφιλτράριστο, εμφιαλωμένο στο κτήμα.</p>
+      <p class="lead reveal d2">Το Αγιωργίτικο της Νεμέας στην πιο καθαρή του μορφή: δώδεκα μήνες σε γαλλικό δρύινο βαρέλι, αφιλτράριστο, εμφιαλωμένο στο κτήμα.</p>
       <ul class="f-notes reveal d2">
         <li class="note n1"><b>Βύσσινο &amp; δαμάσκηνο</b><span>Στη μυτη</span></li>
         <li class="note n2"><b>Γλυκά μπαχαρικά</b><span>Στο στομα</span></li>
@@ -1909,7 +1909,7 @@ c-47 32 -59 36 -59 20z"/>
       </button>
     </div>
     <div class="panels reveal d1" id="panels">
-      <article class="panel" data-aura="#2A0F17" style="--dustc:#F2D98B" tabindex="0" aria-label="Νεμέα — Κτήμα Λύρα">
+      <article class="panel" data-aura="#2A0F17" style="--dustc:#F2D98B" tabindex="0" aria-label="Νεμέα, Κτήμα Λύρα">
         <img src="images/nemea.jpg?v=3" alt="Τσαμπιά Αγιωργίτικου στον ήλιο, Νεμέα">
         <div class="p-shade"></div>
         <div class="p-dust" aria-hidden="true"></div>
@@ -1920,7 +1920,7 @@ c-47 32 -59 36 -59 20z"/>
           <p class="p-meta"><b data-alt="620">620</b>μ. υψομετρο</p>
         </div>
       </article>
-      <article class="panel" data-aura="#101B26" style="--dustc:#DCEBF2" tabindex="0" aria-label="Θήρα — Αμπέλι Θήρας">
+      <article class="panel" data-aura="#101B26" style="--dustc:#DCEBF2" tabindex="0" aria-label="Θήρα, Αμπέλι Θήρας">
         <img src="images/santorini.jpg?v=4" alt="Λευκά σταφύλια Ασύρτικου στον τρύγο">
         <div class="p-shade"></div>
         <div class="p-dust" aria-hidden="true"></div>
@@ -1931,7 +1931,7 @@ c-47 32 -59 36 -59 20z"/>
           <p class="p-meta"><b data-alt="300">300</b> ετων κληματα</p>
         </div>
       </article>
-      <article class="panel" data-aura="#1D1224" style="--dustc:#CDA4E0" tabindex="0" aria-label="Νάουσα — Πλαγιές Βερμίου">
+      <article class="panel" data-aura="#1D1224" style="--dustc:#CDA4E0" tabindex="0" aria-label="Νάουσα, Πλαγιές Βερμίου">
         <img src="images/naousa.jpg?v=4" alt="Πλαγιές γεμάτες αμπελώνες στο ηλιοβασίλεμα">
         <div class="p-shade"></div>
         <div class="p-dust" aria-hidden="true"></div>
@@ -1953,7 +1953,7 @@ c-47 32 -59 36 -59 20z"/>
   <div class="f-photo fp3" aria-hidden="true"><img src="images/rose3.jpg?v=3" alt=""></div>
   <div class="wrap">
     <h2 class="huge"><span class="reveal">ΑΓΑΠΗ</span><br><span class="l2 reveal d1">για την</span><br><span class="reveal d2">ΟΙΝΟΠΟΙΙΑ</span></h2>
-    <p class="lead reveal d2">Τρεις αμπελώνες σε τρεις γωνιές της Ελλάδας — Νεμέα, Σαντορίνη, Νάουσα. Μαζί, 180 στρέμματα βιολογικής καλλιέργειας, τρύγος με το χέρι και 45.000 φιάλες τον χρόνο. Τίποτα βιαστικό, τίποτα τυχαίο.</p>
+    <p class="lead reveal d2">Τρεις αμπελώνες σε τρεις γωνιές της Ελλάδας: Νεμέα, Σαντορίνη, Νάουσα. Μαζί, 180 στρέμματα βιολογικής καλλιέργειας, τρύγος με το χέρι και 45.000 φιάλες τον χρόνο. Τίποτα βιαστικό, τίποτα τυχαίο.</p>
     <a class="btn reveal d3" href="#gefsi"><span>Ανακαλυψτε περισσοτερα</span></a>
   </div>
 </section>
@@ -2052,7 +2052,7 @@ c-47 32 -59 36 -59 20z"/>
       <div class="fq"><button class="fq-q" aria-expanded="false">Στέλνετε κρασιά σε όλη την Ελλάδα;<i></i></button>
         <div class="fq-a"><p>Ναι, με ασφαλή συσκευασία σε 2–4 εργάσιμες. Για παραγγελίες άνω των έξι φιαλών τα μεταφορικά είναι δικά μας.</p></div></div>
       <div class="fq"><button class="fq-q" aria-expanded="false">Δέχεστε ομάδες και εκδηλώσεις;<i></i></button>
-        <div class="fq-a"><p>Έως 40 άτομα στην αυλή και το κελάρι — γευσιγνωσίες, εταιρικές βραδιές, ακόμα και μικροί γάμοι. Στείλτε μας μήνυμα από τη φόρμα κράτησης.</p></div></div>
+        <div class="fq-a"><p>Έως 40 άτομα στην αυλή και το κελάρι: γευσιγνωσίες, εταιρικές βραδιές, ακόμα και μικροί γάμοι. Στείλτε μας μήνυμα από τη φόρμα κράτησης.</p></div></div>
     </div>
   </div>
 </section>
@@ -2063,7 +2063,7 @@ c-47 32 -59 36 -59 20z"/>
     <div>
       <p class="eyebrow reveal">Κρατησεις</p>
       <h2 class="big reveal d1">Κλείσε τη δική<br>σου επίσκεψη</h2>
-      <p class="lead reveal d2" style="margin-top:1.4rem">Ξενάγηση, γευσιγνωσία ή τραπέζι στο εστιατόριο — πες μας πότε έρχεσαι και θα σε περιμένουμε με ένα ποτήρι στο χέρι.</p>
+      <p class="lead reveal d2" style="margin-top:1.4rem">Ξενάγηση, γευσιγνωσία ή τραπέζι στο εστιατόριο. Πες μας πότε έρχεσαι και θα σε περιμένουμε με ένα ποτήρι στο χέρι.</p>
       <form id="bookForm" class="reveal d2" novalidate>
         <div class="frow">
           <input name="name" required placeholder="Ονοματεπώνυμο" aria-label="Ονοματεπώνυμο">
@@ -2172,7 +2172,7 @@ c-47 32 -59 36 -59 20z"/>
   });
   if(LANG==='en'){
     document.documentElement.lang='en';
-    document.title='Lyra — Winery';
+    document.title='Lyra Winery';
     const T=[
       ['.nav-links a[href="#istoria"]','Story'],['.nav-links a[href="#xenonas"]','Guesthouse'],
       ['.nav-links a[href="#ampelones"]','Vineyards'],['.nav-links a[href="#gefsi"]','Dining'],
@@ -2182,7 +2182,7 @@ c-47 32 -59 36 -59 20z"/>
       ['#mobileMenu a[href="#nea"]','News'],['#mobileMenu a[href="#krathsi"]','Book a visit'],
       ['#mobileMenu .mm-foot','Lyra Winery · 1974'],
       ['.hero-type .row:nth-child(1) .w','AUTHENTIC'],
-      ['.hero-type .mid','In the heart of Nemea, three generations have farmed Agiorgitiko at 620 metres — sealing our land into every bottle of Lyra since 1974.'],
+      ['.hero-type .mid','In the heart of Nemea, three generations have farmed Agiorgitiko at 620 metres, sealing our land into every bottle of Lyra since 1974.'],
       ['.hero-type .row:nth-child(3) .w','SOUL'],
       ['.hero-type .row:nth-child(4) .w','OF NEMEA'],
       ['.hero-scroll span','Scroll'],
@@ -2194,9 +2194,9 @@ c-47 32 -59 36 -59 20z"/>
       ['#istoria .tl-ev:nth-child(2) h3','The beginning'],
       ['#istoria .tl-ev:nth-child(2) p','Grandfather Leonidas plants the first three hectares of Agiorgitiko in Koutsi, Nemea.'],
       ['#istoria .tl-ev:nth-child(3) h3','First bottle'],
-      ['#istoria .tl-ev:nth-child(3) p','The first bottling — 4,000 bottles — reaches the shelves of Athens under the LYRA label.'],
+      ['#istoria .tl-ev:nth-child(3) p','The first bottling (4,000 bottles) reaches the shelves of Athens under the LYRA label.'],
       ['#istoria .tl-ev:nth-child(4) h3','Second generation'],
-      ['#istoria .tl-ev:nth-child(4) p','The family acquires a vineyard on Santorini — Assyrtiko grown on ancient basket-trained vines.'],
+      ['#istoria .tl-ev:nth-child(4) p','The family acquires a vineyard on Santorini, Assyrtiko grown on ancient basket-trained vines.'],
       ['#istoria .tl-ev:nth-child(5) h3','Organic certification'],
       ['#istoria .tl-ev:nth-child(5) p','All vineyards are now certified organic.'],
       ['#istoria .tl-ev:nth-child(6) h3','Naoussa'],
@@ -2214,7 +2214,7 @@ c-47 32 -59 36 -59 20z"/>
       ['#fiali .n2 b','Sweet spice'],['#fiali .n2 span','on the palate'],
       ['#fiali .n3 b','Velvet tannins'],['#fiali .n3 span','on the finish'],
       ['#fiali .n4 b','12 months'],['#fiali .n4 span','in oak barrels'],
-      ['#fiali .lead','The Agiorgitiko of Nemea at its purest — twelve months in French oak, unfiltered, bottled at the estate.'],
+      ['#fiali .lead','The Agiorgitiko of Nemea at its purest: twelve months in French oak, unfiltered, bottled at the estate.'],
       ['.f-specs div:nth-child(1) i','Variety'],
       ['.f-specs div:nth-child(2) i','Alcohol'],
       ['.f-specs div:nth-child(3) i','Serve at'],
@@ -2240,7 +2240,7 @@ c-47 32 -59 36 -59 20z"/>
       ['#faq .fq:nth-child(4) .fq-q','Do you ship across Greece?<i></i>'],
       ['#faq .fq:nth-child(4) .fq-a p','Yes, safely packed, in 2–4 working days. Shipping is on us for orders of six bottles or more.'],
       ['#faq .fq:nth-child(5) .fq-q','Do you host groups and events?<i></i>'],
-      ['#faq .fq:nth-child(5) .fq-a p','Up to 40 guests in the courtyard and cellar — tastings, corporate evenings, even small weddings. Message us through the booking form.'],
+      ['#faq .fq:nth-child(5) .fq-a p','Up to 40 guests in the courtyard and cellar: tastings, corporate evenings, even small weddings. Message us through the booking form.'],
       ['#stickyBook span','Book'],
       ['#giantTitle','THE <em>VINEYARDS</em>'],
       ['.pin[data-panel="2"] span','Naoussa'],['.pin[data-panel="0"] span','Nemea'],['.pin[data-panel="1"] span','Thira'],
@@ -2251,7 +2251,7 @@ c-47 32 -59 36 -59 20z"/>
       ['.panel:nth-child(3) .p-vert','NAOUSSA'],['.panel:nth-child(3) .p-name','NAOUSSA'],
       ['.panel:nth-child(3) .p-sub','Vermio Slopes · Xinomavro'],
       ['.rose .huge','<span>LOVE</span><br><span class="l2">for the</span><br><span>CRAFT</span>'],
-      ['.rose .lead','Three vineyards in three corners of Greece — Nemea, Santorini, Naoussa. Together: 18 hectares farmed organically, hand-harvested, 45,000 bottles a year. Nothing rushed, nothing accidental.'],
+      ['.rose .lead','Three vineyards in three corners of Greece: Nemea, Santorini, Naoussa. Together: 18 hectares farmed organically, hand-harvested, 45,000 bottles a year. Nothing rushed, nothing accidental.'],
       ['.rose .btn span','Discover more'],
       ['#gefsi .eyebrow','Restaurant'],
       ['#gefsi h2.big','A Taste Experience'],
@@ -2272,7 +2272,7 @@ c-47 32 -59 36 -59 20z"/>
       ['#nea .news:nth-child(3) h3','A night of music in the courtyard: wine under the stars'],
       ['#krathsi .eyebrow','Reservations'],
       ['#krathsi h2.big','Book your<br>own visit'],
-      ['#krathsi .lead','A tour, a tasting or a table at the restaurant — tell us when you are coming and we will be waiting with a glass in hand.'],
+      ['#krathsi .lead','A tour, a tasting or a table at the restaurant. Tell us when you are coming and we will be waiting with a glass in hand.'],
       ['#bookForm .btn span','Send request'],
       ['.nl-side h3','News from the cellar'],
       ['.nl-side p','One bottled letter a month: what is happening in the vines, which vintages are opening, when the harvest begins.'],
@@ -2670,8 +2670,8 @@ c-47 32 -59 36 -59 20z"/>
         {q:'What are you after in the glass?',o:['Deep & velvety','Crisp & mineral','Fruity & alive']}
       ],
       res:[
-        {t:'Lyra Red — Agiorgitiko of Nemea',d:'Sour cherry, sweet spice and velvet tannins. Twelve months in oak, made for slow evenings.',img:'images/nemea.jpg?v=3'},
-        {t:'Lyra White — Assyrtiko of Thira',d:'Citrus, volcanic minerality and a razor of acidity. The high, clear note of the Aegean.',img:'images/santorini.jpg?v=4'},
+        {t:'Lyra Red · Agiorgitiko of Nemea',d:'Sour cherry, sweet spice and velvet tannins. Twelve months in oak, made for slow evenings.',img:'images/nemea.jpg?v=3'},
+        {t:'Lyra White · Assyrtiko of Thira',d:'Citrus, volcanic minerality and a razor of acidity. The high, clear note of the Aegean.',img:'images/santorini.jpg?v=4'},
         {t:'Lyra Xinomavro of Naoussa',d:'Strawberry, rose petals and a lively, savoury finish. The note that keeps the party going.',img:'images/naousa.jpg?v=4'}
       ],
       cta:'See the vineyard',again:'Play again',step:'Question'
@@ -2682,8 +2682,8 @@ c-47 32 -59 36 -59 20z"/>
         {q:'Τι γυρεύεις στο ποτήρι;',o:['Κάτι βαθύ & βελούδινο','Κάτι φρέσκο & ορυκτό','Κάτι φρουτώδες & ζωντανό']}
       ],
       res:[
-        {t:'Λύρα Ερυθρή — Αγιωργίτικο Νεμέας',d:'Βύσσινο, γλυκά μπαχαρικά και βελούδινες ταννίνες. Δώδεκα μήνες σε βαρέλι, για βραδιές που δεν βιάζονται.',img:'images/nemea.jpg?v=3'},
-        {t:'Λύρα Λευκή — Ασύρτικο Θήρας',d:'Εσπεριδοειδή, ηφαιστειακή ορυκτότητα και κοφτερή οξύτητα. Η ψηλή, καθαρή νότα του Αιγαίου.',img:'images/santorini.jpg?v=4'},
+        {t:'Λύρα Ερυθρή · Αγιωργίτικο Νεμέας',d:'Βύσσινο, γλυκά μπαχαρικά και βελούδινες ταννίνες. Δώδεκα μήνες σε βαρέλι, για βραδιές που δεν βιάζονται.',img:'images/nemea.jpg?v=3'},
+        {t:'Λύρα Λευκή · Ασύρτικο Θήρας',d:'Εσπεριδοειδή, ηφαιστειακή ορυκτότητα και κοφτερή οξύτητα. Η ψηλή, καθαρή νότα του Αιγαίου.',img:'images/santorini.jpg?v=4'},
         {t:'Λύρα Ξινόμαυρο Νάουσας',d:'Φράουλα, ροδοπέταλα και ζωντανό, αλμυρό τελείωμα. Η νότα που κρατάει την παρέα ξύπνια.',img:'images/naousa.jpg?v=4'}
       ],
       cta:'Δες τον αμπελώνα',again:'Παίξε ξανά',step:'Ερώτηση'
@@ -2718,11 +2718,11 @@ c-47 32 -59 36 -59 20z"/>
       const note=document.getElementById('bookNote');
       if(FORMSPREE){
         fetch('https://formspree.io/f/'+FORMSPREE,{method:'POST',body:f,headers:{'Accept':'application/json'}})
-          .then(r=>{note.textContent=r.ok?(LANG==='en'?'Thank you! We will be in touch soon.':'Ευχαριστούμε! Θα επικοινωνήσουμε σύντομα.'):(LANG==='en'?'Something went wrong — please try again.':'Σφάλμα — δοκίμασε ξανά.');if(r.ok)bookForm.reset();});
+          .then(r=>{note.textContent=r.ok?(LANG==='en'?'Thank you! We will be in touch soon.':'Ευχαριστούμε! Θα επικοινωνήσουμε σύντομα.'):(LANG==='en'?'Something went wrong. Please try again.':'Σφάλμα. Δοκίμασε ξανά.');if(r.ok)bookForm.reset();});
       }else{
         const body=encodeURIComponent(`Όνομα: ${f.get('name')}\nEmail: ${f.get('email')}\nΗμερομηνία: ${f.get('date')}\nΆτομα: ${f.get('people')}\n\n${f.get('msg')||''}`);
         location.href='mailto:info@lyrawinery.gr?subject='+encodeURIComponent(LANG==='en'?'Visit reservation':'Κράτηση επίσκεψης')+'&body='+body;
-        note.textContent=(LANG==='en')?'Your email app just opened — hit send!':'Άνοιξε το πρόγραμμα email σου — πάτα αποστολή!';
+        note.textContent=(LANG==='en')?'Your email app just opened. Hit send!':'Άνοιξε το πρόγραμμα email σου. Πάτα αποστολή!';
       }
     });
   }
@@ -2735,7 +2735,7 @@ c-47 32 -59 36 -59 20z"/>
       nlForm.classList.add('corked');
       inp.disabled=true;
       nlForm.querySelector('button').innerHTML='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 12.5l5 5L20 6.5"/></svg>';
-      document.getElementById('nlNote').textContent=(LANG==='en')?'Welcome to the cellar — your first letter is on its way.':'Καλώς ήρθες στο κελάρι μας — το πρώτο γράμμα έρχεται σύντομα.';
+      document.getElementById('nlNote').textContent=(LANG==='en')?'Welcome to the cellar. Your first letter is on its way.':'Καλώς ήρθες στο κελάρι μας. Το πρώτο γράμμα έρχεται σύντομα.';
       if(FORMSPREE){const f=new FormData();f.append('newsletter',inp.value);fetch('https://formspree.io/f/'+FORMSPREE,{method:'POST',body:f,headers:{'Accept':'application/json'}});}
     });
   }
@@ -2880,11 +2880,11 @@ c-47 32 -59 36 -59 20z"/>
   const gbCard=document.getElementById('gbCard');
   if(gbCard){
     const GB=(LANG==='en')?[
-      {q:'The best tasting we have ever done — and the sunset from the guesthouse, unforgettable.',n:'Maria K. · Athens'},
+      {q:'The best tasting we have ever done, and the sunset from the guesthouse, unforgettable.',n:'Maria K. · Athens'},
       {q:'We came for one glass and stayed three days.',n:'Nikos & Eleni · Thessaloniki'},
       {q:'Their Xinomavro ros\u00e9 takes you places. We will be back for the harvest.',n:'Anna M. · Berlin'}
     ]:[
-      {q:'Η καλύτερη γευσιγνωσία που έχουμε κάνει — και το ηλιοβασίλεμα από τον ξενώνα, αξέχαστο.',n:'Μαρία Κ. · Αθήνα'},
+      {q:'Η καλύτερη γευσιγνωσία που έχουμε κάνει, και το ηλιοβασίλεμα από τον ξενώνα, αξέχαστο.',n:'Μαρία Κ. · Αθήνα'},
       {q:'Ήρθαμε για ένα ποτήρι και μείναμε τρεις μέρες.',n:'Νίκος & Ελένη · Θεσσαλονίκη'},
       {q:'Το ροζέ Ξινόμαυρο ταξιδεύει. Θα γυρίσουμε στον τρύγο.',n:'Anna M. · Βερολίνο'}
     ];
@@ -2922,7 +2922,7 @@ c-47 32 -59 36 -59 20z"/>
   }
   document.querySelectorAll('.btn').forEach(magnet);
 
-  /* ===== liquid title (SVG feTurbulence) — trial on ΟΙ ΑΜΠΕΛΩΝΕΣ ===== */
+  /* ===== liquid title (SVG feTurbulence), trial on ΟΙ ΑΜΠΕΛΩΝΕΣ ===== */
   const liqDisp=document.getElementById('liquidDisp');
   const giantEl=document.getElementById('giantTitle');
   if(giantEl&&liqDisp&&!reduced&&matchMedia('(hover:hover)').matches){

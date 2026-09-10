@@ -1,5 +1,5 @@
 /**
- * Smoke — γκρίζος καπνός σκηνής σε WebGL (αίτημα χρήστριας 06/09/2026:
+ * Smoke, γκρίζος καπνός σκηνής σε WebGL (αίτημα χρήστριας 06/09/2026:
  * «φτιάξε τον εσύ τον καπνό, όχι βίντεο»). Fractal noise με domain warping
  * που κυλά αργά· μοιάζει με βίντεο καπνού, χωρίς αρχείο (0 KB media).
  *
@@ -8,20 +8,20 @@
  *   data-scale     μέγεθος σχηματισμών (μικρό = μεγάλα σύννεφα, default 2.4)
  *   data-speed     ταχύτητα (default 1)
  *   data-warp      πόσο «στρίβει» (0–6, default 3.5)
- *   data-lo/hi     κατώφλια πυκνότητας (default .38 / .98 — μικρότερο lo = πιο πυκνός)
+ *   data-lo/hi     κατώφλια πυκνότητας (default .38 / .98, μικρότερο lo = πιο πυκνός)
  *   data-bottom    πόσο πιο πυκνός κάτω (0–1, default .75)
  *   data-rise      άνοδος προς τα πάνω (0–1, default .15)
  *   data-rays      ακτίνες προβολέων μέσα στον καπνό (0/1, default 0)
  *   data-glow      φως/«αύρα» πίσω από το κέντρο που φωτίζει τον καπνό (0–1.5, default .9)
  *   data-glowy     ύψος του φωτός 0–1 (default .5), data-glowr σφίξιμο (default 2.8, μικρότερο = πιο απλωμένο)
  *
- * Απόδοση (07/09/2026 — «να τρέχει τέλεια και στην πιο αδύναμη συσκευή»):
+ * Απόδοση (07/09/2026, «να τρέχει τέλεια και στην πιο αδύναμη συσκευή»):
  *  • Τρεις βαθμίδες ποιότητας, αυτόματα ανά συσκευή. Σε desktop η εικόνα μένει ΙΔΙΑ με την επιλογή
  *    της χρήστριας (6 οκτάβες, 3 στρώματα φωτισμού):
- *      full  — ποντίκι/trackpad, ≥8 threads: πλήρης shader, ανάλυση .65× (ο καπνός είναι θολός — δεν φαίνεται)
- *      lite  — κινητό/tablet ή αδύναμη CPU/GPU: 4 οκτάβες, φωτισμός από παραγώγους οθόνης (0 έξτρα
+ *      full, ποντίκι/trackpad, ≥8 threads: πλήρης shader, ανάλυση .65× (ο καπνός είναι θολός, δεν φαίνεται)
+ *      lite, κινητό/tablet ή αδύναμη CPU/GPU: 4 οκτάβες, φωτισμός από παραγώγους οθόνης (0 έξτρα
  *              στρώματα → ~3× φθηνότερο ανά pixel), ανάλυση .45×, ~30 fps (ο καπνός κινείται αργά)
- *      still — save-data, ≤2 GB RAM / ≤2 threads ή reduced motion: ένα καρέ, καμία κίνηση
+ *      still, save-data, ≤2 GB RAM / ≤2 threads ή reduced motion: ένα καρέ, καμία κίνηση
  *  • Ξεκινά ΜΕΤΑ το load κι όταν ο browser αδειάσει (requestIdleCallback): η μεταγλώττιση του
  *    shader δεν μπλοκάρει την πρώτη ζωγραφιά. KHR_parallel_shader_compile όπου υπάρχει.
  *  • Ζωγραφίζει μόνο όσο ο καμβάς είναι στην οθόνη και η καρτέλα ορατή. Ο καμβάς ξεθωριάζει
@@ -42,7 +42,7 @@ const pickTier = (): Tier => {
 };
 let TIER = pickTier();
 
-/** Software WebGL (SwiftShader/llvmpipe — VM, remote desktop, blocklisted GPU): κάθε καρέ κοστίζει
+/** Software WebGL (SwiftShader/llvmpipe, VM, remote desktop, blocklisted GPU): κάθε καρέ κοστίζει
  *  εκατοντάδες ms στη CPU και μπλοκάρει τη σελίδα → μόνο ένα στατικό καρέ. */
 const isSoftwareGL = (gl: WebGLRenderingContext): boolean => {
   if (/[?&]gl=1/.test(location.search)) return false; // δοκιμές: ?gl=1 = τρέξε τον καπνό και σε software GL
@@ -59,7 +59,7 @@ const fragSrc = (tier: Tier, deriv: boolean, highp: boolean): string => {
   const oct = full ? 6 : 4;
   /* φωτισμός από ψηλά: διαφορά πυκνότητας προς την κατεύθυνση του φωτός → όγκος.
      full: ξαναδειγματίζει τα 3 στρώματα λίγο πιο πάνω/δεξιά (ακριβές, ακριβό).
-     lite: η ίδια διαφορά από τις παραγώγους οθόνης της πυκνότητας — 0 έξτρα δείγματα. */
+     lite: η ίδια διαφορά από τις παραγώγους οθόνης της πυκνότητας, 0 έξτρα δείγματα. */
   const shade = full
     ? `vec2 L=vec2(.006,.012)*u_scale;
 float fl=layer(p2+7.1+L*3.,t,u_warp)*.35+layer(p1+L*2.,t*.6,u_warp)*.45+layer(p3+13.7+L*4.,t*1.5,u_warp*.8)*.2;
@@ -72,7 +72,7 @@ uniform vec2 u_res;uniform float u_t,u_str,u_scale,u_warp,u_lo,u_hi,u_bottom,u_r
 float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
 return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);}
-/* ${oct} οκτάβες, με περιστροφή ανά οκτάβα — πιο «οργανική» υφή */
+/* ${oct} οκτάβες, με περιστροφή ανά οκτάβα, πιο «οργανική» υφή */
 float fbm(vec2 p){float v=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);
 for(int i=0;i<${oct};i++){v+=a*noise(p);p=m*p;a*=.5;}return v;}
 /* πυκνότητα ενός στρώματος καπνού στο σημείο p, χρόνος t */
@@ -151,7 +151,7 @@ function setup(canvas: HTMLCanvasElement) {
     gl.uniform1f(U('u_gr'), num('glowr', 2.8));  // πόσο «σφιχτό» είναι το φως (μεγάλο = μικρότερος κύκλος)
     const speed = num('speed', 1);
     gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-    // Ανάλυση ανά βαθμίδα: ο καπνός είναι θολός από τη φύση του — η μικρότερη ανάλυση δεν φαίνεται.
+    // Ανάλυση ανά βαθμίδα: ο καπνός είναι θολός από τη φύση του, η μικρότερη ανάλυση δεν φαίνεται.
     const dpr = devicePixelRatio || 1;
     const scale = () => (TIER === 'lite' ? .45 * Math.min(dpr, 1) : TIER === 'still' ? .6 * Math.min(dpr, 1.5) : .65 * Math.min(dpr, 1.2));
     const fit = () => {
@@ -175,19 +175,19 @@ function setup(canvas: HTMLCanvasElement) {
     if ('IntersectionObserver' in window) new IntersectionObserver((es) => { visible = es[0].isIntersecting; if (visible) kick(); }, { threshold: 0 }).observe(canvas);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) kick(); });
     canvas.classList.add('is-on');
-    // Το intro (Intro.astro) περιμένει αυτό το σήμα (οθόνες αφής) πριν αρχίσει — η μεταγλώττιση έγινε κάτω από το πέπλο.
+    // Το intro (Intro.astro) περιμένει αυτό το σήμα (οθόνες αφής) πριν αρχίσει, η μεταγλώττιση έγινε κάτω από το πέπλο.
     if (canvas.closest('.hero')) { document.documentElement.dataset.smokeReady = ''; document.dispatchEvent(new CustomEvent('pisma-smoke-ready')); }
   };
 
-  // Μεταγλώττιση στο παρασκήνιο όπου υποστηρίζεται — περιμένουμε χωρίς να μπλοκάρουμε το main thread.
+  // Μεταγλώττιση στο παρασκήνιο όπου υποστηρίζεται, περιμένουμε χωρίς να μπλοκάρουμε το main thread.
   if (par) {
     const poll = () => { if (gl.getProgramParameter(prog, par.COMPLETION_STATUS_KHR)) start(); else requestAnimationFrame(poll); };
     poll();
   } else start();
 }
 
-// Ξεκίνημα μετά το load κι όταν ο browser αδειάσει — ο καπνός δεν παλεύει με την πρώτη ζωγραφιά.
-//  • Οθόνες αφής: 1,6 s μετά το load, όταν έχουν τελειώσει οι είσοδοι του hero — σε GPU κινητού χωρίς
+// Ξεκίνημα μετά το load κι όταν ο browser αδειάσει, ο καπνός δεν παλεύει με την πρώτη ζωγραφιά.
+//  • Οθόνες αφής: 1,6 s μετά το load, όταν έχουν τελειώσει οι είσοδοι του hero, σε GPU κινητού χωρίς
 //    KHR_parallel_shader_compile η μεταγλώττιση μπλοκάρει το main thread ~50-100 ms· καλύτερα σε ήσυχη στιγμή.
 //  • Κάθε καμβάς στήνεται μόνο όταν πλησιάσει στην οθόνη (IntersectionObserver, ±60 %): ο δεύτερος καμβάς
 //    της σελίδας (CTA στο τέλος) δεν κοστίζει τίποτα στο φόρτωμα.
@@ -198,7 +198,7 @@ const boot = () => {
     const io = new IntersectionObserver((es) => {
       for (const e of es) if (e.isIntersecting) { io.unobserve(e.target); if (!(e.target as HTMLCanvasElement).dataset.smoke) setup(e.target as HTMLCanvasElement); }
     }, { rootMargin: '60% 0px' });
-    // Όσο παίζει το intro ο καπνός του hero είναι display:none (δεν «τέμνει» ποτέ) — στήνεται τώρα, κάτω από το
+    // Όσο παίζει το intro ο καπνός του hero είναι display:none (δεν «τέμνει» ποτέ), στήνεται τώρα, κάτω από το
     // πέπλο, ώστε η μεταγλώττιση να μη συμπέσει με το άνοιγμα και τις εισόδους.
     const introOn = document.documentElement.hasAttribute('data-intro-run');
     list.forEach((c) => { if (introOn && getComputedStyle(c).display === 'none') setup(c); else io.observe(c); });
@@ -207,7 +207,7 @@ const boot = () => {
   const idle = () => { if (w.requestIdleCallback) w.requestIdleCallback(run, { timeout: 1500 }); else setTimeout(run, 250); };
   if (mq('(pointer: coarse)')) setTimeout(idle, 1600); else idle();
 };
-// Με intro: ο καπνός του hero στήνεται ΑΜΕΣΩΣ (κάτω από το μαύρο πέπλο, πριν καν το load) — το intro περιμένει
+// Με intro: ο καπνός του hero στήνεται ΑΜΕΣΩΣ (κάτω από το μαύρο πέπλο, πριν καν το load), το intro περιμένει
 // τη μεταγλώττισή του και ξεκινά μετά, ώστε να μην πέσει ποτέ πάνω στα γράμματα ή στο άνοιγμα.
 if (document.documentElement.hasAttribute('data-intro-run')) {
   for (const c of document.querySelectorAll<HTMLCanvasElement>('canvas.stg-smoke:not([data-smoke])')) if (c.closest('.hero')) setup(c);

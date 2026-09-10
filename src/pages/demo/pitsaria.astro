@@ -1,5 +1,5 @@
 ---
-// Demo εργαλείου «Google Reviews στο Αυτόματο» — εικονική πιτσαρία «La Nonna».
+// Demo εργαλείου «Google Reviews στο Αυτόματο», εικονική πιτσαρία «La Nonna».
 // Αυτόνομη σελίδα (δεν χρησιμοποιεί το Base layout): προσομοιώνει αυτό που
 // βλέπει ο πελάτης του μαγαζιού όταν σκανάρει το QR στο τραπέζι.
 const title = 'La Nonna · Κερδίστε το δώρο σας!';
@@ -79,7 +79,7 @@ const title = 'La Nonna · Κερδίστε το δώρο σας!';
 
     h1, h2 { font-size: 28px; text-align: center; line-height: 1.2; margin-top: 18px; }
     h1 .accent, h2 .accent { color: var(--tomato); }
-    /* Link επιστροφής — φαίνεται μόνο όταν η σελίδα ΔΕΝ είναι μέσα στο iframe των Κριτικών */
+    /* Link επιστροφής, φαίνεται μόνο όταν η σελίδα ΔΕΝ είναι μέσα στο iframe των Κριτικών */
     .back-site { position: fixed; top: 10px; left: 12px; z-index: 50; font-size: 13px; font-weight: 600;
       color: #fff; background: rgba(0,0,0,.45); padding: 4px 11px; border-radius: 999px; text-decoration: none; }
     .back-site:hover { background: rgba(0,0,0,.65); }
@@ -535,7 +535,7 @@ const title = 'La Nonna · Κερδίστε το δώρο σας!';
       </div>
     </div>
 
-    <!-- Ο Τζίνο — ο σερβιτόρος-μασκότ -->
+    <!-- Ο Τζίνο, ο σερβιτόρος-μασκότ -->
     <div class="waiter" id="waiter" aria-hidden="true">
       <svg viewBox="0 0 130 175">
         <g id="wAll">
@@ -636,7 +636,7 @@ const title = 'La Nonna · Κερδίστε το δώρο σας!';
       document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
       window.scrollTo(0, 0);
-      // Στην οθόνη κριτικής πρωταγωνιστεί ο μεγάλος Τζίνο — ο μικρός κρύβεται.
+      // Στην οθόνη κριτικής πρωταγωνιστεί ο μεγάλος Τζίνο, ο μικρός κρύβεται.
       waiter.style.display = (id === 's-review') ? 'none' : '';
       stroll();
     }

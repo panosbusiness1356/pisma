@@ -12,9 +12,9 @@
  * και τα λευκά γράμματα σβήνουν πάνω στα γράμματα του hero.
  *
  * Κανόνες:
- *  • ~2,7 s συνολικά (το μαύρο κρατάει ~1,6 s πριν αρχίσει να ανοίγει — αίτημα
+ *  • ~2,7 s συνολικά (το μαύρο κρατάει ~1,6 s πριν αρχίσει να ανοίγει, αίτημα
  *    χρήστριας)· κλικ/πλήκτρο οπουδήποτε = γρήγορο τέλος.
- *  • Μία φορά ανά επίσκεψη (sessionStorage) — στις επόμενες σελίδες/επιστροφές δεν παίζει.
+ *  • Μία φορά ανά επίσκεψη (sessionStorage), στις επόμενες σελίδες/επιστροφές δεν παίζει.
  *  • prefers-reduced-motion → δεν παίζει καθόλου. Χωρίς JS → δεν εμφανίζεται (noscript).
  *  • Το hero υπάρχει από το πρώτο ms κάτω από το πέπλο (SEO/LCP ανέπαφα)· οι δικές
  *    του εισόδοι (blur-in, γράμματα) μένουν παγωμένες όσο το πέπλο είναι αδιαφανές
@@ -58,21 +58,21 @@
     font-size: clamp(4.6rem, 16vw, 15rem); line-height: .95; letter-spacing: .01em; white-space: nowrap;
     color: #fff; text-shadow: 0 0 60px rgba(255, 255, 255, .35); pointer-events: none; opacity: 0;
   }
-  /* Οθόνες αφής: μικρότερο φωτοστέφανο στα λευκά γράμματα — σε DPR 3 ένα blur 60 px (=180 px φυσικά) ακρίβαινε
+  /* Οθόνες αφής: μικρότερο φωτοστέφανο στα λευκά γράμματα, σε DPR 3 ένα blur 60 px (=180 px φυσικά) ακρίβαινε
      το raster των 6 layers ακριβώς στη στιγμή που εμφανίζονται· η ίδια απαλή λάμψη με το μισό blur. */
   @media (pointer: coarse) { .intro-word { text-shadow: 0 0 .42em rgba(255, 255, 255, .35); } }
   .intro-word.placed { transform: none; }
   .intro-word span { display: inline-block; opacity: 0; filter: blur(28px); transform: scale(1.3); will-change: transform, filter, opacity; }
   .intro-word .dot { color: #FF7A50; text-shadow: 0 0 40px rgba(255, 122, 80, .9); }
-  /* Οθόνες αφής: ίδιο εφέ (βγαίνουν από θόλωμα), αλλά το blur λύνεται σε 4 βήματα αντί για κάθε καρέ —
+  /* Οθόνες αφής: ίδιο εφέ (βγαίνουν από θόλωμα), αλλά το blur λύνεται σε 4 βήματα αντί για κάθε καρέ, 
      βλ. το JS (δύο animations: ομαλό opacity/scale + βηματικό filter). */
   /* Όσο το πέπλο είναι αδιαφανές: ο καπνός του hero δεν ζωγραφίζεται (GPU), και τα στοιχεία
      του hero κάθονται ΟΡΑΤΑ στην τελική τους θέση κάτω από το πέπλο (κανείς δεν τα βλέπει, αλλά ο
      browser τα «ζωγραφίζει» → το LCP μετριέται στην πρώτη ζωγραφιά, όχι όταν ανοίξει το πέπλο).
      Μόλις φύγει το data-intro, οι κανόνες .blur-in ξαναπιάνουν και οι είσοδοι παίζουν από την
-     αρχή — ίδιο αποτέλεσμα με πριν (παύση → play), χωρίς να πληρώνει το LCP τα 1,6 s του μαύρου. */
+     αρχή, ίδιο αποτέλεσμα με πριν (παύση → play), χωρίς να πληρώνει το LCP τα 1,6 s του μαύρου. */
   html[data-intro] .hero .blur-in { animation: none; opacity: 1; filter: none; transform: none; }
-  /* Ούτε η είσοδος του <main> (page-in) παίζει κάτω από το πέπλο — θα ήταν αόρατη, και μετακινούσε
+  /* Ούτε η είσοδος του <main> (page-in) παίζει κάτω από το πέπλο, θα ήταν αόρατη, και μετακινούσε
      το «PISMA.» του hero για 0,7 s (η μέτρηση θέσης έπρεπε να τρέχει σε κάθε καρέ). */
   html[data-intro] .page-in, html[data-intro] .page-in > :first-child { animation: none; }
   /* Η λωρίδα φωτός (hw-shine) περιμένει να ΦΥΓΕΙ το πέπλο (data-intro-run, όχι data-intro): αλλιώς η 1η σάρωση
@@ -80,16 +80,16 @@
   html[data-intro-run] .hero .hw-shine-win, html[data-intro-run] .hero .hw-shine-txt { animation-play-state: paused; }
   html[data-intro] .hero .stg-smoke { display: none; }
   /* Ούτε η ομίχλη/το δάπεδο/η λάμψη του hero ζωγραφίζονται κάτω από το πέπλο (ο browser δεν ξέρει ότι το πέπλο είναι
-     αδιαφανές και τα συνέθετε σε κάθε καρέ — 4 μεγάλα layers λιγότερα όσο παίζει το intro). Ξαναφαίνονται στο άνοιγμα. */
+     αδιαφανές και τα συνέθετε σε κάθε καρέ, 4 μεγάλα layers λιγότερα όσο παίζει το intro). Ξαναφαίνονται στο άνοιγμα. */
   html[data-intro] .hero .stg-fog, html[data-intro] .hero .stg-floor, html[data-intro] .hero .hw-glow { visibility: hidden; }
   /* Το «PISMA.» του hero είναι στην τελική του θέση κάτω από το πέπλο και μετά (τα λευκά γράμματα σβήνουν πάνω του).
      ΠΡΟΣΟΧΗ στην ειδικότητα: τα scoped styles της αρχικής (.hero-word[data-astro-cid] span[data-astro-cid]) μετράνε
-     (0,3,1) — γι' αυτό οι επιλογείς εδώ περνούν και από το .hero, ώστε να μετράνε (0,3,2) και να νικούν. */
+     (0,3,1), γι' αυτό οι επιλογείς εδώ περνούν και από το .hero, ώστε να μετράνε (0,3,2) και να νικούν. */
   html[data-intro] .hero .hero-word span, html.intro-played .hero .hero-word span { animation: none; opacity: 1; filter: none; transform: none; }
 </style>
 
 <script>
-  /* Intro «Ο καπνός γεννά το logo» — βλ. σχόλιο στην κορυφή του component. */
+  /* Intro «Ο καπνός γεννά το logo», βλ. σχόλιο στην κορυφή του component. */
   const html = document.documentElement;
   const root = document.getElementById('intro');
   if (root && html.hasAttribute('data-intro-run')) run(root);
@@ -109,7 +109,7 @@
 
     /* ---- Θέση/μέγεθος: ακριβώς πάνω στο «PISMA.» του hero ---- */
     let center = { x: .5, y: .5 };
-    let placedKey = ''; // τελευταία θέση/μέγεθος που γράφτηκε — γράφουμε ΜΟΝΟ όταν αλλάζει (αλλιώς forced reflow σε κάθε καρέ)
+    let placedKey = ''; // τελευταία θέση/μέγεθος που γράφτηκε, γράφουμε ΜΟΝΟ όταν αλλάζει (αλλιώς forced reflow σε κάθε καρέ)
     const place = () => {
       if (!hw) return;
       const r = hw.getBoundingClientRect();
@@ -156,7 +156,7 @@
     const initGL = (onReady: (gl: GL) => void) => {
       const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, powerPreference: 'low-power' });
       if (!gl) return onReady(null);
-      // Software WebGL (SwiftShader/llvmpipe — VM, remote desktop, blocklisted GPU): ο shader στη CPU
+      // Software WebGL (SwiftShader/llvmpipe, VM, remote desktop, blocklisted GPU): ο shader στη CPU
       // «κολλάει» τη σελίδα → η εκδοχή χωρίς καπνό (μαύρο πέπλο που ξεθωριάζει).
       if (!/[?&]gl=1/.test(location.search)) try { // δοκιμές: ?gl=1 = καπνός και σε software GL
         const ext = gl.getExtension('WEBGL_debug_renderer_info') as { UNMASKED_RENDERER_WEBGL: number } | null;
@@ -196,7 +196,7 @@
 
     const ease = (p: number) => p * p * (3 - 2 * p);
     const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
-    // Ένα ρολόι για όλα (καπνός + γράμματα): πραγματικός χρόνος, όχι μετρητής καρέ —
+    // Ένα ρολόι για όλα (καπνός + γράμματα): πραγματικός χρόνος, όχι μετρητής καρέ, 
     // σε αργή GPU ο καπνός δεν «μένει πίσω» από τα γράμματα. Το skip προσθέτει χρόνο.
     let tt = 0, t0 = 0, tSkip = 0, opened = false, ended = false, raf = 0;
     const anims: Animation[] = [];
@@ -219,7 +219,7 @@
     const onResize = () => { place(); gl?.fit(); };
 
     /* Προσαρμογή σε αδύναμη συσκευή: αν τα καρέ αργούν (μέσος όρος > 22 ms), ο καπνός ζωγραφίζεται κάθε 2ο καρέ
-       (τα γράμματα είναι Web Animations — δεν επηρεάζονται). Σε κανονική συσκευή δεν ενεργοποιείται ποτέ. */
+       (τα γράμματα είναι Web Animations, δεν επηρεάζονται). Σε κανονική συσκευή δεν ενεργοποιείται ποτέ. */
     let dtAvg = 16, lastNow = 0, frameNo = 0, placeAt = -1e9;
     const frame = (now: number) => {
       if (!t0) t0 = now;
@@ -228,7 +228,7 @@
       if (tt >= T_END) return finish();
       if (lastNow) dtAvg += ((now - lastNow) - dtAvg) * .2;
       lastNow = now; frameNo++;
-      if (tt < T_FADE + FADE_DUR && now - placeAt > 80) { placeAt = now; place(); } // ακολουθεί το «PISMA.» του hero αν αλλάξει (π.χ. άφιξη γραμματοσειράς) — γράφει μόνο σε αλλαγή
+      if (tt < T_FADE + FADE_DUR && now - placeAt > 80) { placeAt = now; place(); } // ακολουθεί το «PISMA.» του hero αν αλλάξει (π.χ. άφιξη γραμματοσειράς), γράφει μόνο σε αλλαγή
       const pre = clamp01(tt / T_OPEN);                       // 0→1 όσο το πέπλο είναι κλειστό
       const op = ease(clamp01((tt - T_OPEN) / OPEN_DUR));     // άνοιγμα
       const fd = clamp01((tt - T_FADE) / FADE_DUR);           // σβήσιμο στο τέλος
@@ -240,13 +240,13 @@
 
     const touch = matchMedia('(pointer: coarse)').matches;
     const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
-    /* Πύλη ετοιμότητας — ΑΟΡΑΤΗ (το πέπλο είναι απλώς μαύρο, όπως πάντα). Το intro ξεκινά μόνο όταν:
+    /* Πύλη ετοιμότητας, ΑΟΡΑΤΗ (το πέπλο είναι απλώς μαύρο, όπως πάντα). Το intro ξεκινά μόνο όταν:
        (1) η γραμματοσειρά του logo έχει έρθει (τα γράμματα «πάνω στα γράμματα» χωρίς αλλαγή μετρικών στη μέση),
        (2) ο δικός του καπνός έχει μεταγλωττιστεί (αλλιώς τα γράμματα έβγαιναν σε μαύρο και ο καπνός «πεταγόταν» μετά),
        (3) σε οθόνες αφής, κι ο καπνός του hero έχει μεταγλωττιστεί κάτω από το πέπλο (smoke.ts → pisma-smoke-ready),
            ώστε τα 50-300 ms της μεταγλώττισης να μην πέφτουν πάνω στα γράμματα ή στο άνοιγμα,
        (4) δύο συνεχόμενα ήσυχα καρέ (ο browser τελείωσε την πρώτη ζωγραφιά/scripts).
-       Όριο 1,2 s συνολικά — σε γρήγορη συσκευή όλα είναι έτοιμα σε ~200-400 ms. */
+       Όριο 1,2 s συνολικά, σε γρήγορη συσκευή όλα είναι έτοιμα σε ~200-400 ms. */
     const start = async () => {
       const tBoot = performance.now();
       const left = () => Math.max(0, 1200 - (performance.now() - tBoot));
@@ -273,7 +273,7 @@
         root.style.background = 'transparent'; // το μαύρο το ζωγραφίζει ο shader (πέπλο)
       }
       word.style.opacity = '1';
-      // Οθόνες αφής: το ίδιο εφέ σε δύο animations — ομαλό opacity/scale (compositor) + blur σε 4 βήματα
+      // Οθόνες αφής: το ίδιο εφέ σε δύο animations, ομαλό opacity/scale (compositor) + blur σε 4 βήματα
       // (4 ξαναζωγραφίσματα ανά γράμμα αντί για ~40· το blur animation δεν τρέχει στον compositor του Chrome).
       letters.forEach((el, i) => {
         const A = el.animate(

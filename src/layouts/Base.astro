@@ -13,7 +13,7 @@ interface Props {
   description: string;
   /** JSON-LD αντικείμενο ή πίνακας αντικειμένων (schema.org) */
   schema?: object | object[];
-  /** Προαιρετική εικόνα κοινοποίησης (π.χ. campaign visual) — default /og.png (EL) ή /og-en.png (EN) */
+  /** Προαιρετική εικόνα κοινοποίησης (π.χ. campaign visual), default /og.png (EL) ή /og-en.png (EN) */
   image?: string;
   /** Σελίδες εκτός αναζήτησης (π.χ. 404): noindex + χωρίς canonical */
   noindex?: boolean;
@@ -28,10 +28,10 @@ const ogImage = new URL(image ?? (lang === 'en' ? '/og-en.png' : '/og.png'), Ast
 const pathNorm = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : Astro.url.pathname + '/';
 const pair = PAIRS.find(([el, en]) => pathNorm === el || pathNorm === en);
 // Αρχική (EL/EN): το μεγάλο «PISMA.» (Unbounded) είναι το LCP στοιχείο και το intro
-// το μετράει ζωντανά — προφορτώνεται μόνο εκεί (στις άλλες σελίδες τη φοράει μόνο το logo).
+// το μετράει ζωντανά, προφορτώνεται μόνο εκεί (στις άλλες σελίδες τη φοράει μόνο το logo).
 const isHome = pathNorm === '/' || pathNorm === '/en/';
 
-// WebSite JSON-LD σε κάθε σελίδα — σταθερή «ταυτότητα» site για Google & AI.
+// WebSite JSON-LD σε κάθε σελίδα, σταθερή «ταυτότητα» site για Google & AI.
 const siteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -42,21 +42,21 @@ const siteSchema = {
 };
 const schemas = [siteSchema, ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])];
 
-// ΔΟΚΙΜΕΣ ΠΑΛΕΤΑΣ (προσωρινό — αφαιρείται μόλις επιλεγεί θέμα): στο dev,
+// ΔΟΚΙΜΕΣ ΠΑΛΕΤΑΣ (προσωρινό, αφαιρείται μόλις επιλεγεί θέμα): στο dev,
 // κάθε port φορτώνει διαφορετικό override παλέτας από το public/themes/.
 const THEME_PORTS: Record<string, string> = {
   // 1ος γύρος (2025)
   '4331': 'tefteri', '4332': 'petrol', '4333': 'melani', '4334': 'sokolata', '4335': 'elia',
-  // 2ος γύρος (Σεπτ. 2026) — με στρώμα εικόνας/βίντεο (/themes/_media.*)
+  // 2ος γύρος (Σεπτ. 2026), με στρώμα εικόνας/βίντεο (/themes/_media.*)
   '4351': 'mesanyxta', '4352': 'porselani', '4353': 'dasos', '4354': 'aspro', '4355': 'petra',
   // Δοκιμή ΟΛΗΣ της αισθητικής (όχι μόνο παλέτα): «Στούντιο»
   '4356': 'stoudio',
 };
 // Τρεις τρόποι επιλογής στο dev: (α) το port (launch.json), (β) το hostname
-// «<θέμα>.localhost» στο κυρίως server — π.χ. http://mesanyxta.localhost:4321/
+// «<θέμα>.localhost» στο κυρίως server, π.χ. http://mesanyxta.localhost:4321/
 // (ο browser κάνει resolve τα *.localhost στο loopback χωρίς ρύθμιση),
 // (γ) ?theme=<όνομα> στο URL, από τον client (οι στατικές σελίδες δεν βλέπουν
-// query params στον server) — για screenshots/σύγκριση σε έναν server.
+// query params στον server), για screenshots/σύγκριση σε έναν server.
 const THEME_NAMES = Object.values(THEME_PORTS);
 const hostSub = Astro.url.hostname.endsWith('.localhost') ? Astro.url.hostname.slice(0, -'.localhost'.length) : '';
 const themePreview = import.meta.env.DEV
@@ -99,17 +99,17 @@ const themeByQuery = import.meta.env.DEV;
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${SITE.name} — ${lang === 'en' ? SITE.taglineEn : SITE.tagline}`} />
+    <meta property="og:image:alt" content={`${SITE.name}: ${lang === 'en' ? SITE.taglineEn : SITE.tagline}`} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Γραμματοσειρές: self-hosted (src/styles/fonts.css) — κανένα εξωτερικό αίτημα.
+    <!-- Γραμματοσειρές: self-hosted (src/styles/fonts.css), κανένα εξωτερικό αίτημα.
          Preload στα δύο κρίσιμα ελληνικά βάρη για άμεσο πρώτο render. -->
     <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/inter-var-greek.woff2" as="font" type="font/woff2" crossorigin />
     {isHome && <link rel="preload" href="/fonts/unbounded-800-basic.woff2" as="font" type="font/woff2" crossorigin />}
 
-    <!-- Χωρίς JS το IntersectionObserver δεν τρέχει ποτέ — δείξε τα .reveal κανονικά. -->
+    <!-- Χωρίς JS το IntersectionObserver δεν τρέχει ποτέ, δείξε τα .reveal κανονικά. -->
     <noscript><style is:inline>.reveal{opacity:1;transform:none;filter:none}</style></noscript>
 
     {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
@@ -125,7 +125,7 @@ const themeByQuery = import.meta.env.DEV;
     <Consent />
 
     <script>
-      // Smooth scroll με αδράνεια (Lenis) — ίδιο σύστημα με τα σύγχρονα studio sites.
+      // Smooth scroll με αδράνεια (Lenis), ίδιο σύστημα με τα σύγχρονα studio sites.
       // ΜΟΝΟ σε συσκευές με ποντίκι/trackpad: στο κινητό/tablet το native scroll είναι
       // ήδη ομαλό, και ο μόνιμος βρόχος rAF του Lenis απλώς καίει CPU και μπαταρία.
       // Dynamic import: το bundle δεν κατεβαίνει καν εκεί που δεν χρειάζεται.
@@ -155,7 +155,7 @@ const themeByQuery = import.meta.env.DEV;
     </script>
 
     <script>
-      // Ηχητικά εφέ UI — συντίθενται live με Web Audio (χωρίς αρχεία ήχου).
+      // Ηχητικά εφέ UI, συντίθενται live με Web Audio (χωρίς αρχεία ήχου).
       // Δημόσιο API: window.pismaSound.{enabled, toggle(), play(name)}
       // + event 'pisma-sound-change' για συγχρονισμό του διακόπτη στο μενού.
       type SoundName = 'click' | 'tick' | 'nav' | 'back' | 'open' | 'close' | 'on' | 'off';
@@ -174,7 +174,7 @@ const themeByQuery = import.meta.env.DEV;
       let noiseBuf: AudioBuffer | undefined;
       let resumeTried = false; // δοκιμάστηκε resume που δεν «έπιασε» ακόμα;
 
-      /** Πλήρες γκρέμισμα — το επόμενο audio() χτίζει καθαρό context. */
+      /** Πλήρες γκρέμισμα, το επόμενο audio() χτίζει καθαρό context. */
       const teardown = () => {
         try { ctx?.close(); } catch { /* ήδη κλειστό */ }
         ctx = undefined; master = undefined; noiseBuf = undefined; resumeTried = false;
@@ -257,7 +257,7 @@ const themeByQuery = import.meta.env.DEV;
           tone({ from: 987.77, delay: 0.05, dur: 0.075, peak: 0.05 });
           puff({ dur: 0.015, peak: 0.02, cutoff: 4500 });
         },
-        // Πίσω: το αντίστροφο — καθοδικό «ντικ-τι» (Σι→Μι)
+        // Πίσω: το αντίστροφο, καθοδικό «ντικ-τι» (Σι→Μι)
         back() {
           tone({ from: 987.77, dur: 0.055, peak: 0.05 });
           tone({ from: 659.26, delay: 0.05, dur: 0.075, peak: 0.05 });
@@ -316,9 +316,9 @@ const themeByQuery = import.meta.env.DEV;
         window.addEventListener(ev, warm, { once: true, capture: true, passive: true });
       }
       // Και προληπτικά στο παρασκήνιο, 2,5 s μετά το φόρτωμα (όταν έχουν τελειώσει intro/είσοδοι): η δημιουργία
-      // του AudioContext κοστίζει δεκάδες ms σε κινητά — καλύτερα τότε παρά μέσα στο πρώτο πάτημα του χρήστη.
-      // (Ξεκινά «suspended» — το resume() γίνεται στο πρώτο άγγιγμα, όπως πάντα.)
-      // Με intro: ΜΕΤΑ το τέλος του (+1,5 s) — αλλιώς τα 2,5 s έπεφταν ακριβώς πάνω στο άνοιγμα του πέπλου στο κινητό.
+      // του AudioContext κοστίζει δεκάδες ms σε κινητά, καλύτερα τότε παρά μέσα στο πρώτο πάτημα του χρήστη.
+      // (Ξεκινά «suspended», το resume() γίνεται στο πρώτο άγγιγμα, όπως πάντα.)
+      // Με intro: ΜΕΤΑ το τέλος του (+1,5 s), αλλιώς τα 2,5 s έπεφταν ακριβώς πάνω στο άνοιγμα του πέπλου στο κινητό.
       const warmLater = () => {
         const h = document.documentElement;
         if (!h.hasAttribute('data-intro-run')) return setTimeout(warm, 2500);
@@ -327,7 +327,7 @@ const themeByQuery = import.meta.env.DEV;
       };
       if (document.readyState === 'complete') warmLater(); else addEventListener('load', warmLater, { once: true });
 
-      // Επιστροφή στη σελίδα: ξύπνα το context προληπτικά — κι αν η σελίδα ήρθε
+      // Επιστροφή στη σελίδα: ξύπνα το context προληπτικά, κι αν η σελίδα ήρθε
       // από το bfcache (πίσω/μπροστά στο iOS), το παλιό context είναι άχρηστο: πέτα το.
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible' && ctx && (ctx.state as string) !== 'running') {
@@ -381,7 +381,7 @@ const themeByQuery = import.meta.env.DEV;
     </script>
 
     <script>
-      // Reveal on scroll — σεβασμός στο prefers-reduced-motion.
+      // Reveal on scroll, σεβασμός στο prefers-reduced-motion.
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const els = document.querySelectorAll('.reveal');
       if (reduce || !('IntersectionObserver' in window)) {
@@ -424,14 +424,14 @@ const themeByQuery = import.meta.env.DEV;
       }
       /* Οθόνες αφής: χωρίς page-in. Η κίνηση ολόκληρου του <main> έφτιαχνε layer ίσο με ΟΛΗ τη σελίδα (σε DPR 3
          εκατοντάδες MB raster) ακριβώς στο φόρτωμα. Τα στοιχεία του hero έχουν έτσι κι αλλιώς δική τους είσοδο
-         (blur-in), και το φόντο είναι μαύρο σε μαύρο — το ξεθώριασμα του section δεν φαινόταν, το κόστος του ναι. */
+         (blur-in), και το φόντο είναι μαύρο σε μαύρο, το ξεθώριασμα του section δεν φαινόταν, το κόστος του ναι. */
       @media (pointer: coarse) {
         .page-in { animation: none; }
       }
     </style>
     <script>
       // Οθόνες αφής: οι είσοδοι του hero (blur-in, γράμματα «PISMA.») παίρνουν δικό τους layer (will-change) όσο
-      // παίζουν· μόλις τελειώσουν, το layer φεύγει — λιγότερα layers = λιγότερη μνήμη GPU και σύνθεση ανά καρέ.
+      // παίζουν· μόλις τελειώσουν, το layer φεύγει, λιγότερα layers = λιγότερη μνήμη GPU και σύνθεση ανά καρέ.
       if (matchMedia('(pointer: coarse)').matches) {
         for (const el of document.querySelectorAll<HTMLElement>('.blur-in, .hero-word > span')) {
           el.addEventListener('animationend', (e) => { if (/Move$/.test(e.animationName)) el.style.willChange = 'auto'; });

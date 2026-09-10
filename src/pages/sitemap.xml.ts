@@ -1,5 +1,5 @@
 /**
- * /sitemap.xml — παράγεται στο build από το PAIRS του i18n.ts (ίδια λογική με το llms.txt).
+ * /sitemap.xml, παράγεται στο build από το PAIRS του i18n.ts (ίδια λογική με το llms.txt).
  * Νέα σελίδα με ζευγάρι EL/EN = μία γραμμή στο PAIRS και μπαίνει εδώ μόνη της,
  * με xhtml:link hreflang εναλλακτικές για κάθε ζευγάρι.
  * Demo σελίδες και 404 μένουν εκτός σκόπιμα (noindex).
@@ -8,7 +8,7 @@ import type { APIRoute } from 'astro';
 import { SITE } from '../config';
 import { PAIRS } from '../i18n';
 
-/** Priority ανά ελληνικό path — η αγγλική έκδοση παίρνει −0.1. */
+/** Priority ανά ελληνικό path, η αγγλική έκδοση παίρνει −0.1. */
 const PRIORITY: Record<string, number> = {
   '/': 1.0,
   '/se-vriskoun/': 0.9,
