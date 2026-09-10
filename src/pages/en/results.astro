@@ -20,7 +20,7 @@ const metrics = [
   { title: 'Customers from Google & AI', desc: "They find you in search and in ChatGPT's answers, and they call you.", trend: 'up' },
   { title: 'Search ranking', desc: 'On Google and in AI answers.', trend: 'up' },
   { title: 'Google reviews', desc: 'New reviews coming in, month after month.', trend: 'up' },
-  { title: 'Hours at the office', desc: 'Anything mechanical gets handed over to automation.', trend: 'down' },
+  { title: 'Automations', desc: 'Anything mechanical is handled by automation, not by you.', trend: 'up' },
   { title: 'Website visits', desc: 'More people see your work.', trend: 'up' },
   { title: 'Social media presence', desc: 'Steady posts every week, with none of your time spent.', trend: 'up' },
 ] as const;
@@ -29,7 +29,7 @@ const steps = [
   {
     num: '01',
     title: 'Before we start',
-    desc: 'In the PISMA Check we measure where you stand today: calls, reviews, position on Google and AI, office hours.',
+    desc: 'In the PISMA Check we measure where you stand today: calls, reviews, position on Google and AI, automations.',
   },
   {
     num: '02',
@@ -46,7 +46,7 @@ const steps = [
 
 <Base
   title="Results: measured before and after | PISMA"
-  description="How do you know it's working? We measure where you are today, measure again at 3 months, and show you what changed: calls, reviews, Google ranking, office hours."
+  description="How do you know it's working? We measure where you are today, measure again at 3 months, and show you what changed: calls, reviews, Google ranking, automations."
   schema={schema}
 >
   <PageHero
@@ -124,7 +124,7 @@ const steps = [
           <title id="rise-svg-title">Your business's trajectory</title>
           <desc id="rise-svg-desc">
             An upward chart from today to 3 months out: calls, reviews and visits go up,
-            and hours at the office go down.
+            and automations take over the mechanical work.
           </desc>
           <line x1="20" y1="218" x2="540" y2="218" class="rise-axis" />
           <path
@@ -174,7 +174,7 @@ const steps = [
           <text x="512" y="242" class="rise-label" text-anchor="end">in 3 months</text>
         </svg>
         <p class="rise-final" id="rise-final">
-          <span>And you, with fewer hours at the office</span>
+          <span>And automations working for you</span>
         </p>
       </div>
     </div>
