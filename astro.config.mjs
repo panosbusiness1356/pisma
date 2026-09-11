@@ -1,8 +1,9 @@
 import { defineConfig } from 'astro/config';
 
-// Σελίδες δοκιμών/προτάσεων (src/dev-pages/): φαίνονται ΜΟΝΟ στο dev server —
+// Σελίδες δοκιμών/προτάσεων (src/dev-pages/): φαίνονται ΜΟΝΟ στο dev server (και τα demo του
+// Εργαλείου Κριτικών, demo-pitsaria/demo-kommotirio, που ΔΕΝ ανεβαίνουν ποτέ δημόσια, απόφαση 12/09/2026),
 // δεν μπαίνουν ποτέ στο build/deploy. Νέα σελίδα δοκιμής = μία γραμμή εδώ.
-const DEV_PAGES = ['nea-arxiki', 'neo', 'dokimes-hero', 'dokimes-kartes', 'dokimes-chat', 'dokimes-stil', 'dokimes-aesthetic', 'dokimes-skini', 'dokimes-kapnos', 'dokimes-pisma-efe', 'dokimes-intro', 'dokimes-pisma-hover', 'dokimes-aftomatismoi'];
+const DEV_PAGES = ['demo-pitsaria', 'demo-kommotirio', 'nea-arxiki', 'neo', 'dokimes-hero', 'dokimes-kartes', 'dokimes-chat', 'dokimes-stil', 'dokimes-aesthetic', 'dokimes-skini', 'dokimes-kapnos', 'dokimes-pisma-efe', 'dokimes-intro', 'dokimes-pisma-hover', 'dokimes-aftomatismoi'];
 const devPages = {
   name: 'pisma-dev-pages',
   hooks: {
