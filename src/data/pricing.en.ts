@@ -6,7 +6,7 @@
 import { CATEGORIES, type PricingCategory } from './pricing';
 
 const CAT: Record<string, { title: string; desc?: string; note?: string }> = {
-  website: { title: 'Website', desc: 'Build or rebuild, pick one.' },
+  website: { title: 'Website', desc: 'Build or rebuild, pick one.', note: 'Shopify store: the platform subscription is paid by you directly to Shopify. The account and the store belong to your business.' },
   gbp: { title: 'Google Business Profile', desc: 'Your profile on Google Maps and Google Search.' },
   ai: { title: 'Visibility on Google & AI', desc: 'SEO · GEO · AEO: show up in AI tools’ answers too.' },
   social: { title: 'Social media', desc: 'Pick one, depending on who produces the content.' },
