@@ -53,7 +53,7 @@ export const CATEGORIES: PricingCategory[] = [
     desc: 'Να τρέχουν όλα, χωρίς να το σκέφτεστε.',
     mode: 'checkbox',
     options: [
-      { id: 'care-web', label: 'Συντήρηση ιστοσελίδας', detail: 'Ενημερώσεις, ασφάλεια, μικροαλλαγές', price: 29, type: 'monthly' },
+      { id: 'care-web', label: 'Συντήρηση ιστοσελίδας', detail: 'Φιλοξενία, ενημερώσεις, ασφάλεια, μικροαλλαγές', price: 29, type: 'monthly' },
       { id: 'care-shopify', label: 'Διαχείριση Shopify', detail: 'Νέα προϊόντα, αποθέματα, εκπτώσεις, apps, ενημερώσεις και μηνιαία αναφορά πωλήσεων', price: 49, type: 'monthly' },
     ],
   },

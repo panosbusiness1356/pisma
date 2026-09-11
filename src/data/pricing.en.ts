@@ -43,7 +43,7 @@ const OPT: Record<string, { label: string; detail?: string }> = {
   'auto-reviews': { label: 'The Reviews Tool', detail: 'Makes Google reviews pile up on their own. Shown only live' },
   'auto-loyalty': { label: 'Loyalty Card', detail: 'A QR code at the register: customers collect stamps on every visit, win a gift and come back' },
   'auto-menu': { label: 'Digital Menu', detail: 'A QR code on the table: customers scan and see your menu on their phone. Change prices and dishes anytime, no reprints' },
-  'care-web': { label: 'Website care', detail: 'Updates, security, small changes' },
+  'care-web': { label: 'Website care', detail: 'Hosting, updates, security, small changes' },
 };
 
 export const CATEGORIES_EN: PricingCategory[] = CATEGORIES.map((c) => ({
