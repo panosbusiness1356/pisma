@@ -240,7 +240,7 @@ const faqItems = [
   <section class="section" aria-labelledby="faq-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">Συχνές ερωτήσεις</p>
+        <p class="kicker">Απορίες</p>
         <h2 id="faq-title">Συχνές ερωτήσεις.</h2>
       </div>
       <Faq items={faqItems} withSchema />
@@ -285,7 +285,7 @@ const faqItems = [
       lpFitPage.style.marginBottom = `${-(lpFitPage.offsetHeight * (1 - s))}px`;
     };
     fit();
-    if ('ResizeObserver' in window) new ResizeObserver(fit).observe(lpScreen);
+    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(fit).observe(lpScreen);
     else window.addEventListener('resize', fit);
   }
 

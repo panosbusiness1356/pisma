@@ -172,8 +172,12 @@ const inServices = NAV.services.some((s) => path === norm(s.href));
     if (burger.getAttribute('aria-expanded') === 'true') { burger.click(); burger.focus(); }
   });
   // Το CSS ανοίγει το πάνελ και με hover/focus-within, κράτα το aria-expanded συγχρονισμένο.
-  sub?.addEventListener('mouseenter', () => setSub(true));
-  sub?.addEventListener('mouseleave', () => setSub(false));
+  // Μόνο σε συσκευές με πραγματικό hover: σε tablet αφής το mouseenter του πρώτου tap άνοιγε το πάνελ
+  // και το click το ξανάκλεινε (πάλευαν μεταξύ τους).
+  if (matchMedia('(hover: hover)').matches) {
+    sub?.addEventListener('mouseenter', () => setSub(true));
+    sub?.addEventListener('mouseleave', () => setSub(false));
+  }
   sub?.addEventListener('focusin', () => setSub(true));
   sub?.addEventListener('focusout', (e) => {
     if (!sub.contains((e as FocusEvent).relatedTarget as Node)) setSub(false);
@@ -312,9 +316,9 @@ const inServices = NAV.services.some((s) => path === norm(s.href));
     position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
     padding-top: 14px; z-index: 10;
   }
-  .nav-sub:hover .sub-panel,
   .nav-sub:focus-within .sub-panel,
   .nav-sub.open .sub-panel { display: block; }
+  @media (hover: hover) { .nav-sub:hover .sub-panel { display: block; } }
   .sub-card {
     min-width: 320px;
     background: var(--card); border: 1px solid var(--line-strong);
@@ -378,7 +382,8 @@ const inServices = NAV.services.some((s) => path === norm(s.href));
       border-top: 1px solid var(--line);
       margin-top: 2px; padding: 8px 4px 16px;
     }
-    .nav-links.is-open { display: flex; }
+    /* Οριζόντιο κινητό: το μενού σκρολάρει μέσα στην κάψουλα αντί να ξεπερνά την οθόνη. */
+    .nav-links.is-open { display: flex; max-height: calc(100dvh - 96px); overflow-y: auto; }
     .nav-links a:not(.btn) { display: block; padding: 12px 4px; font-size: 1.05rem; }
     /* Mobile: χωρίς dropdown, οι 3 υπηρεσίες εμφανίζονται σκέτες στη λίστα,
        σαν κανονικά links, στην ίδια θέση (πάνω πάνω). */

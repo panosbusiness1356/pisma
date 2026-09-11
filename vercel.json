@@ -19,7 +19,7 @@
     {
       "source": "/fonts/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        { "key": "Cache-Control", "value": "public, max-age=2592000, stale-while-revalidate=86400" }
       ]
     },
     {
@@ -29,9 +29,15 @@
       ]
     },
     {
-      "source": "/(photos|hero|site-demo|videos|menu-demo)/(.*)",
+      "source": "/(photos|hero|site-demo|videos|menu-demo|gear)/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=2592000" }
+      ]
+    },
+    {
+      "source": "/site-demo/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex" }
       ]
     },
     {

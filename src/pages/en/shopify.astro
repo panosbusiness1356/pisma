@@ -53,12 +53,13 @@ const why = [
 ];
 
 const build = [
-  'Set-up with your logo and colours',
+  'Set-up with your logo and colors',
   'Product entry with variants',
   'Payments, shipping, VAT, legal pages',
-  'Connection to Google, Instagram and Facebook',
   'Test orders before launch',
   'Training',
+  // Large-tier only, from pricing.ts (migration, connection to Google/Instagram/Facebook)
+  `Large store (${eurEn(shopLarge.price)}): ${shopLarge.detail.charAt(0).toLowerCase()}${shopLarge.detail.slice(1)}`,
 ];
 
 const manage = [
@@ -112,7 +113,7 @@ const faqItems = [
   },
   {
     q: 'Will I get found on Google?',
-    a: 'The store is built technically right for Google from day one. If you also want active ranking growth (SEO) or ads, those are separate services. You will find them on the Digital Visibility page.',
+    a: 'The store is built technically right for Google from day one. If you also want active ranking growth (SEO, visibility on Google & AI), that is a separate service. You will find it on the Digital Visibility page.',
   },
   {
     q: 'What if I want to stop the monthly management?',
@@ -183,7 +184,7 @@ const faqItems = [
             <span class="way-tag">One-off</span>
           </span>
           <h3>Store build</h3>
-          <p class="way-lead">From scratch, or migrated from another platform.</p>
+          <p class="way-lead">From scratch, up to 50 products. Or large, migrated from another platform.</p>
           <ul class="way-list">
             {build.map((b) => <li>{b}</li>)}
           </ul>
@@ -251,7 +252,7 @@ const faqItems = [
   <section class="section" aria-labelledby="faq-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">FAQ</p>
+        <p class="kicker">Questions</p>
         <h2 id="faq-title">FAQ.</h2>
       </div>
       <Faq items={faqItems} withSchema />

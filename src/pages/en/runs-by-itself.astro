@@ -25,12 +25,12 @@ const schema = {
 
 // Same bento order as the Greek page: [custom(strip 4)] [match(2)+chase+excel] [menu+eye(strip 3)]
 const services = [
-  { t: 'Custom automations', d: 'Any repetitive task, on top of the software you already use.', icon: 'custom', size: 'strip4', href: '/en/contact/', cta: 'Tell us your routine →' },
-  { t: 'Automatic payment matching', d: 'Every payment is matched to its invoice automatically.', icon: 'match', size: 'big' },
+  { t: 'Custom automations', d: 'Any repetitive task, on top of the software you already use.', icon: 'custom', size: 'strip4' as const, href: '/en/contact/', cta: 'Tell us your routine →' },
+  { t: 'Automatic payment matching', d: 'Every payment is matched to its invoice automatically.', icon: 'match', size: 'big' as const },
   { t: 'Automatic Debt Chaser', d: 'Automatic payment reminders at the right moment.', icon: 'chase', logos: ['whatsapp-icon.svg', 'viber.svg'] },
-  { t: 'An organized Excel', d: 'Your transactions in an Excel that updates automatically.', icon: 'excel', logos: ['excel.svg'] },
+  { t: 'Organized Excel', d: 'Your transactions in an Excel that updates automatically.', icon: 'excel', logos: ['excel.svg'] },
   { t: 'Digital Menu', d: 'The menu on the phone via QR, price changes with no reprints.', icon: 'menu', href: '/en/digital-menu/' },
-  { t: 'Your Spy', d: 'Competitor prices and offers in a regular report.', icon: 'eye', size: 'strip3' },
+  { t: 'Your Spy', d: 'Competitor prices and offers in a regular report.', icon: 'eye', size: 'strip3' as const },
 ];
 
 const faqItems = [
@@ -40,7 +40,7 @@ const faqItems = [
   },
   {
     q: 'What if it breaks?',
-    a: 'We are alerted first. The fix is covered by the monthly maintenance.',
+    a: 'We are alerted first and we fix it. That is what the support of the monthly services covers.',
   },
   {
     q: 'What about my data?',
@@ -135,7 +135,7 @@ const faqItems = [
   <section class="section" aria-labelledby="faq-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">FAQ</p>
+        <p class="kicker">Questions</p>
         <h2 id="faq-title">FAQ.</h2>
       </div>
       <Faq items={faqItems} withSchema />

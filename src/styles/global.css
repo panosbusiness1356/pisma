@@ -1,7 +1,7 @@
 /* ============================================================
-   PISMA — Design System (dark)
+   PISMA, Design System (dark)
    «Σκηνή»: ουδέτερο μαύρο/γκρι/λευκό (καπνός, προβολείς), πορτοκαλί το ΜΟΝΟ
-   χρώμα — χωρίς μωβ, χωρίς ζεστές αποχρώσεις στο φόντο. Κανένα hardcoded χρώμα στα components — πάντα οι μεταβλητές.
+   χρώμα, χωρίς μωβ, χωρίς ζεστές αποχρώσεις στο φόντο. Κανένα hardcoded χρώμα στα components, πάντα οι μεταβλητές.
    ============================================================ */
 
 :root {
@@ -16,18 +16,18 @@
   --orange-cta: #EE4F27;  /* φόντο κουμπιών */
   --orange-hi: #FF6A3D;
   --orange-soft: rgba(255, 122, 80, .13);
-  --orange-text: #FFA284; /* πορτοκαλί ΚΕΙΜΕΝΟ πάνω σε σκούρο — AA */
+  --orange-text: #FFA284; /* πορτοκαλί ΚΕΙΜΕΝΟ πάνω σε σκούρο, AA */
   /* RGB τριάδες των παραπάνω, για rgba() με μεταβλητό άλφα (glows, σκιές, halos) */
   --orange-rgb: 255, 122, 80;
   --cta-rgb: 238, 79, 39;
   --peach-rgb: 255, 170, 120;
-  /* Στάσεις των gradients του accent — τα components τις καταναλώνουν μέσω var */
+  /* Στάσεις των gradients του accent, τα components τις καταναλώνουν μέσω var */
   --grad-1: #CC431C; --grad-2: #BE3A17; --grad-3: #AC3213;
   --gt-1: #FF9159; --gt-2: #FF5C2E; --shine: #FFD9A8;
   --cta-deep: #D63E1B; --cta-lite: #FF8A3D;
   --cta-ink: #fff;        /* κείμενο πάνω στο CTA gradient */
   --nav-rgb: 11, 11, 11;  /* φόντο της κάψουλας του Nav (rgba με blur) */
-  --purple: #A3A3A3;      /* πρώην μωβ — τώρα ζεστό taupe, δένει με το ανθρακί */
+  --purple: #A3A3A3;      /* πρώην μωβ, τώρα ζεστό taupe, δένει με το ανθρακί */
   --purple-soft: rgba(255, 255, 255, .08);
   --purple-text: #CFCFCF;
   --blue: #9A9A9A;
@@ -45,7 +45,7 @@
   --red-deep: #C13A20;
   --red-soft: rgba(255, 92, 65, .13);
   --red-text: #FF9B8A;
-  /* Στοπ ≥4.5:1 με λευκό κείμενο (WCAG AA) — μην τα ανοίξεις χωρίς νέο έλεγχο αντίθεσης */
+  /* Στοπ ≥4.5:1 με λευκό κείμενο (WCAG AA), μην τα ανοίξεις χωρίς νέο έλεγχο αντίθεσης */
   --grad: linear-gradient(92deg, var(--grad-1) 0%, var(--grad-2) 55%, var(--grad-3) 100%);
   --grad-text: linear-gradient(92deg, var(--gt-1) 0%, var(--gt-2) 100%);
   --r: 16px;
@@ -57,7 +57,7 @@
   --shadow-hover: 0 4px 12px rgba(0, 0, 0, .4), 0 22px 52px rgba(0, 0, 0, .5);
   --glow-orange: 0 0 44px rgba(var(--cta-rgb), .35);
 
-  /* Οι «Fallback» οικογένειες (fonts.css) είναι τοπικές γραμματοσειρές με τις μετρικές των δικών μας — μηδέν layout shift όσο φορτώνουν */
+  /* Οι «Fallback» οικογένειες (fonts.css) είναι τοπικές γραμματοσειρές με τις μετρικές των δικών μας, μηδέν layout shift όσο φορτώνουν */
   --pisma-font: 'Inter', 'Inter Fallback', system-ui, sans-serif;
   --font-display: 'Unbounded', 'Unbounded Fallback', 'Inter', 'Inter Fallback', sans-serif;
   --font-body: var(--pisma-font);
@@ -84,7 +84,7 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
 }
-/* Οι λάμψεις της κορυφής σε δικό τους στρώμα (100vh) — ζωγραφίζονται ενιαία,
+/* Οι λάμψεις της κορυφής σε δικό τους στρώμα (100vh), ζωγραφίζονται ενιαία,
    χωρίς τη «γραμμή» που άφηνε το propagation του body background στο όριο του main. */
 body::before {
   content: '';
@@ -130,7 +130,7 @@ p { max-width: 62ch; }
 
 /* Διαχωρισμός ενοτήτων: επίπεδες, καθαρές επιφάνειες. Κάθε δεύτερο section
    είναι ένα ενιαίο μπλοκ bg-soft με κοφτές άκρες και λεπτή γραμμή full-width
-   πάνω και κάτω — χωρίς gradients, λάμψεις ή διακοσμητικά. */
+   πάνω και κάτω, χωρίς gradients, λάμψεις ή διακοσμητικά. */
 main > :is(section, article) { position: relative; }
 main section:nth-of-type(even) {
   background: var(--bg-soft);
@@ -158,7 +158,7 @@ main section:nth-of-type(even) {
   padding: 7px 14px; border-radius: 999px;
 }
 
-/* Παραλλαγές kicker: στη «Σκηνή» δεν υπάρχουν μπλε/κίτρινο/πράσινο — όλες ουδέτερες (λευκό pill) */
+/* Παραλλαγές kicker: στη «Σκηνή» δεν υπάρχουν μπλε/κίτρινο/πράσινο, όλες ουδέτερες (λευκό pill) */
 .kicker--blue, .kicker--yellow, .kicker--ok { background: rgba(255, 255, 255, .06); color: var(--ink); border-color: var(--line-strong); }
 .chip {
   display: inline-flex; align-items: baseline; gap: 8px;
@@ -242,7 +242,7 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
 
 /* ---------- Κάρτες υπηρεσιών (bento): ServiceCards.astro ----------
    Δύο «ναυαρχίδες» σε διπλό πλάτος, λωρίδα-κλείσιμο, έγχρωμα αντικείμενα/λογότυπα.
-   Χωρίς μωβ — μόνο ζεστή πορτοκαλί λάμψη στις μεγάλες. */
+   Χωρίς μωβ, μόνο ζεστή πορτοκαλί λάμψη στις μεγάλες. */
 .svc-grid { display: grid; gap: 18px; grid-template-columns: repeat(4, 1fr); }
 .svc-grid .card { padding: 22px 20px; transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease); }
 .svc-grid .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--line-strong); }
@@ -331,21 +331,21 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
 }
 .reveal.is-in { opacity: 1; transform: none; filter: none; }
 /* Οθόνες αφής: το ΙΔΙΟ εφέ (θόλωμα → καθαρό), αλλά φθηνό. Ένα animation του filter: blur δεν τρέχει στον
-   compositor του Chrome — ξαναζωγραφίζει το στοιχείο στο main thread σε ΚΑΘΕ καρέ (54 φορές σε .9 s).
+   compositor του Chrome, ξαναζωγραφίζει το στοιχείο στο main thread σε ΚΑΘΕ καρέ (54 φορές σε .9 s).
    Εδώ το θόλωμα λύνεται σε 3 βήματα (steps) = 3 ξαναζωγραφίσματα, ενώ ξεθώριασμα και ανάδυση μένουν ομαλά
    στον compositor (will-change: transform = δικό του layer). Το μάτι δεν ξεχωρίζει τη διαφορά. */
 @media (pointer: coarse) {
   .reveal { filter: blur(5px); transition: opacity .9s var(--ease), transform .9s var(--ease), filter .4s steps(3, jump-end); }
 }
 /* Οθόνες αφής: οι ενότητες κάτω από την πρώτη οθόνη δεν στήνονται/ζωγραφίζονται μέχρι να πλησιάσουν
-   (content-visibility) — το πρώτο layout/paint της σελίδας των 6-7 οθονών γίνεται layout μιας οθόνης.
+   (content-visibility), το πρώτο layout/paint της σελίδας των 6-7 οθονών γίνεται layout μιας οθόνης.
    Εξαίρεση (.no-cv): ενότητες με sticky/fixed παιδιά (builder Τιμών). */
 @media (pointer: coarse) {
   main > section:not(:first-child):not(.no-cv) { content-visibility: auto; contain-intrinsic-size: auto 900px; }
 }
 
 /* ---------- Focus / a11y ---------- */
-:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; border-radius: 6px; }
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
 .skip-link {
   position: absolute; left: -999px; top: 8px; z-index: 200;
   background: var(--card-2); color: #fff; padding: 10px 18px; border-radius: 999px;

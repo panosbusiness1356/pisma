@@ -97,11 +97,16 @@ const items = [
         cam.style.top = `${Math.round(top)}px`;
       }
     };
-    place();
-    for (const img of sky.querySelectorAll('img')) img.addEventListener('load', place, { once: true });
+    // Όλες οι αφορμές (εικόνες, γραμματοσειρές, resize) μαζεύονται σε ΜΙΑ μέτρηση ανά καρέ: κάθε place()
+    // διαβάζει rect ενοτήτων που σε οθόνες αφής είναι content-visibility:auto, άρα τις αναγκάζει σε layout.
+    let raf = 0;
+    const queue = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; place(); }); };
+    const coarse = matchMedia('(pointer: coarse)').matches;
+    if (!coarse) place(); // σε αφή η πρώτη μέτρηση γίνεται μαζί με την είσοδο (900 ms), πριν δεν φαίνεται τίποτα
+    for (const img of sky.querySelectorAll('img')) img.addEventListener('load', queue, { once: true });
     let t = 0;
-    addEventListener('resize', () => { clearTimeout(t); t = setTimeout(place, 120); });
-    if ('fonts' in document) (document as any).fonts.ready.then(place);
+    addEventListener('resize', () => { clearTimeout(t); t = setTimeout(queue, 120); });
+    if ('fonts' in document) (document as any).fonts.ready.then(queue);
 
     // Ήπια είσοδος αφού «κάτσει» η σελίδα (μετά το page-in του <main>).
     setTimeout(() => { place(); sky.classList.add('is-on'); }, 900);

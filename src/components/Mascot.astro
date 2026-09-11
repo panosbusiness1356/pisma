@@ -70,12 +70,11 @@ const cloudB = dots.slice(half);
      Αν το σημείο δεν είναι ορατό στο φόρτωμα, πέφτει στον τίτλο της σελίδας. */
   const SPAWNS: Array<[string, string]> = [
     ['/se-vriskoun', '.msg--user'],
-    ['/doulevei-mono-tou', '.term-title'],
-    ['/times', '.plan-setup'],
-    ['/apotelesmata', '.after-num'],
+    ['/en/get-found', '.msg--user'],
     ['/tablo', '.dot'],
+    ['/en/business-check', '.dot'],
     ['/epikoinonia', '.c-value'],
-    ['/elegxos', 'main h1'],
+    ['/en/contact', '.c-value'],
   ];
   const resolveSpawn = (): HTMLElement | null => {
     const path = location.pathname.replace(/\/$/, '') || '/';
@@ -153,7 +152,8 @@ const cloudB = dots.slice(half);
      σαν μαρκαδόρο, συγχρονισμένη με τη θέση του, μετά ξεκινά η ξενάγηση. */
   const hlSpan = document.querySelector<HTMLElement>('.hero-hl');
   const hlPath = document.querySelector<SVGPathElement>('.hl-stroke path');
-  const hlLen = hlPath?.style.strokeDasharray ? parseFloat(hlPath.style.strokeDasharray) : 0;
+  /* Το path έχει pathLength="1": μήκος 1, χωρίς getTotalLength() (forced layout) στο φόρτωμα. */
+  const hlLen = hlPath?.style.strokeDasharray ? 1 : 0;
   let phase: 'approach' | 'draw' | 'tour' = hlSpan && hlPath && hlLen > 0 && !reduce ? 'approach' : 'tour';
   const finishStroke = () => {
     if (hlPath) hlPath.style.strokeDashoffset = '0';
@@ -296,7 +296,7 @@ const cloudB = dots.slice(half);
 
         /* Φάσεις εισόδου: πάνω από το «μόνο του», τραβώντας τη γραμμή. */
         if (phase !== 'tour') {
-          if (!hlSpan || window.scrollY > 80) {
+          if (!hlSpan || sY > 80) {
             phase = 'tour';
             finishStroke();
           } else {
@@ -388,7 +388,7 @@ const cloudB = dots.slice(half);
         }
         const dist = Math.hypot(dx, dy);
 
-        const y = window.scrollY;
+        const y = sY;
         const vel = y - lastY;
         lastY = y;
         const lean = Math.max(-10, Math.min(10, dx * 0.028 + (vel / f) * 0.25));

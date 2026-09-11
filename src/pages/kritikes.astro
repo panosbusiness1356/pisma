@@ -11,7 +11,8 @@ import { optionById } from '../data/pricing';
 // Τιμές αυτοκόλλητων: πίνακας F στο /aftokollita/ (εφάπαξ, από 18 € το πακέτο).
 // ΣΚΟΠΙΜΑ teaser: ο μηχανισμός του Εργαλείου Κριτικών δεν περιγράφεται πουθενά δημόσια, 
 // ούτε βήματα, ούτε demo link. Παρουσιάζεται μόνο ζωντανά, σε ραντεβού.
-const wheel = optionById('auto-reviews')!;
+const tool = optionById('auto-reviews')!;
+const gbp = optionById('gbp-setup')!;
 
 const schema = {
   '@context': 'https://schema.org',
@@ -28,9 +29,9 @@ const schema = {
   },
   offers: {
     '@type': 'Offer',
-    price: wheel.price,
+    price: tool.price,
     priceCurrency: 'EUR',
-    description: `${eur(wheel.price)} τον μήνα, χωρίς δέσμευση, συν αυτοκόλλητα QR εφάπαξ.`,
+    description: `${eur(tool.price)} τον μήνα, χωρίς δέσμευση, συν αυτοκόλλητα QR εφάπαξ.`,
   },
   description:
     'Το εργαλείο της PISMA για περισσότερες κριτικές Google, με αυτοκόλλητο QR στον χώρο της επιχείρησης και παρουσίαση μόνο ζωντανά.',
@@ -62,11 +63,11 @@ const faqItems = [
   },
   {
     q: 'Τι χρειάζομαι για να ξεκινήσω;',
-    a: 'Ένα προφίλ στη Google, που το στήνουμε αν δεν υπάρχει, και τα αυτοκόλλητα QR. Τα υπόλοιπα τα στήνουμε εμείς.',
+    a: `Ένα προφίλ στη Google (αν δεν υπάρχει, το στήνουμε: Setup ${eur(gbp.price)} εφάπαξ) και τα αυτοκόλλητα QR. Τα υπόλοιπα τα στήνουμε εμείς.`,
   },
   {
     q: 'Πόσο κοστίζει;',
-    a: `${eur(wheel.price)} τον μήνα για την πλατφόρμα, χωρίς συμβόλαιο και χωρίς δέσμευση. Τα αυτοκόλλητα QR πληρώνονται μία φορά, από 18€ το πακέτο.`,
+    a: `${eur(tool.price)} τον μήνα για την πλατφόρμα, χωρίς συμβόλαιο και χωρίς δέσμευση. Τα αυτοκόλλητα QR πληρώνονται μία φορά, από 18€ το πακέτο.`,
   },
   {
     q: 'Δουλεύει και για delivery;',
@@ -114,7 +115,7 @@ const faqItems = [
         <div class="price-main">
           <p class="kicker">Τιμή: δημόσια, ίδια για όλους</p>
           <h2 id="price-title">
-            <span class="price-num num">{eur(wheel.price)}</span> τον μήνα
+            <span class="price-num num">{eur(tool.price)}</span> τον μήνα
           </h2>
           <p class="price-sub">
             Περιλαμβάνει πλατφόρμα, στήσιμο και στατιστικά. Χωρίς συμβόλαιο και χωρίς δέσμευση.
@@ -137,7 +138,7 @@ const faqItems = [
   <section class="section section--tight" aria-labelledby="faq-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">Συχνές ερωτήσεις</p>
+        <p class="kicker">Απορίες</p>
         <h2 id="faq-title">Συχνές ερωτήσεις.</h2>
       </div>
       <Faq items={faqItems} withSchema />

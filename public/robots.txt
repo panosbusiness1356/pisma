@@ -1,8 +1,8 @@
-# Όλοι ευπρόσδεκτοι — μηχανές αναζήτησης και AI crawlers.
+# Όλοι ευπρόσδεκτοι: μηχανές αναζήτησης και AI crawlers.
 User-agent: *
 Allow: /
 
-# Ρητά για τα AI (ChatGPT, Claude, Perplexity, Gemini) — ίδια πρόσβαση.
+# Ρητά για τα AI (ChatGPT, Claude, Perplexity, Gemini), ίδια πρόσβαση.
 User-agent: GPTBot
 Allow: /
 

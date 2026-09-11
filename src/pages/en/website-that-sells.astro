@@ -195,7 +195,7 @@ const faqItems = [
   <section class="section" aria-labelledby="faq-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">FAQ</p>
+        <p class="kicker">Questions</p>
         <h2 id="faq-title">FAQ.</h2>
       </div>
       <Faq items={faqItems} withSchema />
@@ -231,7 +231,7 @@ const faqItems = [
       spFrame.style.transform = `scale(${s})`;
     };
     fit();
-    if ('ResizeObserver' in window) new ResizeObserver(fit).observe(spView);
+    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(fit).observe(spView);
     else window.addEventListener('resize', fit);
 
     // Αυτόματη περιήγηση (αίτημα χρήστριας): μόλις φορτώσει το δείγμα και το

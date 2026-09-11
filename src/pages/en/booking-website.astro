@@ -155,9 +155,9 @@ const faqItems = [
                   </div>
                   <p class="lp-book-l">Time</p>
                   <div class="lp-chips">
-                    <span class="lp-chip">4:00</span>
-                    <span class="lp-chip" id="lp-time">5:30</span>
-                    <span class="lp-chip">7:00</span>
+                    <span class="lp-chip">4:00 pm</span>
+                    <span class="lp-chip" id="lp-time">5:30 pm</span>
+                    <span class="lp-chip">7:00 pm</span>
                   </div>
                   <span class="lp-confirm" id="lp-confirm">Confirm</span>
                 </div>
@@ -239,7 +239,7 @@ const faqItems = [
   <section class="section" aria-labelledby="faq-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">FAQ</p>
+        <p class="kicker">Questions</p>
         <h2 id="faq-title">FAQ.</h2>
       </div>
       <Faq items={faqItems} withSchema />
@@ -284,7 +284,7 @@ const faqItems = [
       lpFitPage.style.marginBottom = `${-(lpFitPage.offsetHeight * (1 - s))}px`;
     };
     fit();
-    if ('ResizeObserver' in window) new ResizeObserver(fit).observe(lpScreen);
+    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(fit).observe(lpScreen);
     else window.addEventListener('resize', fit);
   }
 

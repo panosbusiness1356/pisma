@@ -25,7 +25,7 @@ const schema = {
     },
   },
   description:
-    'Site, πρώτες θέσεις στη Google και προτάσεις από το ChatGPT, με μέτρηση ορατότητας πριν και μετά.',
+    'Site, καλύτερες θέσεις στη Google και προτάσεις από το ChatGPT, με μέτρηση ορατότητας πριν και μετά.',
 };
 
 const services = [
@@ -67,7 +67,7 @@ const services = [
     t: 'E-shop σε Shopify',
     d: 'Ηλεκτρονικό κατάστημα με πληρωμές και αποστολές έτοιμες.',
     icon: 'shopify',
-    size: 'big',
+    size: 'big' as const,
     href: '/shopify/',
   },
   {
@@ -103,7 +103,7 @@ const services = [
     t: 'Παρακολούθηση ανταγωνισμού',
     d: 'Μηνιαία σύγκριση της ορατότητάς σας με τον ανταγωνισμό.',
     icon: 'eye',
-    size: 'card',
+    size: 'card' as const,
   },
 ];
 
@@ -240,7 +240,7 @@ const faqItems = [
   <section class="section" aria-labelledby="faq-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">Συχνές ερωτήσεις</p>
+        <p class="kicker">Απορίες</p>
         <h2 id="faq-title">Συχνές ερωτήσεις.</h2>
       </div>
       <Faq items={faqItems} withSchema />

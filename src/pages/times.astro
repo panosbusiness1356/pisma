@@ -24,7 +24,7 @@ const schema = {
 const faqItems = [
   {
     q: 'Τι περιλαμβάνει η συντήρηση;',
-    a: 'Παρακολούθηση ότι όλα τρέχουν, διορθώσεις όταν κάτι στραβώσει και μικρο-βελτιώσεις στην πορεία. Όπου υπάρχει μηνιαία διαχείριση, λαμβάνετε και μηνιαίο Proof of Value report: τι σας γλίτωσε το σύστημα, σε ώρες και ευρώ.',
+    a: 'Παρακολούθηση ότι όλα τρέχουν, διορθώσεις όταν κάτι στραβώσει και μικρο-βελτιώσεις στην πορεία. Στη μηνιαία διαχείριση ορατότητας σε Google & AI λαμβάνετε και μηνιαίο Proof of Value report: τι σας γλίτωσε το σύστημα, σε ώρες και ευρώ.',
   },
   {
     q: 'Θέλω κάτι που δεν είναι στη λίστα.',
@@ -32,7 +32,7 @@ const faqItems = [
   },
   {
     q: 'Υπάρχει δέσμευση;',
-    a: 'Όχι, δεν υπάρχει ετήσια δέσμευση. Μένετε όσο βλέπετε νούμερα που σας πείθουν.',
+    a: 'Όχι, δεν υπάρχει δέσμευση. Μένετε όσο βλέπετε νούμερα που σας πείθουν.',
   },
 ];
 
@@ -135,13 +135,13 @@ const faqItems = [
           </label>
           <label class="f-field">
             <span>Email ή τηλέφωνο</span>
-            <input type="text" name="contact" required autocomplete="email" inputmode="email" />
+            <input type="text" name="contact" required autocomplete="email" />
           </label>
           <label class="f-field">
             <span>Η επιλογή σας <em>(συμπληρώνεται αυτόματα, μπορείτε να προσθέσετε σχόλιο)</em></span>
             <textarea name="summary" id="offer-summary" rows="6"></textarea>
           </label>
-          <input type="text" name="website" tabindex="-1" autocomplete="off" class="f-hp" aria-hidden="true" />
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="f-hp" aria-hidden="true" />
           <input type="hidden" name="_subject" value="Νέα προσφορά από τη σελίδα Τιμών (pisma.gr)" />
           <input type="hidden" name="_template" value="box" />
           <input type="hidden" name="_captcha" value="false" />
@@ -183,7 +183,7 @@ const faqItems = [
   <section class="section" aria-labelledby="faq-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">Συχνές ερωτήσεις</p>
+        <p class="kicker">Απορίες</p>
         <h2 id="faq-title">Ό,τι ρωτάνε πριν ξεκινήσουν</h2>
       </div>
       <Faq items={faqItems} withSchema={true} />
@@ -320,7 +320,7 @@ const faqItems = [
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = new FormData(form);
-    if ((data.get('website') as string)?.length) return; // honeypot, bot
+    if ((data.get('_honey') as string)?.length) return; // honeypot (και server-side στο FormSubmit), bot
     const name = (data.get('name') as string || '').trim();
     const contact = (data.get('contact') as string || '').trim();
     if (!name || !contact) {
@@ -328,49 +328,36 @@ const faqItems = [
       return;
     }
 
-    const body =
-      `Όνομα: ${name}\nΕπικοινωνία: ${contact}\n\n${summaryEl.value}`;
-
-    if (FORM_ENDPOINT) {
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span>Αποστολή…';
-      try {
-        const res = await fetch(FORM_ENDPOINT, {
-          method: 'POST',
-          headers: { Accept: 'application/json' },
-          body: data,
-        });
-        // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία, έλεγχος και του JSON.
-        const json = await res.json().catch(() => null);
-        if (!res.ok || !json || String(json.success) !== 'true') throw new Error('form failed');
-        form.hidden = true;
-        msg.hidden = true;
-        // Επαναφορά κουμπιού & πεδίων ώστε η φόρμα να είναι έτοιμη για νέα αποστολή
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Αποστολή προσφοράς';
-        form.reset();
-        update();
-        doneEl.hidden = false;
-        confettiIn(offerCard);
-        (window as any).pismaSound?.play?.('on');
-        // Μετά από λίγο η οθόνη επιτυχίας δίνει ξανά τη θέση της στη φόρμα
-        setTimeout(() => {
-          doneEl.hidden = true;
-          form.hidden = false;
-        }, 6000);
-      } catch {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Αποστολή προσφοράς';
-        showMsg('Κάτι πήγε στραβά. Δοκιμάστε ξανά ή στείλτε μας email στο ' + SITE.email + '.', false);
-      }
-    } else {
-      // Χωρίς endpoint ακόμα: άνοιγμα email με έτοιμη την προσφορά
-      const url =
-        'mailto:' + SITE.email +
-        '?subject=' + encodeURIComponent('Προσφορά από τη σελίδα Τιμών: ' + name) +
-        '&body=' + encodeURIComponent(body);
-      window.location.href = url;
-      showMsg('Ανοίξαμε το email σας με έτοιμη την προσφορά. Απλώς πατήστε αποστολή.', true);
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span>Αποστολή…';
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: data,
+      });
+      // Το FormSubmit απαντά 200 ακόμα και σε αποτυχία, έλεγχος και του JSON.
+      const json = await res.json().catch(() => null);
+      if (!res.ok || !json || String(json.success) !== 'true') throw new Error('form failed');
+      form.hidden = true;
+      msg.hidden = true;
+      // Επαναφορά κουμπιού & πεδίων ώστε η φόρμα να είναι έτοιμη για νέα αποστολή
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Αποστολή προσφοράς';
+      form.reset();
+      update();
+      doneEl.hidden = false;
+      confettiIn(offerCard);
+      (window as any).pismaSound?.play?.('on');
+      // Μετά από λίγο η οθόνη επιτυχίας δίνει ξανά τη θέση της στη φόρμα
+      setTimeout(() => {
+        doneEl.hidden = true;
+        form.hidden = false;
+      }, 6000);
+    } catch {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Αποστολή προσφοράς';
+      showMsg('Κάτι πήγε στραβά. Δοκιμάστε ξανά ή στείλτε μας email στο ' + SITE.email + '.', false);
     }
   });
 
@@ -491,6 +478,8 @@ const faqItems = [
   }
   @media (max-width: 880px) {
     :global(body) { padding-bottom: 92px; }
+    /* Το μπάνερ cookies ανεβαίνει πάνω από τη σταθερή μπάρα συνόλου, ώστε να μην την κρύβει. */
+    :global(#consent-banner) { bottom: 104px; }
   }
   @media (max-width: 480px) {
     .guarantee { flex-direction: column; }

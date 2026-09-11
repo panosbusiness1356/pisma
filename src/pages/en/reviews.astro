@@ -4,14 +4,15 @@ import PageHero from '../../components/PageHero.astro';
 import NotClassicQr from '../../components/NotClassicQr.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import { SITE, ELEGXOS, eurEn } from '../../config';
+import { SITE, eurEn } from '../../config';
 import { optionById } from '../../data/pricing';
 
 // Το προϊόν κριτικών, μία πηγή αλήθειας: pricing.ts.
 // Τιμές αυτοκόλλητων: πίνακας F στο /aftokollita/ (εφάπαξ, από 18 € το πακέτο).
 // ΣΚΟΠΙΜΑ teaser: ο μηχανισμός του Εργαλείου Κριτικών δεν περιγράφεται πουθενά δημόσια, 
 // ούτε βήματα, ούτε demo link. Παρουσιάζεται μόνο ζωντανά, σε ραντεβού.
-const wheel = optionById('auto-reviews')!;
+const tool = optionById('auto-reviews')!;
+const gbp = optionById('gbp-setup')!;
 
 const schema = {
   '@context': 'https://schema.org',
@@ -28,9 +29,9 @@ const schema = {
   },
   offers: {
     '@type': 'Offer',
-    price: wheel.price,
+    price: tool.price,
     priceCurrency: 'EUR',
-    description: `${eurEn(wheel.price)} per month, no commitment, plus QR stickers as a one-off.`,
+    description: `${eurEn(tool.price)} per month, no commitment, plus QR stickers as a one-off.`,
   },
   description:
     "PISMA's tool for more Google reviews, with a QR sticker inside the business and a live presentation only.",
@@ -62,11 +63,11 @@ const faqItems = [
   },
   {
     q: 'What do I need to get started?',
-    a: 'A Google profile, which we set up if you do not have one, and the QR stickers. We set up everything else.',
+    a: `A Google profile (if you do not have one, we set it up: Setup ${eurEn(gbp.price)} one-off) and the QR stickers. We set up everything else.`,
   },
   {
     q: 'How much does it cost?',
-    a: `${eurEn(wheel.price)} per month for the platform, with no contract and no commitment. The QR stickers are a one-off payment, from €18 per pack.`,
+    a: `${eurEn(tool.price)} per month for the platform, with no contract and no commitment. The QR stickers are a one-off payment, from €18 per pack.`,
   },
   {
     q: 'Does it work for delivery too?',
@@ -114,7 +115,7 @@ const faqItems = [
         <div class="price-main">
           <p class="kicker">Price: public, the same for everyone</p>
           <h2 id="price-title">
-            <span class="price-num num">{eurEn(wheel.price)}</span> per month
+            <span class="price-num num">{eurEn(tool.price)}</span> per month
           </h2>
           <p class="price-sub">
             Includes platform, setup and stats. No contract and no commitment.
@@ -137,7 +138,7 @@ const faqItems = [
   <section class="section section--tight" aria-labelledby="faq-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker">FAQ</p>
+        <p class="kicker">Questions</p>
         <h2 id="faq-title">Frequently asked questions.</h2>
       </div>
       <Faq items={faqItems} withSchema />

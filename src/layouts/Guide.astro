@@ -150,6 +150,10 @@ const schema = [
   }
   .guide-prose :global(th) { color: var(--navy); font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; }
   .guide-prose :global(td) { color: var(--ink); }
+  /* Στενές οθόνες: ο πίνακας τιμών χωρά στα 390px χωρίς οριζόντιο κύλισμα. */
+  @media (max-width: 480px) {
+    .guide-prose :global(th), .guide-prose :global(td) { padding: 8px 8px; font-size: .88rem; }
+  }
 
   .guide-meta {
     margin-top: clamp(30px, 4vw, 44px); padding-top: 18px; border-top: 1px solid var(--line);

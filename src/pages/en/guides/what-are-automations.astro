@@ -13,8 +13,6 @@ const excel = optionByIdEn('auto-excel')!;
 const day = optionByIdEn('auto-day')!;
 const debt = optionByIdEn('auto-debt')!;
 const spy = optionByIdEn('auto-spy')!;
-const reviews = optionByIdEn('auto-reviews')!;
-const loyalty = optionByIdEn('auto-loyalty')!;
 const menu = optionByIdEn('auto-menu')!;
 
 const faq = [
@@ -47,7 +45,7 @@ const faq = [
   description="Automation means a routine office task gets done on its own: payment matching, debt reminders, reports. See what each one does."
   slug="what-are-automations"
   question="What are automations?"
-  sub="What each one does, explained for business owners."
+  sub="What each one does, explained for business owners, without technical terms."
   updated="2026-09-10"
   faq={faq}
 >
@@ -65,6 +63,7 @@ const faq = [
     { icon: 'list', t: excel.label, d: `Your transactions in one Excel that updates itself. ${eurEn(excel.price)} one-off.` },
     { icon: 'message', t: debt.label, d: `Polite reminders, automatically. ${eurEn(debt.price)} per month.` },
     { icon: 'eye', t: spy.label, d: `What your competition is doing, in a regular report. ${eurEn(spy.price)} per month.` },
+    { icon: 'clock', t: day.label, d: `Your day at a glance, in one message. ${eurEn(day.price)} per month.` },
     { icon: 'tag', t: menu.label, d: `A QR on the table, the menu on the phone. ${eurEn(menu.price)} per month.` },
   ]} />
 

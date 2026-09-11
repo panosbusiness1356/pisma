@@ -25,7 +25,7 @@ const schema = {
     },
   },
   description:
-    'Website, top spots on Google and recommendations from ChatGPT, with your visibility measured before and after.',
+    'Website, better positions on Google and recommendations from ChatGPT, with your visibility measured before and after.',
 };
 
 const services = [
@@ -54,7 +54,7 @@ const services = [
   },
   {
     t: 'AI recommendations',
-    d: 'GEO/AEO optimisation so ChatGPT recommends your business.',
+    d: 'GEO/AEO optimization so ChatGPT recommends your business.',
     icon: 'ai',
   },
   {
@@ -67,7 +67,7 @@ const services = [
     t: 'Shopify store',
     d: 'An online store with payments and shipping ready.',
     icon: 'shopify',
-    size: 'big',
+    size: 'big' as const,
     href: '/en/shopify/',
   },
   {
@@ -103,7 +103,7 @@ const services = [
     t: 'Competitor monitoring',
     d: 'A monthly comparison of your visibility against competitors.',
     icon: 'eye',
-    size: 'card',
+    size: 'card' as const,
   },
 ];
 

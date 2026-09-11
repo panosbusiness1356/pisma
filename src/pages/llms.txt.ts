@@ -7,6 +7,7 @@ import { SITE, ELEGXOS, eur } from '../config';
 import { CATEGORIES } from '../data/pricing';
 import { GUIDES } from '../data/guides';
 import { GUIDES_EN } from '../data/guides.en';
+import { PAIRS } from '../i18n';
 
 const line = (o: { label: string; detail?: string; price: number; type: string; quote?: boolean }) =>
   `- ${o.label}${o.detail ? ` (${o.detail})` : ''}: ${o.quote ? 'τιμή κατόπιν συνεννόησης' : `${eur(o.price)} ${o.type === 'monthly' ? 'τον μήνα' : 'εφάπαξ'}`}`;
@@ -49,7 +50,7 @@ ${GUIDES.map((g) => `- [${g.q}](${SITE.url}/odigoi/${g.slug}/): ${g.blurb}`).joi
 ζωντανά, σε ραντεβού. Πλήρης συμμόρφωση με τους κανόνες της Google: καμία αγορασμένη
 ή στημένη κριτική, κανένα αντάλλαγμα για κριτική, κανένα φιλτράρισμα.
 
-- [Το Εργαλείο Κριτικών](${SITE.url}/kritikes/): τι κάνει, τιμή, πώς κλείνεις ζωντανή παρουσίαση
+- [Το Εργαλείο Κριτικών](${SITE.url}/kritikes/): τι κάνει, τιμή, πώς κλείνετε ζωντανή παρουσίαση
 - [Αυτοκόλλητα QR (showroom)](${SITE.url}/aftokollita/): 16 σχέδια, προσαρμογή, παραγγελία
 
 ## Βασικές σελίδες
@@ -69,8 +70,8 @@ ${GUIDES.map((g) => `- [${g.q}](${SITE.url}/odigoi/${g.slug}/): ${g.blurb}`).joi
 
 ## English version
 
-Το site διατίθεται και στα αγγλικά, με πλήρη αντιστοιχία σελίδων:
-- [Home](${SITE.url}/en/) · [Pricing](${SITE.url}/en/pricing/) · [The Reviews Tool](${SITE.url}/en/reviews/) · [Shopify store](${SITE.url}/en/shopify/) · [Photo & Video](${SITE.url}/en/photo-video/) · [Guides](${SITE.url}/en/guides/) · [Contact](${SITE.url}/en/contact/)
+Το site διατίθεται και στα αγγλικά, με πλήρη αντιστοιχία σελίδων (κάθε ελληνική σελίδα έχει την αγγλική της κάτω από /en/):
+${PAIRS.filter(([el]) => !el.startsWith('/odigoi/')).map(([, en]) => `${SITE.url}${en}`).join(' · ')}
 - Free ${ELEGXOS.minutes}-minute assessment: [The PISMA Check](${SITE.url}/en/free-assessment/)
 
 English guides:

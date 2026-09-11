@@ -9,8 +9,6 @@ const excel = optionById('auto-excel')!;
 const day = optionById('auto-day')!;
 const debt = optionById('auto-debt')!;
 const spy = optionById('auto-spy')!;
-const reviews = optionById('auto-reviews')!;
-const loyalty = optionById('auto-loyalty')!;
 const menu = optionById('auto-menu')!;
 
 const faq = [
@@ -60,6 +58,7 @@ const faq = [
     { icon: 'list', t: excel.label, d: `Οι κινήσεις σας σε ένα Excel που ενημερώνεται μόνο του. ${eur(excel.price)} εφάπαξ.` },
     { icon: 'message', t: debt.label, d: `Ευγενικές υπενθυμίσεις, αυτόματα. ${eur(debt.price)} τον μήνα.` },
     { icon: 'eye', t: spy.label, d: `Τι κάνει ο ανταγωνισμός, σε τακτική αναφορά. ${eur(spy.price)} τον μήνα.` },
+    { icon: 'clock', t: day.label, d: `Η εικόνα της ημέρας σας, σε ένα μήνυμα. ${eur(day.price)} τον μήνα.` },
     { icon: 'tag', t: menu.label, d: `QR στο τραπέζι, μενού στο κινητό. ${eur(menu.price)} τον μήνα.` },
   ]} />
 

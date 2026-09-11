@@ -68,10 +68,10 @@ const schema = {
 };
 
 const steps = [
-  { t: 'Assessment', d: `${ELEGXOS.minutes} minutes, completely free. We map where you're losing customers and hours.` },
-  { t: 'Proposal', d: `In writing, within ${ELEGXOS.reportHours} hours, at a fixed price.` },
-  { t: 'Build', d: 'In 2–4 weeks, on the tools you already use.' },
-  { t: 'Support', d: 'A monthly results report, in hours and euros.' },
+  { t: 'PISMA Check', d: `${ELEGXOS.minutes} minutes, free. We learn about your business and how it can improve.` },
+  { t: 'Proposal', d: `Within ${ELEGXOS.reportHours} hours, in writing and with a final price.` },
+  { t: 'Build', d: 'Ready in 2–4 weeks, without stopping your work.' },
+  { t: 'Support', d: 'We stay by your side afterwards. A monthly report with numbers.' },
 ];
 
 
@@ -100,7 +100,7 @@ const bdTotals = sumOf(bdDefs.map((d) => d.id));
 
 /* Hero: τιμή-άγκυρα από τον τιμοκατάλογο + WhatsApp με προσυμπληρωμένο μήνυμα. */
 const sitePriceFrom = optionByIdEn('web-basic')!.price;
-const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the free PISMA Check for my business.")}`;
+const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like a free assessment for my business.")}`;
 ---
 
 <Base
@@ -131,16 +131,16 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
       <p class="hero-kicker blur-in" style="--d:.16s">Digital presence & automation</p>
 
       <h1 id="hero-title" class="blur-in" style="--d:.22s">
-        Your business, <span class="hero-hl">one step ahead<svg class="hl-stroke" viewBox="0 0 320 30" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="hlGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--cta-lite)" /><stop offset="1" stop-color="var(--cta-deep)" /></linearGradient></defs><path d="M6 15 C 60 9, 130 21, 200 14 C 245 10, 285 12, 314 13 C 260 18, 200 22, 120 21 C 90 20.5, 72 19, 58 18" fill="none" stroke="url(#hlGrad)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" opacity=".95" /></svg></span>.
+        Your business, <span class="hero-hl">one step ahead<svg class="hl-stroke" viewBox="0 0 320 30" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="hlGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--cta-lite)" /><stop offset="1" stop-color="var(--cta-deep)" /></linearGradient></defs><path d="M6 15 C 60 9, 130 21, 200 14 C 245 10, 285 12, 314 13 C 260 18, 200 22, 120 21 C 90 20.5, 72 19, 58 18" pathLength="1" fill="none" stroke="url(#hlGrad)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" opacity=".95" /></svg></span>.
       </h1>
       <script is:inline>
         // Κρύβει την υπογράμμιση πριν το πρώτο paint, θα τη «ζωγραφίσει» ο Ντοτ.
         (function () {
+          // pathLength="1": μήκος 1, χωρίς getTotalLength() (θα ανάγκαζε layout μέσα στον τίτλο, πριν το πρώτο paint).
           var p = document.querySelector('.hl-stroke path');
           if (p && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            var L = p.getTotalLength();
-            p.style.strokeDasharray = String(L);
-            p.style.strokeDashoffset = String(L);
+            p.style.strokeDasharray = '1';
+            p.style.strokeDashoffset = '1';
           }
         })();
       </script>
@@ -153,7 +153,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
         </span>
         <a class="btn btn--ghost" href="/en/free-assessment/">Free {ELEGXOS.minutes}-minute PISMA Check</a>
       </div>
-      <p class="btn-note blur-in" style="--d:.54s">No email · no commitment · your score appears instantly</p>
+      <p class="btn-note blur-in" style="--d:.54s">No email · no commitment · 2 minutes and you see your score</p>
 
       <!-- Άμεσα κανάλια: split-button WhatsApp | Viber (επιλογή 6 της χρήστριας) -->
       <div class="hero-chat blur-in" style="--d:.58s">
@@ -319,7 +319,7 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
           the rankings, right where customers are searching.
         </p>
         <div class="rev-cta">
-          <a class="btn btn--ghost" href="/en/reviews/">See what the Reviews Tool does</a>
+          <a class="btn btn--ghost" href="/en/reviews/">See the tool</a>
         </div>
         <p class="rev-note">Illustrative example.</p>
       </div>
@@ -408,8 +408,8 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
     <div class="container">
       <div class="sec-head">
         <p class="kicker kicker--blue">Pricing</p>
-        <h2 id="pricing-title">No ready-made packages: you build your own</h2>
-        <p>Every price is public. You pick only what you need and know the cost before we ever speak.</p>
+        <h2 id="pricing-title">Build your package</h2>
+        <p>Public prices. You pick what you need and build your package.</p>
       </div>
 
       <div class="card bd reveal" id="builder-demo">
@@ -440,26 +440,26 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
               <span class="bd-n num">1</span>
               <div>
                 <h3>Pick your services</h3>
-                <p>Website, Google, the Reviews Tool, automations: tick only what your business needs.</p>
+                <p>Website, social media, Google reviews, visibility on Google and AI, automations. Pick what you need.</p>
               </div>
             </li>
             <li>
               <span class="bd-n num">2</span>
               <div>
-                <h3>Watch the total update live</h3>
-                <p>One-off and monthly, no fine print. The sum updates right in front of you.</p>
+                <h3>See the total</h3>
+                <p>You see right away what you pay once and what you pay monthly.</p>
               </div>
             </li>
             <li>
               <span class="bd-n num">3</span>
               <div>
-                <h3>Get it in writing</h3>
-                <p>No online payment. You send the quote over and we talk.</p>
+                <h3>Get the quote in writing</h3>
+                <p>You send the quote and we talk in person. No commitment.</p>
               </div>
             </li>
           </ol>
           <a class="btn btn--orange" href="/en/pricing/">Build your package →</a>
-          <p class="btn-note">2 minutes · all prices public · no personal details</p>
+          <p class="btn-note">2 minutes · all prices public</p>
         </div>
       </div>
     </div>
@@ -497,12 +497,12 @@ const waHref = `${SITE.whatsapp}?text=${encodeURIComponent("Hello! I'd like the 
   >
     <span class="flogo sflogo" aria-hidden="true" style="left:5%;top:12px;--w:24px;--dur:5.4s"><img src="/logos/viber.svg" alt="" loading="lazy" /></span>
     <div class="container">
-      <h2 id="final-title">Start with the free<br /><span class="grad-text">{ELEGXOS.minutes}-minute PISMA Check</span></h2>
+      <h2 id="final-title">A {ELEGXOS.minutes}-minute assessment,<br /><span class="grad-text">FREE</span></h2>
       <p>
-        We map where you're losing customers and time, and you get the findings in writing.
+        We look together at where you stand and what can improve. No obligation to continue.
       </p>
       <a class="btn btn--orange" href="/en/free-assessment/">Book the free PISMA Check</a>
-      <p class="btn-note">{ELEGXOS.minutes} minutes · completely free · no commitment</p>
+      <p class="btn-note">{ELEGXOS.minutes} minutes · no charge · no commitment</p>
     </div>
   </section>
 </Base>
