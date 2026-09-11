@@ -100,6 +100,7 @@ const faqItems = [
                     : <span class="b-price"><span class="num">{eurEn(o.price)}</span><em>{o.type === 'once' ? 'one-off' : '/month'}</em></span>}
                 </label>
               ))}
+              {cat.note && <p class="b-cat-note">{cat.note}</p>}
             </fieldset>
           ))}
         </div>
@@ -378,6 +379,7 @@ const faqItems = [
   .b-cat-head { float: left; width: 100%; padding: 0; margin-bottom: 12px; }
   .b-cat-title { display: block; font-weight: 700; font-size: 1.05rem; color: var(--navy); }
   .b-cat-desc { display: block; margin-top: 2px; font-size: .85rem; color: var(--muted); }
+  .b-cat-note { margin: 10px 0 0; padding-top: 10px; border-top: 1px dashed var(--line); font-size: .85rem; color: var(--muted); }
   .b-opt {
     display: flex; align-items: center; gap: 12px;
     padding: 10px 12px; border-radius: 10px; cursor: pointer;

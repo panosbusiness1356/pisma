@@ -26,6 +26,8 @@ export interface PricingCategory {
   id: string;
   title: string;
   desc?: string;
+  /** Πληροφοριακή γραμμή κάτω από τις επιλογές (π.χ. κόστος τρίτου), ΔΕΝ μπαίνει σε αθροίσματα ή schema. */
+  note?: string;
   /** radio = μία επιλογή (με διαθέσιμο «Καμία»), checkbox = πολλαπλές */
   mode: 'radio' | 'checkbox';
   options: PricingOption[];
@@ -51,6 +53,8 @@ export const CATEGORIES: PricingCategory[] = [
     id: 'care',
     title: 'Συντήρηση',
     desc: 'Να τρέχουν όλα, χωρίς να το σκέφτεστε.',
+    // Το domain πληρώνεται στον πάροχο, στο όνομα του πελάτη (απόφαση 12/09/2026), γι' αυτό είναι σημείωση και όχι επιλογή.
+    note: 'Domain .gr: περίπου 25€ ανά 2 χρόνια (με ΦΠΑ), στο όνομά σας, πληρώνεται στον πάροχο. Δεν μπαίνει στο άθροισμα.',
     mode: 'checkbox',
     options: [
       { id: 'care-web', label: 'Συντήρηση ιστοσελίδας', detail: 'Φιλοξενία, ενημερώσεις, ασφάλεια, μικροαλλαγές', price: 29, type: 'monthly' },

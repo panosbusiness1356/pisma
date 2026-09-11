@@ -5,14 +5,14 @@
  */
 import { CATEGORIES, type PricingCategory } from './pricing';
 
-const CAT: Record<string, { title: string; desc?: string }> = {
+const CAT: Record<string, { title: string; desc?: string; note?: string }> = {
   website: { title: 'Website', desc: 'Build or rebuild, pick one.' },
   gbp: { title: 'Google Business Profile', desc: 'Your profile on Google Maps and Google Search.' },
   ai: { title: 'Visibility on Google & AI', desc: 'SEO · GEO · AEO: show up in AI tools’ answers too.' },
   social: { title: 'Social media', desc: 'Pick one, depending on who produces the content.' },
   media: { title: 'Photography & Video', desc: 'At your premises. Pick what you need.' },
   auto: { title: 'Automations', desc: 'Pick as many as you like. The list keeps growing.' },
-  care: { title: 'Care', desc: 'Everything keeps running, without you thinking about it.' },
+  care: { title: 'Care', desc: 'Everything keeps running, without you thinking about it.', note: 'Domain .gr: about €25 per 2 years (VAT included), in your name, paid to the provider. Not added to the total.' },
 };
 
 const OPT: Record<string, { label: string; detail?: string }> = {
