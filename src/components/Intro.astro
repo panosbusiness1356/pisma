@@ -58,8 +58,9 @@
   .intro-word.placed { transform: none; }
   .intro-word span { display: inline-block; opacity: 0; filter: blur(28px); transform: scale(1.3); will-change: transform, filter, opacity; }
   .intro-word .dot { color: #FF7A50; text-shadow: 0 0 40px rgba(255, 122, 80, .9); }
-  /* Οθόνες αφής: ίδιο εφέ (βγαίνουν από θόλωμα), αλλά το blur λύνεται σε 4 βήματα αντί για κάθε καρέ, 
-     βλ. το JS (δύο animations: ομαλό opacity/scale + βηματικό filter). */
+  /* Οθόνες αφής: τα γράμματα βγαίνουν ΧΩΡΙΣ θόλωμα (μόνο opacity/scale, βλ. JS). Το βηματικό filter animation
+     δεν έφτανε πάντα στο τελικό καρέ σε WebKit (iPad, 19/09/2026), γι' αυτό το filter φεύγει και από τον βασικό κανόνα. */
+  @media (pointer: coarse) { .intro-word span { filter: none; } }
   /* Όσο το πέπλο είναι αδιαφανές: ο καπνός του hero δεν ζωγραφίζεται (GPU), και τα στοιχεία
      του hero κάθονται ΟΡΑΤΑ στην τελική τους θέση κάτω από το πέπλο (κανείς δεν τα βλέπει, αλλά ο
      browser τα «ζωγραφίζει» → το LCP μετριέται στην πρώτη ζωγραφιά, όχι όταν ανοίξει το πέπλο).
@@ -291,8 +292,8 @@
          επόμενο rAF: ένα καρέ (και σε αργή GPU έως ~1 s, όσο ο driver μεταγλώττιζε) με άδειο καμβά πάνω στην αρχική,
          δηλαδή «φαίνεται η αρχική για ένα δευτερόλεπτο πριν ξεκινήσει το intro» (χρήστρια 11/09/2026). */
       word.style.opacity = '1';
-      // Οθόνες αφής: το ίδιο εφέ σε δύο animations, ομαλό opacity/scale (compositor) + blur σε 4 βήματα
-      // (4 ξαναζωγραφίσματα ανά γράμμα αντί για ~40· το blur animation δεν τρέχει στον compositor του Chrome).
+      // Οθόνες αφής: μόνο opacity/scale (compositor), χωρίς blur. Το βηματικό filter animation που υπήρχε εδώ
+      // δεν έφτανε πάντα στο τελικό καρέ σε WebKit (iPad) και τα γράμματα έμεναν θολά (19/09/2026).
       letters.forEach((el, i) => {
         const A = el.animate(
           touch
@@ -300,7 +301,6 @@
             : [{ opacity: 0, filter: 'blur(28px)', transform: 'scale(1.3)' }, { opacity: 1, filter: 'blur(0)', transform: 'scale(1)' }],
           { duration: LET_DUR, delay: T_LET + i * LET_GAP, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'forwards' },
         );
-        if (touch) anims.push(el.animate([{ filter: 'blur(18px)' }, { filter: 'blur(0)' }], { duration: LET_DUR * .55, delay: T_LET + i * LET_GAP, easing: 'steps(4, jump-end)', fill: 'forwards' }));
         anims.push(A);
       });
       const W = word.animate([{ opacity: 1 }, { opacity: 1, offset: T_FADE / T_END }, { opacity: 0, offset: (T_FADE + FADE_DUR) / T_END }, { opacity: 0 }], { duration: T_END, fill: 'forwards', easing: 'linear' });

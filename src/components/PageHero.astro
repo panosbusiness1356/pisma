@@ -101,10 +101,11 @@ const hasExtra = Astro.slots.has('extra');
     .stg-fog--1 { width: calc(70vw / 3); height: calc(34vw / 3); background: radial-gradient(closest-side, rgba(255, 255, 255, .13) 0%, rgba(255, 255, 255, .06) 45%, transparent 100%); }
     .stg-fog--2 { width: calc(60vw / 3); height: calc(30vw / 3); background: radial-gradient(closest-side, rgba(255, 255, 255, .1) 0%, rgba(255, 255, 255, .04) 45%, transparent 100%); }
     @keyframes phDriftLite { from { transform: scale(3); } to { transform: translate(5vw, -2vw) scale(3.3); } }
-    /* Είσοδος: ίδιο θόλωμα → καθαρό, αλλά σε 3 βήματα (3 ξαναζωγραφίσματα αντί για 66)· ξεθώριασμα/ανάδυση ομαλά στον compositor. */
-    .blur-in { will-change: transform; animation: phInMove 1.1s cubic-bezier(.2, .8, .25, 1) both, phInBlur .4s steps(3, jump-end) both; animation-delay: var(--d, 0s); }
+    /* Είσοδος ΧΩΡΙΣ θόλωμα: μόνο ξεθώριασμα/ανάδυση (compositor). Το βηματικό filter animation (steps) που
+       υπήρχε εδώ δεν έφτανε πάντα στο τελικό του καρέ σε iPad/iPhone (WebKit) και ο υπότιτλος έμενε θολός
+       στο filter: blur(12px) του βασικού κανόνα (χρήστρια 19/09/2026, iPad). Γι' αυτό και το filter: none ρητά. */
+    .blur-in { will-change: transform; filter: none; animation: phInMove 1.1s cubic-bezier(.2, .8, .25, 1) both; animation-delay: var(--d, 0s); }
     @keyframes phInMove { to { opacity: 1; transform: none; } }
-    @keyframes phInBlur { from { filter: blur(8px); } to { filter: blur(0); } }
   }
   @media (max-width: 680px) {
     .hero { padding-top: calc(40px + 72px); padding-bottom: 40px; min-height: 0; }
