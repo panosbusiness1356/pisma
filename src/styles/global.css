@@ -330,12 +330,11 @@ a.card-arrow:hover, .card--link:hover .card-arrow { text-decoration: underline; 
   transition-delay: calc(var(--i, 0) * 70ms);
 }
 .reveal.is-in { opacity: 1; transform: none; filter: none; }
-/* Οθόνες αφής: το ΙΔΙΟ εφέ (θόλωμα → καθαρό), αλλά φθηνό. Ένα animation του filter: blur δεν τρέχει στον
-   compositor του Chrome, ξαναζωγραφίζει το στοιχείο στο main thread σε ΚΑΘΕ καρέ (54 φορές σε .9 s).
-   Εδώ το θόλωμα λύνεται σε 3 βήματα (steps) = 3 ξαναζωγραφίσματα, ενώ ξεθώριασμα και ανάδυση μένουν ομαλά
-   στον compositor (will-change: transform = δικό του layer). Το μάτι δεν ξεχωρίζει τη διαφορά. */
+/* Οθόνες αφής: ΧΩΡΙΣ θόλωμα, μόνο ξεθώριασμα και ανάδυση (compositor). Το filter: blur ξαναζωγραφίζει στο main
+   thread, και το βηματικό filter transition (steps) άφηνε κείμενο θολό σε iPad/iPhone (WebKit, χρήστρια 19/09/2026).
+   Ίδιος κανόνας με το .blur-in των hero: σε οθόνη αφής κανένα κείμενο δεν περνάει από filter. */
 @media (pointer: coarse) {
-  .reveal { filter: blur(5px); transition: opacity .9s var(--ease), transform .9s var(--ease), filter .4s steps(3, jump-end); }
+  .reveal { filter: none; transition: opacity .9s var(--ease), transform .9s var(--ease); }
 }
 /* Οθόνες αφής: οι ενότητες κάτω από την πρώτη οθόνη δεν στήνονται/ζωγραφίζονται μέχρι να πλησιάσουν
    (content-visibility), το πρώτο layout/paint της σελίδας των 6-7 οθονών γίνεται layout μιας οθόνης.
