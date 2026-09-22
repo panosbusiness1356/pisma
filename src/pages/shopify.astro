@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { SITE, ELEGXOS, eur } from '../config';
+import { SITE, ELEGXOS, SHOPIFY_PRODUCTS, eur } from '../config';
 import { optionById } from '../data/pricing';
 
 // Μία πηγή αλήθειας για τις τιμές: pricing.ts (web-shopify, web-shopify-large, care-shopify).
@@ -96,7 +96,7 @@ const faqItems = [
   },
   {
     q: 'Πόσο κοστίζει;',
-    a: `Κατασκευή ${eur(shop.price)} εφάπαξ (έως 50 προϊόντα) ή ${eur(shopLarge.price)} για μεγάλο κατάστημα (έως 300 προϊόντα, με μεταφορά από άλλη πλατφόρμα). Η μηνιαία διαχείριση ${eur(manageOpt.price)} τον μήνα, προαιρετική και χωρίς δέσμευση. Όλα δημόσια στη σελίδα τιμών.`,
+    a: `Κατασκευή ${eur(shop.price)} εφάπαξ (έως ${SHOPIFY_PRODUCTS.small} προϊόντα) ή ${eur(shopLarge.price)} για μεγάλο κατάστημα (έως ${SHOPIFY_PRODUCTS.large} προϊόντα, με μεταφορά από άλλη πλατφόρμα). Η μηνιαία διαχείριση ${eur(manageOpt.price)} τον μήνα, προαιρετική και χωρίς δέσμευση. Όλα δημόσια στη σελίδα τιμών.`,
   },
   {
     q: 'Ποιος πληρώνει τη συνδρομή του Shopify;',
@@ -177,7 +177,7 @@ const faqItems = [
   <section class="section" aria-labelledby="ways-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker kicker--blue">Τι αναλαμβάνουμε</p>
+        <p class="kicker">Τι αναλαμβάνουμε</p>
         <h2 id="ways-title">Κατασκευή, διαχείριση, ή και τα δύο.</h2>
       </div>
       <div class="grid-2">
@@ -187,7 +187,7 @@ const faqItems = [
             <span class="way-tag">Εφάπαξ</span>
           </span>
           <h3>Κατασκευή e-shop</h3>
-          <p class="way-lead">Από το μηδέν, έως 50 προϊόντα. Ή μεγάλο, με μεταφορά από άλλη πλατφόρμα.</p>
+          <p class="way-lead">Από το μηδέν, έως {SHOPIFY_PRODUCTS.small} προϊόντα. Ή μεγάλο, με μεταφορά από άλλη πλατφόρμα.</p>
           <ul class="way-list">
             {build.map((b) => <li>{b}</li>)}
           </ul>

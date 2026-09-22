@@ -3,13 +3,15 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { SITE, ELEGXOS, eur } from '../config';
+import { SITE, ELEGXOS, PROMISE, eur } from '../config';
 import { optionById } from '../data/pricing';
 
 // Μία πηγή αλήθειας για τις τιμές: pricing.ts (web-basic/standard/pro).
 const basic = optionById('web-basic')!;
 const standard = optionById('web-standard')!;
 const pro = optionById('web-pro')!;
+// Χρόνος παράδοσης από το config.ts (PROMISE.buildWeeks).
+const weeks = `${PROMISE.buildWeeks[0]} έως ${PROMISE.buildWeeks[1]} εβδομάδες`;
 
 const schema = {
   '@context': 'https://schema.org',
@@ -55,7 +57,7 @@ const why = [
 const faqItems = [
   {
     q: 'Σε πόσο καιρό είναι έτοιμο;',
-    a: 'Σε 2 έως 4 εβδομάδες από την παραλαβή των υλικών: κείμενα, φωτογραφίες, λογότυπο. Αν λείπουν, βοηθάμε να δημιουργηθούν.',
+    a: `Σε ${weeks} από την παραλαβή των υλικών: κείμενα, φωτογραφίες, λογότυπο. Αν λείπουν, βοηθάμε να δημιουργηθούν.`,
   },
   {
     q: 'Τι χρειάζεται να φέρω εγώ;',
@@ -78,7 +80,7 @@ const faqItems = [
 
 <Base
   title="Κατασκευή ιστοσελίδας για επιχειρήσεις | PISMA"
-  description="Κατασκευή ιστοσελίδας για επιχειρήσεις με δημόσιες τιμές, ζωντανό δείγμα και παράδοση σε 2 έως 4 εβδομάδες."
+  description={`Κατασκευή ιστοσελίδας για επιχειρήσεις με δημόσιες τιμές, ζωντανό δείγμα και παράδοση σε ${weeks}.`}
   schema={schema}
 >
   <!-- 1. Hero -->

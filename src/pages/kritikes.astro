@@ -6,9 +6,10 @@ import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { SITE, eur } from '../config';
 import { optionById } from '../data/pricing';
+import { STICKER_COUNT, STICKER_MIN_PRICE } from '../data/stickers';
 
 // Το προϊόν κριτικών, μία πηγή αλήθειας: pricing.ts.
-// Τιμές αυτοκόλλητων: πίνακας F στο /aftokollita/ (εφάπαξ, από 18 € το πακέτο).
+// Τιμές και πλήθος αυτοκόλλητων: src/data/stickers.ts (εφάπαξ, «από» = η χαμηλότερη τιμή πακέτου).
 // ΣΚΟΠΙΜΑ teaser: ο μηχανισμός του Εργαλείου Κριτικών δεν περιγράφεται πουθενά δημόσια, 
 // ούτε βήματα, ούτε demo link. Παρουσιάζεται μόνο ζωντανά, σε ραντεβού.
 const tool = optionById('auto-reviews')!;
@@ -67,7 +68,7 @@ const faqItems = [
   },
   {
     q: 'Πόσο κοστίζει;',
-    a: `${eur(tool.price)} τον μήνα για την πλατφόρμα, χωρίς συμβόλαιο και χωρίς δέσμευση. Τα αυτοκόλλητα QR πληρώνονται μία φορά, από 18€ το πακέτο.`,
+    a: `${eur(tool.price)} τον μήνα για την πλατφόρμα, χωρίς συμβόλαιο και χωρίς δέσμευση. Τα αυτοκόλλητα QR πληρώνονται μία φορά, από ${eur(STICKER_MIN_PRICE)} το πακέτο.`,
   },
   {
     q: 'Δουλεύει και για delivery;',
@@ -121,8 +122,8 @@ const faqItems = [
             Περιλαμβάνει πλατφόρμα, στήσιμο και στατιστικά. Χωρίς συμβόλαιο και χωρίς δέσμευση.
           </p>
           <p class="price-sub">
-            Αυτοκόλλητα QR εφάπαξ, <strong>από 18€ το πακέτο</strong>,
-            σε 16 σχέδια για τραπέζι, ταμείο, βιτρίνα και delivery.
+            Αυτοκόλλητα QR εφάπαξ, <strong>από {eur(STICKER_MIN_PRICE)} το πακέτο</strong>,
+            σε {STICKER_COUNT} σχέδια για τραπέζι, ταμείο, βιτρίνα και delivery.
           </p>
         </div>
         <div class="price-cta">

@@ -6,9 +6,10 @@ import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { SITE, eurEn } from '../../config';
 import { optionById } from '../../data/pricing';
+import { STICKER_COUNT, STICKER_MIN_PRICE } from '../../data/stickers';
 
 // Το προϊόν κριτικών, μία πηγή αλήθειας: pricing.ts.
-// Τιμές αυτοκόλλητων: πίνακας F στο /aftokollita/ (εφάπαξ, από 18 € το πακέτο).
+// Τιμές και πλήθος αυτοκόλλητων: src/data/stickers.ts (εφάπαξ, «from» = η χαμηλότερη τιμή πακέτου).
 // ΣΚΟΠΙΜΑ teaser: ο μηχανισμός του Εργαλείου Κριτικών δεν περιγράφεται πουθενά δημόσια, 
 // ούτε βήματα, ούτε demo link. Παρουσιάζεται μόνο ζωντανά, σε ραντεβού.
 const tool = optionById('auto-reviews')!;
@@ -67,7 +68,7 @@ const faqItems = [
   },
   {
     q: 'How much does it cost?',
-    a: `${eurEn(tool.price)} per month for the platform, with no contract and no commitment. The QR stickers are a one-off payment, from €18 per pack.`,
+    a: `${eurEn(tool.price)} per month for the platform, with no contract and no commitment. The QR stickers are a one-off payment, from ${eurEn(STICKER_MIN_PRICE)} per pack.`,
   },
   {
     q: 'Does it work for delivery too?',
@@ -121,8 +122,8 @@ const faqItems = [
             Includes platform, setup and stats. No contract and no commitment.
           </p>
           <p class="price-sub">
-            QR stickers as a one-off, <strong>from €18 per pack</strong>,
-            in 16 designs for tables, tills, windows and delivery.
+            QR stickers as a one-off, <strong>from {eurEn(STICKER_MIN_PRICE)} per pack</strong>,
+            in {STICKER_COUNT} designs for tables, tills, windows and delivery.
           </p>
         </div>
         <div class="price-cta">

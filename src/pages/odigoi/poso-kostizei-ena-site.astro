@@ -2,7 +2,7 @@
 import Guide from '../../layouts/Guide.astro';
 import Tiles from '../../components/guide/Tiles.astro';
 import { optionById } from '../../data/pricing';
-import { eur, ELEGXOS } from '../../config';
+import { eur, ELEGXOS, DOMAIN_GR } from '../../config';
 
 const basic = optionById('web-basic')!;
 const standard = optionById('web-standard')!;
@@ -19,7 +19,7 @@ const faq = [
   },
   {
     q: 'Υπάρχει μηνιαίο κόστος μετά την κατασκευή;',
-    a: `Μόνο αν το θέλετε: η ${care.label.toLowerCase()} κοστίζει ${eur(care.price)} τον μήνα, χωρίς συμβόλαιο ή δέσμευση, και περιλαμβάνει τη φιλοξενία. Το domain είναι στο όνομά σας: το ανοίγουμε μαζί στο ξεκίνημα, με τα στοιχεία σας. Ένα .gr κατοχυρώνεται για 2 χρόνια και η ανανέωσή του κοστίζει περίπου 25€ ανά 2 χρόνια (με ΦΠΑ), που πληρώνονται στον πάροχο του domain.`,
+    a: `Μόνο αν το θέλετε: η ${care.label.toLowerCase()} κοστίζει ${eur(care.price)} τον μήνα, χωρίς συμβόλαιο ή δέσμευση, και περιλαμβάνει τη φιλοξενία. Το domain είναι στο όνομά σας: το ανοίγουμε μαζί στο ξεκίνημα, με τα στοιχεία σας. Ένα .gr κατοχυρώνεται για ${DOMAIN_GR.years} χρόνια και η ανανέωσή του κοστίζει περίπου ${eur(DOMAIN_GR.price)} ανά ${DOMAIN_GR.years} χρόνια (με ΦΠΑ), που πληρώνονται στον πάροχο του domain.`,
   },
   {
     q: 'Σε ποιον πρέπει να ανήκει το domain;',

@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import { SITE, ELEGXOS, eurEn } from '../../config';
+import { SITE, ELEGXOS, SHOPIFY_PRODUCTS, eurEn } from '../../config';
 import { CATEGORIES_EN } from '../../data/pricing.en';
 
 // One source of truth for prices: pricing.ts (labels translated in pricing.en.ts).
@@ -97,7 +97,7 @@ const faqItems = [
   },
   {
     q: 'How much does it cost?',
-    a: `Build: ${eurEn(shop.price)} one-off (up to 50 products) or ${eurEn(shopLarge.price)} for a large store (up to 300 products, with migration from another platform). Monthly management ${eurEn(manageOpt.price)} per month, optional and with no lock-in. All public on the pricing page.`,
+    a: `Build: ${eurEn(shop.price)} one-off (up to ${SHOPIFY_PRODUCTS.small} products) or ${eurEn(shopLarge.price)} for a large store (up to ${SHOPIFY_PRODUCTS.large} products, with migration from another platform). Monthly management ${eurEn(manageOpt.price)} per month, optional and with no lock-in. All public on the pricing page.`,
   },
   {
     q: 'Who pays the Shopify subscription?',
@@ -178,7 +178,7 @@ const faqItems = [
   <section class="section" aria-labelledby="ways-title">
     <div class="container">
       <div class="sec-head">
-        <p class="kicker kicker--blue">What we take on</p>
+        <p class="kicker">What we take on</p>
         <h2 id="ways-title">Build, management, or both.</h2>
       </div>
       <div class="grid-2">
@@ -188,7 +188,7 @@ const faqItems = [
             <span class="way-tag">One-off</span>
           </span>
           <h3>Store build</h3>
-          <p class="way-lead">From scratch, up to 50 products. Or large, migrated from another platform.</p>
+          <p class="way-lead">From scratch, up to {SHOPIFY_PRODUCTS.small} products. Or large, migrated from another platform.</p>
           <ul class="way-list">
             {build.map((b) => <li>{b}</li>)}
           </ul>

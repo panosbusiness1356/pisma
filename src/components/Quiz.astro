@@ -4,7 +4,7 @@
  * Δεδομένα: src/data/quiz.ts (EL), src/data/quiz.en.ts (EN). Τιμές: src/data/pricing.ts.
  * Ροή: ερώτηση φίλτρο (τύπος επιχείρησης) → 7 κορμού → 4 κλάδου → αποτέλεσμα με τα 3 πρώτα βήματα.
  */
-import { TYPES, QUESTIONS, STRINGS } from '../data/quiz';
+import { TYPES, QUESTIONS, STRINGS, QUIZ_COUNT } from '../data/quiz';
 import { TYPES_EN, QUESTIONS_EN, STRINGS_EN } from '../data/quiz.en';
 import { ELEGXOS } from '../config';
 
@@ -15,8 +15,8 @@ const types = en ? TYPES_EN : TYPES;
 const questions = en ? QUESTIONS_EN : QUESTIONS;
 const t = en ? STRINGS_EN : STRINGS;
 
-/* 1 φίλτρο + 7 κορμού + 4 κλάδου: ίδιο πλήθος για κάθε τύπο */
-const TOTAL = 1 + questions.filter((q) => !q.types).length + 4;
+/* 1 φίλτρο + 7 κορμού + 4 κλάδου: ίδιο πλήθος για κάθε τύπο, μία πηγή στο quiz.ts */
+const TOTAL = QUIZ_COUNT;
 ---
 
 <!-- Χωρίς .reveal: η κάρτα εμφανίζεται αμέσως, χωρίς θόλωμα εισόδου -->

@@ -620,6 +620,9 @@ export const QUESTIONS: QuizQuestion[] = [
   },
 ];
 
+/** Πλήθος ερωτήσεων που βλέπει κάθε επιχείρηση: 1 φίλτρο + κορμός (χωρίς types) + 4 κλάδου. */
+export const QUIZ_COUNT = 1 + QUESTIONS.filter((q) => !q.types).length + 4;
+
 export const STRINGS: QuizStrings = {
   typeQ: 'Πώς δουλεύει η επιχείρησή σας;',
   count: (i, n) => `Ερώτηση ${i} από ${n}`,

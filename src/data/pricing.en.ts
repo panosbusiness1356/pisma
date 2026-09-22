@@ -4,6 +4,7 @@
  * αλλαγή τιμής εκεί = αλλάζει αυτόματα και στα αγγλικά.
  */
 import { CATEGORIES, type PricingCategory } from './pricing';
+import { eurEn, DOMAIN_GR, SHOPIFY_PRODUCTS } from '../config';
 
 const CAT: Record<string, { title: string; desc?: string; note?: string }> = {
   website: { title: 'Website', desc: 'Build or rebuild, pick one.', note: 'Shopify store: the platform subscription is paid by you directly to Shopify. The account and the store belong to your business.' },
@@ -12,7 +13,7 @@ const CAT: Record<string, { title: string; desc?: string; note?: string }> = {
   social: { title: 'Social media', desc: 'Pick one, depending on who produces the content.' },
   media: { title: 'Photography & Video', desc: 'At your premises. Pick what you need.' },
   auto: { title: 'Automations', desc: 'Pick as many as you like. The list keeps growing.' },
-  care: { title: 'Care', desc: 'Everything keeps running, without you thinking about it.', note: 'Domain .gr: about €25 per 2 years (VAT included), in your name, paid to the provider. Not added to the total.' },
+  care: { title: 'Care', desc: 'Everything keeps running, without you thinking about it.', note: `Domain .gr: about ${eurEn(DOMAIN_GR.price)} per ${DOMAIN_GR.years} years (VAT included), in your name, paid to the provider. Not added to the total.` },
 };
 
 const OPT: Record<string, { label: string; detail?: string }> = {
@@ -21,8 +22,8 @@ const OPT: Record<string, { label: string; detail?: string }> = {
   'web-pro': { label: 'Pro', detail: 'A larger site with custom features' },
   'web-enterprise': { label: 'Enterprise', detail: 'For very large businesses with many products' },
   'web-bookings': { label: 'Site with online bookings', detail: 'Customers book an appointment or a table online and get an automatic reminder, so there are fewer no-shows' },
-  'web-shopify': { label: 'Shopify store', detail: 'Store set-up, up to 50 products, payments, shipping, training' },
-  'web-shopify-large': { label: 'Shopify store (large)', detail: 'Up to 300 products, migration from another platform, connection to Google, Instagram and Facebook' },
+  'web-shopify': { label: 'Shopify store', detail: `Store set-up, up to ${SHOPIFY_PRODUCTS.small} products, payments, shipping, training` },
+  'web-shopify-large': { label: 'Shopify store (large)', detail: `Up to ${SHOPIFY_PRODUCTS.large} products, migration from another platform, connection to Google, Instagram and Facebook` },
   'media-space': { label: 'Space & team photography', detail: 'At your premises, edited photos sized for website, Google and social' },
   'media-products': { label: 'Product photography', detail: 'For your store or catalogue, edited, on a neutral background or inside your space' },
   'media-video': { label: 'Video for social', detail: 'Short edited videos, in reels and stories dimensions' },

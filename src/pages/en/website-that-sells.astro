@@ -3,13 +3,15 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import { SITE, ELEGXOS, eurEn } from '../../config';
+import { SITE, ELEGXOS, PROMISE, eurEn } from '../../config';
 import { optionById } from '../../data/pricing';
 
 // Μία πηγή αλήθειας για τις τιμές: pricing.ts (web-basic/standard/pro).
 const basic = optionById('web-basic')!;
 const standard = optionById('web-standard')!;
 const pro = optionById('web-pro')!;
+// Delivery window from config.ts (PROMISE.buildWeeks).
+const weeks = `${PROMISE.buildWeeks[0]} to ${PROMISE.buildWeeks[1]} weeks`;
 
 const schema = {
   '@context': 'https://schema.org',
@@ -55,7 +57,7 @@ const why = [
 const faqItems = [
   {
     q: 'How long until it is ready?',
-    a: 'In 2 to 4 weeks from receiving the material: texts, photos, logo. If something is missing, we help create it.',
+    a: `In ${weeks} from receiving the material: texts, photos, logo. If something is missing, we help create it.`,
   },
   {
     q: 'What do I need to bring?',
@@ -78,7 +80,7 @@ const faqItems = [
 
 <Base
   title="Business website development | PISMA"
-  description="Business website development with public prices, a live sample and delivery in 2 to 4 weeks."
+  description={`Business website development with public prices, a live sample and delivery in ${weeks}.`}
   schema={schema}
 >
   <!-- 1. Hero -->

@@ -1,0 +1,35 @@
+# Έλεγχος διαθεσιμότητας κάθε μισή ώρα, χωρίς εξωτερική υπηρεσία: αν το app.pisma.gr
+# ή το www.pisma.gr δεν απαντούν σωστά, το workflow αποτυγχάνει και το GitHub στέλνει
+# email στον λογαριασμό που έκανε το τελευταίο commit αυτού του αρχείου.
+# Σημείωση: το GitHub παγώνει τα προγραμματισμένα workflows μετά από 60 ημέρες χωρίς
+# commit στο αποθετήριο. Ένα push τα ξαναξυπνά.
+name: Έλεγχος διαθεσιμότητας
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Αρχηγείο (app.pisma.gr)
+        run: |
+          body="$(curl -sS --max-time 20 https://app.pisma.gr/healthz || true)"
+          echo "healthz: $body"
+          echo "$body" | grep -q '"ok":true' || { echo "::error::Το app.pisma.gr δεν απαντά υγιές"; exit 1; }
+      - name: Site (www.pisma.gr)
+        run: |
+          code="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 https://www.pisma.gr/ || echo 000)"
+          echo "www.pisma.gr: $code"
+          case "$code" in 200|401) ;; *) echo "::error::Το www.pisma.gr απάντησε $code"; exit 1;; esac
+      - name: Ανακατεύθυνση apex
+        run: |
+          code="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 https://pisma.gr/ || echo 000)"
+          echo "pisma.gr: $code"
+          case "$code" in 200|301|308|401) ;; *) echo "::error::Το pisma.gr απάντησε $code"; exit 1;; esac

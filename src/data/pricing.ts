@@ -9,6 +9,7 @@
  *   «https://formspree.io/f/XXXXXXX») για αποθήκευση lead. Όσο είναι κενό,
  *   το κουμπί ανοίγει email με προσυμπληρωμένη την προσφορά.
  */
+import { eur, DOMAIN_GR, SHOPIFY_PRODUCTS } from '../config';
 
 export type PriceType = 'once' | 'monthly';
 
@@ -47,8 +48,8 @@ export const CATEGORIES: PricingCategory[] = [
       { id: 'web-pro', label: 'Pro', detail: 'Μεγαλύτερο site με ειδικές λειτουργίες', price: 450, type: 'once' },
       { id: 'web-enterprise', label: 'Enterprise', detail: 'Για πολύ μεγάλες επιχειρήσεις με πολλά προϊόντα', price: 0, type: 'once', quote: true },
       { id: 'web-bookings', label: 'Site με online κρατήσεις', detail: 'Οι πελάτες σας κλείνουν ραντεβού ή τραπέζι online και παίρνουν αυτόματη υπενθύμιση, για λιγότερα χαμένα ραντεβού', price: 450, type: 'once' },
-      { id: 'web-shopify', label: 'E-shop σε Shopify', detail: 'Στήσιμο καταστήματος, έως 50 προϊόντα, πληρωμές, αποστολές, εκπαίδευση', price: 690, type: 'once' },
-      { id: 'web-shopify-large', label: 'E-shop σε Shopify (μεγάλο)', detail: 'Έως 300 προϊόντα, μεταφορά από άλλη πλατφόρμα, σύνδεση με Google, Instagram και Facebook', price: 990, type: 'once' },
+      { id: 'web-shopify', label: 'E-shop σε Shopify', detail: `Στήσιμο καταστήματος, έως ${SHOPIFY_PRODUCTS.small} προϊόντα, πληρωμές, αποστολές, εκπαίδευση`, price: 690, type: 'once' },
+      { id: 'web-shopify-large', label: 'E-shop σε Shopify (μεγάλο)', detail: `Έως ${SHOPIFY_PRODUCTS.large} προϊόντα, μεταφορά από άλλη πλατφόρμα, σύνδεση με Google, Instagram και Facebook`, price: 990, type: 'once' },
     ],
   },
   {
@@ -56,7 +57,7 @@ export const CATEGORIES: PricingCategory[] = [
     title: 'Συντήρηση',
     desc: 'Να τρέχουν όλα, χωρίς να το σκέφτεστε.',
     // Το domain πληρώνεται στον πάροχο, στο όνομα του πελάτη (απόφαση 12/09/2026), γι' αυτό είναι σημείωση και όχι επιλογή.
-    note: 'Domain .gr: περίπου 25€ ανά 2 χρόνια (με ΦΠΑ), στο όνομά σας, πληρώνεται στον πάροχο. Δεν μπαίνει στο άθροισμα.',
+    note: `Domain .gr: περίπου ${eur(DOMAIN_GR.price)} ανά ${DOMAIN_GR.years} χρόνια (με ΦΠΑ), στο όνομά σας, πληρώνεται στον πάροχο. Δεν μπαίνει στο άθροισμα.`,
     mode: 'checkbox',
     options: [
       { id: 'care-web', label: 'Συντήρηση ιστοσελίδας', detail: 'Φιλοξενία, ενημερώσεις, ασφάλεια, μικροαλλαγές', price: 29, type: 'monthly' },

@@ -31,7 +31,18 @@ export const ELEGXOS = {
 export const PROMISE = {
   /** Πρώτο preview της ιστοσελίδας εντός τόσων ωρών από το «ναι». */
   previewHours: 72,
+  /** Παράδοση ιστοσελίδας: από έως εβδομάδες, μετά την παραλαβή των υλικών. */
+  buildWeeks: [2, 4] as const,
 } as const;
+
+/** Εγγύηση συντήρησης: αν σε τόσες ημέρες δεν γλιτώνει μετρήσιμες ώρες, ο πρώτος μήνας δεν χρεώνεται. */
+export const GUARANTEE = { days: 30 } as const;
+
+/** Domain .gr: ενδεικτικό κόστος (€, με ΦΠΑ) ανά τόσα χρόνια, πληρώνεται στον πάροχο, όχι σε εμάς. */
+export const DOMAIN_GR = { price: 25, years: 2 } as const;
+
+/** E-shop σε Shopify: όριο προϊόντων για το απλό (small) και το μεγάλο (large) πακέτο. */
+export const SHOPIFY_PRODUCTS = { small: 50, large: 300 } as const;
 
 /** Οι τιμές ζουν πλέον στο src/data/pricing.ts (κατηγορίες, πακέτα, builder). */
 

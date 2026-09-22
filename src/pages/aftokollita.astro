@@ -7,12 +7,12 @@
 // (κοινές με το /en/qr-stickers/), εδώ μόνο τα ελληνικά λεκτικά.
 import { SITE } from '../config';
 import Consent from '../components/Consent.astro';
-import { STICKER_PRICES } from '../data/stickers';
+import { STICKER_PRICES, STICKER_COUNT } from '../data/stickers';
 import '../styles/fonts.css'; // self-hosted Inter/Unbounded/JetBrains Mono, ίδιες με το υπόλοιπο site
 
 const title = 'Αυτοκόλλητα QR για το Εργαλείο Κριτικών | PISMA';
 const description =
-  '16 αυτοκόλλητα QR για τραπέζι, ταμείο, βιτρίνα και delivery, με τα χρώματα και το όνομα του μαγαζιού σας.';
+  `${STICKER_COUNT} αυτοκόλλητα QR για τραπέζι, ταμείο, βιτρίνα και delivery, με τα χρώματα και το όνομα του μαγαζιού σας.`;
 const canonical = `${SITE.url}/aftokollita/`;
 
 // JSON-LD: ίδια «ταυτότητα» WebSite με το Base + το προϊόν με εύρος τιμών από stickers.ts.

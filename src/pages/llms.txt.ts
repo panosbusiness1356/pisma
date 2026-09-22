@@ -7,6 +7,7 @@ import { SITE, ELEGXOS, eur } from '../config';
 import { CATEGORIES } from '../data/pricing';
 import { GUIDES } from '../data/guides';
 import { GUIDES_EN } from '../data/guides.en';
+import { STICKER_COUNT } from '../data/stickers';
 import { PAIRS } from '../i18n';
 
 const line = (o: { label: string; detail?: string; price: number; type: string; quote?: boolean }) =>
@@ -51,7 +52,7 @@ ${GUIDES.map((g) => `- [${g.q}](${SITE.url}/odigoi/${g.slug}/): ${g.blurb}`).joi
 ή στημένη κριτική, κανένα αντάλλαγμα για κριτική, κανένα φιλτράρισμα.
 
 - [Το Εργαλείο Κριτικών](${SITE.url}/kritikes/): τι κάνει, τιμή, πώς κλείνετε ζωντανή παρουσίαση
-- [Αυτοκόλλητα QR (showroom)](${SITE.url}/aftokollita/): 16 σχέδια, προσαρμογή, παραγγελία
+- [Αυτοκόλλητα QR (showroom)](${SITE.url}/aftokollita/): ${STICKER_COUNT} σχέδια, προσαρμογή, παραγγελία
 
 ## Βασικές σελίδες
 

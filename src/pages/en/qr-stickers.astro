@@ -9,12 +9,12 @@
 // μένει ελληνικό, είναι το φυσικό προϊόν όπως τυπώνεται για ελληνικά μαγαζιά.
 import { SITE } from '../../config';
 import Consent from '../../components/Consent.astro';
-import { STICKER_PRICES } from '../../data/stickers';
+import { STICKER_PRICES, STICKER_COUNT } from '../../data/stickers';
 import '../../styles/fonts.css'; // self-hosted Inter/Unbounded/JetBrains Mono, ίδιες με το υπόλοιπο site
 
 const title = 'QR Stickers for The Reviews Tool | PISMA';
 const description =
-  '16 QR stickers for the table, the till, the shop window and delivery, in your colors, with your business name.';
+  `${STICKER_COUNT} QR stickers for the table, the till, the shop window and delivery, in your colors, with your business name.`;
 const canonical = `${SITE.url}/en/qr-stickers/`;
 
 // JSON-LD: ίδια «ταυτότητα» WebSite με το Base + το προϊόν με εύρος τιμών από stickers.ts.

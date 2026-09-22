@@ -25,6 +25,12 @@ export const STICKER_PRICES: Record<string, number> = {
   paidi: 29,
 };
 
+/** Πλήθος σχεδίων, βγαίνει από τον τιμοκατάλογο ώστε να μη γράφεται ποτέ με το χέρι. */
+export const STICKER_COUNT = Object.keys(STICKER_PRICES).length;
+
+/** Η χαμηλότερη τιμή πακέτου (€), για το «από …€ το πακέτο». */
+export const STICKER_MIN_PRICE = Math.min(...Object.values(STICKER_PRICES));
+
 /** Τιμές των έξτρα του καλαθιού (€). */
 export const STICKER_EXTRA_PRICES: Record<string, number> = {
   stand: 6,
