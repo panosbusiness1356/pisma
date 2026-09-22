@@ -3,10 +3,12 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Quiz from '../../components/Quiz.astro';
 import { SITE } from '../../config';
+import { QUIZ_COUNT } from '../../data/quiz';
 
 /*
  * The Dashboard: 12 questions (1 filter + 7 core + 4 per business type), visibility and automation
  * scores and the first 3 steps priced from pricing.ts. Data: src/data/quiz.en.ts, logic: Quiz.astro.
+ * The question count is never typed by hand: QUIZ_COUNT from quiz.ts.
  */
 const schema = {
   '@context': 'https://schema.org',
@@ -15,19 +17,19 @@ const schema = {
   url: `${SITE.url}/en/business-check/`,
   inLanguage: 'en',
   description:
-    'Interactive 12-question test, adapted to how your business works: a visibility score and an automation score out of 100, with your first 3 steps and their prices.',
+    `Interactive ${QUIZ_COUNT}-question test, adapted to how your business works: a visibility score and an automation score out of 100, with your first 3 steps and their prices.`,
   isPartOf: { '@type': 'WebSite', name: SITE.name, url: SITE.url },
 };
 ---
 
 <Base
   title="The Dashboard: Measure visibility and automation | PISMA"
-  description="12 quick questions, no email: see how easily customers find you, how much of your business runs on its own, and your first 3 steps."
+  description={`${QUIZ_COUNT} quick questions, no email: see how easily customers find you, how much of your business runs on its own, and your first 3 steps.`}
   schema={schema}
 >
   <PageHero
     kicker="The Dashboard"
-    sub="12 quick questions, adapted to how your business works. No email, no details: your score and first steps appear right in front of you."
+    sub={`${QUIZ_COUNT} quick questions, adapted to how your business works. No email, no details: your score and first steps appear right in front of you.`}
   >
     See your <span class="accent">score</span>
   </PageHero>

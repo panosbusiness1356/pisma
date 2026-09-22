@@ -158,8 +158,6 @@ main section:nth-of-type(even) {
   padding: 7px 14px; border-radius: 999px;
 }
 
-/* Παραλλαγές kicker: στη «Σκηνή» δεν υπάρχουν μπλε/κίτρινο/πράσινο, όλες ουδέτερες (λευκό pill) */
-.kicker--blue, .kicker--yellow, .kicker--ok { background: rgba(255, 255, 255, .06); color: var(--ink); border-color: var(--line-strong); }
 .chip {
   display: inline-flex; align-items: baseline; gap: 8px;
   background: var(--card); border: 1px solid var(--line); border-radius: 999px;
